@@ -48,6 +48,7 @@ import type { MessageBus } from '../confirmation-bus/message-bus.js';
 import { getShellDefinition } from './definitions/coreTools.js';
 import { resolveToolDeclaration } from './definitions/resolver.js';
 import type { AgentLoopContext } from '../config/agent-loop-context.js';
+import { ApprovalMode } from '../policy/types.js';
 
 export const OUTPUT_UPDATE_INTERVAL_MS = 1000;
 
@@ -260,6 +261,24 @@ export class ShellToolInvocation extends BaseToolInvocation<
       let lastUpdateTime = Date.now();
       let isBinaryStream = false;
 
+      // YOLO + no-sandbox sudo password handling
+      const sudoService = this.context.config.sudoPasswordService;
+      // Active for ALL commands in YOLO+no-sandbox — catches sudo prompts from
+      // scripts, package managers, or any other indirect sudo invocation.
+      const isYoloNoSandbox =
+        this.context.config.getApprovalMode() === ApprovalMode.YOLO &&
+        !this.context.config.getSandboxEnabled();
+      // True only when the outer command itself starts with sudo — used for
+      // proactive pre-prompting and forcing PTY mode.
+      const isSudoYolo =
+        isYoloNoSandbox && sudoService.isSudoCommand(strippedCommand);
+      if (isSudoYolo) {
+        sudoService.resetRetryCount();
+        // Proactively ask for the password before the command starts so it's
+        // already cached the moment sudo's prompt appears in the output.
+        await sudoService.ensurePassword();
+      }
+
       const resetTimeout = () => {
         if (timeoutMs <= 0) {
           return;
@@ -295,6 +314,25 @@ export class ShellToolInvocation extends BaseToolInvocation<
                 if (isBinaryStream) break;
                 cumulativeOutput = event.chunk;
                 shouldUpdate = true;
+
+                // Detect sudo password prompts and failures in YOLO no-sandbox mode.
+                // Uses isYoloNoSandbox (not isSudoYolo) so indirect sudo calls
+                // from scripts/package managers are also handled.
+                if (isYoloNoSandbox && pid) {
+                  const text =
+                    typeof event.chunk === 'string'
+                      ? event.chunk
+                      : event.chunk
+                          .flat()
+                          .map((t) => t.text)
+                          .join('');
+                  if (sudoService.isSudoFailure(text)) {
+                    sudoService.handleSudoFailure();
+                    void sudoService.handleSudoPasswordPrompt(pid);
+                  } else if (sudoService.isSudoPasswordPrompt(text)) {
+                    void sudoService.handleSudoPasswordPrompt(pid);
+                  }
+                }
                 break;
               case 'binary_detected':
                 isBinaryStream = true;
@@ -324,7 +362,7 @@ export class ShellToolInvocation extends BaseToolInvocation<
             }
           },
           combinedController.signal,
-          this.context.config.getEnableInteractiveShell(),
+          isSudoYolo || this.context.config.getEnableInteractiveShell(),
           {
             ...shellExecutionConfig,
             pager: 'cat',

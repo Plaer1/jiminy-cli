@@ -41,7 +41,7 @@ import {
   type GeminiUserTier,
   type UserFeedbackPayload,
   type AgentDefinition,
-  type ApprovalMode,
+  ApprovalMode,
   IdeClient,
   ideContextStore,
   getErrorMessage,
@@ -768,7 +768,7 @@ export const AppContainer = (props: AppContainerProps) => {
         ) {
           writeToStdout(`
 ----------------------------------------------------------------
-Logging in with Google... Restarting Gemini CLI to continue.
+Logging in with Google... Restarting Jiminy CLI to continue.
 ----------------------------------------------------------------
           `);
           await relaunchApp();
@@ -832,7 +832,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       settings.merged.security.auth.selectedType &&
       !settings.merged.security.auth.useExternal
     ) {
-      // We skip validation for Gemini API key here because it might be stored
+      // We skip validation for Jiminy API key here because it might be stored
       // in the keychain, which we can't check synchronously.
       // The useAuth hook handles validation for this case.
       if (settings.merged.security.auth.selectedType === AuthType.USE_GEMINI) {
@@ -1181,11 +1181,22 @@ Logging in with Google... Restarting Gemini CLI to continue.
       if (!cleanUiDetailsVisible) {
         revealCleanUiDetailsTemporarily(APPROVAL_MODE_REVEAL_DURATION_MS);
       }
+      // When switching into YOLO mode with no sandbox and no password cached,
+      // proactively ask the user if they want to save their sudo password for
+      // the session so it's ready before any sudo command runs.
+      if (
+        mode === ApprovalMode.YOLO &&
+        !config.getSandboxEnabled() &&
+        !config.sudoPasswordService.getCachedPassword()
+      ) {
+        void config.sudoPasswordService.ensurePassword();
+      }
     },
     [
       handleApprovalModeChange,
       cleanUiDetailsVisible,
       revealCleanUiDetailsTemporarily,
+      config,
     ],
   );
 
@@ -1920,7 +1931,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       lastTitleRef.current = paddedTitle;
       stdout.write(`\x1b]0;${paddedTitle}\x07`);
     }
-    // Note: We don't need to reset the window title on exit because Gemini CLI is already doing that elsewhere
+    // Note: We don't need to reset the window title on exit because Jiminy CLI is already doing that elsewhere
   }, [
     streamingState,
     thought,

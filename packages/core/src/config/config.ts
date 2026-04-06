@@ -165,6 +165,7 @@ import { ContextBuilder } from '../safety/context-builder.js';
 import { CheckerRegistry } from '../safety/registry.js';
 import { ConsecaSafetyChecker } from '../safety/conseca/conseca.js';
 import type { AgentLoopContext } from './agent-loop-context.js';
+import { SudoPasswordService } from '../services/sudoPasswordService.js';
 
 export interface AccessibilitySettings {
   /** @deprecated Use ui.statusHints instead. */
@@ -770,6 +771,7 @@ export class Config implements McpContext, AgentLoopContext {
   private readonly enableExtensionReloading: boolean;
   fallbackModelHandler?: FallbackModelHandler;
   validationHandler?: ValidationHandler;
+  private readonly _sudoPasswordService = new SudoPasswordService();
   private quotaErrorOccurred: boolean = false;
   private creditsNotificationShown: boolean = false;
   private modelQuotas: Map<
@@ -1873,6 +1875,10 @@ export class Config implements McpContext, AgentLoopContext {
     return this.sandbox?.enabled ?? false;
   }
 
+  get sudoPasswordService(): SudoPasswordService {
+    return this._sudoPasswordService;
+  }
+
   getSandboxAllowedPaths(): string[] {
     return this.sandbox?.allowedPaths ?? [];
   }
@@ -2923,7 +2929,7 @@ export class Config implements McpContext, AgentLoopContext {
   }
 
   /**
-   * Returns whether Gemini 3.1 Pro has been launched.
+   * Returns whether Jiminy 3.1 Pro has been launched.
    * This method is async and ensures that experiments are loaded before returning the result.
    */
   async getGemini31Launched(): Promise<boolean> {
@@ -2932,7 +2938,7 @@ export class Config implements McpContext, AgentLoopContext {
   }
 
   /**
-   * Returns whether Gemini 3.1 Flash Lite has been launched.
+   * Returns whether Jiminy 3.1 Flash Lite has been launched.
    * This method is async and ensures that experiments are loaded before returning the result.
    */
   async getGemini31FlashLiteLaunched(): Promise<boolean> {
@@ -2961,7 +2967,7 @@ export class Config implements McpContext, AgentLoopContext {
   }
 
   /**
-   * Returns whether Gemini 3.1 has been launched.
+   * Returns whether Jiminy 3.1 has been launched.
    *
    * Note: This method should only be called after startup, once experiments have been loaded.
    * If you need to call this during startup or from an async context, use
@@ -2982,7 +2988,7 @@ export class Config implements McpContext, AgentLoopContext {
   }
 
   /**
-   * Returns whether Gemini 3.1 Flash Lite has been launched.
+   * Returns whether Jiminy 3.1 Flash Lite has been launched.
    *
    * Note: This method should only be called after startup, once experiments have been loaded.
    * If you need to call this during startup or from an async context, use

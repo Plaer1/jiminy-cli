@@ -137,6 +137,7 @@ export * from './services/trackerService.js';
 export * from './services/trackerTypes.js';
 export * from './services/keychainService.js';
 export * from './services/keychainTypes.js';
+export * from './services/sudoPasswordService.js';
 export * from './skills/skillManager.js';
 export * from './skills/skillLoader.js';
 
