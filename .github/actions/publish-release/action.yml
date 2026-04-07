@@ -1,5 +1,5 @@
 name: 'Publish Release'
-description: 'Prepares a Jiminy release branch and uploads the GitHub release bundle artifact.'
+description: 'Prepares a Jiminy release branch, optionally publishes npm packages, and packages the GitHub release bundle.'
 
 inputs:
   release-version:
@@ -15,6 +15,70 @@ inputs:
   release-tag:
     description: 'The release tag for the release (e.g., v0.1.11).'
     required: true
+  npm-tag:
+    description: 'The npm dist-tag to publish with. Defaults to release-channel.'
+    required: false
+    default: ''
+  previous-tag:
+    description: 'The previous tag to use for generating release notes.'
+    required: false
+    default: ''
+  publish-npm:
+    description: 'Whether to publish packages to npm.'
+    required: false
+    default: 'false'
+  create-github-release:
+    description: 'Whether to create a GitHub release directly from the bundle zip.'
+    required: false
+    default: 'false'
+  upload-bundle-artifact:
+    description: 'Whether to upload the packaged bundle zip as a workflow artifact.'
+    required: false
+    default: 'true'
+  github-token:
+    description: 'The GitHub token for release creation and npm auth token selection.'
+    required: false
+    default: ''
+  wombat-token-core:
+    description: 'The npm token for the core package.'
+    required: false
+    default: ''
+  wombat-token-cli:
+    description: 'The npm token for the cli package.'
+    required: false
+    default: ''
+  wombat-token-a2a-server:
+    description: 'The npm token for the a2a server package.'
+    required: false
+    default: ''
+  force-skip-tests:
+    description: 'Skip release verification tests.'
+    required: false
+    default: 'false'
+  jiminy_api_key:
+    description: 'The API key for release verification.'
+    required: false
+    default: ''
+  npm-registry-url:
+    description: 'The npm registry URL used for verification.'
+    required: false
+    default: 'https://registry.npmjs.org'
+  npm-registry-scope:
+    description: 'The npm scope used for verification.'
+    required: false
+    default: '@plaer1'
+  cli-package-name:
+    description: 'The name of the cli package.'
+    required: false
+    default: '@plaer1/jiminy-cli'
+  core-package-name:
+    description: 'The name of the core package.'
+    required: false
+    default: '@plaer1/jiminy-cli-core'
+  a2a-package-name:
+    description: 'The name of the a2a package.'
+    required: false
+    default: '@plaer1/jiminy-cli-a2a-server'
   working-directory:
     description: 'The working directory to run the steps in.'
     required: false
@@ -90,6 +154,14 @@ runs:
       run: |
         npm run bundle
 
+    - name: '📦 Prepare packages for npm release'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      working-directory: '${{ inputs.working-directory }}'
+      shell: 'bash'
+      run: |
+        npm run prepare:package
+        node scripts/prepare-npm-release.js
+
     - name: '📦 Package Jiminy bundle artifact'
       working-directory: '${{ inputs.working-directory }}'
       shell: 'bash'
@@ -119,7 +191,151 @@ runs:
         (cd release-bundle-stage && zip -r ../jiminy-cli-bundle.zip .)
         rm -rf release-bundle-stage
 
+    - name: '🔧 Setup Node.js for npm publishing'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      uses: 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020'
+      with:
+        node-version-file: '${{ inputs.working-directory }}/.nvmrc'
+
+    - name: '📝 Configure npmrc for public npm'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      uses: './.github/actions/setup-npmrc'
+      with:
+        github-token: '${{ inputs.github-token }}'
+
+    - name: 'Get core Token'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      uses: './.github/actions/npm-auth-token'
+      id: 'core-token'
+      with:
+        package-name: '${{ inputs.core-package-name }}'
+        github-token: '${{ inputs.github-token }}'
+        wombat-token-core: '${{ inputs.wombat-token-core }}'
+        wombat-token-cli: '${{ inputs.wombat-token-cli }}'
+        wombat-token-a2a-server: '${{ inputs.wombat-token-a2a-server }}'
+
+    - name: '📦 Publish core package'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      working-directory: '${{ inputs.working-directory }}'
+      env:
+        CORE_PACKAGE_NAME: '${{ inputs.core-package-name }}'
+        DRY_RUN: '${{ inputs.dry-run }}'
+        NODE_AUTH_TOKEN: '${{ steps.core-token.outputs.auth-token }}'
+      shell: 'bash'
+      run: |
+        publish_args=(--workspace="${CORE_PACKAGE_NAME}" --access public --no-tag)
+        if [[ "${DRY_RUN}" == "true" ]]; then
+          publish_args=(--dry-run "${publish_args[@]}")
+        fi
+        npm publish "${publish_args[@]}"
+
+    - name: 'Get CLI Token'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      uses: './.github/actions/npm-auth-token'
+      id: 'cli-token'
+      with:
+        package-name: '${{ inputs.cli-package-name }}'
+        github-token: '${{ inputs.github-token }}'
+        wombat-token-core: '${{ inputs.wombat-token-core }}'
+        wombat-token-cli: '${{ inputs.wombat-token-cli }}'
+        wombat-token-a2a-server: '${{ inputs.wombat-token-a2a-server }}'
+
+    - name: '📦 Publish cli package'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      working-directory: '${{ inputs.working-directory }}'
+      env:
+        CLI_PACKAGE_NAME: '${{ inputs.cli-package-name }}'
+        DRY_RUN: '${{ inputs.dry-run }}'
+        NODE_AUTH_TOKEN: '${{ steps.cli-token.outputs.auth-token }}'
+      shell: 'bash'
+      run: |
+        publish_args=(--workspace="${CLI_PACKAGE_NAME}" --access public --no-tag)
+        if [[ "${DRY_RUN}" == "true" ]]; then
+          publish_args=(--dry-run "${publish_args[@]}")
+        fi
+        npm publish "${publish_args[@]}"
+
+    - name: 'Get a2a Token'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      uses: './.github/actions/npm-auth-token'
+      id: 'a2a-token'
+      with:
+        package-name: '${{ inputs.a2a-package-name }}'
+        github-token: '${{ inputs.github-token }}'
+        wombat-token-core: '${{ inputs.wombat-token-core }}'
+        wombat-token-cli: '${{ inputs.wombat-token-cli }}'
+        wombat-token-a2a-server: '${{ inputs.wombat-token-a2a-server }}'
+
+    - name: '📦 Publish a2a package'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      working-directory: '${{ inputs.working-directory }}'
+      env:
+        A2A_PACKAGE_NAME: '${{ inputs.a2a-package-name }}'
+        DRY_RUN: '${{ inputs.dry-run }}'
+        NODE_AUTH_TOKEN: '${{ steps.a2a-token.outputs.auth-token }}'
+      shell: 'bash'
+      run: |
+        publish_args=(--workspace="${A2A_PACKAGE_NAME}" --access public --no-tag)
+        if [[ "${DRY_RUN}" == "true" ]]; then
+          publish_args=(--dry-run "${publish_args[@]}")
+        fi
+        npm publish "${publish_args[@]}"
+
+    - name: '🏷️ Tag npm release'
+      if: "${{ inputs.publish-npm == 'true' }}"
+      uses: './.github/actions/tag-npm-release'
+      with:
+        channel: "${{ inputs.npm-tag != '' && inputs.npm-tag || inputs.release-channel }}"
+        version: '${{ inputs.release-version }}'
+        dry-run: '${{ inputs.dry-run }}'
+        github-token: '${{ inputs.github-token }}'
+        wombat-token-core: '${{ inputs.wombat-token-core }}'
+        wombat-token-cli: '${{ inputs.wombat-token-cli }}'
+        wombat-token-a2a-server: '${{ inputs.wombat-token-a2a-server }}'
+        cli-package-name: '${{ inputs.cli-package-name }}'
+        core-package-name: '${{ inputs.core-package-name }}'
+        a2a-package-name: '${{ inputs.a2a-package-name }}'
+        working-directory: '${{ inputs.working-directory }}'
+
+    - name: '🔬 Verify npm release'
+      if: "${{ inputs.publish-npm == 'true' && inputs.dry-run != 'true' && inputs.force-skip-tests != 'true' && inputs.jiminy_api_key != '' }}"
+      uses: './.github/actions/verify-release'
+      with:
+        npm-package: '${{ inputs.cli-package-name }}@${{ inputs.release-version }}'
+        expected-version: '${{ inputs.release-version }}'
+        working-directory: '${{ inputs.working-directory }}'
+        jiminy_api_key: '${{ inputs.jiminy_api_key }}'
+        github-token: '${{ inputs.github-token }}'
+        npm-registry-url: '${{ inputs.npm-registry-url }}'
+        npm-registry-scope: '${{ inputs.npm-registry-scope }}'
+
+    - name: '🎉 Create GitHub release'
+      if: "${{ inputs.create-github-release == 'true' && inputs.dry-run != 'true' && inputs.previous-tag != '' && inputs.release-channel != 'dev' }}"
+      working-directory: '${{ inputs.working-directory }}'
+      env:
+        GH_TOKEN: '${{ inputs.github-token }}'
+        NPM_TAG: "${{ inputs.npm-tag != '' && inputs.npm-tag || inputs.release-channel }}"
+        PREVIOUS_TAG: '${{ inputs.previous-tag }}'
+        RELEASE_BRANCH: '${{ steps.release_branch.outputs.branch_name }}'
+        RELEASE_TAG: '${{ inputs.release-tag }}'
+      shell: 'bash'
+      run: |
+        release_args=(
+          "${RELEASE_TAG}"
+          jiminy-cli-bundle.zip
+          --target "${RELEASE_BRANCH}"
+          --title "Release ${RELEASE_TAG}"
+          --notes-start-tag "${PREVIOUS_TAG}"
+          --generate-notes
+        )
+        if [[ "${NPM_TAG}" != "latest" ]]; then
+          release_args+=(--prerelease)
+        fi
+
+        gh release create "${release_args[@]}"
+
     - name: '⬆️ Upload bundle artifact'
+      if: "${{ inputs.upload-bundle-artifact == 'true' }}"
       uses: 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' # ratchet:actions/upload-artifact@v4
       with:
         name: 'jiminy-cli-bundle'

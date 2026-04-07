@@ -26,13 +26,16 @@ import { useAlternateBuffer } from '../hooks/useAlternateBuffer.js';
 import { CopyModeWarning } from '../components/CopyModeWarning.js';
 import { BackgroundShellDisplay } from '../components/BackgroundShellDisplay.js';
 import { StreamingState } from '../types.js';
-import type {
- SudoPromptStage ,
+import {
   SUDO_CHOICE_ASK_LATER,
   SUDO_CHOICE_NEVER,
   SudoPasswordPrompt,
   SUDO_CHOICE_SKIP,
-  type SudoChoice } from '../components/SudoPasswordPrompt.js';
+} from '../components/SudoPasswordPrompt.js';
+import type {
+  SudoPromptStage,
+  SudoChoice,
+} from '../components/SudoPasswordPrompt.js';
 import { useConfig } from '../contexts/ConfigContext.js';
 import { useKeypress, type Key } from '../hooks/useKeypress.js';
 import { KeypressPriority } from '../contexts/KeypressContext.js';

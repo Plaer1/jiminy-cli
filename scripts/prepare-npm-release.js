@@ -59,7 +59,23 @@ cliPkg.optionalDependencies = optionalDependencies;
 
 writeJson(cliPkgPath, cliPkg);
 
+// Update @plaer1/jiminy-cli-a2a-server to depend on the published core package
+// instead of a workspace-local file path.
+const a2aPkgPath = 'packages/a2a-server/package.json';
+const a2aPkg = readJson(a2aPkgPath);
+const publishedCoreVersion =
+  readJson('packages/core/package.json').version || rootPkg.version;
+
+if (a2aPkg.dependencies?.['@plaer1/jiminy-cli-core']) {
+  a2aPkg.dependencies['@plaer1/jiminy-cli-core'] = publishedCoreVersion;
+}
+
+writeJson(a2aPkgPath, a2aPkg);
+
 console.log('Updated packages/cli/package.json for bundled npm release.');
+console.log(
+  'Updated packages/a2a-server/package.json to depend on published core version.',
+);
 console.log(
   'optionalDependencies:',
   JSON.stringify(optionalDependencies, null, 2),
