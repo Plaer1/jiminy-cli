@@ -1,10 +1,5 @@
 # Jiminy CLI
 
-[![Jiminy CLI CI](https://github.com/Plaer1/jiminy-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Plaer1/jiminy-cli/actions/workflows/ci.yml)
-[![Jiminy CLI E2E (Chained)](https://github.com/Plaer1/jiminy-cli/actions/workflows/chained_e2e.yml/badge.svg)](https://github.com/Plaer1/jiminy-cli/actions/workflows/chained_e2e.yml)
-[![Release](https://img.shields.io/github/v/release/Plaer1/jiminy-cli)](https://github.com/Plaer1/jiminy-cli/releases)
-[![License](https://img.shields.io/github/license/Plaer1/jiminy-cli)](https://github.com/Plaer1/jiminy-cli/blob/main/LICENSE)
-
 ### Jiminy Crickets Batman! What the heck is The Joker running on his computer!???
 
 ![Jiminy CLI Screenshot](/docs/assets/jiminy-screenshot.png)
