@@ -168,12 +168,6 @@ runs:
       run: |
         rm -rf release-bundle-stage jiminy-cli-bundle.zip
         cp -R bundle release-bundle-stage
-        if [[ -f release-bundle-stage/jiminy.js ]]; then
-          mv release-bundle-stage/jiminy.js release-bundle-stage/jiminy.js
-        fi
-        if [[ -f release-bundle-stage/jiminy.js.map ]]; then
-          mv release-bundle-stage/jiminy.js.map release-bundle-stage/jiminy.js.map
-        fi
 
         if [[ ! -f release-bundle-stage/jiminy.js ]]; then
           echo "Error: release-bundle-stage/jiminy.js was not created."
