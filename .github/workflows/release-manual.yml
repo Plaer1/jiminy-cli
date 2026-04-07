@@ -11,8 +11,8 @@ on:
         description: 'The branch, tag, or SHA to release from.'
         required: true
         type: 'string'
-      npm_channel:
-        description: 'The npm channel to publish to'
+      release_channel:
+        description: 'The release channel'
         required: true
         type: 'choice'
         options:
@@ -46,25 +46,24 @@ on:
         default: 'prod'
 
 jobs:
-  release:
-    if: "github.repository == 'google-gemini/gemini-cli'"
+  prepare-release:
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     runs-on: 'ubuntu-latest'
     environment: "${{ github.event.inputs.environment || 'prod' }}"
+    outputs:
+      release_branch: '${{ steps.publish_release.outputs.release-branch }}'
+      release_tag: '${{ github.event.inputs.version }}'
+      release_version: '${{ steps.release_info.outputs.RELEASE_VERSION }}'
+      release_channel: '${{ github.event.inputs.release_channel }}'
+      previous_tag: '${{ steps.release_info.outputs.PREVIOUS_TAG }}'
     permissions:
       contents: 'write'
-      packages: 'write'
       issues: 'write'
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8'
         with:
-          fetch-depth: 0
-
-      - name: 'Checkout Release Code'
-        uses: 'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8'
-        with:
           ref: '${{ github.event.inputs.ref }}'
-          path: 'release'
           fetch-depth: 0
 
       - name: 'Debug Inputs'
@@ -76,16 +75,14 @@ jobs:
       - name: 'Setup Node.js'
         uses: 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020'
         with:
-          node-version-file: './release/.nvmrc'
+          node-version-file: './.nvmrc'
           cache: 'npm'
 
       - name: 'Install Dependencies'
-        working-directory: './release'
         run: 'npm ci'
 
       - name: 'Prepare Release Info'
         id: 'release_info'
-        working-directory: './release'
         env:
           INPUT_VERSION: '${{ github.event.inputs.version }}'
         run: |
@@ -98,34 +95,148 @@ jobs:
         uses: './.github/actions/run-tests'
         with:
           gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
-          working-directory: './release'
+          working-directory: '.'
 
-      - name: 'Publish Release'
+      - name: 'Prepare Release Branch And Bundle'
+        id: 'publish_release'
         uses: './.github/actions/publish-release'
         with:
-          force-skip-tests: '${{ github.event.inputs.force_skip_tests }}'
           release-version: '${{ steps.release_info.outputs.RELEASE_VERSION }}'
           release-tag: '${{ github.event.inputs.version }}'
-          npm-tag: '${{ github.event.inputs.npm_channel }}'
-          wombat-token-core: '${{ secrets.WOMBAT_TOKEN_CORE }}'
-          wombat-token-cli: '${{ secrets.WOMBAT_TOKEN_CLI }}'
-          wombat-token-a2a-server: '${{ secrets.WOMBAT_TOKEN_A2A_SERVER }}'
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-          github-release-token: '${{ secrets.GEMINI_CLI_ROBOT_GITHUB_PAT }}'
+          release-channel: '${{ github.event.inputs.release_channel }}'
           dry-run: '${{ github.event.inputs.dry_run }}'
-          previous-tag: '${{ steps.release_info.outputs.PREVIOUS_TAG }}'
-          skip-github-release: '${{ github.event.inputs.skip_github_release }}'
-          working-directory: './release'
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
-          npm-registry-publish-url: '${{ vars.NPM_REGISTRY_PUBLISH_URL }}'
-          npm-registry-url: '${{ vars.NPM_REGISTRY_URL }}'
-          npm-registry-scope: '${{ vars.NPM_REGISTRY_SCOPE }}'
-          cli-package-name: '${{ vars.CLI_PACKAGE_NAME }}'
-          core-package-name: '${{ vars.CORE_PACKAGE_NAME }}'
-          a2a-package-name: '${{ vars.A2A_PACKAGE_NAME }}'
+          working-directory: '.'
+
+  build-binaries:
+    if: "github.repository == 'Plaer1/jiminy-cli'"
+    needs: 'prepare-release'
+    runs-on: '${{ matrix.os }}'
+    permissions:
+      contents: 'read'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: 'ubuntu-latest'
+            platform_name: 'linux-x64'
+            arch: 'x64'
+          - os: 'windows-latest'
+            platform_name: 'win32-x64'
+            arch: 'x64'
+          - os: 'macos-latest'
+            platform_name: 'darwin-arm64'
+            arch: 'arm64'
+          - os: 'macos-latest'
+            platform_name: 'darwin-x64'
+            arch: 'x64'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8'
+        with:
+          ref: "${{ github.event.inputs.dry_run == 'true' && github.event.inputs.ref || needs.prepare-release.outputs.release_branch }}"
+          fetch-depth: 0
+
+      - name: 'Set up Node.js'
+        uses: 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020'
+        with:
+          node-version-file: '.nvmrc'
+          architecture: '${{ matrix.arch }}'
+          cache: 'npm'
+
+      - name: 'Install dependencies'
+        run: 'npm ci'
+
+      - name: 'Apply release version in dry run mode'
+        if: "${{ github.event.inputs.dry_run == 'true' }}"
+        run: 'npm run release:version "${{ needs.prepare-release.outputs.release_version }}"'
+
+      - name: 'Build Binary'
+        run: 'npm run build:binary'
+
+      - name: 'Smoke Test Binary'
+        run: |
+          if [ -f "dist/${{ matrix.platform_name }}/jiminy.exe" ]; then
+            "./dist/${{ matrix.platform_name }}/jiminy.exe" --version
+          else
+            "./dist/${{ matrix.platform_name }}/jiminy" --version
+          fi
+
+      - name: 'Package Artifact (Windows)'
+        if: "matrix.os == 'windows-latest'"
+        shell: 'powershell'
+        run: |
+          Compress-Archive -Path "dist/${{ matrix.platform_name }}/*" -DestinationPath "jiminy-cli-${{ matrix.platform_name }}.zip" -Force
+
+      - name: 'Package Artifact (Unix)'
+        if: "matrix.os != 'windows-latest'"
+        run: |
+          cd "dist/${{ matrix.platform_name }}"
+          zip -r "../../jiminy-cli-${{ matrix.platform_name }}.zip" .
+
+      - name: 'Upload Artifact'
+        uses: 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' # ratchet:actions/upload-artifact@v4
+        with:
+          name: 'jiminy-cli-${{ matrix.platform_name }}'
+          path: 'jiminy-cli-${{ matrix.platform_name }}.zip'
+          retention-days: 5
+
+  publish-release:
+    if: "${{ github.repository == 'Plaer1/jiminy-cli' && github.event.inputs.dry_run != 'true' && github.event.inputs.skip_github_release != 'true' && needs.prepare-release.outputs.release_channel != 'dev' }}"
+    needs:
+      - 'prepare-release'
+      - 'build-binaries'
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'write'
+    steps:
+      - name: 'Download Bundle Artifact'
+        uses: 'actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806' # ratchet:actions/download-artifact@v4
+        with:
+          name: 'jiminy-cli-bundle'
+          path: 'release-assets/bundle'
+
+      - name: 'Download Linux Binary Artifact'
+        uses: 'actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806' # ratchet:actions/download-artifact@v4
+        with:
+          name: 'jiminy-cli-linux-x64'
+          path: 'release-assets/linux-x64'
+
+      - name: 'Download Windows Binary Artifact'
+        uses: 'actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806' # ratchet:actions/download-artifact@v4
+        with:
+          name: 'jiminy-cli-win32-x64'
+          path: 'release-assets/win32-x64'
+
+      - name: 'Download macOS ARM Binary Artifact'
+        uses: 'actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806' # ratchet:actions/download-artifact@v4
+        with:
+          name: 'jiminy-cli-darwin-arm64'
+          path: 'release-assets/darwin-arm64'
+
+      - name: 'Download macOS x64 Binary Artifact'
+        uses: 'actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806' # ratchet:actions/download-artifact@v4
+        with:
+          name: 'jiminy-cli-darwin-x64'
+          path: 'release-assets/darwin-x64'
+
+      - name: 'Create GitHub Release'
+        env:
+          GH_TOKEN: '${{ secrets.GEMINI_CLI_ROBOT_GITHUB_PAT || secrets.GITHUB_TOKEN }}'
+        run: |
+          gh release create "${{ needs.prepare-release.outputs.release_tag }}" \
+            release-assets/bundle/jiminy-cli-bundle.zip \
+            release-assets/linux-x64/jiminy-cli-linux-x64.zip \
+            release-assets/win32-x64/jiminy-cli-win32-x64.zip \
+            release-assets/darwin-arm64/jiminy-cli-darwin-arm64.zip \
+            release-assets/darwin-x64/jiminy-cli-darwin-x64.zip \
+            --target "${{ needs.prepare-release.outputs.release_branch }}" \
+            --title "Release ${{ needs.prepare-release.outputs.release_tag }}" \
+            --notes-start-tag "${{ needs.prepare-release.outputs.previous_tag }}" \
+            --generate-notes \
+            ${{ needs.prepare-release.outputs.release_channel != 'latest' && '--prerelease' || '' }}
 
       - name: 'Create Issue on Failure'
-        if: '${{ failure() && github.event.inputs.dry_run == false }}'
+        if: "${{ failure() && github.event.inputs.dry_run != 'true' }}"
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           RELEASE_TAG: '${{ github.event.inputs.version }}'

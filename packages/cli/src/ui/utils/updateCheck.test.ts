@@ -12,14 +12,11 @@ const getPackageJson = vi.hoisted(() => vi.fn());
 const debugLogger = vi.hoisted(() => ({
   warn: vi.fn(),
 }));
+const fetchMock = vi.hoisted(() => vi.fn());
+
 vi.mock('@google/gemini-cli-core', () => ({
   getPackageJson,
   debugLogger,
-}));
-
-const latestVersion = vi.hoisted(() => vi.fn());
-vi.mock('latest-version', () => ({
-  default: latestVersion,
 }));
 
 describe('checkForUpdates', () => {
@@ -28,6 +25,7 @@ describe('checkForUpdates', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.resetAllMocks();
+    vi.stubGlobal('fetch', fetchMock);
     // Clear DEV environment variable before each test
     delete process.env['DEV'];
 
@@ -45,12 +43,19 @@ describe('checkForUpdates', () => {
     vi.restoreAllMocks();
   });
 
+  const mockFetchResponse = (tagName: string, ok = true) => {
+    fetchMock.mockResolvedValue({
+      ok,
+      json: vi.fn().mockResolvedValue({ tag_name: tagName }),
+    });
+  };
+
   it('should return null if enableAutoUpdateNotification is false', async () => {
     mockSettings.merged.general.enableAutoUpdateNotification = false;
     const result = await checkForUpdates(mockSettings);
     expect(result).toBeNull();
     expect(getPackageJson).not.toHaveBeenCalled();
-    expect(latestVersion).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('should return null when running from source (DEV=true)', async () => {
@@ -59,11 +64,11 @@ describe('checkForUpdates', () => {
       name: 'test-package',
       version: '1.0.0',
     });
-    latestVersion.mockResolvedValue('1.1.0');
+    mockFetchResponse('v1.1.0');
     const result = await checkForUpdates(mockSettings);
     expect(result).toBeNull();
     expect(getPackageJson).not.toHaveBeenCalled();
-    expect(latestVersion).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('should return null if package.json is missing', async () => {
@@ -77,7 +82,7 @@ describe('checkForUpdates', () => {
       name: 'test-package',
       version: '1.0.0',
     });
-    latestVersion.mockResolvedValue('1.0.0');
+    mockFetchResponse('v1.0.0');
     const result = await checkForUpdates(mockSettings);
     expect(result).toBeNull();
   });
@@ -87,7 +92,7 @@ describe('checkForUpdates', () => {
       name: 'test-package',
       version: '1.0.0',
     });
-    latestVersion.mockResolvedValue('1.1.0');
+    mockFetchResponse('v1.1.0');
 
     const result = await checkForUpdates(mockSettings);
     expect(result?.message).toContain('1.0.0 → 1.1.0');
@@ -101,7 +106,7 @@ describe('checkForUpdates', () => {
       name: 'test-package',
       version: '1.0.0',
     });
-    latestVersion.mockResolvedValue('1.0.0');
+    mockFetchResponse('v1.0.0');
     const result = await checkForUpdates(mockSettings);
     expect(result).toBeNull();
   });
@@ -111,17 +116,28 @@ describe('checkForUpdates', () => {
       name: 'test-package',
       version: '1.1.0',
     });
-    latestVersion.mockResolvedValue('1.0.0');
+    mockFetchResponse('v1.0.0');
     const result = await checkForUpdates(mockSettings);
     expect(result).toBeNull();
   });
 
-  it('should return null if latestVersion rejects', async () => {
+  it('should return null if the GitHub API request fails', async () => {
     getPackageJson.mockResolvedValue({
       name: 'test-package',
       version: '1.0.0',
     });
-    latestVersion.mockRejectedValue(new Error('Timeout'));
+    fetchMock.mockRejectedValue(new Error('Timeout'));
+
+    const result = await checkForUpdates(mockSettings);
+    expect(result).toBeNull();
+  });
+
+  it('should return null if the GitHub API responds with an error', async () => {
+    getPackageJson.mockResolvedValue({
+      name: 'test-package',
+      version: '1.0.0',
+    });
+    mockFetchResponse('v1.1.0', false);
 
     const result = await checkForUpdates(mockSettings);
     expect(result).toBeNull();
@@ -139,13 +155,7 @@ describe('checkForUpdates', () => {
         name: 'test-package',
         version: '1.2.3-nightly.1',
       });
-
-      latestVersion.mockImplementation(async (name, options) => {
-        if (options?.version === 'nightly') {
-          return '1.2.3-nightly.2';
-        }
-        return '1.2.3';
-      });
+      mockFetchResponse('v1.2.3-nightly.2');
 
       const result = await checkForUpdates(mockSettings);
       expect(result?.message).toContain('1.2.3-nightly.1 → 1.2.3-nightly.2');

@@ -1,16 +1,16 @@
 {
-  "name": "@google/gemini-cli",
+  "name": "@google/jiminy-cli",
   "version": "0.36.0",
-  "description": "Gemini CLI",
+  "description": "Jiminy CLI",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-gemini/gemini-cli.git"
+    "url": "git+https://github.com/Plaer1/jiminy-cli.git"
   },
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "gemini": "dist/index.js"
+    "jiminy": "dist/index.js"
   },
   "scripts": {
     "build": "node ../../scripts/build_package.js",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@agentclientprotocol/sdk": "^0.16.1",
-    "@google/gemini-cli-core": "file:../core",
+    "@google/jiminy-cli-core": "file:../core",
     "@google/genai": "1.30.0",
     "@iarna/toml": "^2.2.5",
     "@modelcontextprotocol/sdk": "^1.23.0",
@@ -72,7 +72,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@google/gemini-cli-test-utils": "file:../test-utils",
+    "@google/jiminy-cli-test-utils": "file:../test-utils",
     "@types/command-exists": "^1.2.3",
     "@types/hast": "^3.0.4",
     "@types/node": "^20.11.24",

@@ -97,7 +97,7 @@ export const bugCommand: SlashCommand = {
     }
 
     let bugReportUrl =
-      'https://github.com/google-gemini/gemini-cli/issues/new?template=bug_report.yml&title={title}&info={info}&problem={problem}';
+      'https://github.com/Plaer1/jiminy-cli/issues/new?template=bug_report.yml&title={title}&info={info}&problem={problem}';
 
     const bugCommandSettings = config?.getBugCommand();
     if (bugCommandSettings?.urlTemplate) {

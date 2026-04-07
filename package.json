@@ -11,7 +11,7 @@
   "private": "true",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-gemini/gemini-cli.git"
+    "url": "git+https://github.com/Plaer1/jiminy-cli.git"
   },
   "config": {
     "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.36.0"
@@ -80,7 +80,7 @@
     "minimatch": "^10.2.2"
   },
   "bin": {
-    "gemini": "bundle/gemini.js"
+    "jiminy": "bundle/gemini.js"
   },
   "files": [
     "bundle/",

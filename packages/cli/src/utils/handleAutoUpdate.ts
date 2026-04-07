@@ -6,7 +6,11 @@
 
 import type { UpdateObject } from '../ui/utils/updateCheck.js';
 import type { LoadedSettings } from '../config/settings.js';
-import { getInstallationInfo, PackageManager } from './installationInfo.js';
+import {
+  getInstallationInfo,
+  GITHUB_REPO_INSTALL_REF_PLACEHOLDER,
+  PackageManager,
+} from './installationInfo.js';
 import { updateEventEmitter } from './updateEventEmitter.js';
 import { MessageType, type HistoryItem } from '../ui/types.js';
 import { spawnWrapper } from './spawnWrapper.js';
@@ -35,7 +39,7 @@ export async function waitForUpdateCompletion(
   }
 
   debugLogger.log(
-    '\nGemini CLI is waiting for a background update to complete before restarting...',
+    '\nJiminy CLI is waiting for a background update to complete before restarting...',
   );
 
   return new Promise((resolve) => {
@@ -117,12 +121,20 @@ export function handleAutoUpdate(
     return;
   }
 
-  const isNightly = info.update.latest.includes('nightly');
-
-  const updateCommand = installationInfo.updateCommand.replace(
-    '@latest',
-    isNightly ? '@nightly' : `@${info.update.latest}`,
-  );
+  const releaseRef = `v${info.update.latest}`;
+  const updateCommand = installationInfo.updateCommand.includes(
+    GITHUB_REPO_INSTALL_REF_PLACEHOLDER,
+  )
+    ? installationInfo.updateCommand.replace(
+        GITHUB_REPO_INSTALL_REF_PLACEHOLDER,
+        releaseRef,
+      )
+    : installationInfo.updateCommand.replace(
+        '@latest',
+        info.update.latest.includes('nightly')
+          ? '@nightly'
+          : `@${info.update.latest}`,
+      );
   const updateProcess = spawnFn(updateCommand, {
     stdio: 'ignore',
     shell: true,

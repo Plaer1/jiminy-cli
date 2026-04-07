@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(./node_modules/.bin/tsc --noEmit -p packages/core/tsconfig.json)",
+      "Bash(ls /home/e/source/repos/jiminy/node_modules/.bin/ts*)",
+      "Bash(npm run:*)",
+      "Bash(xargs sed:*)"
+    ]
+  }
+}

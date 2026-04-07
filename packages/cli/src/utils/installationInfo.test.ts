@@ -5,7 +5,11 @@
  */
 
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { getInstallationInfo, PackageManager } from './installationInfo.js';
+import {
+  getInstallationInfo,
+  GITHUB_REPO_INSTALL_REF_PLACEHOLDER,
+  PackageManager,
+} from './installationInfo.js';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as childProcess from 'node:child_process';
@@ -150,20 +154,20 @@ describe('getInstallationInfo', () => {
       value: 'darwin',
     });
     // Use a path that matches what brew would resolve to
-    const cliPath = '/opt/homebrew/Cellar/gemini-cli/1.0.0/bin/gemini';
+    const cliPath = '/opt/homebrew/Cellar/jiminy-cli/1.0.0/bin/jiminy';
     process.argv[1] = cliPath;
 
     mockedExecSync.mockImplementation((cmd) => {
-      if (typeof cmd === 'string' && cmd.includes('brew --prefix gemini-cli')) {
-        return '/opt/homebrew/opt/gemini-cli';
+      if (typeof cmd === 'string' && cmd.includes('brew --prefix jiminy-cli')) {
+        return '/opt/homebrew/opt/jiminy-cli';
       }
       throw new Error(`Command failed: ${cmd}`);
     });
 
     mockedRealPathSync.mockImplementation((p) => {
       if (p === cliPath) return cliPath;
-      if (p === '/opt/homebrew/opt/gemini-cli') {
-        return '/opt/homebrew/Cellar/gemini-cli/1.0.0';
+      if (p === '/opt/homebrew/opt/jiminy-cli') {
+        return '/opt/homebrew/Cellar/jiminy-cli/1.0.0';
       }
       return String(p);
     });
@@ -171,13 +175,13 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
 
     expect(mockedExecSync).toHaveBeenCalledWith(
-      expect.stringContaining('brew --prefix gemini-cli'),
+      expect.stringContaining('brew --prefix jiminy-cli'),
       expect.anything(),
     );
     expect(info.packageManager).toBe(PackageManager.HOMEBREW);
     expect(info.isGlobal).toBe(true);
     expect(info.updateMessage).toBe(
-      'Installed via Homebrew. Please update with "brew upgrade gemini-cli".',
+      'Installed via Homebrew. Please update with "brew upgrade jiminy-cli".',
     );
   });
 
@@ -195,7 +199,7 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
 
     expect(mockedExecSync).toHaveBeenCalledWith(
-      expect.stringContaining('brew --prefix gemini-cli'),
+      expect.stringContaining('brew --prefix jiminy-cli'),
       expect.anything(),
     );
     // Should fall back to default global npm
@@ -215,12 +219,16 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
     expect(info.packageManager).toBe(PackageManager.PNPM);
     expect(info.isGlobal).toBe(true);
-    expect(info.updateCommand).toBe('pnpm add -g @google/gemini-cli@latest');
+    expect(info.updateCommand).toBe(
+      `pnpm add -g github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`,
+    );
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
-    // isAutoUpdateEnabled = false -> "Please run..."
+    // isAutoUpdateEnabled = false -> manual release guidance
     const infoDisabled = getInstallationInfo(projectRoot, false);
-    expect(infoDisabled.updateMessage).toContain('Please run pnpm add');
+    expect(infoDisabled.updateMessage).toContain(
+      'download the latest release from GitHub',
+    );
   });
 
   it('should detect global yarn installation', () => {
@@ -236,13 +244,15 @@ describe('getInstallationInfo', () => {
     expect(info.packageManager).toBe(PackageManager.YARN);
     expect(info.isGlobal).toBe(true);
     expect(info.updateCommand).toBe(
-      'yarn global add @google/gemini-cli@latest',
+      `yarn global add github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`,
     );
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
-    // isAutoUpdateEnabled = false -> "Please run..."
+    // isAutoUpdateEnabled = false -> manual release guidance
     const infoDisabled = getInstallationInfo(projectRoot, false);
-    expect(infoDisabled.updateMessage).toContain('Please run yarn global add');
+    expect(infoDisabled.updateMessage).toContain(
+      'download the latest release from GitHub',
+    );
   });
 
   it('should detect global bun installation', () => {
@@ -257,12 +267,16 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
     expect(info.packageManager).toBe(PackageManager.BUN);
     expect(info.isGlobal).toBe(true);
-    expect(info.updateCommand).toBe('bun add -g @google/gemini-cli@latest');
+    expect(info.updateCommand).toBe(
+      `bun add -g github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`,
+    );
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
-    // isAutoUpdateEnabled = false -> "Please run..."
+    // isAutoUpdateEnabled = false -> manual release guidance
     const infoDisabled = getInstallationInfo(projectRoot, false);
-    expect(infoDisabled.updateMessage).toContain('Please run bun add');
+    expect(infoDisabled.updateMessage).toContain(
+      'download the latest release from GitHub',
+    );
   });
 
   it('should detect local installation and identify yarn from lockfile', () => {
@@ -344,12 +358,16 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
     expect(info.packageManager).toBe(PackageManager.NPM);
     expect(info.isGlobal).toBe(true);
-    expect(info.updateCommand).toBe('npm install -g @google/gemini-cli@latest');
+    expect(info.updateCommand).toBe(
+      `npm install -g github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`,
+    );
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
-    // isAutoUpdateEnabled = false -> "Please run..."
+    // isAutoUpdateEnabled = false -> manual release guidance
     const infoDisabled = getInstallationInfo(projectRoot, false);
-    expect(infoDisabled.updateMessage).toContain('Please run npm install');
+    expect(infoDisabled.updateMessage).toContain(
+      'download the latest release from GitHub',
+    );
   });
 
   it('should NOT detect Homebrew if gemini-cli is installed in brew but running from npm location', () => {
@@ -367,8 +385,8 @@ describe('getInstallationInfo', () => {
         return Buffer.from('gemini-cli\n');
       }
       // Future proofing for the fix:
-      if (typeof cmd === 'string' && cmd.includes('brew --prefix gemini-cli')) {
-        return '/opt/homebrew/opt/gemini-cli';
+      if (typeof cmd === 'string' && cmd.includes('brew --prefix jiminy-cli')) {
+        return '/opt/homebrew/opt/jiminy-cli';
       }
       throw new Error(`Command failed: ${cmd}`);
     });
@@ -376,8 +394,8 @@ describe('getInstallationInfo', () => {
     mockedRealPathSync.mockImplementation((p) => {
       if (p === cliPath) return cliPath;
       // Future proofing for the fix:
-      if (p === '/opt/homebrew/opt/gemini-cli')
-        return '/opt/homebrew/Cellar/gemini-cli/1.0.0';
+      if (p === '/opt/homebrew/opt/jiminy-cli')
+        return '/opt/homebrew/Cellar/jiminy-cli/1.0.0';
       return String(p);
     });
 

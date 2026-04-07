@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { debugLogger, isGitRepository } from '@google/gemini-cli-core';
+import { debugLogger, isGitRepository } from '@google/jiminy-cli-core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as childProcess from 'node:child_process';
@@ -31,6 +31,8 @@ export interface InstallationInfo {
   updateCommand?: string;
   updateMessage?: string;
 }
+
+export const GITHUB_REPO_INSTALL_REF_PLACEHOLDER = '__JIMINY_RELEASE_REF__';
 
 export function getInstallationInfo(
   projectRoot: string,
@@ -95,7 +97,7 @@ export function getInstallationInfo(
     if (process.platform === 'darwin') {
       try {
         const brewPrefix = childProcess
-          .execSync('brew --prefix gemini-cli', {
+          .execSync('brew --prefix jiminy-cli', {
             encoding: 'utf8',
             stdio: ['ignore', 'pipe', 'ignore'],
           })
@@ -107,11 +109,11 @@ export function getInstallationInfo(
             packageManager: PackageManager.HOMEBREW,
             isGlobal: true,
             updateMessage:
-              'Installed via Homebrew. Please update with "brew upgrade gemini-cli".',
+              'Installed via Homebrew. Please update with "brew upgrade jiminy-cli".',
           };
         }
-      } catch (_error) {
-        // Brew is not installed or gemini-cli is not installed via brew.
+      } catch {
+        // Brew is not installed or jiminy-cli is not installed via brew.
         // Continue to the next check.
       }
     }
@@ -121,27 +123,27 @@ export function getInstallationInfo(
       realPath.includes('/.pnpm/global') ||
       realPath.includes('/.local/share/pnpm')
     ) {
-      const updateCommand = 'pnpm add -g @google/gemini-cli@latest';
+      const updateCommand = `pnpm add -g github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`;
       return {
         packageManager: PackageManager.PNPM,
         isGlobal: true,
         updateCommand,
         updateMessage: isAutoUpdateEnabled
-          ? 'Installed with pnpm. Attempting to automatically update now...'
-          : `Please run ${updateCommand} to update`,
+          ? 'Installed with pnpm from GitHub. Attempting to automatically update now...'
+          : 'Installed with pnpm from GitHub. Please download the latest release from GitHub or reinstall manually.',
       };
     }
 
     // Check for yarn
     if (realPath.includes('/.yarn/global')) {
-      const updateCommand = 'yarn global add @google/gemini-cli@latest';
+      const updateCommand = `yarn global add github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`;
       return {
         packageManager: PackageManager.YARN,
         isGlobal: true,
         updateCommand,
         updateMessage: isAutoUpdateEnabled
-          ? 'Installed with yarn. Attempting to automatically update now...'
-          : `Please run ${updateCommand} to update`,
+          ? 'Installed with yarn from GitHub. Attempting to automatically update now...'
+          : 'Installed with yarn from GitHub. Please download the latest release from GitHub or reinstall manually.',
       };
     }
 
@@ -154,14 +156,14 @@ export function getInstallationInfo(
       };
     }
     if (realPath.includes('/.bun/install/global')) {
-      const updateCommand = 'bun add -g @google/gemini-cli@latest';
+      const updateCommand = `bun add -g github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`;
       return {
         packageManager: PackageManager.BUN,
         isGlobal: true,
         updateCommand,
         updateMessage: isAutoUpdateEnabled
-          ? 'Installed with bun. Attempting to automatically update now...'
-          : `Please run ${updateCommand} to update`,
+          ? 'Installed with bun from GitHub. Attempting to automatically update now...'
+          : 'Installed with bun from GitHub. Please download the latest release from GitHub or reinstall manually.',
       };
     }
 
@@ -187,14 +189,14 @@ export function getInstallationInfo(
     }
 
     // Assume global npm
-    const updateCommand = 'npm install -g @google/gemini-cli@latest';
+    const updateCommand = `npm install -g github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`;
     return {
       packageManager: PackageManager.NPM,
       isGlobal: true,
       updateCommand,
       updateMessage: isAutoUpdateEnabled
-        ? 'Installed with npm. Attempting to automatically update now...'
-        : `Please run ${updateCommand} to update`,
+        ? 'Installed with npm from GitHub. Attempting to automatically update now...'
+        : 'Installed with npm from GitHub. Please download the latest release from GitHub or reinstall manually.',
     };
   } catch (error) {
     debugLogger.log(error);

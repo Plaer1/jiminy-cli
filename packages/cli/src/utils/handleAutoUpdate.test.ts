@@ -13,7 +13,11 @@ import {
   afterEach,
   type Mock,
 } from 'vitest';
-import { getInstallationInfo, PackageManager } from './installationInfo.js';
+import {
+  getInstallationInfo,
+  GITHUB_REPO_INSTALL_REF_PLACEHOLDER,
+  PackageManager,
+} from './installationInfo.js';
 import { updateEventEmitter } from './updateEventEmitter.js';
 import type { UpdateObject } from '../ui/utils/updateCheck.js';
 import type { LoadedSettings } from '../config/settings.js';
@@ -27,6 +31,8 @@ import {
   _setUpdateStateForTesting,
 } from './handleAutoUpdate.js';
 import { MessageType } from '../ui/types.js';
+
+const GITHUB_UPDATE_COMMAND = `npm i -g github:Plaer1/jiminy-cli#${GITHUB_REPO_INSTALL_REF_PLACEHOLDER}`;
 
 vi.mock('./installationInfo.js', async () => {
   const actual = await vi.importActual('./installationInfo.js');
@@ -104,7 +110,7 @@ describe('handleAutoUpdate', () => {
 
   it('should track update progress state', async () => {
     mockGetInstallationInfo.mockReturnValue({
-      updateCommand: 'npm i -g @google/gemini-cli@latest',
+      updateCommand: GITHUB_UPDATE_COMMAND,
       updateMessage: 'This is an additional message.',
       isGlobal: false,
       packageManager: PackageManager.NPM,
@@ -123,7 +129,7 @@ describe('handleAutoUpdate', () => {
 
   it('should track update progress state on error', async () => {
     mockGetInstallationInfo.mockReturnValue({
-      updateCommand: 'npm i -g @google/gemini-cli@latest',
+      updateCommand: GITHUB_UPDATE_COMMAND,
       updateMessage: 'This is an additional message.',
       isGlobal: false,
       packageManager: PackageManager.NPM,
@@ -187,7 +193,7 @@ describe('handleAutoUpdate', () => {
   it('should emit "update-received" but not update if auto-updates are disabled', () => {
     mockSettings.merged.general.enableAutoUpdate = false;
     mockGetInstallationInfo.mockReturnValue({
-      updateCommand: 'npm i -g @google/gemini-cli@latest',
+      updateCommand: GITHUB_UPDATE_COMMAND,
       updateMessage: 'Please update manually.',
       isGlobal: true,
       packageManager: PackageManager.NPM,
@@ -259,7 +265,7 @@ describe('handleAutoUpdate', () => {
 
   it('should attempt to perform an update when conditions are met', async () => {
     mockGetInstallationInfo.mockReturnValue({
-      updateCommand: 'npm i -g @google/gemini-cli@latest',
+      updateCommand: GITHUB_UPDATE_COMMAND,
       updateMessage: 'This is an additional message.',
       isGlobal: false,
       packageManager: PackageManager.NPM,
@@ -278,7 +284,7 @@ describe('handleAutoUpdate', () => {
   it('should emit "update-failed" when the update process fails', async () => {
     await new Promise<void>((resolve) => {
       mockGetInstallationInfo.mockReturnValue({
-        updateCommand: 'npm i -g @google/gemini-cli@latest',
+        updateCommand: GITHUB_UPDATE_COMMAND,
         updateMessage: 'This is an additional message.',
         isGlobal: false,
         packageManager: PackageManager.NPM,
@@ -295,14 +301,14 @@ describe('handleAutoUpdate', () => {
 
     expect(updateEventEmitter.emit).toHaveBeenCalledWith('update-failed', {
       message:
-        'Automatic update failed. Please try updating manually. (command: npm i -g @google/gemini-cli@2.0.0)',
+        'Automatic update failed. Please try updating manually. (command: npm i -g github:Plaer1/jiminy-cli#v2.0.0)',
     });
   });
 
   it('should emit "update-failed" when the spawn function throws an error', async () => {
     await new Promise<void>((resolve) => {
       mockGetInstallationInfo.mockReturnValue({
-        updateCommand: 'npm i -g @google/gemini-cli@latest',
+        updateCommand: GITHUB_UPDATE_COMMAND,
         updateMessage: 'This is an additional message.',
         isGlobal: false,
         packageManager: PackageManager.NPM,
@@ -323,7 +329,7 @@ describe('handleAutoUpdate', () => {
     });
   });
 
-  it('should use the "@nightly" tag for nightly updates', async () => {
+  it('should use the release tag for nightly updates', async () => {
     mockUpdateInfo = {
       ...mockUpdateInfo,
       update: {
@@ -332,7 +338,7 @@ describe('handleAutoUpdate', () => {
       },
     };
     mockGetInstallationInfo.mockReturnValue({
-      updateCommand: 'npm i -g @google/gemini-cli@latest',
+      updateCommand: GITHUB_UPDATE_COMMAND,
       updateMessage: 'This is an additional message.',
       isGlobal: false,
       packageManager: PackageManager.NPM,
@@ -341,7 +347,7 @@ describe('handleAutoUpdate', () => {
     handleAutoUpdate(mockUpdateInfo, mockSettings, '/root', mockSpawn);
 
     expect(mockSpawn).toHaveBeenCalledWith(
-      'npm i -g @google/gemini-cli@nightly',
+      'npm i -g github:Plaer1/jiminy-cli#v2.0.0-nightly',
       {
         shell: true,
         stdio: 'ignore',
@@ -353,7 +359,7 @@ describe('handleAutoUpdate', () => {
   it('should emit "update-success" when the update process succeeds', async () => {
     await new Promise<void>((resolve) => {
       mockGetInstallationInfo.mockReturnValue({
-        updateCommand: 'npm i -g @google/gemini-cli@latest',
+        updateCommand: GITHUB_UPDATE_COMMAND,
         updateMessage: 'This is an additional message.',
         isGlobal: false,
         packageManager: PackageManager.NPM,

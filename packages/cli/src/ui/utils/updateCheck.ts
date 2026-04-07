@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import latestVersion from 'latest-version';
 import semver from 'semver';
 import { getPackageJson, debugLogger } from '@google/gemini-cli-core';
 import type { LoadedSettings } from '../../config/settings.js';
@@ -15,6 +14,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const FETCH_TIMEOUT_MS = 2000;
+
+const GITHUB_REPO = 'Plaer1/jiminy-cli';
+const GITHUB_RELEASES_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
 
 // Replicating the bits of UpdateInfo we need from update-notifier
 export interface UpdateInfo {
@@ -30,21 +32,34 @@ export interface UpdateObject {
 }
 
 /**
- * From a nightly and stable version, determines which is the "best" one to offer.
- * The rule is to always prefer nightly if the base versions are the same.
+ * Fetches the latest release version from GitHub Releases.
+ * Returns a clean semver string (strips leading "v"), or null on failure.
  */
-function getBestAvailableUpdate(
-  nightly?: string,
-  stable?: string,
-): string | null {
-  if (!nightly) return stable || null;
-  if (!stable) return nightly || null;
-
-  if (semver.coerce(stable)?.version === semver.coerce(nightly)?.version) {
-    return nightly;
+async function getLatestGitHubVersion(): Promise<string | null> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(GITHUB_RELEASES_URL, {
+      signal: controller.signal,
+      headers: { Accept: 'application/vnd.github+json' },
+    });
+    if (!res.ok) return null;
+    const data: unknown = await res.json();
+    if (
+      typeof data !== 'object' ||
+      data === null ||
+      !('tag_name' in data) ||
+      typeof data.tag_name !== 'string'
+    ) {
+      return null;
+    }
+    const tag = data.tag_name;
+    return tag.startsWith('v') ? tag.slice(1) : tag;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
   }
-
-  return semver.gt(stable, nightly) ? stable : nightly;
 }
 
 export async function checkForUpdates(
@@ -64,45 +79,22 @@ export async function checkForUpdates(
     }
 
     const { name, version: currentVersion } = packageJson;
-    const isNightly = currentVersion.includes('nightly');
 
-    if (isNightly) {
-      const [nightlyUpdate, latestUpdate] = await Promise.all([
-        latestVersion(name, { version: 'nightly' }),
-        latestVersion(name),
-      ]);
+    const latestVersion = await getLatestGitHubVersion();
+    if (!latestVersion) return null;
 
-      const bestUpdate = getBestAvailableUpdate(nightlyUpdate, latestUpdate);
-
-      if (bestUpdate && semver.gt(bestUpdate, currentVersion)) {
-        const message = `A new version of Gemini CLI is available! ${currentVersion} → ${bestUpdate}`;
-        const type = semver.diff(bestUpdate, currentVersion) || undefined;
-        return {
-          message,
-          update: {
-            latest: bestUpdate,
-            current: currentVersion,
-            name,
-            type,
-          },
-        };
-      }
-    } else {
-      const latestUpdate = await latestVersion(name);
-
-      if (latestUpdate && semver.gt(latestUpdate, currentVersion)) {
-        const message = `Gemini CLI update available! ${currentVersion} → ${latestUpdate}`;
-        const type = semver.diff(latestUpdate, currentVersion) || undefined;
-        return {
-          message,
-          update: {
-            latest: latestUpdate,
-            current: currentVersion,
-            name,
-            type,
-          },
-        };
-      }
+    if (semver.gt(latestVersion, currentVersion)) {
+      const type = semver.diff(latestVersion, currentVersion) || undefined;
+      const message = `A new version of Jiminy CLI is available! ${currentVersion} → ${latestVersion}`;
+      return {
+        message,
+        update: {
+          latest: latestVersion,
+          current: currentVersion,
+          name,
+          type,
+        },
+      };
     }
 
     return null;
