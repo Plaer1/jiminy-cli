@@ -11,7 +11,7 @@ import type {
   AuthType,
   Config,
   ContentGeneratorConfig,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 // Mock child components
 vi.mock('./JiminyPrivacyNotice.js', async () => {

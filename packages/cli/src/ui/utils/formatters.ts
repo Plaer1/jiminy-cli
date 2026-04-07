@@ -7,7 +7,7 @@
 import {
   REFERENCE_CONTENT_START,
   REFERENCE_CONTENT_END,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 export const formatBytes = (bytes: number): string => {
   const gb = bytes / (1024 * 1024 * 1024);

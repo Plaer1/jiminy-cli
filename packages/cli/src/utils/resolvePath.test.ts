@@ -13,7 +13,7 @@ vi.mock('node:os', () => ({
   homedir: vi.fn(),
 }));
 
-vi.mock('@google/jiminy-cli-core', () => ({
+vi.mock('@plaer1/jiminy-cli-core', () => ({
   homedir: () => os.homedir(),
 }));
 

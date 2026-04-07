@@ -23,7 +23,7 @@ jobs:
   evals:
     name: 'Evals (USUALLY_PASSING) nightly run'
     runs-on: 'jiminy-cli-ubuntu-16-core'
-    if: "github.repository == 'google-jiminy/jiminy-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     strategy:
       fail-fast: false
       matrix:
@@ -87,7 +87,7 @@ jobs:
   aggregate-results:
     name: 'Aggregate Results'
     needs: ['evals']
-    if: "github.repository == 'google-jiminy/jiminy-cli' && always()"
+    if: "github.repository == 'Plaer1/jiminy-cli' && always()"
     runs-on: 'jiminy-cli-ubuntu-16-core'
     steps:
       - name: 'Checkout'

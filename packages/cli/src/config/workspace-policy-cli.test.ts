@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as path from 'node:path';
 import { loadCliConfig, type CliArgs } from './config.js';
 import { createTestMergedSettings } from './settings.js';
-import * as ServerConfig from '@google/jiminy-cli-core';
+import * as ServerConfig from '@plaer1/jiminy-cli-core';
 import { isWorkspaceTrusted } from './trustedFolders.js';
 import * as Policy from './policy.js';
 
@@ -20,9 +20,9 @@ vi.mock('./trustedFolders.js', () => ({
 const mockCheckIntegrity = vi.fn();
 const mockAcceptIntegrity = vi.fn();
 
-vi.mock('@google/jiminy-cli-core', async () => {
+vi.mock('@plaer1/jiminy-cli-core', async () => {
   const actual = await vi.importActual<typeof ServerConfig>(
-    '@google/jiminy-cli-core',
+    '@plaer1/jiminy-cli-core',
   );
   return {
     ...actual,

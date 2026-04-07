@@ -9,7 +9,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import type { Suggestion } from '../components/SuggestionsDisplay.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 import { getArgumentCompletions } from './shell-completions/index.js';
 
 /**

@@ -8,7 +8,7 @@ import {
   listExtensions,
   type Config,
   getErrorMessage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { SettingScope } from '../../config/settings.js';
 import {
   ExtensionManager,

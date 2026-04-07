@@ -9,13 +9,13 @@ import {
   listMemoryFiles,
   refreshMemory,
   showMemory,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type {
   Command,
   CommandContext,
   CommandExecutionResponse,
 } from './types.js';
-import type { AgentLoopContext } from '@google/jiminy-cli-core';
+import type { AgentLoopContext } from '@plaer1/jiminy-cli-core';
 
 const DEFAULT_SANITIZATION_CONFIG = {
   allowedEnvironmentVariables: [],

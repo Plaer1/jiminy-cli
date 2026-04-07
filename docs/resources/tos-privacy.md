@@ -3,7 +3,7 @@
 Jiminy CLI is an open-source tool that lets you interact with Google's powerful
 AI services directly from your command-line interface. The Jiminy CLI software
 is licensed under the
-[Apache 2.0 license](https://github.com/google-jiminy/jiminy-cli/blob/main/LICENSE).
+[Apache 2.0 license](https://github.com/Plaer1/jiminy-cli/blob/main/LICENSE).
 When you use Jiminy CLI to access or use Google’s services, the Terms of Service
 and Privacy Notices applicable to those services apply to such access and use.
 
@@ -38,12 +38,12 @@ Assist account associated with your Google account, you will be directed to the
 sign up flow for Jiminy Code Assist for individuals. If your Google account is
 managed by your organization, your administrator may not permit access to Jiminy
 Code Assist for individuals. Please see the
-[Jiminy Code Assist for individuals FAQs](https://developers.google.com/jiminy-code-assist/resources/faqs)
+[Jiminy Code Assist for individuals FAQs](https://developers.google.com/gemini-code-assist/resources/faqs)
 for further information.
 
 | Authentication Method    | Service(s)                   | Terms of Service                                                                                        | Privacy Notice                                                                                |
 | :----------------------- | :--------------------------- | :------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------- |
-| Google Account           | Jiminy Code Assist services  | [Terms of Service](https://developers.google.com/jiminy-code-assist/resources/privacy-notices)          | [Privacy Notices](https://developers.google.com/jiminy-code-assist/resources/privacy-notices) |
+| Google Account           | Jiminy Code Assist services  | [Terms of Service](https://developers.google.com/gemini-code-assist/resources/privacy-notices)          | [Privacy Notices](https://developers.google.com/gemini-code-assist/resources/privacy-notices) |
 | Jiminy Developer API Key | Jiminy API - Unpaid Services | [Jiminy API Terms of Service - Unpaid Services](https://ai.google.dev/jiminy-api/terms#unpaid-services) | [Google Privacy Policy](https://policies.google.com/privacy)                                  |
 | Jiminy Developer API Key | Jiminy API - Paid Services   | [Jiminy API Terms of Service - Paid Services](https://ai.google.dev/jiminy-api/terms#paid-services)     | [Google Privacy Policy](https://policies.google.com/privacy)                                  |
 | Vertex AI GenAI API Key  | Vertex AI GenAI API          | [Google Cloud Platform Terms of Service](https://cloud.google.com/terms/service-terms/)                 | [Google Cloud Privacy Notice](https://cloud.google.com/terms/cloud-privacy-notice)            |
@@ -56,7 +56,7 @@ Privacy Notice documents apply:
 
 - Jiminy Code Assist for individuals:
   [Google Terms of Service](https://policies.google.com/terms) and
-  [Jiminy Code Assist for individuals Privacy Notice](https://developers.google.com/jiminy-code-assist/resources/privacy-notice-jiminy-code-assist-individuals).
+  [Jiminy Code Assist for individuals Privacy Notice](https://developers.google.com/gemini-code-assist/resources/privacy-notice-jiminy-code-assist-individuals).
 - Jiminy Code Assist with Google AI Pro or Ultra subscription:
   [Google Terms of Service](https://policies.google.com/terms),
   [Google One Additional Terms of Service](https://one.google.com/terms-of-service)
@@ -101,4 +101,4 @@ backend, these Terms of Service and Privacy Notice documents apply:
 
 You may opt-out from sending Jiminy CLI Usage Statistics to Google by following
 the instructions available here:
-[Usage Statistics Configuration](https://github.com/google-jiminy/jiminy-cli/blob/main/docs/reference/configuration.md#usage-statistics).
+[Usage Statistics Configuration](https://github.com/Plaer1/jiminy-cli/blob/main/docs/reference/configuration.md#usage-statistics).

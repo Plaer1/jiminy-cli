@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { debugLogger, type Config } from '@google/jiminy-cli-core';
+import { debugLogger, type Config } from '@plaer1/jiminy-cli-core';
 import { useStdin } from 'ink';
 import { MultiMap } from 'mnemonist';
 import type React from 'react';

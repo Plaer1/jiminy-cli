@@ -16,7 +16,7 @@ import {
   debugLogger,
   type ConsoleLogPayload,
   type Config,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import WebSocket from 'ws';
 
 const ACTIVITY_ID_HEADER = 'x-activity-request-id';

@@ -10,7 +10,7 @@ import {
   ShellExecutionService,
   flatMapTextParts,
   PolicyDecision,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import type { CommandContext } from '../../ui/commands/types.js';
 import type { IPromptProcessor, PromptPipelineContent } from './types.js';

@@ -11,7 +11,7 @@ import {
 import type { LoadedSettings } from '../../config/settings.js';
 import { AppHeader } from './AppHeader.js';
 import { describe, it, expect, vi } from 'vitest';
-import { makeFakeConfig } from '@google/jiminy-cli-core';
+import { makeFakeConfig } from '@plaer1/jiminy-cli-core';
 import crypto from 'node:crypto';
 
 vi.mock('../utils/terminalSetup.js', () => ({

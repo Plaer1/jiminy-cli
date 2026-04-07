@@ -21,7 +21,7 @@ import {
   isCompletedAskUserTool,
   type ToolResultDisplay,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { useInactivityTimer } from '../../hooks/useInactivityTimer.js';
 import { formatCommand } from '../../key/keybindingUtils.js';
 import { Command } from '../../key/keyBindings.js';

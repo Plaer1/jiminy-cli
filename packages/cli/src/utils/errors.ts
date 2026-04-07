@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Config } from '@google/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import {
   OutputFormat,
   JsonFormatter,
@@ -19,7 +19,7 @@ import {
   debugLogger,
   coreEvents,
   getErrorMessage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { runSyncCleanup } from './cleanup.js';
 
 interface ErrorWithCode extends Error {

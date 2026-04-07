@@ -25,7 +25,7 @@ import {
 
 const OUTPUT_RELATIVE_PATH = ['schemas', 'settings.schema.json'];
 const SCHEMA_ID =
-  'https://raw.githubusercontent.com/google-jiminy/jiminy-cli/main/schemas/settings.schema.json';
+  'https://raw.githubusercontent.com/Plaer1/jiminy-cli/main/schemas/settings.schema.json';
 
 type JsonPrimitive = string | number | boolean | null;
 type JsonValue = JsonPrimitive | JsonValue[] | { [key: string]: JsonValue };

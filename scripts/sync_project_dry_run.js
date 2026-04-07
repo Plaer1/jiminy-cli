@@ -8,7 +8,7 @@ import { execSync } from 'node:child_process';
 
 const PROJECT_ID = 36;
 const ORG = 'google-jiminy';
-const REPO = 'google-jiminy/jiminy-cli';
+const REPO = 'Plaer1/jiminy-cli';
 const MAINTAINERS_REPO = 'google-jiminy/maintainers-jiminy-cli';
 
 // Parent issues to recursively traverse

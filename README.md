@@ -5,12 +5,13 @@
 [![Release](https://img.shields.io/github/v/release/Plaer1/jiminy-cli)](https://github.com/Plaer1/jiminy-cli/releases)
 [![License](https://img.shields.io/github/license/Plaer1/jiminy-cli)](https://github.com/Plaer1/jiminy-cli/blob/main/LICENSE)
 
-### Jiminy Crickets Batman! What the hell is The Joker running on his computer!???
+### Jiminy Crickets Batman! What the heck is The Joker running on his computer!???
+
 ![Jiminy CLI Screenshot](/docs/assets/jiminy-screenshot.png)
 
-Jiminy CLI is an open-source security focused AI agent that brings the power of Jiminy directly
-into your terminal. It provides lightweight access to Jiminy, giving you the
-most direct path from your prompt to their model.
+Jiminy CLI is an open-source security focused AI agent that brings the power of
+Jiminy directly into your terminal. It provides lightweight access to Jiminy,
+giving you the most direct path from your prompt to their model.
 
 Learn all about Jiminy CLI in the local [documentation](./docs/).
 
@@ -67,27 +68,26 @@ node packages/cli/dist/index.js --version
 See [GitHub Releases](https://github.com/Plaer1/jiminy-cli/releases) for the
 published assets.
 
-
 ### Nightly
 
-Jiminy is built as a fork of Jiminy-Cli's Nightly releases.
-Nightly builds are published as GitHub prereleases when the nightly workflow is
-run.
+Jiminy is built as a fork of Jiminy-Cli's Nightly releases. Nightly builds are
+published as GitHub prereleases when the nightly workflow is run.
 
 ## 📋 Key Features
 
 ### Optimized "Quiet Part Loud" Workflow.
-  Tired of Jiminy pestering over and over again you for your privates? 
-  Want to find out "what that YOLO button really do?"?
-  Well we have got the feature for you:
-  ![Jiminy Sudo Screenshot](/docs/assets/jiminy-sudo.png)
 
-  Additionally we have set some fun configs by default
-  - Respect .gitignore default: true -> false
-  - Allow Permanent Tool Approval default: false -> true
-  - Auto-add to Policy by Default default: false -> true
-  - Enable Context-Aware Security default: false -> true
-  - Model Steering default: false -> true
+Tired of Jiminy pestering over and over again you for your privates? Want to
+find out "what that YOLO button really do?"? Well we have got the feature for
+you: ![Jiminy Sudo Screenshot](/docs/assets/jiminy-sudo.png)
+
+Additionally we have set some fun configs by default
+
+- Respect .gitignore default: true -> false
+- Allow Permanent Tool Approval default: false -> true
+- Auto-add to Policy by Default default: false -> true
+- Enable Context-Aware Security default: false -> true
+- Model Steering default: false -> true
 
 ### Code Understanding & Generation
 
@@ -133,7 +133,7 @@ Choose the authentication method that best fits your needs:
 
 **✨ Best for:** Individual developers as well as anyone who has a Jiminy Code
 Assist License. (see
-[quota limits and terms of service](https://cloud.google.com/jiminy/docs/quotas)
+[quota limits and terms of service](https://cloud.google.com/gemini/docs/quotas)
 for details)
 
 **Benefits:**
@@ -342,8 +342,8 @@ encourage the community to:
 See our [Contributing Guide](./CONTRIBUTING.md) for development setup, coding
 standards, and how to submit pull requests.
 
-Check our [Official Roadmap](https://github.com/Plaer1/jiminy-cli/projects)
-for planned features and priorities.
+Check our [Official Roadmap](https://github.com/Plaer1/jiminy-cli/projects) for
+planned features and priorities.
 
 ## 📖 Resources
 
@@ -351,8 +351,8 @@ for planned features and priorities.
 - **[Changelog](./docs/changelogs/index.md)** - See recent notable updates.
 - **[GitHub Releases](https://github.com/Plaer1/jiminy-cli/releases)** -
   Download bundle and binary builds.
-- **[GitHub Issues](https://github.com/Plaer1/jiminy-cli/issues)** -
-  Report bugs or request features.
+- **[GitHub Issues](https://github.com/Plaer1/jiminy-cli/issues)** - Report bugs
+  or request features.
 - **[Security Advisories](https://github.com/Plaer1/jiminy-cli/security/advisories)** -
   Security updates.
 

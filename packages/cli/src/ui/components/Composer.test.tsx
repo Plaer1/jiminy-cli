@@ -21,8 +21,8 @@ import {
   ApprovalMode,
   tokenLimit,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
-import type { Config } from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import { StreamingState } from '../types.js';
 import { TransientMessageType } from '../../utils/events.js';
 import type { LoadedSettings } from '../../config/settings.js';

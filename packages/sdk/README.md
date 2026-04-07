@@ -1,4 +1,4 @@
-# @google/jiminy-cli-sdk
+# @plaer1/jiminy-cli-sdk
 
 The Jiminy CLI SDK provides a programmatic interface to interact with Jiminy
 models and tools.
@@ -6,13 +6,13 @@ models and tools.
 ## Installation
 
 ```bash
-npm install @google/jiminy-cli-sdk
+npm install @plaer1/jiminy-cli-sdk
 ```
 
 ## Usage
 
 ```typescript
-import { JiminyCliAgent } from '@google/jiminy-cli-sdk';
+import { JiminyCliAgent } from '@plaer1/jiminy-cli-sdk';
 
 async function main() {
   const agent = new JiminyCliAgent({

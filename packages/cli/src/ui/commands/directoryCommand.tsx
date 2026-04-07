@@ -18,7 +18,7 @@ import { MessageType, type HistoryItem } from '../types.js';
 import {
   refreshServerHierarchicalMemory,
   type Config,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   expandHomeDir,
   getDirectorySuggestions,

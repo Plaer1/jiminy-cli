@@ -18,7 +18,7 @@ import {
   decodeTagName,
   type MessageActionReturn,
   INITIAL_HISTORY_LENGTH,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import path from 'node:path';
 import type {
   HistoryItemWithoutId,
@@ -27,7 +27,7 @@ import type {
 } from '../types.js';
 import { MessageType } from '../types.js';
 import { exportHistoryToFile } from '../utils/historyExportUtils.js';
-import { convertToRestPayload } from '@google/jiminy-cli-core';
+import { convertToRestPayload } from '@plaer1/jiminy-cli-core';
 
 const CHECKPOINT_MENU_GROUP = 'checkpoints';
 

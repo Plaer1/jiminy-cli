@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 import { copyToClipboard } from '../utils/commandUtils.js';
 import {
   CommandKind,

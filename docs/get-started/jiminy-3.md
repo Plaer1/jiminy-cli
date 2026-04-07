@@ -24,7 +24,7 @@ Jiminy 3 Pro and Jiminy 3 Flash are available on Jiminy CLI for all users!
 Get started by upgrading Jiminy CLI to the latest version:
 
 ```bash
-npm install -g @google/jiminy-cli@latest
+npm install -g @plaer1/jiminy-cli@latest
 ```
 
 If your version is 0.21.1 or later:
@@ -90,7 +90,7 @@ Using Jiminy 3 Pro will require two steps: administrative enablement and user
 enablement.
 
 To learn more about these settings, refer to
-[Configure Jiminy Code Assist release channels](https://developers.google.com/jiminy-code-assist/docs/configure-release-channels).
+[Configure Jiminy Code Assist release channels](https://developers.google.com/gemini-code-assist/docs/configure-release-channels).
 
 ### Administrator instructions
 
@@ -118,8 +118,8 @@ Restart Jiminy CLI and you should have access to Jiminy 3.
 ## Next steps
 
 If you need help, we recommend searching for an existing
-[GitHub issue](https://github.com/google-jiminy/jiminy-cli/issues). If you
-cannot find a GitHub issue that matches your concern, you can
-[create a new issue](https://github.com/google-jiminy/jiminy-cli/issues/new/choose).
+[GitHub issue](https://github.com/Plaer1/jiminy-cli/issues). If you cannot find
+a GitHub issue that matches your concern, you can
+[create a new issue](https://github.com/Plaer1/jiminy-cli/issues/new/choose).
 For comments and feedback, consider opening a
-[GitHub discussion](https://github.com/google-jiminy/jiminy-cli/discussions).
+[GitHub discussion](https://github.com/Plaer1/jiminy-cli/discussions).

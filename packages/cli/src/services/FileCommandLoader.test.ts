@@ -6,7 +6,7 @@
 
 import * as glob from 'glob';
 import * as path from 'node:path';
-import { GEMINI_DIR, Storage, type Config } from '@google/jiminy-cli-core';
+import { GEMINI_DIR, Storage, type Config } from '@plaer1/jiminy-cli-core';
 import mock from 'mock-fs';
 import { FileCommandLoader } from './FileCommandLoader.js';
 import { assert, vi } from 'vitest';
@@ -57,9 +57,9 @@ vi.mock('./prompt-processors/argumentProcessor.js', async (importOriginal) => {
       .mockImplementation(() => new original.DefaultArgumentProcessor()),
   };
 });
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...original,
     Storage: original.Storage,

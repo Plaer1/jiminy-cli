@@ -7,7 +7,7 @@
 import {
   ModelSlashCommandEvent,
   logModelSlashCommand,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   type CommandContext,
   CommandKind,

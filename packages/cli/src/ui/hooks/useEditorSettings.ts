@@ -10,14 +10,14 @@ import type {
   LoadedSettings,
 } from '../../config/settings.js';
 import { MessageType } from '../types.js';
-import type { EditorType } from '@google/jiminy-cli-core';
+import type { EditorType } from '@plaer1/jiminy-cli-core';
 import {
   allowEditorTypeInSandbox,
   hasValidEditorCommand,
   getEditorDisplayName,
   coreEvents,
   CoreEvent,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 
 import { SettingPaths } from '../../config/settingPaths.js';

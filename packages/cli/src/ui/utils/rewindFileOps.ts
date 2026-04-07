@@ -7,7 +7,7 @@
 import type {
   ConversationRecord,
   MessageRecord,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import fs from 'node:fs/promises';
 import * as Diff from 'diff';
 import {
@@ -15,7 +15,7 @@ import {
   debugLogger,
   getFileDiffFromResultDisplay,
   computeModelAddedAndRemovedLines,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 export interface FileChangeDetail {
   fileName: string;

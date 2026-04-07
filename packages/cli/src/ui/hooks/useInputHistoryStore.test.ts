@@ -8,7 +8,7 @@ import { act } from 'react';
 import { renderHook } from '../../test-utils/render.js';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { useInputHistoryStore } from './useInputHistoryStore.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 
 describe('useInputHistoryStore', () => {
   beforeEach(() => {

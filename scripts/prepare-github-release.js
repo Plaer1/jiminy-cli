@@ -31,17 +31,17 @@ if (fs.existsSync(sourceBundleDir)) {
   process.exit(1);
 }
 
-// Overwrite the .npmrc in the core package to point to the GitHub registry.
+// Overwrite the .npmrc in the core package to point to the public npm registry.
 const coreNpmrcPath = path.resolve(rootDir, 'packages/core/.npmrc');
 fs.writeFileSync(
   coreNpmrcPath,
-  '@google-jiminy:registry=https://npm.pkg.github.com/',
+  '@plaer1:registry=https://registry.npmjs.org\n',
 );
-console.log('Wrote .npmrc for @google-jiminy scope to packages/core/');
+console.log('Wrote .npmrc for @plaer1 scope to packages/core/');
 
-// Update @google/jiminy-cli
+// Update @plaer1/jiminy-cli
 updatePackageJson('packages/cli/package.json', (pkg) => {
-  pkg.name = '@google-jiminy/jiminy-cli';
+  pkg.name = '@plaer1/jiminy-cli';
   pkg.files = ['bundle/'];
   pkg.bin = {
     jiminy: 'bundle/jiminy.js',
@@ -55,14 +55,14 @@ updatePackageJson('packages/cli/package.json', (pkg) => {
   delete pkg.config; // Deletes the sandboxImageUri
 });
 
-// Update @google/jiminy-cli-a2a-server
+// Update @plaer1/jiminy-cli-a2a-server
 updatePackageJson('packages/a2a-server/package.json', (pkg) => {
-  pkg.name = '@google-jiminy/jiminy-cli-a2a-server';
+  pkg.name = '@plaer1/jiminy-cli-a2a-server';
 });
 
-// Update @google/jiminy-cli-core
+// Update @plaer1/jiminy-cli-core
 updatePackageJson('packages/core/package.json', (pkg) => {
-  pkg.name = '@google-jiminy/jiminy-cli-core';
+  pkg.name = '@plaer1/jiminy-cli-core';
 });
 
 console.log('Successfully prepared packages for GitHub release.');

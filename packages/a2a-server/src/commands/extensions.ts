@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { listExtensions } from '@google/jiminy-cli-core';
+import { listExtensions } from '@plaer1/jiminy-cli-core';
 import type {
   Command,
   CommandContext,

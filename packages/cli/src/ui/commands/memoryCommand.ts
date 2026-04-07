@@ -9,7 +9,7 @@ import {
   listMemoryFiles,
   refreshMemory,
   showMemory,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { MessageType } from '../types.js';
 import {
   CommandKind,

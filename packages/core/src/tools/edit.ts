@@ -793,7 +793,7 @@ class EditToolInvocation
         if (ideConfirmation) {
           const result = await ideConfirmation;
           if (result.status === 'accepted' && result.content) {
-            // TODO(chrstn): See https://github.com/google-jiminy/jiminy-cli/pull/5618#discussion_r2255413084
+            // TODO(chrstn): See https://github.com/Plaer1/jiminy-cli/pull/5618#discussion_r2255413084
             // for info on a possible race condition where the file is modified on disk while being edited.
             this.params.old_string = editData.currentContent ?? '';
             this.params.new_string = result.content;

@@ -9,7 +9,7 @@ import type {
   ToolCallRequestInfo,
   ResumedSessionData,
   UserFeedbackPayload,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { isSlashCommand } from './ui/utils/commandUtils.js';
 import type { LoadedSettings } from './config/settings.js';
 import {
@@ -30,7 +30,7 @@ import {
   ToolErrorType,
   Scheduler,
   ROOT_SCHEDULER_ID,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import type { Content, Part } from '@google/genai';
 import readline from 'node:readline';

@@ -24,8 +24,8 @@ import {
   NoopSandboxManager,
   type ToolRegistry,
   type SandboxManager,
-} from '@google/jiminy-cli-core';
-import { createMockMessageBus } from '@google/jiminy-cli-core/src/test-utils/mock-message-bus.js';
+} from '@plaer1/jiminy-cli-core';
+import { createMockMessageBus } from '@plaer1/jiminy-cli-core/src/test-utils/mock-message-bus.js';
 import { expect, vi } from 'vitest';
 
 export function createMockConfig(

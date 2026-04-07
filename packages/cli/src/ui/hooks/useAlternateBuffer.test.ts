@@ -10,7 +10,7 @@ import {
   useAlternateBuffer,
   isAlternateBufferEnabled,
 } from './useAlternateBuffer.js';
-import type { Config } from '@google/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 
 vi.mock('../contexts/ConfigContext.js', () => ({
   useConfig: vi.fn(),

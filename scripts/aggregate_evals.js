@@ -147,7 +147,7 @@ function fetchHistoricalData() {
 function generateMarkdown(currentStatsByModel, history) {
   console.log('### Evals Nightly Summary\n');
   console.log(
-    'See [evals/README.md](https://github.com/google-jiminy/jiminy-cli/tree/main/evals) for more details.\n',
+    'See [evals/README.md](https://github.com/Plaer1/jiminy-cli/tree/main/evals) for more details.\n',
   );
 
   // Reverse history to show oldest first

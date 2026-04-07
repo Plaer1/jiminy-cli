@@ -5,7 +5,7 @@
  */
 
 import { createContext, useContext } from 'react';
-import type { StartupWarning } from '@google/jiminy-cli-core';
+import type { StartupWarning } from '@plaer1/jiminy-cli-core';
 
 export interface AppState {
   version: string;

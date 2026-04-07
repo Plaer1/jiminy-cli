@@ -14,8 +14,8 @@ import { CommandKind } from './types.js';
 import type {
   HookRegistryEntry,
   MessageActionReturn,
-} from '@google/jiminy-cli-core';
-import { getErrorMessage } from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import { getErrorMessage } from '@plaer1/jiminy-cli-core';
 import { SettingScope, isLoadableSettingScope } from '../../config/settings.js';
 import { enableHook, disableHook } from '../../utils/hookSettings.js';
 import { renderHookActionFeedback } from '../../utils/hookUtils.js';

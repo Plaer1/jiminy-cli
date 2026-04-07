@@ -7,7 +7,7 @@
  */
 
 import { main } from './src/jiminy.js';
-import { FatalError, writeToStderr } from '@google/jiminy-cli-core';
+import { FatalError, writeToStderr } from '@plaer1/jiminy-cli-core';
 import { runExitCleanup } from './src/utils/cleanup.js';
 
 // --- Global Entry Point ---

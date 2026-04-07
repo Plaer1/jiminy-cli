@@ -13,7 +13,7 @@ import {
   MessageBusType,
   MODES_BY_PERMISSIVENESS,
   SHELL_TOOL_NAME,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import toml from '@iarna/toml';
 import { Notifications } from '../components/Notifications.js';
 import { MainContent } from '../components/MainContent.js';
@@ -26,14 +26,13 @@ import { useAlternateBuffer } from '../hooks/useAlternateBuffer.js';
 import { CopyModeWarning } from '../components/CopyModeWarning.js';
 import { BackgroundShellDisplay } from '../components/BackgroundShellDisplay.js';
 import { StreamingState } from '../types.js';
-import {
+import type {
+ SudoPromptStage ,
   SUDO_CHOICE_ASK_LATER,
   SUDO_CHOICE_NEVER,
   SudoPasswordPrompt,
   SUDO_CHOICE_SKIP,
-  type SudoChoice,
-} from '../components/SudoPasswordPrompt.js';
-import type { SudoPromptStage } from '../components/SudoPasswordPrompt.js';
+  type SudoChoice } from '../components/SudoPasswordPrompt.js';
 import { useConfig } from '../contexts/ConfigContext.js';
 import { useKeypress, type Key } from '../hooks/useKeypress.js';
 import { KeypressPriority } from '../contexts/KeypressContext.js';

@@ -16,7 +16,7 @@ import {
   afterEach,
   type Mock,
 } from 'vitest';
-import { NoopSandboxManager } from '@google/jiminy-cli-core';
+import { NoopSandboxManager } from '@plaer1/jiminy-cli-core';
 
 const mockIsBinary = vi.hoisted(() => vi.fn());
 const mockShellExecutionService = vi.hoisted(() => vi.fn());
@@ -36,9 +36,9 @@ const mockShellOnExit = vi.hoisted(() =>
   >(() => vi.fn()),
 );
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     ShellExecutionService: {
@@ -77,7 +77,7 @@ import {
   type ShellExecutionResult,
   type ShellOutputEvent,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';

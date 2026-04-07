@@ -9,7 +9,7 @@ import { type ReactElement } from 'react';
 import type {
   ExtensionLoader,
   JiminyCLIExtension,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import { MessageType } from '../types.js';
 import {

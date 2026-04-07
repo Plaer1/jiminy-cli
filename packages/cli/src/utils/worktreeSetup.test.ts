@@ -6,12 +6,12 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { setupWorktree } from './worktreeSetup.js';
-import * as coreFunctions from '@google/jiminy-cli-core';
+import * as coreFunctions from '@plaer1/jiminy-cli-core';
 
 // Mock dependencies
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     getProjectRootForWorktree: vi.fn(),

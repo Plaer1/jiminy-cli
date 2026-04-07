@@ -35,7 +35,7 @@ import {
   debugLogger,
   CoreToolCallStatus,
   IntegrityDataStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   type MockShellCommand,
   MockShellExecutionService,
@@ -88,9 +88,9 @@ vi.mock('../ui/contexts/StreamingContext.js', async (importOriginal) => {
 });
 
 // Mock core functions globally for tests using AppRig.
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   const { MockShellExecutionService: MockService } = await import(
     './MockShellExecutionService.js'
   );
@@ -324,7 +324,7 @@ export class AppRig {
       gcConfig.contentGeneratorConfig = newContentGeneratorConfig;
 
       // Initialize BaseLlmClient now that the ContentGenerator is available
-      const { BaseLlmClient } = await import('@google/jiminy-cli-core');
+      const { BaseLlmClient } = await import('@plaer1/jiminy-cli-core');
       gcConfig.baseLlmClient = new BaseLlmClient(
         gcConfig.contentGenerator,
         this.config!,

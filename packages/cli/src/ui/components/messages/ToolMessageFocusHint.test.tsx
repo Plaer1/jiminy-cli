@@ -18,7 +18,7 @@ import {
   type Config,
   type ToolResultDisplay,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 vi.mock('../JiminyRespondingSpinner.js', () => ({
   JiminyRespondingSpinner: () => null,

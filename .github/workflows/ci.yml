@@ -37,7 +37,7 @@ jobs:
     permissions: 'read-all'
     name: 'Merge Queue Skipper'
     runs-on: 'jiminy-cli-ubuntu-16-core'
-    if: "github.repository == 'google-jiminy/jiminy-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     outputs:
       skip: '${{ steps.merge-queue-ci-skipper.outputs.skip-check }}'
     steps:
@@ -50,7 +50,7 @@ jobs:
     name: 'Lint'
     runs-on: 'jiminy-cli-ubuntu-16-core'
     needs: 'merge_queue_skipper'
-    if: "github.repository == 'google-jiminy/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
+    if: "github.repository == 'Plaer1/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
     env:
       GEMINI_LINT_TEMP_DIR: '${{ github.workspace }}/.jiminy-linters'
     steps:
@@ -117,7 +117,7 @@ jobs:
   link_checker:
     name: 'Link Checker'
     runs-on: 'ubuntu-latest'
-    if: "github.repository == 'google-jiminy/jiminy-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8' # ratchet:actions/checkout@v5
@@ -131,7 +131,7 @@ jobs:
     runs-on: 'jiminy-cli-ubuntu-16-core'
     needs:
       - 'merge_queue_skipper'
-    if: "github.repository == 'google-jiminy/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
+    if: "github.repository == 'Plaer1/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
     permissions:
       contents: 'read'
       checks: 'write'
@@ -166,10 +166,10 @@ jobs:
           NO_COLOR: true
         run: |
           if [[ "${{ matrix.shard }}" == "cli" ]]; then
-            npm run test:ci --workspace @google/jiminy-cli
+            npm run test:ci --workspace @plaer1/jiminy-cli
           else
             # Explicitly list non-cli packages to ensure they are sharded correctly
-            npm run test:ci --workspace @google/jiminy-cli-core --workspace @google/jiminy-cli-a2a-server --workspace jiminy-cli-vscode-ide-companion --workspace @google/jiminy-cli-test-utils --if-present -- --coverage.enabled=false
+            npm run test:ci --workspace @plaer1/jiminy-cli-core --workspace @plaer1/jiminy-cli-a2a-server --workspace jiminy-cli-vscode-ide-companion --workspace @plaer1/jiminy-cli-test-utils --if-present -- --coverage.enabled=false
             npm run test:scripts
           fi
 
@@ -218,7 +218,7 @@ jobs:
     runs-on: 'macos-latest'
     needs:
       - 'merge_queue_skipper'
-    if: "github.repository == 'google-jiminy/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
+    if: "github.repository == 'Plaer1/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
     permissions:
       contents: 'read'
       checks: 'write'
@@ -254,10 +254,10 @@ jobs:
           NO_COLOR: true
         run: |
           if [[ "${{ matrix.shard }}" == "cli" ]]; then
-            npm run test:ci --workspace @google/jiminy-cli -- --coverage.enabled=false
+            npm run test:ci --workspace @plaer1/jiminy-cli -- --coverage.enabled=false
           else
             # Explicitly list non-cli packages to ensure they are sharded correctly
-            npm run test:ci --workspace @google/jiminy-cli-core --workspace @google/jiminy-cli-a2a-server --workspace jiminy-cli-vscode-ide-companion --workspace @google/jiminy-cli-test-utils --if-present -- --coverage.enabled=false
+            npm run test:ci --workspace @plaer1/jiminy-cli-core --workspace @plaer1/jiminy-cli-a2a-server --workspace jiminy-cli-vscode-ide-companion --workspace @plaer1/jiminy-cli-test-utils --if-present -- --coverage.enabled=false
             npm run test:scripts
           fi
 
@@ -313,7 +313,7 @@ jobs:
     name: 'CodeQL'
     runs-on: 'jiminy-cli-ubuntu-16-core'
     needs: 'merge_queue_skipper'
-    if: "github.repository == 'google-jiminy/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
+    if: "github.repository == 'Plaer1/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
     permissions:
       actions: 'read'
       contents: 'read'
@@ -336,7 +336,7 @@ jobs:
   bundle_size:
     name: 'Check Bundle Size'
     needs: 'merge_queue_skipper'
-    if: "github.repository == 'google-jiminy/jiminy-cli' && github.event_name == 'pull_request' && needs.merge_queue_skipper.outputs.skip == 'false'"
+    if: "github.repository == 'Plaer1/jiminy-cli' && github.event_name == 'pull_request' && needs.merge_queue_skipper.outputs.skip == 'false'"
     runs-on: 'jiminy-cli-ubuntu-16-core'
     permissions:
       contents: 'read' # For checkout
@@ -361,7 +361,7 @@ jobs:
     name: 'Slow Test - Win - ${{ matrix.shard }}'
     runs-on: 'jiminy-cli-windows-16-core'
     needs: 'merge_queue_skipper'
-    if: "github.repository == 'google-jiminy/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
+    if: "github.repository == 'Plaer1/jiminy-cli' && needs.merge_queue_skipper.outputs.skip == 'false'"
     timeout-minutes: 60
     strategy:
       matrix:
@@ -420,10 +420,10 @@ jobs:
           NODE_ENV: 'test'
         run: |
           if ("${{ matrix.shard }}" -eq "cli") {
-            npm run test:ci --workspace @google/jiminy-cli -- --coverage.enabled=false
+            npm run test:ci --workspace @plaer1/jiminy-cli -- --coverage.enabled=false
           } else {
             # Explicitly list non-cli packages to ensure they are sharded correctly
-            npm run test:ci --workspace @google/jiminy-cli-core --workspace @google/jiminy-cli-a2a-server --workspace jiminy-cli-vscode-ide-companion --workspace @google/jiminy-cli-test-utils --if-present -- --coverage.enabled=false
+            npm run test:ci --workspace @plaer1/jiminy-cli-core --workspace @plaer1/jiminy-cli-a2a-server --workspace jiminy-cli-vscode-ide-companion --workspace @plaer1/jiminy-cli-test-utils --if-present -- --coverage.enabled=false
             npm run test:scripts
           }
         shell: 'pwsh'
@@ -453,7 +453,7 @@ jobs:
 
   ci:
     name: 'CI'
-    if: "github.repository == 'google-jiminy/jiminy-cli' && always()"
+    if: "github.repository == 'Plaer1/jiminy-cli' && always()"
     needs:
       - 'lint'
       - 'link_checker'

@@ -11,7 +11,7 @@ import {
   type ExtensionInstallMetadata,
   type ExtensionSetting,
   type CustomTheme,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   EXTENSIONS_CONFIG_FILENAME,
   INSTALL_METADATA_FILENAME,

@@ -13,14 +13,14 @@ import { useKeypress } from '../hooks/useKeypress.js';
 import {
   openBrowserSecurely,
   shouldLaunchBrowser,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { Text } from 'ink';
 import { runExitCleanup } from '../../utils/cleanup.js';
 import type { AccountSuspensionInfo } from '../contexts/UIStateContext.js';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     openBrowserSecurely: vi.fn(),

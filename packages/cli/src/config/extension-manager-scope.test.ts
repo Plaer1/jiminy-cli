@@ -13,13 +13,13 @@ import { createTestMergedSettings } from './settings.js';
 import {
   loadAgentsFromDirectory,
   loadSkillsFromDir,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 let currentTempHome = '';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: () => currentTempHome,

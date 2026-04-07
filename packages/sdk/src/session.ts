@@ -22,7 +22,7 @@ import {
   ActivateSkillTool,
   type ResumedSessionData,
   PolicyDecision,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import { type Tool, SdkTool } from './tool.js';
 import { SdkAgentFilesystem } from './fs.js';

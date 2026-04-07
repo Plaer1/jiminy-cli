@@ -9,7 +9,7 @@ import {
   debugLogger,
   type SkillDefinition,
   getErrorMessage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { exitCli } from '../utils.js';
 import { installSkill } from '../../utils/skillUtils.js';
 import chalk from 'chalk';

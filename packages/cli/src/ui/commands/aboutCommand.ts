@@ -16,7 +16,7 @@ import {
   UserAccountManager,
   debugLogger,
   getVersion,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 export const aboutCommand: SlashCommand = {
   name: 'about',

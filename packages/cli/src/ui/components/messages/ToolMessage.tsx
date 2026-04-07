@@ -21,7 +21,7 @@ import {
   useFocusHint,
   FocusHint,
 } from './ToolShared.js';
-import { type Config, CoreToolCallStatus, Kind } from '@google/jiminy-cli-core';
+import { type Config, CoreToolCallStatus, Kind } from '@plaer1/jiminy-cli-core';
 import { ShellInputPrompt } from '../ShellInputPrompt.js';
 import { SUBAGENT_MAX_LINES } from '../../constants.js';
 

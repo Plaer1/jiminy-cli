@@ -5,7 +5,7 @@ inputs:
   npm-package:
     description: 'NPM Package'
     required: true
-    default: '@google/jiminy-cli@latest'
+    default: '@plaer1/jiminy-cli@latest'
   npm-registry-url:
     description: 'NPM Registry URL'
     required: true
@@ -100,7 +100,7 @@ runs:
         GEMINI_API_KEY: '${{ inputs.jiminy_api_key }}'
         INTEGRATION_TEST_USE_INSTALLED_GEMINI: 'true'
         # We must diable CI mode here because it interferes with interactive tests.
-        # See https://github.com/google-jiminy/jiminy-cli/issues/10517
+        # See https://github.com/Plaer1/jiminy-cli/issues/10517
         CI: 'false'
       shell: 'bash'
       run: 'npm run test:integration:sandbox:none'

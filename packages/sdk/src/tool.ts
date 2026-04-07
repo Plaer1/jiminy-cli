@@ -13,7 +13,7 @@ import {
   type ToolInvocation,
   Kind,
   type MessageBus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { SessionContext } from './types.js';
 
 export { z };

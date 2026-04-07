@@ -9,7 +9,7 @@ import {
   listExtensions,
   getErrorMessage,
   type ExtensionInstallMetadata,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { ExtensionUpdateInfo } from '../../config/extension.js';
 import {
   emptyIcon,

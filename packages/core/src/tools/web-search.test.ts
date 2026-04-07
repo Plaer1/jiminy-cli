@@ -217,8 +217,8 @@ Sources:
                 },
                 {
                   web: {
-                    title: 'google-jiminy/jiminy-cli',
-                    uri: 'https://github.com/google-jiminy/jiminy-cli',
+                    title: 'Plaer1/jiminy-cli',
+                    uri: 'https://github.com/Plaer1/jiminy-cli',
                   },
                 },
                 {
@@ -260,7 +260,7 @@ Sources:
 
 Sources:
 [1] Japanese Greeting (https://example.test/japanese-greeting)
-[2] google-jiminy/jiminy-cli (https://github.com/google-jiminy/jiminy-cli)
+[2] Plaer1/jiminy-cli (https://github.com/Plaer1/jiminy-cli)
 [3] Jiminy CLI: your open-source AI agent (https://blog.google/technology/developers/introducing-jiminy-cli-open-source-ai-agent/)`;
 
       expect(result.llmContent).toBe(expectedLlmContent);

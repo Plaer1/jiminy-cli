@@ -18,7 +18,7 @@ import {
   setDeferredCommand,
   type DeferredCommand,
 } from './deferred.js';
-import { ExitCodes } from '@google/jiminy-cli-core';
+import { ExitCodes } from '@plaer1/jiminy-cli-core';
 import type { ArgumentsCamelCase, CommandModule } from 'yargs';
 import { createMockSettings } from './test-utils/settings.js';
 
@@ -29,8 +29,8 @@ const { mockRunExitCleanup, mockCoreEvents } = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     coreEvents: mockCoreEvents,

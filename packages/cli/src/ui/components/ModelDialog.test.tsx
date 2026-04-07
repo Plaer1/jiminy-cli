@@ -21,17 +21,17 @@ import {
   PREVIEW_GEMINI_FLASH_MODEL,
   PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL,
   AuthType,
-} from '@google/jiminy-cli-core';
-import type { Config, ModelSlashCommandEvent } from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import type { Config, ModelSlashCommandEvent } from '@plaer1/jiminy-cli-core';
 
 // Mock dependencies
 const mockGetDisplayString = vi.fn();
 const mockLogModelSlashCommand = vi.fn();
 const mockModelSlashCommandEvent = vi.fn();
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     getDisplayString: (val: string) => mockGetDisplayString(val),

@@ -16,10 +16,10 @@ jobs:
   eval:
     name: 'Eval'
     if: >-
-      github.repository == 'google-jiminy/jiminy-cli'
+      github.repository == 'Plaer1/jiminy-cli'
     runs-on: 'ubuntu-latest'
     container:
-      image: 'ghcr.io/google-jiminy/jiminy-cli-swe-agent-eval@sha256:cd5edc4afd2245c1f575e791c0859b3c084a86bb3bd9a6762296da5162b35a8f'
+      image: 'ghcr.io/Plaer1/jiminy-cli-swe-agent-eval@sha256:cd5edc4afd2245c1f575e791c0859b3c084a86bb3bd9a6762296da5162b35a8f'
       credentials:
         username: '${{ github.actor }}'
         password: '${{ secrets.GITHUB_TOKEN }}'

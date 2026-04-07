@@ -5,7 +5,7 @@
  */
 
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import type { Config } from '@google/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 
 // --- Mocks (hoisted) ---
 
@@ -75,7 +75,7 @@ const mockOpenBrowserSecurely = vi.hoisted(() =>
   vi.fn(() => Promise.resolve()),
 );
 
-vi.mock('@google/jiminy-cli-core', () => ({
+vi.mock('@plaer1/jiminy-cli-core', () => ({
   debugLogger: {
     log: vi.fn(),
     debug: vi.fn(),
@@ -90,7 +90,7 @@ vi.mock('ws', () => ({
   default: MockWebSocket,
 }));
 
-vi.mock('@google/jiminy-cli-devtools', () => ({
+vi.mock('@plaer1/jiminy-cli-devtools', () => ({
   DevTools: {
     getInstance: () => mockDevToolsInstance,
   },

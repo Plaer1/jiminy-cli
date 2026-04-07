@@ -39,9 +39,9 @@ function getArgs() {
     })
     .option('cli-package-name', {
       description:
-        'fully qualified package name with scope (e.g @google/jiminy-cli)',
+        'fully qualified package name with scope (e.g @plaer1/jiminy-cli)',
       string: true,
-      default: '@google/jiminy-cli',
+      default: '@plaer1/jiminy-cli',
     })
     .option('preview_version_override', {
       description: 'Override the calculated preview version.',

@@ -19,7 +19,7 @@ import {
   isOverageEligibleModel,
   getDisplayString,
   type JiminyUserTier,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { type UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType } from '../types.js';

@@ -12,7 +12,7 @@ import {
   getCompatibilityWarnings,
   WarningPriority,
   type StartupWarning,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { Settings } from '../config/settingsSchema.js';
 import {
   isFolderTrustEnabled,

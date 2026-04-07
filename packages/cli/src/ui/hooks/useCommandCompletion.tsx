@@ -19,7 +19,7 @@ import {
   PROMPT_COMPLETION_MIN_LENGTH,
   type PromptCompletion,
 } from './usePromptCompletion.js';
-import type { Config } from '@google/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import { useCompletion } from './useCompletion.js';
 
 export enum CompletionMode {

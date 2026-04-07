@@ -5,7 +5,7 @@
  */
 
 import type { ExecutionEventBus, AgentExecutor } from '@a2a-js/sdk/server';
-import type { Config, GitService } from '@google/jiminy-cli-core';
+import type { Config, GitService } from '@plaer1/jiminy-cli-core';
 
 export interface CommandContext {
   config: Config;

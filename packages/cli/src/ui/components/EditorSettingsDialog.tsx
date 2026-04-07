@@ -23,7 +23,7 @@ import {
   isEditorAvailable,
   EDITOR_DISPLAY_NAMES,
   coreEvents,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { useKeypress } from '../hooks/useKeypress.js';
 
 interface EditorDialogProps {

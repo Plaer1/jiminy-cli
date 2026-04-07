@@ -17,7 +17,7 @@ import {
   validatePlanContent,
   processSingleFileContent,
   type FileSystemService,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as fs from 'node:fs';
 import { useKeyMatchers } from '../hooks/useKeyMatchers.js';
 
@@ -25,9 +25,9 @@ vi.mock('../utils/editorUtils.js', () => ({
   openFileInEditor: vi.fn(),
 }));
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     validatePlanPath: vi.fn(async () => null),
@@ -166,7 +166,7 @@ Implement a comprehensive authentication system with multiple providers.
             writeTextFile: vi.fn(),
           }),
           getUseAlternateBuffer: () => useAlternateBuffer,
-        } as unknown as import('@google/jiminy-cli-core').Config,
+        } as unknown as import('@plaer1/jiminy-cli-core').Config,
         settings: createMockSettings({ ui: { useAlternateBuffer } }),
       },
     );
@@ -466,7 +466,7 @@ Implement a comprehensive authentication system with multiple providers.
                   writeTextFile: vi.fn(),
                 }),
                 getUseAlternateBuffer: () => useAlternateBuffer ?? true,
-              } as unknown as import('@google/jiminy-cli-core').Config,
+              } as unknown as import('@plaer1/jiminy-cli-core').Config,
               settings: createMockSettings({
                 ui: { useAlternateBuffer: useAlternateBuffer ?? true },
               }),

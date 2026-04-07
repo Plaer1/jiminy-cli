@@ -41,7 +41,7 @@ import {
   getTransformedImagePath,
 } from './text-buffer.js';
 import { cpLen } from '../../utils/textUtils.js';
-import { escapePath } from '@google/jiminy-cli-core';
+import { escapePath } from '@plaer1/jiminy-cli-core';
 
 const defaultVisualLayout: VisualLayout = {
   visualLines: [''],

@@ -18,7 +18,7 @@ import {
   type PolicyUpdateConfirmationRequest,
   writeToStderr,
   debugLogger,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type Settings } from './settings.js';
 
 /**

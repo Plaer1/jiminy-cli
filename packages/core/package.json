@@ -1,5 +1,5 @@
 {
-  "name": "@google/jiminy-cli-core",
+  "name": "@plaer1/jiminy-cli-core",
   "version": "0.36.0",
   "description": "Jiminy CLI Core",
   "license": "Apache-2.0",
@@ -101,7 +101,7 @@
     "node-pty": "^1.0.0"
   },
   "devDependencies": {
-    "@google/jiminy-cli-test-utils": "file:../test-utils",
+    "@plaer1/jiminy-cli-test-utils": "file:../test-utils",
     "@types/fast-levenshtein": "^0.0.4",
     "@types/js-yaml": "^4.0.9",
     "@types/json-stable-stringify": "^1.1.0",

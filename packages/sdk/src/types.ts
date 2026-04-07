@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Content } from '@google/jiminy-cli-core';
+import type { Content } from '@plaer1/jiminy-cli-core';
 import type { Tool } from './tool.js';
 import type { SkillReference } from './skills.js';
 import type { JiminyCliAgent } from './agent.js';

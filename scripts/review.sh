@@ -11,7 +11,7 @@ if [ -z "$1" ]; then
 fi
 pr="$1"
 model="${2:-jiminy-3.1-pro-preview}"
-REPO="google-jiminy/jiminy-cli"
+REPO="Plaer1/jiminy-cli"
 REVIEW_DIR="$HOME/git/review/jiminy-cli"
 
 if [ ! -d "$REVIEW_DIR" ]; then
@@ -21,7 +21,7 @@ if [ ! -d "$REVIEW_DIR" ]; then
     echo "Instructions:"
     echo "  mkdir -p ~/git/review"
     echo "  cd ~/git/review"
-    echo "  git clone https://github.com/google-jiminy/jiminy-cli.git"
+    echo "  git clone https://github.com/Plaer1/jiminy-cli.git"
     exit 1
 fi
 

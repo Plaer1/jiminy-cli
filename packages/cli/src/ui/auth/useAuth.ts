@@ -13,8 +13,8 @@ import {
   debugLogger,
   isAccountSuspendedError,
   ProjectIdRequiredError,
-} from '@google/jiminy-cli-core';
-import { getErrorMessage } from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import { getErrorMessage } from '@plaer1/jiminy-cli-core';
 import { AuthState } from '../types.js';
 import { validateAuthMethod } from '../../config/auth.js';
 

@@ -21,7 +21,7 @@ import {
   CompletionMode,
 } from './useCommandCompletion.js';
 import type { CommandContext } from '../commands/types.js';
-import type { Config } from '@google/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import { useTextBuffer } from '../components/shared/text-buffer.js';
 import type { Suggestion } from '../components/SuggestionsDisplay.js';
 import {

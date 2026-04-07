@@ -60,7 +60,7 @@ import {
   type PolicyRule,
   type SafetyCheckerRule,
   HookType,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { maybeRequestConsentOrFail } from './extensions/consent.js';
 import { resolveEnvVarsInObject } from '../utils/envVarResolver.js';
 import { ExtensionStorage } from './extensions/storage.js';

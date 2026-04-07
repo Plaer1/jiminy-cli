@@ -17,11 +17,11 @@ import {
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { tmpdir } from 'node:os';
-import type { ConfigParameters } from '@google/jiminy-cli-core';
+import type { ConfigParameters } from '@plaer1/jiminy-cli-core';
 import {
   Config,
   DEFAULT_FILE_FILTERING_OPTIONS,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { createTestMergedSettings } from './settings.js';
 import { http, HttpResponse } from 'msw';
 
@@ -45,8 +45,8 @@ afterAll(() => {
 const CLEARCUT_URL = 'https://play.googleapis.com/log';
 
 // Mock file discovery service and tool registry
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     FileDiscoveryService: vi.fn().mockImplementation(() => ({

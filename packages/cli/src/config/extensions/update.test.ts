@@ -23,7 +23,7 @@ import {
   type JiminyCLIExtension,
   type ExtensionInstallMetadata,
   IntegrityDataStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 vi.mock('./storage.js', () => ({
   ExtensionStorage: {

@@ -9,7 +9,7 @@ import {
   SessionEndReason,
   SessionStartSource,
   flushTelemetry,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { CommandKind, type SlashCommand } from './types.js';
 import { MessageType } from '../types.js';
 import { randomUUID } from 'node:crypto';

@@ -6,7 +6,7 @@
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { performInit } from '@google/jiminy-cli-core';
+import { performInit } from '@plaer1/jiminy-cli-core';
 import type {
   Command,
   CommandContext,

@@ -12,16 +12,16 @@ import {
   type ToolCallRequestInfo,
   type GitService,
   type CompletedToolCall,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { createMockConfig } from '../utils/testing_utils.js';
 import type { ExecutionEventBus, RequestContext } from '@a2a-js/sdk/server';
 import { CoderAgentEvent } from '../types.js';
 
 const mockProcessRestorableToolCalls = vi.hoisted(() => vi.fn());
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...original,
     processRestorableToolCalls: mockProcessRestorableToolCalls,

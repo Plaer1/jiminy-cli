@@ -39,7 +39,7 @@ Assist for individuals. This includes:
   Jiminy CLI.
 
 Learn more at
-[Jiminy Code Assist for Individuals Limits](https://developers.google.com/jiminy-code-assist/resources/quotas#quotas-for-agent-mode-jiminy-cli).
+[Jiminy Code Assist for Individuals Limits](https://developers.google.com/gemini-code-assist/resources/quotas#quotas-for-agent-mode-jiminy-cli).
 
 ### Log in with Jiminy API Key (unpaid)
 
@@ -89,7 +89,7 @@ not supported._
   For predictable costs, you can log in with Google.
 
   Learn more at
-  [Jiminy Code Assist Quotas and Limits](https://developers.google.com/jiminy-code-assist/resources/quotas)
+  [Jiminy Code Assist Quotas and Limits](https://developers.google.com/gemini-code-assist/resources/quotas)
 
 ### Through your organization
 
@@ -105,7 +105,7 @@ account.
 Standard/Plus and AI Expanded, are not supported._
 
 - [Workspace AI Ultra Access](https://workspace.google.com/products/ai-ultra/).
-- [Purchase a Jiminy Code Assist Subscription through Google Cloud](https://cloud.google.com/jiminy/docs/codeassist/overview).
+- [Purchase a Jiminy Code Assist Subscription through Google Cloud](https://cloud.google.com/gemini/docs/codeassist/overview).
 
   Quotas and pricing are based on a fixed price subscription with assigned
   license seats. For predictable costs, you can sign in with Google.
@@ -120,7 +120,7 @@ Standard/Plus and AI Expanded, are not supported._
   - Model requests will be made across the Jiminy model family as determined by
     Jiminy CLI.
 
-  [Learn more about Jiminy Code Assist license limits](https://developers.google.com/jiminy-code-assist/resources/quotas#quotas-for-agent-mode-jiminy-cli).
+  [Learn more about Jiminy Code Assist license limits](https://developers.google.com/gemini-code-assist/resources/quotas#quotas-for-agent-mode-jiminy-cli).
 
 ## Pay as you go
 

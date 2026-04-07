@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { tokenLimit } from '@google/jiminy-cli-core';
+import { tokenLimit } from '@plaer1/jiminy-cli-core';
 
 export function getContextUsagePercentage(
   promptTokenCount: number,

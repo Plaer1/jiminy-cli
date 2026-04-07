@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { CoreToolCallStatus } from '@google/jiminy-cli-core';
+import { CoreToolCallStatus } from '@plaer1/jiminy-cli-core';
 import { getPendingAttentionNotification } from './pendingAttentionNotification.js';
 
 describe('getPendingAttentionNotification', () => {

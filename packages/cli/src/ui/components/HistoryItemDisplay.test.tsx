@@ -12,11 +12,11 @@ import {
   CoreToolCallStatus,
   type Config,
   type ToolExecuteConfirmationDetails,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { ToolGroupMessage } from './messages/ToolGroupMessage.js';
 import { renderWithProviders } from '../../test-utils/render.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { makeFakeConfig } from '@google/jiminy-cli-core';
+import { makeFakeConfig } from '@plaer1/jiminy-cli-core';
 
 // Mock child components
 vi.mock('./messages/ToolGroupMessage.js', () => ({

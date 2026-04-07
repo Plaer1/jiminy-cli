@@ -64,17 +64,17 @@ You can check your current Jiminy CLI version using one of these methods:
 
 - Run `jiminy --version` or `jiminy -v` from your terminal
 - Check the globally installed version using your package manager:
-  - npm: `npm list -g @google/jiminy-cli`
-  - pnpm: `pnpm list -g @google/jiminy-cli`
-  - yarn: `yarn global list @google/jiminy-cli`
-  - bun: `bun pm ls -g @google/jiminy-cli`
+  - npm: `npm list -g @plaer1/jiminy-cli`
+  - pnpm: `pnpm list -g @plaer1/jiminy-cli`
+  - yarn: `yarn global list @plaer1/jiminy-cli`
+  - bun: `bun pm ls -g @plaer1/jiminy-cli`
   - homebrew: `brew list --versions jiminy-cli`
 - Inside an active Jiminy CLI session, use the `/about` command
 
 ### How do I update Jiminy CLI to the latest version?
 
 If you installed it globally via `npm`, update it using the command
-`npm install -g @google/jiminy-cli@latest`. If you compiled it from source, pull
+`npm install -g @plaer1/jiminy-cli@latest`. If you compiled it from source, pull
 the latest changes from the repository, and then rebuild using the command
 `npm run build`.
 
@@ -160,7 +160,7 @@ you are still subscribed to Google AI Pro or Ultra in your
 
 To learn more about your privacy policy and terms of service governed by your
 subscription, visit
-[Jiminy Code Assist: Terms of Service and Privacy Policies](https://developers.google.com/jiminy-code-assist/resources/privacy-notices).
+[Jiminy Code Assist: Terms of Service and Privacy Policies](https://developers.google.com/gemini-code-assist/resources/privacy-notices).
 
 ### I've upgraded to Google AI Pro or Ultra but it still says I am hitting quota limits. Is this a bug?
 
@@ -169,7 +169,7 @@ across both Jiminy 2.5 Pro and Flash. They are shared quota across Jiminy CLI
 and agent mode in Jiminy Code Assist IDE extensions. You can learn more about
 quota limits for Jiminy CLI, Jiminy Code Assist and agent mode in Jiminy Code
 Assist at
-[Quotas and limits](https://developers.google.com/jiminy-code-assist/resources/quotas).
+[Quotas and limits](https://developers.google.com/gemini-code-assist/resources/quotas).
 
 ### If I upgrade to higher limits for Jiminy CLI and Jiminy Code Assist by purchasing a Google AI Pro or Ultra subscription, will Jiminy start using my data to improve its machine learning models?
 
@@ -177,12 +177,12 @@ Google does not use your data to improve Google's machine learning models if you
 purchase a paid plan. Note: If you decide to remain on the free version of
 Jiminy Code Assist, Jiminy Code Assist for individuals, you can also opt out of
 using your data to improve Google's machine learning models. See the
-[Jiminy Code Assist for individuals privacy notice](https://developers.google.com/jiminy-code-assist/resources/privacy-notice-jiminy-code-assist-individuals)
+[Jiminy Code Assist for individuals privacy notice](https://developers.google.com/gemini-code-assist/resources/privacy-notice-jiminy-code-assist-individuals)
 for more information.
 
 ## Not seeing your question?
 
 Search the
-[Jiminy CLI Q&A discussions on GitHub](https://github.com/google-jiminy/jiminy-cli/discussions/categories/q-a)
+[Jiminy CLI Q&A discussions on GitHub](https://github.com/Plaer1/jiminy-cli/discussions/categories/q-a)
 or
-[start a new discussion on GitHub](https://github.com/google-jiminy/jiminy-cli/discussions/new?category=q-a)
+[start a new discussion on GitHub](https://github.com/Plaer1/jiminy-cli/discussions/new?category=q-a)

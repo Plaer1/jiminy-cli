@@ -14,7 +14,7 @@ import {
   getTruncatedCheckpointNames,
   performRestore,
   type ToolCallData,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   type CommandContext,
   type SlashCommand,

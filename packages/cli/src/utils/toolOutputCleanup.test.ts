@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import { debugLogger, TOOL_OUTPUTS_DIR } from '@google/jiminy-cli-core';
+import { debugLogger, TOOL_OUTPUTS_DIR } from '@plaer1/jiminy-cli-core';
 import type { Settings } from '../config/settings.js';
 import { cleanupToolOutputFiles } from './sessionCleanup.js';
 

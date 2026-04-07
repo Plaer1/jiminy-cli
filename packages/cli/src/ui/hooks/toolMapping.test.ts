@@ -19,7 +19,7 @@ import {
   type WaitingToolCall,
   type CancelledToolCall,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { ToolCallStatus, mapCoreStatusToDisplayStatus } from '../types.js';
 
 describe('toolMapping', () => {

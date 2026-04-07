@@ -17,7 +17,7 @@ import {
   SimpleExtensionLoader,
   type ToolCallRequestInfo,
   type Config,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { v4 as uuidv4 } from 'uuid';
 
 import { logger } from '../utils/logger.js';

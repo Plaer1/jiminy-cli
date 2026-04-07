@@ -3,11 +3,11 @@
   "displayName": "Jiminy CLI Companion",
   "description": "Enable Jiminy CLI with direct access to your IDE workspace.",
   "version": "0.36.0",
-  "publisher": "google",
+  "publisher": "plaer1",
   "icon": "assets/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/google-jiminy/jiminy-cli.git",
+    "url": "https://github.com/Plaer1/jiminy-cli.git",
     "directory": "packages/vscode-ide-companion"
   },
   "engines": {

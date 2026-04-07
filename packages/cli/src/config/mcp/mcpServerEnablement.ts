@@ -6,7 +6,7 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { Storage, coreEvents } from '@google/jiminy-cli-core';
+import { Storage, coreEvents } from '@plaer1/jiminy-cli-core';
 
 /**
  * Stored in JSON file - represents persistent enablement state.

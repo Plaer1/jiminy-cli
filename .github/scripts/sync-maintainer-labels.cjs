@@ -37,7 +37,7 @@ const octokit = new Octokit({
 
 /**
  * Extracts child issue references from markdown Task Lists ONLY.
- * e.g. - [ ] #123 or - [x] google-jiminy/jiminy-cli#123
+ * e.g. - [ ] #123 or - [x] Plaer1/jiminy-cli#123
  */
 function extractTaskListLinks(text, contextOwner, contextRepo) {
   if (!text) return [];

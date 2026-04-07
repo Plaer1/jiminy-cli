@@ -9,7 +9,7 @@ import {
   checkExhaustive,
   getErrorMessage,
   type JiminyCLIExtension,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   ExtensionUpdateState,
   extensionUpdatesReducer,

@@ -48,7 +48,7 @@ import {
   PREVIEW_GEMINI_MODEL_AUTO,
   getDisplayString,
   type AgentLoopContext,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as acp from '@agentclientprotocol/sdk';
 import { AcpFileSystemService } from './fileSystemService.js';
 import { getAcpErrorMessage } from './acpErrors.js';

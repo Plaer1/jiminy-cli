@@ -14,7 +14,7 @@ const debugLogger = vi.hoisted(() => ({
 }));
 const fetchMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@google/jiminy-cli-core', () => ({
+vi.mock('@plaer1/jiminy-cli-core', () => ({
   getPackageJson,
   debugLogger,
 }));

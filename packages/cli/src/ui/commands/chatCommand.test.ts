@@ -9,7 +9,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { SlashCommand, CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import type { Content } from '@google/genai';
-import { AuthType, type JiminyClient } from '@google/jiminy-cli-core';
+import { AuthType, type JiminyClient } from '@plaer1/jiminy-cli-core';
 
 import * as fsPromises from 'node:fs/promises';
 import { chatCommand, debugCommand } from './chatCommand.js';

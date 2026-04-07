@@ -18,14 +18,14 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { quote, parse } from 'shell-quote';
 import { promisify } from 'node:util';
-import type { Config, SandboxConfig } from '@google/jiminy-cli-core';
+import type { Config, SandboxConfig } from '@plaer1/jiminy-cli-core';
 import {
   coreEvents,
   debugLogger,
   FatalSandboxError,
   GEMINI_DIR,
   homedir,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { ConsolePatcher } from '../ui/utils/ConsolePatcher.js';
 import { randomBytes } from 'node:crypto';
 import {
@@ -293,7 +293,7 @@ export async function start_sandbox(
       const remedy =
         image === LOCAL_DEV_SANDBOX_IMAGE_NAME
           ? 'Try running `npm run build:all` or `npm run build:sandbox` under the jiminy-cli repo to build it locally, or check the image name and your network connection.'
-          : 'Please check the image name, your network connection, or notify jiminy-cli-dev@google.com if the issue persists.';
+          : 'Please check the image name, your network connection, or report an issue at https://github.com/Plaer1/jiminy-cli/issues if the issue persists.';
       throw new FatalSandboxError(
         `Sandbox image '${image}' is missing or could not be pulled. ${remedy}`,
       );

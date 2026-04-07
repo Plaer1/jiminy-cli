@@ -7,7 +7,7 @@
 import type React from 'react';
 import { Text, Box } from 'ink';
 import { theme } from '../../semantic-colors.js';
-import { getDisplayString } from '@google/jiminy-cli-core';
+import { getDisplayString } from '@plaer1/jiminy-cli-core';
 
 interface ModelMessageProps {
   model: string;

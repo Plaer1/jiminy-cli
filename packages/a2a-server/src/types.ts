@@ -7,7 +7,7 @@
 import type {
   MCPServerStatus,
   ToolConfirmationOutcome,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { TaskState } from '@a2a-js/sdk';
 
 // Interfaces and enums for the CoderAgent protocol.

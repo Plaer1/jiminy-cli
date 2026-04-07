@@ -12,7 +12,7 @@ import { type SessionMetrics } from '../contexts/SessionContext.js';
 import {
   ToolCallDecision,
   type RetrieveUserQuotaResponse,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 // Mock the context to provide controlled data for testing
 vi.mock('../contexts/SessionContext.js', async (importOriginal) => {

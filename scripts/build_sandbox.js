@@ -90,23 +90,23 @@ if (!argv.s) {
   execSync('npm run build --workspaces', { stdio: 'inherit' });
 }
 
-console.log('packing @google/jiminy-cli ...');
+console.log('packing @plaer1/jiminy-cli ...');
 const cliPackageDir = join('packages', 'cli');
 rmSync(join(cliPackageDir, 'dist', 'google-jiminy-cli-*.tgz'), { force: true });
 execSync(
-  `npm pack -w @google/jiminy-cli --pack-destination ./packages/cli/dist`,
+  `npm pack -w @plaer1/jiminy-cli --pack-destination ./packages/cli/dist`,
   {
     stdio: 'ignore',
   },
 );
 
-console.log('packing @google/jiminy-cli-core ...');
+console.log('packing @plaer1/jiminy-cli-core ...');
 const corePackageDir = join('packages', 'core');
 rmSync(join(corePackageDir, 'dist', 'google-jiminy-cli-core-*.tgz'), {
   force: true,
 });
 execSync(
-  `npm pack -w @google/jiminy-cli-core --pack-destination ./packages/core/dist`,
+  `npm pack -w @plaer1/jiminy-cli-core --pack-destination ./packages/core/dist`,
   { stdio: 'ignore' },
 );
 

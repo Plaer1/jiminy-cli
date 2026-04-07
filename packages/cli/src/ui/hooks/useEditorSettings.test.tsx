@@ -26,13 +26,13 @@ import {
   type EditorType,
   hasValidEditorCommand,
   allowEditorTypeInSandbox,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 
 import { SettingPaths } from '../../config/settingPaths.js';
 
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     hasValidEditorCommand: vi.fn(() => true),

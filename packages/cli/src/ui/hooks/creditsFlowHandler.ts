@@ -25,7 +25,7 @@ import {
   UserAccountManager,
   recordOverageOptionSelected,
   recordCreditPurchaseClick,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { MessageType } from '../types.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import type {

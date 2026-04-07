@@ -13,16 +13,16 @@ import {
   Logger,
   type Storage,
   type Config,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { ConfigContext } from '../contexts/ConfigContext.js';
 import type React from 'react';
 
 let deferredInit: { resolve: (val?: unknown) => void };
 
 // Mock Logger
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     Logger: vi.fn().mockImplementation((id: string) => ({

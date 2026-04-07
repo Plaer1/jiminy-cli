@@ -13,11 +13,11 @@ import {
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as childProcess from 'node:child_process';
-import { isGitRepository, debugLogger } from '@google/jiminy-cli-core';
+import { isGitRepository, debugLogger } from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     isGitRepository: vi.fn(),
@@ -208,7 +208,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global pnpm installation', () => {
-    const pnpmPath = `/Users/test/.pnpm/global/5/node_modules/.pnpm/some-hash/node_modules/@google/jiminy-cli/dist/index.js`;
+    const pnpmPath = `/Users/test/.pnpm/global/5/node_modules/.pnpm/some-hash/node_modules/@plaer1/jiminy-cli/dist/index.js`;
     process.argv[1] = pnpmPath;
     mockedRealPathSync.mockReturnValue(pnpmPath);
     mockedExecSync.mockImplementation(() => {
@@ -232,7 +232,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global yarn installation', () => {
-    const yarnPath = `/Users/test/.yarn/global/node_modules/@google/jiminy-cli/dist/index.js`;
+    const yarnPath = `/Users/test/.yarn/global/node_modules/@plaer1/jiminy-cli/dist/index.js`;
     process.argv[1] = yarnPath;
     mockedRealPathSync.mockReturnValue(yarnPath);
     mockedExecSync.mockImplementation(() => {
@@ -256,7 +256,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global bun installation', () => {
-    const bunPath = `/Users/test/.bun/install/global/node_modules/@google/jiminy-cli/dist/index.js`;
+    const bunPath = `/Users/test/.bun/install/global/node_modules/@plaer1/jiminy-cli/dist/index.js`;
     process.argv[1] = bunPath;
     mockedRealPathSync.mockReturnValue(bunPath);
     mockedExecSync.mockImplementation(() => {
@@ -376,7 +376,7 @@ describe('getInstallationInfo', () => {
     });
     // Path looks like standard global NPM
     const cliPath =
-      '/usr/local/lib/node_modules/@google/jiminy-cli/dist/index.js';
+      '/usr/local/lib/node_modules/@plaer1/jiminy-cli/dist/index.js';
     process.argv[1] = cliPath;
 
     // Setup mocks

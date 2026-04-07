@@ -6,7 +6,7 @@
 
 import { renderWithProviders } from '../../test-utils/render.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { makeFakeConfig } from '@google/jiminy-cli-core';
+import { makeFakeConfig } from '@plaer1/jiminy-cli-core';
 import { waitFor } from '../../test-utils/async.js';
 import { act, useState } from 'react';
 import {
@@ -23,7 +23,7 @@ import {
   ApprovalMode,
   debugLogger,
   type Config,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as path from 'node:path';
 import {
   CommandKind,

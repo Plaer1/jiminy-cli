@@ -24,7 +24,7 @@ import {
   type ChatRecordingService,
   type JiminyClient,
   convertSessionToClientHistory,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 /**
  * Helper function to handle the core logic of rewinding a conversation.

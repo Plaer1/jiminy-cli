@@ -32,7 +32,7 @@ import {
   ValidationRequiredError,
   type AdminControlsSettings,
   debugLogger,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import { loadCliConfig, parseArguments } from './config/config.js';
 import * as cliConfig from './config/config.js';

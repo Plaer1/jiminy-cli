@@ -10,11 +10,11 @@ import { activate } from './extension.js';
 import {
   IDE_DEFINITIONS,
   detectIdeFromEnv,
-} from '@google/jiminy-cli-core/src/ide/detect-ide.js';
+} from '@plaer1/jiminy-cli-core/src/ide/detect-ide.js';
 
-vi.mock('@google/jiminy-cli-core/src/ide/detect-ide.js', async () => {
+vi.mock('@plaer1/jiminy-cli-core/src/ide/detect-ide.js', async () => {
   const actual = await vi.importActual(
-    '@google/jiminy-cli-core/src/ide/detect-ide.js',
+    '@plaer1/jiminy-cli-core/src/ide/detect-ide.js',
   );
   return {
     ...actual,

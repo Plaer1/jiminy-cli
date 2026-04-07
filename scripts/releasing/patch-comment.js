@@ -140,7 +140,7 @@ async function main() {
 
 **📝 What's Available:**
 - **GitHub Release**: [View release ${releaseTag}](https://github.com/${repo.owner}/${repo.repo}/releases/tag/${releaseTag})
-- **NPM Package**: \`npm install @google/jiminy-cli@${npmTag}\`
+- **NPM Package**: \`npm install @plaer1/jiminy-cli@${npmTag}\`
 
 **🔗 Links:**
 - [GitHub Release](https://github.com/${repo.owner}/${repo.repo}/releases/tag/${releaseTag})

@@ -9,7 +9,7 @@ import {
   CompressionMessage,
   type CompressionDisplayProps,
 } from './CompressionMessage.js';
-import { CompressionStatus } from '@google/jiminy-cli-core';
+import { CompressionStatus } from '@plaer1/jiminy-cli-core';
 import { type CompressionProps } from '../../types.js';
 import { describe, it, expect } from 'vitest';
 

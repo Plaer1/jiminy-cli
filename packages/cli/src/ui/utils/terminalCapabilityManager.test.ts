@@ -10,7 +10,7 @@ import { EventEmitter } from 'node:events';
 import {
   enableKittyKeyboardProtocol,
   enableModifyOtherKeys,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as fs from 'node:fs';
 
 // Mock fs
@@ -19,7 +19,7 @@ vi.mock('node:fs', () => ({
 }));
 
 // Mock core
-vi.mock('@google/jiminy-cli-core', () => ({
+vi.mock('@plaer1/jiminy-cli-core', () => ({
   debugLogger: {
     log: vi.fn(),
     warn: vi.fn(),

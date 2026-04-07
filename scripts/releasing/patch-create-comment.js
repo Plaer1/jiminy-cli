@@ -57,11 +57,11 @@ async function main() {
       default: false,
     })
     .example(
-      '$0 --original-pr 8655 --exit-code 0 --commit abc1234 --channel preview --repository google-jiminy/jiminy-cli --test',
+      '$0 --original-pr 8655 --exit-code 0 --commit abc1234 --channel preview --repository Plaer1/jiminy-cli --test',
       'Test success comment',
     )
     .example(
-      '$0 --original-pr 8655 --exit-code 1 --commit abc1234 --channel stable --repository google-jiminy/jiminy-cli --test',
+      '$0 --original-pr 8655 --exit-code 1 --commit abc1234 --channel stable --repository Plaer1/jiminy-cli --test',
       'Test failure comment',
     )
     .help()
@@ -82,7 +82,7 @@ async function main() {
   const channel = argv.channel || process.env.CHANNEL;
   const environment = argv.environment;
   const repository =
-    argv.repository || process.env.REPOSITORY || 'google-jiminy/jiminy-cli';
+    argv.repository || process.env.REPOSITORY || 'Plaer1/jiminy-cli';
   const runId = argv.runId || process.env.GITHUB_RUN_ID || '0';
 
   // Validate required parameters

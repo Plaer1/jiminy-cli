@@ -15,7 +15,7 @@ Equivalent to `jiminy -p "what does this project do?"`. Loads all workspace and
 user settings.
 
 ```ts
-import { JiminyCliAgent } from '@google/jiminy-cli-sdk';
+import { JiminyCliAgent } from '@plaer1/jiminy-cli-sdk';
 
 const simpleAgent = new JiminyCliAgent({
   cwd: '/path/to/some/dir',
@@ -45,7 +45,7 @@ System instructions can be provided by a static string OR dynamically via a
 function:
 
 ```ts
-import { JiminyCliAgent } from "@google/jiminy-cli-sdk";
+import { JiminyCliAgent } from "@plaer1/jiminy-cli-sdk";
 
 const agent = new JiminyCliAgent({
   instructions: "This is a static string instruction"; // this is valid
@@ -65,7 +65,7 @@ Validation:
 > tool definitions and execution.
 
 ```ts
-import { JiminyCliAgent, tool, z } from "@google/jiminy-cli-sdk";
+import { JiminyCliAgent, tool, z } from "@plaer1/jiminy-cli-sdk";
 
 const addTool = tool({
   name: 'add',
@@ -96,7 +96,7 @@ Validation:
 SDK users can provide programmatic custom hooks
 
 ```ts
-import { JiminyCliAgent, hook, z } from '@google/jiminy-cli-sdk';
+import { JiminyCliAgent, hook, z } from '@plaer1/jiminy-cli-sdk';
 import { reformat } from './reformat.js';
 
 const myHook = hook(
@@ -129,7 +129,7 @@ SDK Hooks can also run as standalone scripts to implement userland "command"
 style hooks:
 
 ```ts
-import { hook } from "@google/jiminy-cli-sdk";
+import { hook } from "@plaer1/jiminy-cli-sdk";
 
 // define a hook as above
 const myHook = hook({...}, (hook) => {...});
@@ -182,7 +182,7 @@ const agent = new JiminyCliAgent({
 > **Status:** Not Implemented.
 
 ```ts
-import { JiminyCliAgent, subagent } from "@google/jiminy-cli";
+import { JiminyCliAgent, subagent } from "@plaer1/jiminy-cli";
 
 const mySubagent = subagent({
   name: "my-subagent",
@@ -211,7 +211,7 @@ Potentially the most important feature of the Jiminy CLI SDK is support for
 extensions, which modularly encapsulate all of the primitives listed above:
 
 ```ts
-import { JiminyCliAgent, extension } from "@google/jiminy-cli-sdk";
+import { JiminyCliAgent, extension } from "@plaer1/jiminy-cli-sdk";
 
 const myExtension = extension({
   name: "my-extension",
@@ -233,8 +233,8 @@ The SDK will include a wrapper utility to interact with the agent via ACP
 instead of the SDK's natural API.
 
 ```ts
-import { JiminyCliAgent } from "@google/jiminy-cli-sdk";
-import { JiminyCliAcpServer } from "@google/jiminy-cli-sdk/acp";
+import { JiminyCliAgent } from "@plaer1/jiminy-cli-sdk";
+import { JiminyCliAcpServer } from "@plaer1/jiminy-cli-sdk/acp";
 
 const server = new JiminyCliAcpServer(new JiminyCliAgent({...}));
 server.start(); // calling start runs a stdio ACP server

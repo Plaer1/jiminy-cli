@@ -13,7 +13,7 @@ import {
   FileDiscoveryService,
   type Config,
   type FileSearch,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   MAX_SUGGESTIONS_TO_SHOW,
   type Suggestion,

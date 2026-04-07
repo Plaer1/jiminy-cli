@@ -13,7 +13,7 @@ import type {
   ResumedSessionData,
   ConversationRecord,
   MessageRecord,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import type { HistoryItemWithoutId } from '../types.js';
 

@@ -8,7 +8,7 @@ import { render } from '../../test-utils/render.js';
 import { ShellInputPrompt } from './ShellInputPrompt.js';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { act } from 'react';
-import { ShellExecutionService } from '@google/jiminy-cli-core';
+import { ShellExecutionService } from '@plaer1/jiminy-cli-core';
 import { useUIActions, type UIActions } from '../contexts/UIActionsContext.js';
 
 // Mock useUIActions
@@ -24,8 +24,8 @@ vi.mock('../hooks/useKeypress.js', () => ({
 }));
 
 // Mock ShellExecutionService
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     ShellExecutionService: {

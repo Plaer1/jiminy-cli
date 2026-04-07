@@ -24,7 +24,7 @@ import {
   exitAlternateScreen,
   enableLineWrapping,
   disableLineWrapping,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   cleanupTerminalOnExit,
   terminalCapabilityManager,
@@ -32,8 +32,8 @@ import {
 import { formatCommand } from '../key/keybindingUtils.js';
 import { Command } from '../key/keyBindings.js';
 
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     writeToStdout: vi.fn(),

@@ -14,7 +14,7 @@ import {
   GEMINI_DIR,
   loadAgentsFromDirectory,
   loadSkillsFromDir,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { render } from '../../test-utils/render.js';
 import { waitFor } from '../../test-utils/async.js';
 import { MessageType } from '../types.js';
@@ -37,9 +37,9 @@ vi.mock('os', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: () => os.homedir(),

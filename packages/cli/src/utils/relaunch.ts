@@ -9,7 +9,7 @@ import { RELAUNCH_EXIT_CODE } from './processUtils.js';
 import {
   writeToStderr,
   type AdminControlsSettings,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 export async function relaunchOnExitCode(runner: () => Promise<number>) {
   while (true) {

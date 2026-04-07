@@ -17,7 +17,7 @@ import { theme } from '../semantic-colors.js';
 import { ThemedGradient } from './ThemedGradient.js';
 import { CliSpinner } from './CliSpinner.js';
 
-import { isAppleTerminal } from '@google/jiminy-cli-core';
+import { isAppleTerminal } from '@plaer1/jiminy-cli-core';
 
 import { longAsciiLogoCompactText } from './AsciiArt.js';
 import { getAsciiArtWidth } from '../utils/textUtils.js';

@@ -1,4 +1,4 @@
-# Jiminy CLI A2A Server (`@google/jiminy-cli-a2a-server`)
+# Jiminy CLI A2A Server (`@plaer1/jiminy-cli-a2a-server`)
 
 Experimental Agent-to-Agent (A2A) server that exposes Jiminy CLI capabilities
 over HTTP for inter-agent communication.
@@ -19,4 +19,4 @@ over HTTP for inter-agent communication.
 
 ## Testing
 
-- Run tests: `npm test -w @google/jiminy-cli-a2a-server`
+- Run tests: `npm test -w @plaer1/jiminy-cli-a2a-server`

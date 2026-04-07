@@ -21,7 +21,7 @@ import {
   type LoadedTrustedFolders,
 } from '../../config/trustedFolders.js';
 import type { LoadedSettings } from '../../config/settings.js';
-import { coreEvents } from '@google/jiminy-cli-core';
+import { coreEvents } from '@plaer1/jiminy-cli-core';
 
 // Hoist mocks
 const mockedCwd = vi.hoisted(() => vi.fn());

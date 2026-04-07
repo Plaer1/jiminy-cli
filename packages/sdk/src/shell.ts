@@ -9,7 +9,7 @@ import {
   ShellExecutionService,
   ShellTool,
   type Config as CoreConfig,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type {
   AgentShell,
   AgentShellResult,

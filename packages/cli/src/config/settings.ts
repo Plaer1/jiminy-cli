@@ -20,7 +20,7 @@ import {
   homedir,
   type AdminControlsSettings,
   createCache,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import stripJsonComments from 'strip-json-comments';
 import { DefaultLight } from '../ui/themes/builtin/light/default-light.js';
 import { DefaultDark } from '../ui/themes/builtin/dark/default-dark.js';

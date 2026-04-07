@@ -8,7 +8,7 @@ import {
   getPackageJson,
   type SandboxConfig,
   FatalSandboxError,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import commandExists from 'command-exists';
 import * as os from 'node:os';
 import type { Settings } from './settings.js';

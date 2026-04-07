@@ -13,7 +13,7 @@ import {
   detectIdeFromEnv,
   IDE_DEFINITIONS,
   type IdeInfo,
-} from '@google/jiminy-cli-core/src/ide/detect-ide.js';
+} from '@plaer1/jiminy-cli-core/src/ide/detect-ide.js';
 
 const CLI_IDE_COMPANION_IDENTIFIER = 'Google.jiminy-cli-vscode-ide-companion';
 const INFO_MESSAGE_SHOWN_KEY = 'jiminyCliInfoMessageShown';

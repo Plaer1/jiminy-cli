@@ -8,7 +8,7 @@ import type React from 'react';
 import { Box, Text } from 'ink';
 import { useUIState } from '../../contexts/UIStateContext.js';
 import { ExtensionUpdateState } from '../../state/extensions.js';
-import { debugLogger, type JiminyCLIExtension } from '@google/jiminy-cli-core';
+import { debugLogger, type JiminyCLIExtension } from '@plaer1/jiminy-cli-core';
 import { getFormattedSettingValue } from '../../../commands/extensions/utils.js';
 
 interface ExtensionsList {

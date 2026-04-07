@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { SandboxConfig } from '@google/jiminy-cli-core';
+import type { SandboxConfig } from '@plaer1/jiminy-cli-core';
 
 export function createMockSandboxConfig(
   overrides?: Partial<SandboxConfig>,

@@ -12,7 +12,7 @@ import {
   FolderTrustDiscoveryService,
   getRealPath,
   getErrorMessage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   INSTALL_WARNING_MESSAGE,
   promptForConsentNonInteractive,

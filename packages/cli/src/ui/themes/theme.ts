@@ -8,7 +8,7 @@ import type { CSSProperties } from 'react';
 
 import type { SemanticColors } from './semantic-tokens.js';
 
-import type { CustomTheme } from '@google/jiminy-cli-core';
+import type { CustomTheme } from '@plaer1/jiminy-cli-core';
 import {
   DEFAULT_INPUT_BACKGROUND_OPACITY,
   DEFAULT_SELECTION_OPACITY,

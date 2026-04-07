@@ -31,7 +31,7 @@ import {
   type TelemetryTarget,
   type ConfigParameters,
   type ExtensionLoader,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import { logger } from '../utils/logger.js';
 import type { Settings } from './settings.js';

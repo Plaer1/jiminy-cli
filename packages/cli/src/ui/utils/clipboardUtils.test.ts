@@ -41,9 +41,9 @@ vi.mock('node:child_process', async (importOriginal) => {
     execSync: vi.fn(),
   };
 });
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     spawnAsync: vi.fn(),
@@ -58,7 +58,7 @@ vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   };
 });
 
-import { spawnAsync } from '@google/jiminy-cli-core';
+import { spawnAsync } from '@plaer1/jiminy-cli-core';
 // Keep static imports for stateless functions
 import {
   cleanupOldClipboardImages,

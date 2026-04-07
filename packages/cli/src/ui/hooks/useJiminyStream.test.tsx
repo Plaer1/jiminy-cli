@@ -36,7 +36,7 @@ import type {
   SpanMetadata,
   CompletedToolCall,
   ToolCallRequestInfo,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   CoreToolCallStatus,
   ApprovalMode,
@@ -52,7 +52,7 @@ import {
   MCPDiscoveryState,
   JiminyCliOperation,
   getPlanModeExitMessage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { Part, PartListUnion } from '@google/genai';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import type {
@@ -149,7 +149,7 @@ const mockRunInDevTraceSpan = vi.hoisted(() =>
   }),
 );
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actualCoreModule = (await importOriginal()) as any;
   return {
     ...actualCoreModule,

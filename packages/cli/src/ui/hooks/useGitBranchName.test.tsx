@@ -12,13 +12,13 @@ import { useGitBranchName } from './useGitBranchName.js';
 import { fs, vol } from 'memfs';
 import * as fsPromises from 'node:fs/promises';
 import path from 'node:path'; // For mocking fs
-import { spawnAsync as mockSpawnAsync } from '@google/jiminy-cli-core';
+import { spawnAsync as mockSpawnAsync } from '@plaer1/jiminy-cli-core';
 
-// Mock @google/jiminy-cli-core
-vi.mock('@google/jiminy-cli-core', async () => {
+// Mock @plaer1/jiminy-cli-core
+vi.mock('@plaer1/jiminy-cli-core', async () => {
   const original = await vi.importActual<
-    typeof import('@google/jiminy-cli-core')
-  >('@google/jiminy-cli-core');
+    typeof import('@plaer1/jiminy-cli-core')
+  >('@plaer1/jiminy-cli-core');
   return {
     ...original,
     spawnAsync: vi.fn(),

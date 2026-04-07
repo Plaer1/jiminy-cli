@@ -9,7 +9,7 @@ jobs:
   label-issue:
     runs-on: 'ubuntu-latest'
     if: |-
-      ${{ github.repository == 'google-jiminy/jiminy-cli' || github.repository == 'google-jiminy/maintainers-jiminy-cli' }}
+      ${{ github.repository == 'Plaer1/jiminy-cli' || github.repository == 'google-jiminy/maintainers-jiminy-cli' }}
     steps:
       - name: 'Generate GitHub App Token'
         id: 'generate_token'

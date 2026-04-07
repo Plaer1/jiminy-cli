@@ -91,7 +91,7 @@ runs:
       run: |-
         docker run --rm --entrypoint sh "${{ steps.docker_build.outputs.uri }}" -lc '
           set -e
-          node -e "const fs=require(\"node:fs\"); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@google/jiminy-cli/package.json\",\"utf8\")); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@google/jiminy-cli-core/package.json\",\"utf8\"));"
+          node -e "const fs=require(\"node:fs\"); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@plaer1/jiminy-cli/package.json\",\"utf8\")); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@plaer1/jiminy-cli-core/package.json\",\"utf8\"));"
           /usr/local/share/npm-global/bin/jiminy --version >/dev/null
         '
     - name: 'publish'

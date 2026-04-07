@@ -11,9 +11,9 @@ import * as path from 'node:path';
 import * as fs from 'node:fs';
 import * as fsPromises from 'node:fs/promises';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...original,
     homedir: () => mockHomeDir,

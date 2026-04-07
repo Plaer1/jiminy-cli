@@ -9,12 +9,12 @@ import type {
   IndividualToolCallDisplay,
 } from '../types.js';
 import { useCallback, useReducer, useRef, useEffect } from 'react';
-import type { AnsiOutput, Config, JiminyClient } from '@google/jiminy-cli-core';
+import type { AnsiOutput, Config, JiminyClient } from '@plaer1/jiminy-cli-core';
 import {
   isBinary,
   ShellExecutionService,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type PartListUnion } from '@google/genai';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { SHELL_COMMAND_NAME } from '../constants.js';

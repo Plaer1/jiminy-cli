@@ -9,7 +9,7 @@ import {
   sessionId as globalSessionId,
   Logger,
   type Storage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { ConfigContext } from '../contexts/ConfigContext.js';
 
 /**

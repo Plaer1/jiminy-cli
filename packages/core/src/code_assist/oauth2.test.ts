@@ -1033,7 +1033,7 @@ describe('oauth2', () => {
         // Assert that we correctly redirected to the failure page
         expect(mockRes.writeHead).toHaveBeenCalledWith(301, {
           Location:
-            'https://developers.google.com/jiminy-code-assist/auth_failure_jiminy',
+            'https://developers.google.com/gemini-code-assist/auth/auth_failure_gemini',
         });
         expect(mockRes.end).toHaveBeenCalled();
       });

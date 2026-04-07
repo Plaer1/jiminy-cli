@@ -1,4 +1,4 @@
-# Jiminy CLI SDK (`@google/jiminy-cli-sdk`)
+# Jiminy CLI SDK (`@plaer1/jiminy-cli-sdk`)
 
 Programmatic SDK for embedding Jiminy CLI agent capabilities into other
 applications.
@@ -14,5 +14,5 @@ applications.
 
 ## Testing
 
-- Run tests: `npm test -w @google/jiminy-cli-sdk`
+- Run tests: `npm test -w @plaer1/jiminy-cli-sdk`
 - Integration tests use `*.integration.test.ts` naming convention.

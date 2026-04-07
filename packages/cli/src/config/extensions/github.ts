@@ -10,7 +10,7 @@ import {
   getErrorMessage,
   type ExtensionInstallMetadata,
   type JiminyCLIExtension,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { ExtensionUpdateState } from '../../ui/state/extensions.js';
 import * as os from 'node:os';
 import * as https from 'node:https';

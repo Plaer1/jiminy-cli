@@ -7,7 +7,7 @@
 import type React from 'react';
 import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
-import { type IdeContext, type MCPServerConfig } from '@google/jiminy-cli-core';
+import { type IdeContext, type MCPServerConfig } from '@plaer1/jiminy-cli-core';
 
 interface ContextSummaryDisplayProps {
   jiminyMdFileCount: number;

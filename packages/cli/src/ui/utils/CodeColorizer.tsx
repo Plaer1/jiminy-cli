@@ -21,7 +21,7 @@ import {
   MaxSizedBox,
   MINIMUM_MAX_HEIGHT,
 } from '../components/shared/MaxSizedBox.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 import type { LoadedSettings } from '../../config/settings.js';
 
 // Configure theming and parsing utilities.

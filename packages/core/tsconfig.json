@@ -7,7 +7,7 @@
     "types": ["node", "vitest/globals"],
     "baseUrl": ".",
     "paths": {
-      "@google/jiminy-cli-core": ["./index.ts"]
+      "@plaer1/jiminy-cli-core": ["./index.ts"]
     }
   },
   "include": ["index.ts", "src/**/*.ts", "src/**/*.json"],

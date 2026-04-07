@@ -17,7 +17,7 @@ import { loadTrustedFolders, TrustLevel } from '../../config/trustedFolders.js';
 import { expandHomeDir } from '../utils/directoryUtils.js';
 import * as path from 'node:path';
 import { MessageType, type HistoryItem } from '../types.js';
-import { type Config } from '@google/jiminy-cli-core';
+import { type Config } from '@plaer1/jiminy-cli-core';
 
 export enum MultiFolderTrustChoice {
   YES,

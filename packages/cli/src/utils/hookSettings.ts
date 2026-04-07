@@ -9,7 +9,7 @@ import {
   isLoadableSettingScope,
   type LoadedSettings,
 } from '../config/settings.js';
-import { getErrorMessage } from '@google/jiminy-cli-core';
+import { getErrorMessage } from '@plaer1/jiminy-cli-core';
 import type { ModifiedScope } from './skillSettings.js';
 
 export type HookActionStatus = 'success' | 'no-op' | 'error';

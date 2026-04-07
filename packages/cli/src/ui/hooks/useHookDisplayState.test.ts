@@ -12,7 +12,7 @@ import {
   CoreEvent,
   type HookStartPayload,
   type HookEndPayload,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { act } from 'react';
 import { WARNING_PROMPT_DURATION_MS } from '../constants.js';
 

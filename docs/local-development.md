@@ -137,8 +137,8 @@ Adding traces helps you debug and understand the flow of execution. Use the
 Here is a basic example:
 
 ```typescript
-import { runInDevTraceSpan } from '@google/jiminy-cli-core';
-import { JiminyCliOperation } from '@google/jiminy-cli-core/lib/telemetry/constants.js';
+import { runInDevTraceSpan } from '@plaer1/jiminy-cli-core';
+import { JiminyCliOperation } from '@plaer1/jiminy-cli-core/lib/telemetry/constants.js';
 
 await runInDevTraceSpan(
   {

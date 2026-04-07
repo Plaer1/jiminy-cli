@@ -30,7 +30,7 @@ import {
   debugLogger,
   SimpleExtensionLoader,
   GitService,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { Command, CommandArgument } from '../commands/types.js';
 
 type CommandResponse = {

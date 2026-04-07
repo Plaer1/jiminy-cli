@@ -9,7 +9,7 @@ import {
   fetchWithTimeout,
   resolveToRealPath,
   isPrivateIp,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { AsyncFzf } from 'fzf';
 
 export interface RegistryExtension {

@@ -5,7 +5,7 @@
  */
 
 import type { CommandModule } from 'yargs';
-import { debugLogger, getErrorMessage } from '@google/jiminy-cli-core';
+import { debugLogger, getErrorMessage } from '@plaer1/jiminy-cli-core';
 import chalk from 'chalk';
 
 import { exitCli } from '../utils.js';

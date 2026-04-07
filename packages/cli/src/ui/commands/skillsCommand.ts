@@ -17,7 +17,7 @@ import {
 } from '../types.js';
 import { disableSkill, enableSkill } from '../../utils/skillSettings.js';
 
-import { getAdminErrorMessage, getErrorMessage } from '@google/jiminy-cli-core';
+import { getAdminErrorMessage, getErrorMessage } from '@plaer1/jiminy-cli-core';
 import {
   linkSkill,
   renderSkillActionFeedback,

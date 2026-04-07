@@ -16,12 +16,12 @@ import {
   escapePath,
   type Config,
   type FileSearch,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   createTmpDir,
   cleanupTmpDir,
   type FileSystemStructure,
-} from '@google/jiminy-cli-test-utils';
+} from '@plaer1/jiminy-cli-test-utils';
 import type { Suggestion } from '../components/SuggestionsDisplay.js';
 
 // Test harness to capture the state from the hook's callbacks.

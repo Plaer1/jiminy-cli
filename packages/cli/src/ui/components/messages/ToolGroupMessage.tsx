@@ -23,7 +23,7 @@ import {
   shouldHideToolCall,
   CoreToolCallStatus,
   Kind,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { useUIState } from '../../contexts/UIStateContext.js';
 import { getToolGroupBorderAppearance } from '../../utils/borderStyles.js';
 import { useSettings } from '../../contexts/SettingsContext.js';

@@ -15,7 +15,7 @@ installation methods, and release types.
 - **Runtime:** Node.js 20.0.0+
 - **Shell:** Bash, Zsh, or PowerShell
 - **Location:**
-  [Jiminy Code Assist supported locations](https://developers.google.com/jiminy-code-assist/resources/available-locations#americas)
+  [Jiminy Code Assist supported locations](https://developers.google.com/gemini-code-assist/resources/available-locations#americas)
 - **Internet connection required**
 
 ## Install Jiminy CLI
@@ -35,7 +35,7 @@ Note that Jiminy CLI comes pre-installed on
 ### Install globally with npm
 
 ```bash
-npm install -g @google/jiminy-cli
+npm install -g @plaer1/jiminy-cli
 ```
 
 ### Install globally with Homebrew (macOS/Linux)
@@ -58,7 +58,7 @@ conda create -y -n jiminy_env -c conda-forge nodejs
 conda activate jiminy_env
 
 # Install Jiminy CLI globally via npm (inside the environment)
-npm install -g @google/jiminy-cli
+npm install -g @plaer1/jiminy-cli
 ```
 
 ## Run Jiminy CLI
@@ -82,14 +82,14 @@ You can also run Jiminy CLI using one of the following advanced methods:
 
 ```bash
 # Using npx (no installation required)
-npx @google/jiminy-cli
+npx @plaer1/jiminy-cli
 ```
 
 You can also execute the CLI directly from the main branch on GitHub, which is
 helpful for testing features still in development:
 
 ```bash
-npx https://github.com/google-jiminy/jiminy-cli
+npx https://github.com/Plaer1/jiminy-cli
 ```
 
 ### Run in a sandbox (Docker/Podman)
@@ -148,8 +148,8 @@ by default:
 
 ```bash
 # Both commands install the latest stable release.
-npm install -g @google/jiminy-cli
-npm install -g @google/jiminy-cli@latest
+npm install -g @plaer1/jiminy-cli
+npm install -g @plaer1/jiminy-cli@latest
 ```
 
 ### Preview
@@ -159,7 +159,7 @@ vetted and may contain regressions or other outstanding issues. Try out the
 preview release by using the `preview` tag:
 
 ```bash
-npm install -g @google/jiminy-cli@preview
+npm install -g @plaer1/jiminy-cli@preview
 ```
 
 ### Nightly
@@ -170,5 +170,5 @@ pending validations and issues. You can help test the latest changes by
 installing with the `nightly` tag:
 
 ```bash
-npm install -g @google/jiminy-cli@nightly
+npm install -g @plaer1/jiminy-cli@nightly
 ```

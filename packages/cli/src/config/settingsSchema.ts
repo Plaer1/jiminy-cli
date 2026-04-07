@@ -21,7 +21,7 @@ import {
   type AgentOverride,
   type CustomTheme,
   type SandboxConfig,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { SessionRetentionSettings } from './settings.js';
 import { DEFAULT_MIN_RETENTION } from '../utils/sessionCleanup.js';
 

@@ -14,16 +14,16 @@ import {
   debugLogger,
   TOOL_OUTPUTS_DIR,
   Storage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { Settings } from '../config/settings.js';
 import {
   cleanupExpiredSessions,
   cleanupToolOutputFiles,
 } from './sessionCleanup.js';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     debugLogger: {

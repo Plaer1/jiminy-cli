@@ -12,9 +12,9 @@ import {
   useErrorCount,
   initializeConsoleStore,
 } from './useConsoleMessages.js';
-import { coreEvents } from '@google/jiminy-cli-core';
+import { coreEvents } from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual = await importOriginal();
   const handlers = new Map<string, (payload: unknown) => void>();
 

@@ -25,7 +25,7 @@ import {
   writeToStdout,
   getVersion,
   debugLogger,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { InitializationResult } from './core/initializer.js';
 import type { LoadedSettings } from './config/settings.js';
 import { checkForUpdates } from './ui/utils/updateCheck.js';

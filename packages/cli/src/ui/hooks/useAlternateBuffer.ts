@@ -5,7 +5,7 @@
  */
 
 import { useConfig } from '../contexts/ConfigContext.js';
-import type { Config } from '@google/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 
 export const isAlternateBufferEnabled = (config: Config): boolean =>
   config.getUseAlternateBuffer();

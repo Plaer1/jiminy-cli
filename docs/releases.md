@@ -1,26 +1,19 @@
 # Jiminy CLI releases
 
-## `dev` vs `prod` environment
+## Package scope
 
-Our release flows support both `dev` and `prod` environments.
+This fork publishes packages to the public npm registry under the `@plaer1/**`
+scope.
 
-The `dev` environment pushes to a private Github-hosted NPM repository, with the
-package names beginning with `@google-jiminy/**` instead of `@google/**`.
+More information can be found in the [NPM Package Overview](npm.md).
 
-The `prod` environment pushes to the public global NPM registry via Wombat
-Dressing Room, which is Google's system for managing NPM packages in the
-`@google/**` namespace. The packages are all named `@google/**`.
+### Published packages
 
-More information can be found about these systems in the
-[NPM Package Overview](npm.md)
-
-### Package scopes
-
-| Package    | `prod` (Wombat Dressing Room) | `dev` (Github Private NPM Repo)           |
-| ---------- | ----------------------------- | ----------------------------------------- |
-| CLI        | @google/jiminy-cli            | @google-jiminy/jiminy-cli                 |
-| Core       | @google/jiminy-cli-core       | @google-jiminy/jiminy-cli-core A2A Server |
-| A2A Server | @google/jiminy-cli-a2a-server | @google-jiminy/jiminy-cli-a2a-server      |
+| Package    | npm package                   |
+| ---------- | ----------------------------- |
+| CLI        | @plaer1/jiminy-cli            |
+| Core       | @plaer1/jiminy-cli-core       |
+| A2A Server | @plaer1/jiminy-cli-a2a-server |
 
 ## Release cadence and tags
 
@@ -44,7 +37,7 @@ These releases will not have been fully vetted and may contain regressions or
 other outstanding issues. Please help us test and install with `preview` tag.
 
 ```bash
-npm install -g @google/jiminy-cli@preview
+npm install -g @plaer1/jiminy-cli@preview
 ```
 
 ### Stable
@@ -53,7 +46,7 @@ This will be the full promotion of last week's release + any bug fixes and
 validations. Use `latest` tag.
 
 ```bash
-npm install -g @google/jiminy-cli@latest
+npm install -g @plaer1/jiminy-cli@latest
 ```
 
 ### Nightly
@@ -63,7 +56,7 @@ npm install -g @google/jiminy-cli@latest
   there are pending validations and issues. Use `nightly` tag.
 
 ```bash
-npm install -g @google/jiminy-cli@nightly
+npm install -g @plaer1/jiminy-cli@nightly
 ```
 
 ## Weekly release promotion
@@ -376,12 +369,12 @@ packages are working as expected. This can be done by installing the packages
 locally and running a set of tests to ensure that they are functioning
 correctly.
 
-- `npx -y @google/jiminy-cli@latest --version` to validate the push worked as
+- `npx -y @plaer1/jiminy-cli@latest --version` to validate the push worked as
   expected if you were not doing a rc or dev tag
-- `npx -y @google/jiminy-cli@<release tag> --version` to validate the tag pushed
+- `npx -y @plaer1/jiminy-cli@<release tag> --version` to validate the tag pushed
   appropriately
 - _This is destructive locally_
-  `npm uninstall @google/jiminy-cli && npm uninstall -g @google/jiminy-cli && npm cache clean --force &&  npm install @google/jiminy-cli@<version>`
+  `npm uninstall @plaer1/jiminy-cli && npm uninstall -g @plaer1/jiminy-cli && npm cache clean --force &&  npm install @plaer1/jiminy-cli@<version>`
 - Smoke testing a basic run through of exercising a few llm commands and tools
   is recommended to ensure that the packages are working as expected. We'll
   codify this more in the future.
@@ -393,7 +386,7 @@ creating a public GitHub release, you can trigger the workflow manually from the
 GitHub UI.
 
 1.  Go to the
-    [Actions tab](https://github.com/google-jiminy/jiminy-cli/actions/workflows/release-manual.yml)
+    [Actions tab](https://github.com/Plaer1/jiminy-cli/actions/workflows/release-manual.yml)
     of the repository.
 2.  Click on the "Run workflow" dropdown.
 3.  Leave the `dry_run` option checked (`true`).
@@ -459,10 +452,10 @@ Here are the key stages:
 **Stage 3: Publishing standard packages to NPM**
 
 - **What happens:** The `npm publish` command is run for the
-  `@google/jiminy-cli-core` and `@google/jiminy-cli` packages.
+  `@plaer1/jiminy-cli-core` and `@plaer1/jiminy-cli` packages.
 - **Why:** This publishes them as standard Node.js packages. Users installing
-  via `npm install -g @google/jiminy-cli` will download these packages, and
-  `npm` will handle installing the `@google/jiminy-cli-core` dependency
+  via `npm install -g @plaer1/jiminy-cli` will download these packages, and
+  `npm` will handle installing the `@plaer1/jiminy-cli-core` dependency
   automatically. The code in these packages is not bundled into a single file.
 
 **Stage 4: Assembling and creating the GitHub release asset**
@@ -497,15 +490,14 @@ executable that enables `npx` usage directly from the GitHub repository.
     - **What happens:** The contents of the `bundle` directory, including the
       `jiminy.js` executable, are attached as assets to a new GitHub Release.
     - **Why:** This makes the single-file version of the CLI available for
-      direct download and enables the
-      `npx https://github.com/google-jiminy/jiminy-cli` command, which downloads
-      and runs this specific bundled asset.
+      direct download and enables the `npx https://github.com/Plaer1/jiminy-cli`
+      command, which downloads and runs this specific bundled asset.
 
 **Summary of artifacts**
 
 - **NPM:** Publishes standard, un-bundled Node.js packages. The primary artifact
   is the code in `packages/cli/dist`, which depends on
-  `@google/jiminy-cli-core`.
+  `@plaer1/jiminy-cli-core`.
 - **GitHub release:** Publishes a single, bundled `jiminy.js` file that contains
   all dependencies, for easy execution via `npx`.
 

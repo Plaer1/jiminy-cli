@@ -12,7 +12,7 @@ import {
   type SessionMetrics,
 } from './SessionContext.js';
 import { describe, it, expect, vi } from 'vitest';
-import { uiTelemetryService } from '@google/jiminy-cli-core';
+import { uiTelemetryService } from '@plaer1/jiminy-cli-core';
 
 class ErrorBoundary extends Component<
   { children: ReactNode; onError: (error: Error) => void },

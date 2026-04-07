@@ -6,7 +6,7 @@
 
 import type React from 'react';
 import { Box, Text } from 'ink';
-import type { AnsiLine, AnsiOutput, AnsiToken } from '@google/jiminy-cli-core';
+import type { AnsiLine, AnsiOutput, AnsiToken } from '@plaer1/jiminy-cli-core';
 
 const DEFAULT_HEIGHT = 24;
 

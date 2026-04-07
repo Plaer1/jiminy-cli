@@ -7,7 +7,7 @@
 import { render } from '../../../test-utils/render.js';
 import { describe, it, expect } from 'vitest';
 import { SkillsList } from './SkillsList.js';
-import { type SkillDefinition } from '@google/jiminy-cli-core';
+import { type SkillDefinition } from '@plaer1/jiminy-cli-core';
 
 describe('SkillsList Component', () => {
   const mockSkills: SkillDefinition[] = [

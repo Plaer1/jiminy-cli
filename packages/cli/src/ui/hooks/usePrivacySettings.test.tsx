@@ -12,14 +12,14 @@ import {
   getCodeAssistServer,
   type Config,
   type CodeAssistServer,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { usePrivacySettings } from './usePrivacySettings.js';
 import { waitFor } from '../../test-utils/async.js';
 
 // Mock the dependencies
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     getCodeAssistServer: vi.fn(),

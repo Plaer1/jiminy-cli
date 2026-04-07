@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { isWithinRoot, type FileSystemService } from '@google/jiminy-cli-core';
+import { isWithinRoot, type FileSystemService } from '@plaer1/jiminy-cli-core';
 import type * as acp from '@agentclientprotocol/sdk';
 import os from 'node:os';
 import path from 'node:path';

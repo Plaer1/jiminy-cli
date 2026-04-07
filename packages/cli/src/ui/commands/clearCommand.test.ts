@@ -10,8 +10,8 @@ import { type CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 
 // Mock the telemetry service
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     uiTelemetryService: {
@@ -21,7 +21,7 @@ vi.mock('@google/jiminy-cli-core', async () => {
   };
 });
 
-import { uiTelemetryService, type JiminyClient } from '@google/jiminy-cli-core';
+import { uiTelemetryService, type JiminyClient } from '@plaer1/jiminy-cli-core';
 
 describe('clearCommand', () => {
   let mockContext: CommandContext;

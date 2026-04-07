@@ -15,7 +15,7 @@ import {
   GEMINI_DIR,
   type Config,
   type GitService,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 describe('restoreCommand', () => {
   let mockContext: CommandContext;

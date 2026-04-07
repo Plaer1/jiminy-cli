@@ -5,7 +5,7 @@
  */
 
 import { Box } from 'ink';
-import { type Config, AuthType } from '@google/jiminy-cli-core';
+import { type Config, AuthType } from '@plaer1/jiminy-cli-core';
 import { JiminyPrivacyNotice } from './JiminyPrivacyNotice.js';
 import { CloudPaidPrivacyNotice } from './CloudPaidPrivacyNotice.js';
 import { CloudFreePrivacyNotice } from './CloudFreePrivacyNotice.js';

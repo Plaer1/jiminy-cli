@@ -16,7 +16,7 @@ import {
 } from 'vitest';
 import * as fs from 'node:fs';
 import { loadSettings, SettingScope } from '../../config/settings.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 import { handleMigrateFromClaude } from './migrate.js';
 
 vi.mock('node:fs');

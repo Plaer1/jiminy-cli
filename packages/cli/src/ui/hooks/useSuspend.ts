@@ -13,7 +13,7 @@ import {
   exitAlternateScreen,
   enableLineWrapping,
   disableLineWrapping,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import process from 'node:process';
 import {
   cleanupTerminalOnExit,

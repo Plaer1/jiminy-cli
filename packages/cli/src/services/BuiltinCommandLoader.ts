@@ -11,13 +11,13 @@ import {
   type SlashCommand,
   type CommandContext,
 } from '../ui/commands/types.js';
-import type { MessageActionReturn, Config } from '@google/jiminy-cli-core';
+import type { MessageActionReturn, Config } from '@plaer1/jiminy-cli-core';
 import {
   isNightly,
   startupProfiler,
   getAdminErrorMessage,
   AuthType,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { aboutCommand } from '../ui/commands/aboutCommand.js';
 import { agentsCommand } from '../ui/commands/agentsCommand.js';
 import { authCommand } from '../ui/commands/authCommand.js';

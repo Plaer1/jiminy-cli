@@ -23,7 +23,7 @@ import {
   MCPServerStatus,
   type McpClient,
   coreEvents,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { Text } from 'ink';
 
 // Mock JiminySpinner

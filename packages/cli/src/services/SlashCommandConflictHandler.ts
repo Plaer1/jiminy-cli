@@ -9,7 +9,7 @@ import {
   CoreEvent,
   type SlashCommandConflictsPayload,
   type SlashCommandConflict,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { CommandKind } from '../ui/commands/types.js';
 
 /**

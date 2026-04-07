@@ -5,7 +5,7 @@
  */
 
 import * as path from 'node:path';
-import { homedir } from '@google/jiminy-cli-core';
+import { homedir } from '@plaer1/jiminy-cli-core';
 
 export function resolvePath(p: string): string {
   if (!p) {

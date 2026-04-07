@@ -16,7 +16,7 @@ import {
   getErrorMessage,
   type JiminyCLIExtension,
   IntegrityDataStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as fs from 'node:fs';
 import { copyExtension, type ExtensionManager } from '../extension-manager.js';
 import { ExtensionStorage } from './storage.js';

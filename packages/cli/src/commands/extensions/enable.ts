@@ -12,7 +12,7 @@ import {
   debugLogger,
   FatalConfigError,
   getErrorMessage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { promptForSetting } from '../../config/extensions/extensionSettings.js';
 import { exitCli } from '../utils.js';
 import { McpServerEnablementManager } from '../../config/mcp/mcpServerEnablement.js';

@@ -65,7 +65,7 @@ permission before executing tools.
     "streaming": true,
     "extensions": [
       {
-        "uri": "https://github.com/google-jiminy/jiminy-cli/blob/main/docs/a2a/developer-profile/v0/spec.md",
+        "uri": "https://github.com/Plaer1/jiminy-cli/blob/main/docs/a2a/developer-profile/v0/spec.md",
         "description": "An extension for interactive development tasks, enabling features like code generation, tool usage, and real-time status updates.",
         "required": true
       }

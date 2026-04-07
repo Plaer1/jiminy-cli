@@ -114,7 +114,7 @@ jobs:
         run: 'npm run build:binary'
 
       - name: 'Build Core Package'
-        run: 'npm run build -w @google/jiminy-cli-core'
+        run: 'npm run build -w @plaer1/jiminy-cli-core'
 
       - name: 'Verify Output Exists'
         run: |

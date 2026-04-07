@@ -31,9 +31,9 @@ vi.mock('./CliSpinner.js', () => ({
 const mockOpenBrowserSecurely = vi.fn();
 const mockShouldLaunchBrowser = vi.fn();
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     openBrowserSecurely: (...args: unknown[]) =>

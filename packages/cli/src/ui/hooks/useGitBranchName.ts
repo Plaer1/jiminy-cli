@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { spawnAsync } from '@google/jiminy-cli-core';
+import { spawnAsync } from '@plaer1/jiminy-cli-core';
 import fs from 'node:fs';
 import fsPromises from 'node:fs/promises';
 import path from 'node:path';

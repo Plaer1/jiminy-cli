@@ -12,7 +12,7 @@ import type {
   SettingsFile,
 } from '../../config/settings.js';
 import { SettingScope } from '../../config/settings.js';
-import { checkExhaustive } from '@google/jiminy-cli-core';
+import { checkExhaustive } from '@plaer1/jiminy-cli-core';
 
 export const SettingsContext = React.createContext<LoadedSettings | undefined>(
   undefined,

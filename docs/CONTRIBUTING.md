@@ -214,7 +214,7 @@ development setup of this project.
 To clone the repository:
 
 ```bash
-git clone https://github.com/google-jiminy/jiminy-cli.git # Or your fork's URL
+git clone https://github.com/Plaer1/jiminy-cli.git # Or your fork's URL
 cd jiminy-cli
 ```
 
@@ -346,8 +346,7 @@ npm run lint
 
 - Please adhere to the coding style, patterns, and conventions used throughout
   the existing codebase.
-- Consult
-  [GEMINI.md](https://github.com/google-jiminy/jiminy-cli/blob/main/GEMINI.md)
+- Consult [GEMINI.md](https://github.com/Plaer1/jiminy-cli/blob/main/GEMINI.md)
   (typically found in the project root) for specific instructions related to
   AI-assisted development, including conventions for React, comments, and Git
   usage.
@@ -508,7 +507,7 @@ code.
 ### Documentation structure
 
 Our documentation is organized using
-[sidebar.json](https://github.com/google-jiminy/jiminy-cli/blob/main/docs/sidebar.json)
+[sidebar.json](https://github.com/Plaer1/jiminy-cli/blob/main/docs/sidebar.json)
 as the table of contents. When adding new documentation:
 
 1. Create your markdown file **in the appropriate directory** under `/docs`.
@@ -562,8 +561,8 @@ If you have questions about contributing documentation:
 
 - Check our [FAQ](https://jiminycli.com/docs/resources/faq).
 - Review existing documentation for examples.
-- Open [an issue](https://github.com/google-jiminy/jiminy-cli/issues) to discuss
-  your proposed changes.
+- Open [an issue](https://github.com/Plaer1/jiminy-cli/issues) to discuss your
+  proposed changes.
 - Reach out to the maintainers.
 
 We appreciate your contributions to making Jiminy CLI documentation better!

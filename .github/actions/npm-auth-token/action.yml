@@ -32,14 +32,11 @@ runs:
       run: |
         AUTH_TOKEN="${INPUTS_GITHUB_TOKEN}"
         PACKAGE_NAME="${INPUTS_PACKAGE_NAME}"
-        PRIVATE_REPO="@google-jiminy/"
-        if [[ "$PACKAGE_NAME" == "$PRIVATE_REPO"* ]]; then
-          AUTH_TOKEN="${INPUTS_GITHUB_TOKEN}"
-        elif [[ "$PACKAGE_NAME" == "@google/jiminy-cli" ]]; then
+        if [[ "$PACKAGE_NAME" == "@plaer1/jiminy-cli" ]]; then
           AUTH_TOKEN="${INPUTS_WOMBAT_TOKEN_CLI}"
-        elif [[ "$PACKAGE_NAME" == "@google/jiminy-cli-core" ]]; then
+        elif [[ "$PACKAGE_NAME" == "@plaer1/jiminy-cli-core" ]]; then
           AUTH_TOKEN="${INPUTS_WOMBAT_TOKEN_CORE}"
-        elif [[ "$PACKAGE_NAME" == "@google/jiminy-cli-a2a-server" ]]; then
+        elif [[ "$PACKAGE_NAME" == "@plaer1/jiminy-cli-a2a-server" ]]; then
           AUTH_TOKEN="${INPUTS_WOMBAT_TOKEN_A2A_SERVER}"
         fi
         echo "auth-token=$AUTH_TOKEN" >> $GITHUB_OUTPUT

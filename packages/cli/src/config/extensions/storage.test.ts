@@ -13,7 +13,7 @@ import {
   EXTENSION_SETTINGS_FILENAME,
   EXTENSIONS_CONFIG_FILENAME,
 } from './variables.js';
-import { Storage } from '@google/jiminy-cli-core';
+import { Storage } from '@plaer1/jiminy-cli-core';
 
 vi.mock('node:os');
 vi.mock('node:fs', async (importOriginal) => {
@@ -26,7 +26,7 @@ vi.mock('node:fs', async (importOriginal) => {
     },
   };
 });
-vi.mock('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core');
 
 describe('ExtensionStorage', () => {
   const mockHomeDir = '/mock/home';

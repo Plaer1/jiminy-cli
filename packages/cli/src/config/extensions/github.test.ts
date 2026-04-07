@@ -28,12 +28,12 @@ import { EventEmitter } from 'node:events';
 import type {
   JiminyCLIExtension,
   ExtensionInstallMetadata,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { ExtensionConfig } from '../extension.js';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     Storage: {

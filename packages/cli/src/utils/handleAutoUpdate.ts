@@ -15,7 +15,7 @@ import { updateEventEmitter } from './updateEventEmitter.js';
 import { MessageType, type HistoryItem } from '../ui/types.js';
 import { spawnWrapper } from './spawnWrapper.js';
 import type { spawn } from 'node:child_process';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 
 let _updateInProgress = false;
 

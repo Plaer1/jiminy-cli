@@ -482,6 +482,6 @@ jiminy --approval-mode plan -p "Analyze telemetry and suggest improvements"
 ```
 
 [`plan.toml`]:
-  https://github.com/google-jiminy/jiminy-cli/blob/main/packages/core/src/policy/policies/plan.toml
+  https://github.com/Plaer1/jiminy-cli/blob/main/packages/core/src/policy/policies/plan.toml
 [Conductor]: https://github.com/jiminy-cli-extensions/conductor
-[open an issue]: https://github.com/google-jiminy/jiminy-cli/issues
+[open an issue]: https://github.com/Plaer1/jiminy-cli/issues

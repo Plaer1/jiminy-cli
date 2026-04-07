@@ -48,7 +48,7 @@ All workflows in `.github/workflows/chained_e2e.yml` must pass.
 After a release is published to npm, the `smoke-test.yml` workflow runs. This
 must pass to confirm the package is installable and the binary is executable.
 
-- **Command:** `npx -y @google/jiminy-cli@<tag> --version` must return the
+- **Command:** `npx -y @plaer1/jiminy-cli@<tag> --version` must return the
   correct version without error.
 - **Platform:** Currently runs on `ubuntu-latest`.
 
@@ -65,7 +65,7 @@ The weekly release cadence promotes code from `main` -> `nightly` -> `preview`
   least **one week** before being promoted to `stable`.
 - **Action:** Maintainers should install the preview version locally:
   ```bash
-  npm install -g @google/jiminy-cli@preview
+  npm install -g @plaer1/jiminy-cli@preview
   ```
 - **Goal:** To catch regressions and UX issues in day-to-day usage before they
   reach the broad user base.
@@ -77,9 +77,9 @@ manually run through this checklist.
 
 - **Setup:**
   - [ ] Uninstall any existing global version:
-        `npm uninstall -g @google/jiminy-cli`
+        `npm uninstall -g @plaer1/jiminy-cli`
   - [ ] Clear npx cache (optional but recommended): `npm cache clean --force`
-  - [ ] Install the preview version: `npm install -g @google/jiminy-cli@preview`
+  - [ ] Install the preview version: `npm install -g @plaer1/jiminy-cli@preview`
   - [ ] Verify version: `jiminy --version`
 
 - **Authentication:**

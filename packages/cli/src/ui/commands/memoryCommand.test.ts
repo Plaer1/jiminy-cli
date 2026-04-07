@@ -19,11 +19,11 @@ import {
   addMemory,
   listMemoryFiles,
   flattenMemory,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...original,
     getErrorMessage: vi.fn((error: unknown) => {

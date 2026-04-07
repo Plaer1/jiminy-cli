@@ -6,7 +6,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { coreEvents, type JiminyCLIExtension } from '@google/jiminy-cli-core';
+import { coreEvents, type JiminyCLIExtension } from '@plaer1/jiminy-cli-core';
 import { ExtensionStorage } from './storage.js';
 
 export interface ExtensionEnablementConfig {

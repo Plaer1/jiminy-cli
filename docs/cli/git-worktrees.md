@@ -14,7 +14,7 @@ Learn more about [session management](./session-management.md).
 > feedback is invaluable as we refine this feature. If you have ideas,
 > suggestions, or encounter issues:
 >
-> - [Open an issue](https://github.com/google-jiminy/jiminy-cli/issues/new?template=bug_report.yml) on GitHub.
+> - [Open an issue](https://github.com/Plaer1/jiminy-cli/issues/new?template=bug_report.yml) on GitHub.
 > - Use the **/bug** command within Jiminy CLI to file an issue.
 
 Learn more in the official Git worktree
@@ -104,4 +104,4 @@ a preserved worktree, you can use Git directly:
   cd ../project-feature-search && jiminy
   ```
 
-[Open an issue]: https://github.com/google-jiminy/jiminy-cli/issues
+[Open an issue]: https://github.com/Plaer1/jiminy-cli/issues

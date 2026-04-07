@@ -18,7 +18,7 @@ import {
   isHeadlessMode,
   coreEvents,
   type HeadlessModeOptions,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { Settings } from './settings.js';
 import stripJsonComments from 'strip-json-comments';
 

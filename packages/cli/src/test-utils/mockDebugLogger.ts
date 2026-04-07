@@ -43,15 +43,15 @@ export function createMockDebugLogger(options: { stripAnsi?: boolean } = {}) {
 }
 
 /**
- * A helper specifically designed for `vi.mock('@google/jiminy-cli-core', ...)` to easily
+ * A helper specifically designed for `vi.mock('@plaer1/jiminy-cli-core', ...)` to easily
  * mock both `debugLogger` and `coreEvents.emitConsoleLog`.
  *
  * Example:
  * ```typescript
- * vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+ * vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
  *   const { mockCoreDebugLogger } = await import('../../test-utils/mockDebugLogger.js');
  *   return mockCoreDebugLogger(
- *     await importOriginal<typeof import('@google/jiminy-cli-core')>(),
+ *     await importOriginal<typeof import('@plaer1/jiminy-cli-core')>(),
  *     { stripAnsi: true }
  *   );
  * });

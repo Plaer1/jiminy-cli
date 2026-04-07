@@ -10,7 +10,7 @@ import {
   type ToolResultDisplay,
   debugLogger,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   type HistoryItemToolGroup,
   type IndividualToolCallDisplay,

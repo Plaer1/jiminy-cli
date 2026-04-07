@@ -18,8 +18,8 @@ import type {
   SessionMetrics,
   ModelMetrics,
   ToolCallStats,
-} from '@google/jiminy-cli-core';
-import { uiTelemetryService, sessionId } from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import { uiTelemetryService, sessionId } from '@plaer1/jiminy-cli-core';
 
 export enum ToolCallDecision {
   ACCEPT = 'accept',

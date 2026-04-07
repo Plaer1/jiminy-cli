@@ -7,7 +7,7 @@
 import type React from 'react';
 import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
-import { type Config } from '@google/jiminy-cli-core';
+import { type Config } from '@plaer1/jiminy-cli-core';
 
 interface TipsProps {
   config: Config;

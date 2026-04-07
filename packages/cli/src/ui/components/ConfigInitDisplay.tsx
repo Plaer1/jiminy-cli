@@ -11,7 +11,7 @@ import {
   coreEvents,
   type McpClient,
   MCPServerStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { JiminySpinner } from './JiminySpinner.js';
 import { theme } from '../semantic-colors.js';
 

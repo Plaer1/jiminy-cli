@@ -9,7 +9,7 @@ import open from 'open';
 import path from 'node:path';
 import { bugCommand } from './bugCommand.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
-import { getVersion } from '@google/jiminy-cli-core';
+import { getVersion } from '@plaer1/jiminy-cli-core';
 import { GIT_COMMIT_INFO } from '../../generated/git-commit.js';
 import { formatBytes } from '../utils/formatters.js';
 
@@ -26,9 +26,9 @@ vi.mock('../utils/historyExportUtils.js', async (importOriginal) => {
 });
 import { exportHistoryToFile } from '../utils/historyExportUtils.js';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     IdeClient: {

@@ -10,7 +10,7 @@ import {
   createSessionId,
   type ResumedSessionData,
   type ConversationRecord,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import { JiminyCliSession } from './session.js';
 import type { JiminyCliAgentOptions } from './types.js';

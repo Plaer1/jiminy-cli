@@ -9,7 +9,7 @@ import {
   hasValidEditorCommand,
   type EditorType,
   EDITOR_DISPLAY_NAMES,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 export interface EditorDisplay {
   name: string;

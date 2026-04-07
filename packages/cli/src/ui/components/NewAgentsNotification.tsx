@@ -6,7 +6,7 @@
 
 import { useState } from 'react';
 import { Box, Text } from 'ink';
-import { type AgentDefinition } from '@google/jiminy-cli-core';
+import { type AgentDefinition } from '@plaer1/jiminy-cli-core';
 import { theme } from '../semantic-colors.js';
 import {
   RadioButtonSelect,

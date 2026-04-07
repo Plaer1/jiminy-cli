@@ -5,13 +5,13 @@
  */
 
 import { useEffect } from 'react';
-import { type Config } from '@google/jiminy-cli-core';
+import { type Config } from '@plaer1/jiminy-cli-core';
 import { loadTrustedFolders } from '../../config/trustedFolders.js';
 import { expandHomeDir, batchAddDirectories } from '../utils/directoryUtils.js';
 import {
   debugLogger,
   refreshServerHierarchicalMemory,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { MultiFolderTrustDialog } from '../components/MultiFolderTrustDialog.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType, type HistoryItem } from '../types.js';

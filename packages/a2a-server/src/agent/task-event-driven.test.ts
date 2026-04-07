@@ -12,7 +12,7 @@ import {
   ApprovalMode,
   Scheduler,
   type MessageBus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { createMockConfig } from '../utils/testing_utils.js';
 import type { ExecutionEventBus } from '@a2a-js/sdk/server';
 

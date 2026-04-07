@@ -19,12 +19,12 @@ import {
   type ConversationRecord,
   type MessageRecord,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   coreEvents,
   convertSessionToClientHistory,
   uiTelemetryService,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 // Mock modules
 vi.mock('fs/promises');
@@ -37,9 +37,9 @@ vi.mock('../../utils/sessionUtils.js', async (importOriginal) => {
     getSessionFiles: vi.fn(),
   };
 });
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     uiTelemetryService: {

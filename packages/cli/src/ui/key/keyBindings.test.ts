@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
-import { Storage } from '@google/jiminy-cli-core';
+import { Storage } from '@plaer1/jiminy-cli-core';
 import {
   Command,
   commandCategories,

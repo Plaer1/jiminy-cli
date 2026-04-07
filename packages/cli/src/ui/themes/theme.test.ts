@@ -13,7 +13,7 @@ import {
   type Theme,
 } from './theme.js';
 import { themeManager } from './theme-manager.js';
-import type { CustomTheme } from '@google/jiminy-cli-core';
+import type { CustomTheme } from '@plaer1/jiminy-cli-core';
 
 describe('createCustomTheme', () => {
   const baseTheme: CustomTheme = {

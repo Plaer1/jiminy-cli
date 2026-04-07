@@ -18,7 +18,7 @@ import {
   expandHomeDir,
   getDirectorySuggestions,
 } from '../utils/directoryUtils.js';
-import type { Config, WorkspaceContext } from '@google/jiminy-cli-core';
+import type { Config, WorkspaceContext } from '@plaer1/jiminy-cli-core';
 import type { MultiFolderTrustDialogProps } from '../components/MultiFolderTrustDialog.js';
 import type { CommandContext, OpenCustomDialogActionReturn } from './types.js';
 import { MessageType } from '../types.js';

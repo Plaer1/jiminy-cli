@@ -15,7 +15,7 @@ import {
   type AnsiOutput,
   type AnsiLine,
   type AnsiToken,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { cpLen, cpSlice, getCachedStringWidth } from '../utils/textUtils.js';
 import { type BackgroundShell } from '../hooks/shellCommandProcessor.js';
 import { Command } from '../key/keyMatchers.js';

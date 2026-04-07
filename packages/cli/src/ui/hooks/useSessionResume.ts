@@ -10,7 +10,7 @@ import {
   type Config,
   type ResumedSessionData,
   convertSessionToClientHistory,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { Part } from '@google/genai';
 import type { HistoryItemWithoutId } from '../types.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';

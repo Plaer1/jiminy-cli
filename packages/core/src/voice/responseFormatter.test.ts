@@ -192,7 +192,7 @@ describe('formatForSpeech', () => {
 
     it('should abbreviate a Unix path containing a scoped npm package segment', () => {
       const result = formatForSpeech(
-        'at /home/user/project/node_modules/@google/jiminy-cli-core/src/index.ts:12:3',
+        'at /home/user/project/node_modules/@plaer1/jiminy-cli-core/src/index.ts:12:3',
         { pathDepth: 5 },
       );
       expect(result).toContain('line 12');

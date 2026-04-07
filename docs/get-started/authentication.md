@@ -297,9 +297,9 @@ To configure Jiminy CLI to use a Google Cloud project, do the following:
 
 1.  [Find your Google Cloud Project ID](https://support.google.com/googleapi/answer/7014113).
 
-2.  [Enable the Jiminy for Cloud API](https://cloud.google.com/jiminy/docs/discover/set-up-jiminy#enable-api).
+2.  [Enable the Jiminy for Cloud API](https://cloud.google.com/gemini/docs/discover/set-up-jiminy#enable-api).
 
-3.  [Configure necessary IAM access permissions](https://cloud.google.com/jiminy/docs/discover/set-up-jiminy#grant-iam).
+3.  [Configure necessary IAM access permissions](https://cloud.google.com/gemini/docs/discover/set-up-jiminy#grant-iam).
 
 4.  Configure your environment variables. Set either the `GOOGLE_CLOUD_PROJECT`
     or `GOOGLE_CLOUD_PROJECT_ID` variable to the project ID to use with Jiminy

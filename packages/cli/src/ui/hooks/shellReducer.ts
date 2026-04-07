@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { AnsiOutput } from '@google/jiminy-cli-core';
+import type { AnsiOutput } from '@plaer1/jiminy-cli-core';
 
 export interface BackgroundShell {
   pid: number;

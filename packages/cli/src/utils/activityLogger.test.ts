@@ -6,7 +6,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ActivityLogger, type NetworkLog } from './activityLogger.js';
-import type { ConsoleLogPayload } from '@google/jiminy-cli-core';
+import type { ConsoleLogPayload } from '@plaer1/jiminy-cli-core';
 
 describe('ActivityLogger', () => {
   let logger: ActivityLogger;

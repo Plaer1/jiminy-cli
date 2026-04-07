@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { ChatRecordingService, type Config } from '@google/jiminy-cli-core';
+import { ChatRecordingService, type Config } from '@plaer1/jiminy-cli-core';
 import { listSessions, deleteSession } from './sessions.js';
 import { SessionSelector, type SessionInfo } from './sessionUtils.js';
 
@@ -20,8 +20,8 @@ vi.mock('./sessionUtils.js', () => ({
   formatRelativeTime: vi.fn(() => 'some time ago'),
 }));
 
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     ChatRecordingService: vi.fn(),

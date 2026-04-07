@@ -7,7 +7,7 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import { join as pathJoin } from 'node:path';
-import { getErrorMessage } from '@google/jiminy-cli-core';
+import { getErrorMessage } from '@plaer1/jiminy-cli-core';
 
 const warningsFilePath = pathJoin(os.tmpdir(), 'jiminy-cli-warnings.txt');
 

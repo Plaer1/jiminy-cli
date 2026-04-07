@@ -21,8 +21,8 @@ import {
   debugLogger,
   ExitCodes,
   coreEvents,
-} from '@google/jiminy-cli-core';
-import type { Config } from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import * as auth from './config/auth.js';
 import { type LoadedSettings } from './config/settings.js';
 

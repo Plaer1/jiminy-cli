@@ -21,13 +21,13 @@ import {
   ROOT_SCHEDULER_ID,
   CoreToolCallStatus,
   type WaitingToolCall,
-} from '@google/jiminy-cli-core';
-import { createMockMessageBus } from '@google/jiminy-cli-core/src/test-utils/mock-message-bus.js';
+} from '@plaer1/jiminy-cli-core';
+import { createMockMessageBus } from '@plaer1/jiminy-cli-core/src/test-utils/mock-message-bus.js';
 
 // Mock Core Scheduler
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     Scheduler: vi.fn().mockImplementation(() => ({
@@ -276,7 +276,7 @@ describe('useToolScheduler', () => {
     };
 
     // Mock the specific return value for this test
-    const { Scheduler } = await import('@google/jiminy-cli-core');
+    const { Scheduler } = await import('@plaer1/jiminy-cli-core');
     vi.mocked(Scheduler).mockImplementation(
       () =>
         ({

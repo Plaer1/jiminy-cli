@@ -14,7 +14,7 @@ import {
 import * as path from 'node:path';
 import { cleanupBackgroundLogs } from './logCleanup.js';
 
-vi.mock('@google/jiminy-cli-core', () => ({
+vi.mock('@plaer1/jiminy-cli-core', () => ({
   ShellExecutionService: {
     getLogDir: vi.fn().mockReturnValue('/tmp/jiminy/tmp/background-processes'),
   },

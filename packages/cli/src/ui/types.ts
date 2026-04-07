@@ -19,7 +19,7 @@ import {
   type AnsiOutput,
   CoreToolCallStatus,
   checkExhaustive,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { PartListUnion } from '@google/genai';
 import { type ReactNode } from 'react';
 

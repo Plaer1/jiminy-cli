@@ -14,7 +14,7 @@ import {
   getErrorMessage,
   type TelemetrySettings,
   homedir,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import stripJsonComments from 'strip-json-comments';
 
 export const USER_SETTINGS_DIR = path.join(homedir(), GEMINI_DIR);

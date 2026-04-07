@@ -1,4 +1,4 @@
-# Jiminy CLI Core (`@google/jiminy-cli-core`)
+# Jiminy CLI Core (`@plaer1/jiminy-cli-core`)
 
 Backend logic for Jiminy CLI: API orchestration, prompt construction, tool
 execution, and agent management.
@@ -42,6 +42,6 @@ execution, and agent management.
 
 ## Testing
 
-- Run tests: `npm test -w @google/jiminy-cli-core`
+- Run tests: `npm test -w @plaer1/jiminy-cli-core`
 - Run a specific test:
-  `npm test -w @google/jiminy-cli-core -- src/path/to/file.test.ts`
+  `npm test -w @plaer1/jiminy-cli-core -- src/path/to/file.test.ts`

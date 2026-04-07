@@ -10,9 +10,9 @@ import { saveClipboardImage } from './clipboardUtils.js';
 
 // Mock dependencies
 vi.mock('node:fs/promises');
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     spawnAsync: vi.fn(),
@@ -45,7 +45,7 @@ describe('saveClipboardImage Windows Path Escaping', () => {
   });
 
   it('should escape single quotes in path for PowerShell script', async () => {
-    const { spawnAsync } = await import('@google/jiminy-cli-core');
+    const { spawnAsync } = await import('@plaer1/jiminy-cli-core');
     vi.mocked(spawnAsync).mockResolvedValue({
       stdout: 'success',
       stderr: '',

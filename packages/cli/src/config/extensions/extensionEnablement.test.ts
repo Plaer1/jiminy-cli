@@ -18,7 +18,7 @@ import {
   coreEvents,
   GEMINI_DIR,
   type JiminyCLIExtension,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 vi.mock('node:os', () => ({
   homedir: vi.fn().mockReturnValue('/virtual-home'),

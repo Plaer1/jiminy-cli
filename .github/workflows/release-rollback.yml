@@ -42,7 +42,7 @@ on:
 
 jobs:
   change-tags:
-    if: "github.repository == 'google-jiminy/jiminy-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     environment: "${{ github.event.inputs.environment || 'prod' }}"
     runs-on: 'ubuntu-latest'
     permissions:

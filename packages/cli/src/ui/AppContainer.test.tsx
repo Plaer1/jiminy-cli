@@ -31,7 +31,7 @@ import {
   AuthType,
   type AgentDefinition,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 // Mock coreEvents
 const mockCoreEvents = vi.hoisted(() => ({
@@ -60,9 +60,9 @@ const terminalNotificationsMocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: mockCoreEvents,
@@ -237,7 +237,7 @@ import {
   writeToStdout,
   enableMouseEvents,
   disableMouseEvents,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type ExtensionManager } from '../config/extension-manager.js';
 import {
   WARNING_PROMPT_DURATION_MS,

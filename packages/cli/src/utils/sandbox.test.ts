@@ -9,8 +9,8 @@ import { spawn, exec, execFile, execSync } from 'node:child_process';
 import os from 'node:os';
 import fs from 'node:fs';
 import { start_sandbox } from './sandbox.js';
-import { FatalSandboxError, type SandboxConfig } from '@google/jiminy-cli-core';
-import { createMockSandboxConfig } from '@google/jiminy-cli-test-utils';
+import { FatalSandboxError, type SandboxConfig } from '@plaer1/jiminy-cli-core';
+import { createMockSandboxConfig } from '@plaer1/jiminy-cli-test-utils';
 import { EventEmitter } from 'node:events';
 
 const { mockedHomedir, mockedGetContainerPath } = vi.hoisted(() => ({
@@ -76,9 +76,9 @@ vi.mock('node:util', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     debugLogger: {

@@ -14,7 +14,7 @@ jobs:
   generate-report:
     name: 'Generate Report 📝'
     if: |-
-      ${{ github.repository == 'google-jiminy/jiminy-cli' }}
+      ${{ github.repository == 'Plaer1/jiminy-cli' }}
     runs-on: 'ubuntu-latest'
     permissions:
       issues: 'write'

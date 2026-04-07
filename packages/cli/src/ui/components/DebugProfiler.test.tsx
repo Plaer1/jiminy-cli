@@ -6,7 +6,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { appEvents, AppEvent } from '../../utils/events.js';
-import { coreEvents } from '@google/jiminy-cli-core';
+import { coreEvents } from '@plaer1/jiminy-cli-core';
 import {
   profiler,
   DebugProfiler,

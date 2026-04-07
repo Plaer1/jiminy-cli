@@ -5,8 +5,8 @@
  */
 
 import { vi } from 'vitest';
-import { NoopSandboxManager } from '@google/jiminy-cli-core';
-import type { Config } from '@google/jiminy-cli-core';
+import { NoopSandboxManager } from '@plaer1/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import {
   createTestMergedSettings,
   type LoadedSettings,

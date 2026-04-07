@@ -12,7 +12,7 @@ import {
   FatalConfigError,
   ideContextStore,
   coreEvents,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   loadTrustedFolders,
   TrustLevel,
@@ -25,9 +25,9 @@ import { createMockSettings } from '../test-utils/settings.js';
 // We explicitly do NOT mock 'fs' or 'proper-lockfile' here to ensure
 // we are testing the actual behavior on the real file system.
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: () => '/mock/home/user',
@@ -428,7 +428,7 @@ describe('Trusted Folders', () => {
     };
 
     it('should return true when isHeadlessMode is true, ignoring config', async () => {
-      const jiminyCore = await import('@google/jiminy-cli-core');
+      const jiminyCore = await import('@plaer1/jiminy-cli-core');
       vi.spyOn(jiminyCore, 'isHeadlessMode').mockReturnValue(true);
 
       expect(isWorkspaceTrusted(mockSettings)).toEqual({
@@ -438,7 +438,7 @@ describe('Trusted Folders', () => {
     });
 
     it('should fall back to config when isHeadlessMode is false', async () => {
-      const jiminyCore = await import('@google/jiminy-cli-core');
+      const jiminyCore = await import('@plaer1/jiminy-cli-core');
       vi.spyOn(jiminyCore, 'isHeadlessMode').mockReturnValue(false);
 
       const config = { '/projectA': TrustLevel.DO_NOT_TRUST };
@@ -450,7 +450,7 @@ describe('Trusted Folders', () => {
     });
 
     it('should return true for isPathTrusted when isHeadlessMode is true', async () => {
-      const jiminyCore = await import('@google/jiminy-cli-core');
+      const jiminyCore = await import('@plaer1/jiminy-cli-core');
       vi.spyOn(jiminyCore, 'isHeadlessMode').mockReturnValue(true);
 
       const folders = loadTrustedFolders();

@@ -15,7 +15,7 @@ import {
 } from 'react';
 import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
-import { checkExhaustive, type Question } from '@google/jiminy-cli-core';
+import { checkExhaustive, type Question } from '@plaer1/jiminy-cli-core';
 import { BaseSelectionList } from './shared/BaseSelectionList.js';
 import type { SelectionListItem } from '../hooks/useSelectionList.js';
 import { TabHeader, type Tab } from './shared/TabHeader.js';

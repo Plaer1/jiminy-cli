@@ -9,7 +9,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import { ExtensionManager } from './extension-manager.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 import { createTestMergedSettings } from './settings.js';
 import { createExtension } from '../test-utils/createExtension.js';
 import { EXTENSIONS_DIRECTORY_NAME } from './extensions/variables.js';
@@ -24,9 +24,9 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-// Mock @google/jiminy-cli-core
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
-  const core = await importOriginal<typeof import('@google/jiminy-cli-core')>();
+// Mock @plaer1/jiminy-cli-core
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
+  const core = await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...core,
     homedir: mockHomedir,

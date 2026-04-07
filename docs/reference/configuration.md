@@ -30,7 +30,7 @@ locations for these files:
 > JSON-aware editors can use autocomplete and validation by pointing to
 > the generated schema at `schemas/settings.schema.json` in this repository.
 > When working outside the repo, reference the hosted schema at
-> `https://raw.githubusercontent.com/google-jiminy/jiminy-cli/main/schemas/settings.schema.json`.
+> `https://raw.githubusercontent.com/Plaer1/jiminy-cli/main/schemas/settings.schema.json`.
 
 - **System defaults file:**
   - **Location:** `/etc/jiminy-cli/system-defaults.json` (Linux),

@@ -9,16 +9,16 @@ import { renderWithProviders } from '../../test-utils/render.js';
 import { AppHeader } from './AppHeader.js';
 
 // We mock the entire module to control the isAppleTerminal export
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     isAppleTerminal: vi.fn(),
   };
 });
 
-import { isAppleTerminal } from '@google/jiminy-cli-core';
+import { isAppleTerminal } from '@plaer1/jiminy-cli-core';
 
 describe('AppHeader Icon Rendering', () => {
   beforeEach(() => {

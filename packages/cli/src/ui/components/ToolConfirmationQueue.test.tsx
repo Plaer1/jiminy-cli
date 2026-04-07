@@ -15,7 +15,7 @@ import {
   type Config,
   CoreToolCallStatus,
   type SerializableConfirmationDetails,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { ConfirmingToolState } from '../hooks/useConfirmingTool.js';
 import { theme } from '../semantic-colors.js';
 
@@ -27,9 +27,9 @@ vi.mock('./StickyHeader.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     validatePlanPath: vi.fn().mockResolvedValue(undefined),

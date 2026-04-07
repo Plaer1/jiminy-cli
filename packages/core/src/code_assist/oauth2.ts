@@ -89,9 +89,9 @@ const OAUTH_SCOPE = [
 
 const HTTP_REDIRECT = 301;
 const SIGN_IN_SUCCESS_URL =
-  'https://developers.google.com/jiminy-code-assist/auth_success_jiminy';
+  'https://developers.google.com/gemini-code-assist/auth/auth_success_gemini';
 const SIGN_IN_FAILURE_URL =
-  'https://developers.google.com/jiminy-code-assist/auth_failure_jiminy';
+  'https://developers.google.com/gemini-code-assist/auth/auth_failure_gemini';
 
 /**
  * An Authentication URL for updating the credentials of a Oauth2Client

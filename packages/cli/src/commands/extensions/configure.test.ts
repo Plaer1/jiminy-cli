@@ -14,7 +14,7 @@ import {
 } from 'vitest';
 import { configureCommand } from './configure.js';
 import yargs from 'yargs';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 import {
   updateSetting,
   getScopedEnvContents,

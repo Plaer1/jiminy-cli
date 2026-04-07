@@ -8,7 +8,7 @@ prerequisites, quickstart, and configuration.
 Before using sandboxing, you need to install and set up the Jiminy CLI:
 
 ```bash
-npm install -g @google/jiminy-cli
+npm install -g @plaer1/jiminy-cli
 ```
 
 To verify the installation:

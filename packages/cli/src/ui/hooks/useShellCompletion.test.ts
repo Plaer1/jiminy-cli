@@ -15,7 +15,7 @@ import {
   createTmpDir,
   cleanupTmpDir,
   type FileSystemStructure,
-} from '@google/jiminy-cli-test-utils';
+} from '@plaer1/jiminy-cli-test-utils';
 
 describe('useShellCompletion utilities', () => {
   describe('getTokenAtCursor', () => {

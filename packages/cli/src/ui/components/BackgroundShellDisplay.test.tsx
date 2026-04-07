@@ -8,7 +8,7 @@ import { render } from '../../test-utils/render.js';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { BackgroundShellDisplay } from './BackgroundShellDisplay.js';
 import { type BackgroundShell } from '../hooks/shellCommandProcessor.js';
-import { ShellExecutionService } from '@google/jiminy-cli-core';
+import { ShellExecutionService } from '@plaer1/jiminy-cli-core';
 import { act } from 'react';
 import { type Key, type KeypressHandler } from '../contexts/KeypressContext.js';
 import { ScrollProvider } from '../contexts/ScrollProvider.js';
@@ -27,9 +27,9 @@ vi.mock('../contexts/UIActionsContext.js', () => ({
   }),
 }));
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     ShellExecutionService: {

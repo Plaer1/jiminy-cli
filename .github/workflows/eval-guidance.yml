@@ -15,7 +15,7 @@ jobs:
   provide-guidance:
     name: 'Model Steering Guidance'
     runs-on: 'ubuntu-latest'
-    if: "github.repository == 'google-jiminy/jiminy-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955' # ratchet:actions/checkout@v4

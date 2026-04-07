@@ -6,7 +6,7 @@
 import { waitFor } from '../../../test-utils/async.js';
 import { renderWithProviders } from '../../../test-utils/render.js';
 import { SubagentGroupDisplay } from './SubagentGroupDisplay.js';
-import { Kind, CoreToolCallStatus } from '@google/jiminy-cli-core';
+import { Kind, CoreToolCallStatus } from '@plaer1/jiminy-cli-core';
 import type { IndividualToolCallDisplay } from '../../types.js';
 import { vi } from 'vitest';
 import { Text } from 'ink';

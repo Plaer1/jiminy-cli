@@ -15,7 +15,7 @@ editing documents.
 The standard method to install and run Jiminy CLI uses `npm`:
 
 ```bash
-npm install -g @google/jiminy-cli
+npm install -g @plaer1/jiminy-cli
 ```
 
 Once Jiminy CLI is installed, run Jiminy CLI from your command line:

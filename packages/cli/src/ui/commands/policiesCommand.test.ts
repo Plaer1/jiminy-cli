@@ -13,7 +13,7 @@ import {
   type Config,
   PolicyDecision,
   ApprovalMode,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 describe('policiesCommand', () => {
   let mockContext: ReturnType<typeof createMockCommandContext>;

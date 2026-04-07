@@ -10,7 +10,7 @@ import {
   DefaultAppLayout,
   hasPersistedSudoApprovalRuleFromToml,
 } from './DefaultAppLayout.js';
-import { ApprovalMode } from '@google/jiminy-cli-core';
+import { ApprovalMode } from '@plaer1/jiminy-cli-core';
 import { StreamingState } from '../types.js';
 import { Text } from 'ink';
 import type { UIState } from '../contexts/UIStateContext.js';

@@ -16,7 +16,7 @@ import {
 import {
   getCompatibilityWarnings,
   WarningPriority,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 // Mock os.homedir to control the home directory in tests
 vi.mock('os', async (importOriginal) => {
@@ -27,9 +27,9 @@ vi.mock('os', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: () => os.homedir(),

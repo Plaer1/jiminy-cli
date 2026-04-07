@@ -7,7 +7,7 @@
 // File for 'jiminy mcp add' command
 import type { CommandModule } from 'yargs';
 import { loadSettings, SettingScope } from '../../config/settings.js';
-import { debugLogger, type MCPServerConfig } from '@google/jiminy-cli-core';
+import { debugLogger, type MCPServerConfig } from '@plaer1/jiminy-cli-core';
 import { exitCli } from '../utils.js';
 
 async function addMcpServer(

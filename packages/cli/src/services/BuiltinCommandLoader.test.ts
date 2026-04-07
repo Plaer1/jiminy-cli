@@ -52,14 +52,14 @@ vi.mock('../ui/commands/permissionsCommand.js', async () => {
 
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { BuiltinCommandLoader } from './BuiltinCommandLoader.js';
-import { isNightly, type Config } from '@google/jiminy-cli-core';
+import { isNightly, type Config } from '@plaer1/jiminy-cli-core';
 import { CommandKind } from '../ui/commands/types.js';
 
 import { restoreCommand } from '../ui/commands/restoreCommand.js';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     isNightly: vi.fn().mockResolvedValue(false),
@@ -183,7 +183,7 @@ describe('BuiltinCommandLoader', () => {
   });
 
   it('should include upgrade command when authType is login_with_google', async () => {
-    const { AuthType } = await import('@google/jiminy-cli-core');
+    const { AuthType } = await import('@plaer1/jiminy-cli-core');
     (mockConfig.getContentGeneratorConfig as Mock).mockReturnValue({
       authType: AuthType.LOGIN_WITH_GOOGLE,
     });

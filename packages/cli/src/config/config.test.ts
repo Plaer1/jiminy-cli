@@ -21,14 +21,14 @@ import {
   type MCPServerConfig,
   type JiminyCLIExtension,
   Storage,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { loadCliConfig, parseArguments, type CliArgs } from './config.js';
 import {
   type Settings,
   type MergedSettings,
   createTestMergedSettings,
 } from './settings.js';
-import * as ServerConfig from '@google/jiminy-cli-core';
+import * as ServerConfig from '@plaer1/jiminy-cli-core';
 
 import { isWorkspaceTrusted } from './trustedFolders.js';
 import { ExtensionManager } from './extension-manager.js';
@@ -98,9 +98,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@google/jiminy-cli-core', async () => {
+vi.mock('@plaer1/jiminy-cli-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@google/jiminy-cli-core',
+    '@plaer1/jiminy-cli-core',
   );
   return {
     ...actualServer,

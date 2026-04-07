@@ -13,7 +13,7 @@ import {
   debugLogger,
   coreEvents,
   type CommandHookConfig,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { createTestMergedSettings } from './settings.js';
 import { createExtension } from '../test-utils/createExtension.js';
 import { EXTENSIONS_DIRECTORY_NAME } from './extensions/variables.js';
@@ -28,10 +28,10 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-// Mock @google/jiminy-cli-core
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+// Mock @plaer1/jiminy-cli-core
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: mockHomedir,

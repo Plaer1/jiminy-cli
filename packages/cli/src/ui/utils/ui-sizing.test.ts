@@ -6,7 +6,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { calculateMainAreaWidth } from './ui-sizing.js';
-import type { Config } from '@google/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 
 describe('ui-sizing', () => {
   describe('calculateMainAreaWidth', () => {

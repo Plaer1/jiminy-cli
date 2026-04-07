@@ -476,7 +476,7 @@ export async function loadPoliciesFromToml(
                   // to support underscores in server aliases natively. Leaving
                   // mcpName and toolName separate here and relying on metadata
                   // during policy evaluation will avoid underscore splitting bugs.
-                  // See: https://github.com/google-jiminy/jiminy-cli/issues/21727
+                  // See: https://github.com/Plaer1/jiminy-cli/issues/21727
                   effectiveToolName = formatMcpToolName(
                     mcpName,
                     effectiveToolName,

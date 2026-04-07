@@ -12,7 +12,7 @@ import {
   type Config,
   type ConversationRecord,
   type MessageRecord,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import { stripUnsafeCharacters } from '../ui/utils/textUtils.js';

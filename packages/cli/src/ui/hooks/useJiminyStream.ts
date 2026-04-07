@@ -40,7 +40,7 @@ import {
   Kind,
   ACTIVATE_SKILL_TOOL_NAME,
   shouldHideToolCall,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type {
   Config,
   EditorType,
@@ -54,7 +54,7 @@ import type {
   ToolCallResponseInfo,
   JiminyErrorEventValue,
   RetryAttemptPayload,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type Part, type PartListUnion, FinishReason } from '@google/genai';
 import type {
   HistoryItem,

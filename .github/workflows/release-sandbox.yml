@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    if: "github.repository == 'google-jiminy/jiminy-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'

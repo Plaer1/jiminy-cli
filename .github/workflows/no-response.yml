@@ -10,7 +10,7 @@ jobs:
   no-response:
     runs-on: 'ubuntu-latest'
     if: |-
-      ${{ github.repository == 'google-jiminy/jiminy-cli' }}
+      ${{ github.repository == 'Plaer1/jiminy-cli' }}
     permissions:
       issues: 'write'
       pull-requests: 'write'

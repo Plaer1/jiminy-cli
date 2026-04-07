@@ -7,7 +7,7 @@
 // File for 'jiminy mcp remove' command
 import type { CommandModule } from 'yargs';
 import { loadSettings, SettingScope } from '../../config/settings.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 import { exitCli } from '../utils.js';
 
 async function removeMcpServer(

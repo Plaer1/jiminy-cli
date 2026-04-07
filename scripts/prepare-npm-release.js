@@ -40,7 +40,7 @@ const rootPkg = readJson('package.json');
 const optionalDependencies = { ...(rootPkg.optionalDependencies || {}) };
 delete optionalDependencies['jiminy-cli-devtools'];
 
-// Update @google/jiminy-cli package.json for bundled npm release
+// Update @plaer1/jiminy-cli package.json for bundled npm release
 const cliPkgPath = 'packages/cli/package.json';
 const cliPkg = readJson(cliPkgPath);
 

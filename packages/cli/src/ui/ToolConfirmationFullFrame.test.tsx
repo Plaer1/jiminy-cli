@@ -11,9 +11,9 @@ import {
   CoreToolCallStatus,
   ApprovalMode,
   makeFakeConfig,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type UIState } from './contexts/UIStateContext.js';
-import type { SerializableConfirmationDetails } from '@google/jiminy-cli-core';
+import type { SerializableConfirmationDetails } from '@plaer1/jiminy-cli-core';
 import { act } from 'react';
 import { StreamingState } from './types.js';
 

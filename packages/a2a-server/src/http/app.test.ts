@@ -9,7 +9,7 @@ import {
   ApprovalMode,
   type Config,
   type ToolCallConfirmationDetails,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type {
   TaskStatusUpdateEvent,
   SendStreamingMessageSuccessResponse,
@@ -36,7 +36,7 @@ import {
   createMockConfig,
 } from '../utils/testing_utils.js';
 // Import MockTool from specific path to avoid vitest dependency in main core bundle
-import { MockTool } from '@google/jiminy-cli-core/src/test-utils/mock-tool.js';
+import { MockTool } from '@plaer1/jiminy-cli-core/src/test-utils/mock-tool.js';
 import type { Command, CommandContext } from '../commands/types.js';
 
 const mockToolConfirmationFn = async () =>
@@ -94,8 +94,8 @@ vi.mock('../config/config.js', async () => {
 
 // Mock the JiminyClient to avoid actual API calls
 const sendMessageStreamSpy = vi.fn();
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     JiminyClient: vi.fn().mockImplementation(() => ({

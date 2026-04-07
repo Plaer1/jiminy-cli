@@ -9,7 +9,7 @@
 const { execFileSync } = require('child_process');
 
 const isDryRun = process.argv.includes('--dry-run');
-const REPO = 'google-jiminy/jiminy-cli';
+const REPO = 'Plaer1/jiminy-cli';
 
 /**
  * Executes a GitHub CLI command safely using an argument array to prevent command injection.

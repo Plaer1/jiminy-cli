@@ -186,7 +186,7 @@ export const getCachedStringWidth = (str: string): number => {
     width = stringWidth(str);
   } catch {
     // Fallback for characters that cause string-width to crash (e.g. U+0602)
-    // See: https://github.com/google-jiminy/jiminy-cli/issues/16418
+    // See: https://github.com/Plaer1/jiminy-cli/issues/16418
     width = toCodePoints(stripAnsi(str)).length;
   }
 

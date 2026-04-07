@@ -1,8 +1,8 @@
 # Jiminy CLI Companion
 
 The Jiminy CLI Companion extension pairs with
-[Jiminy CLI](https://github.com/google-jiminy/jiminy-cli). This extension is
-compatible with both VS Code and VS Code forks.
+[Jiminy CLI](https://github.com/Plaer1/jiminy-cli). This extension is compatible
+with both VS Code and VS Code forks.
 
 # Features
 

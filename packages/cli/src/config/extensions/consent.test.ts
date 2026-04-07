@@ -18,7 +18,7 @@ import {
 } from './consent.js';
 import type { ConfirmationRequest } from '../../ui/types.js';
 import type { ExtensionConfig } from '../extension.js';
-import { debugLogger, type SkillDefinition } from '@google/jiminy-cli-core';
+import { debugLogger, type SkillDefinition } from '@plaer1/jiminy-cli-core';
 
 const mockReadline = vi.hoisted(() => ({
   createInterface: vi.fn().mockReturnValue({
@@ -47,9 +47,9 @@ vi.mock('node:fs/promises', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     debugLogger: {

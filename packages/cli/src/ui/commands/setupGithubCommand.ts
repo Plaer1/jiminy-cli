@@ -23,7 +23,7 @@ import {
   type SlashCommandActionReturn,
 } from './types.js';
 import { getUrlOpenCommand } from '../../ui/utils/commandUtils.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 
 export const GITHUB_WORKFLOW_PATHS = [
   'jiminy-dispatch/jiminy-dispatch.yml',

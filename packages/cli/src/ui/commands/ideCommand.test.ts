@@ -15,10 +15,10 @@ import {
 } from 'vitest';
 import { ideCommand } from './ideCommand.js';
 import { type CommandContext } from './types.js';
-import { IDE_DEFINITIONS } from '@google/jiminy-cli-core';
-import * as core from '@google/jiminy-cli-core';
+import { IDE_DEFINITIONS } from '@plaer1/jiminy-cli-core';
+import * as core from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original = await importOriginal<typeof core>();
   return {
     ...original,

@@ -10,7 +10,7 @@ import type {
   LogoutActionReturn,
 } from './types.js';
 import { CommandKind } from './types.js';
-import { clearCachedCredentialFile } from '@google/jiminy-cli-core';
+import { clearCachedCredentialFile } from '@plaer1/jiminy-cli-core';
 import { SettingScope } from '../../config/settings.js';
 
 const authLoginCommand: SlashCommand = {

@@ -10,7 +10,7 @@ import type {
   ShellExecutionResult,
   ShellOutputEvent,
   ShellExecutionConfig,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 export interface MockShellCommand {
   command: string | RegExp;

@@ -10,7 +10,7 @@ import {
   debugLogger,
   getErrorMessage,
   type ExtensionInstallMetadata,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import {
   INSTALL_WARNING_MESSAGE,

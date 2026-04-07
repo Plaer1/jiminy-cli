@@ -8,7 +8,7 @@ import { describe, it, afterEach } from 'vitest';
 import { AppRig } from '../test-utils/AppRig.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PolicyDecision } from '@google/jiminy-cli-core';
+import { PolicyDecision } from '@plaer1/jiminy-cli-core';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

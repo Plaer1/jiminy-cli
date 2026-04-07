@@ -1,11 +1,11 @@
 {
-  "name": "@google/jiminy-cli-sdk",
+  "name": "@plaer1/jiminy-cli-sdk",
   "version": "0.36.0",
   "description": "Jiminy CLI SDK",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-jiminy/jiminy-cli.git"
+    "url": "git+https://github.com/Plaer1/jiminy-cli.git"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -22,7 +22,7 @@
     "dist"
   ],
   "dependencies": {
-    "@google/jiminy-cli-core": "file:../core",
+    "@plaer1/jiminy-cli-core": "file:../core",
     "zod": "^3.23.8",
     "zod-to-json-schema": "^3.23.1"
   },

@@ -16,7 +16,7 @@ import {
   SESSION_FILE_PREFIX,
   type Config,
   type MessageRecord,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';

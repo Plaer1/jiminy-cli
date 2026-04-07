@@ -40,7 +40,7 @@ permissions:
 jobs:
   triage-issue:
     if: |-
-      (github.repository == 'google-jiminy/jiminy-cli' || github.repository == 'google-jiminy/maintainers-jiminy-cli') &&
+      (github.repository == 'Plaer1/jiminy-cli' || github.repository == 'google-jiminy/maintainers-jiminy-cli') &&
       (
         github.event_name == 'workflow_dispatch' ||
         (

@@ -9,7 +9,7 @@ import { requestConsentNonInteractive } from '../../config/extensions/consent.js
 import {
   debugLogger,
   type ResolvedExtensionSetting,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { ExtensionConfig } from '../../config/extension.js';
 import prompts from 'prompts';
 import {

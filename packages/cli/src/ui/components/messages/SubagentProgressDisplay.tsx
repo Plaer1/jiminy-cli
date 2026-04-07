@@ -12,10 +12,10 @@ import { MarkdownDisplay } from '../../utils/MarkdownDisplay.js';
 import type {
   SubagentProgress,
   SubagentActivityItem,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { TOOL_STATUS } from '../../constants.js';
 import { STATUS_INDICATOR_WIDTH } from './ToolShared.js';
-import { safeJsonToMarkdown } from '@google/jiminy-cli-core';
+import { safeJsonToMarkdown } from '@plaer1/jiminy-cli-core';
 
 export interface SubagentProgressDisplayProps {
   progress: SubagentProgress;

@@ -33,7 +33,7 @@ topics on:
   - **Cause:** Jiminy CLI does not currently support your location. For a full
     list of supported locations, see the following pages:
     - Jiminy Code Assist for individuals:
-      [Available locations](https://developers.google.com/jiminy-code-assist/resources/available-locations#americas)
+      [Available locations](https://developers.google.com/gemini-code-assist/resources/available-locations#americas)
 
 - **Error: `Failed to sign in. Message: Request contains an invalid argument`**
   - **Cause:** Users with Google Workspace accounts or Google Cloud accounts
@@ -78,7 +78,7 @@ topics on:
   - **Solution:** The update depends on how you installed Jiminy CLI:
     - If you installed `jiminy` globally, check that your `npm` global binary
       directory is in your `PATH`. You can update Jiminy CLI using the command
-      `npm install -g @google/jiminy-cli@latest`.
+      `npm install -g @plaer1/jiminy-cli@latest`.
     - If you are running `jiminy` from source, ensure you are using the correct
       command to invoke it (e.g., `node packages/cli/dist/index.js ...`). To
       update Jiminy CLI, pull the latest changes from the repository, and then
@@ -127,7 +127,7 @@ topics on:
 - **Warning: `npm WARN deprecated node-domexception@1.0.0` or
   `npm WARN deprecated glob` during install/update**
   - **Issue:** When installing or updating the Jiminy CLI globally via
-    `npm install -g @google/jiminy-cli` or `npm update -g @google/jiminy-cli`,
+    `npm install -g @plaer1/jiminy-cli` or `npm update -g @plaer1/jiminy-cli`,
     you might see deprecation warnings regarding `node-domexception` or old
     versions of `glob`.
   - **Cause:** These warnings occur because some dependencies (or their
@@ -183,9 +183,9 @@ This is especially useful for scripting and automation.
 
 If you encounter an issue that was not covered here in this _Troubleshooting
 guide_, consider searching the Jiminy CLI
-[Issue tracker on GitHub](https://github.com/google-jiminy/jiminy-cli/issues).
-If you can't find an issue similar to yours, consider creating a new GitHub
-Issue with a detailed description. Pull requests are also welcome!
+[Issue tracker on GitHub](https://github.com/Plaer1/jiminy-cli/issues). If you
+can't find an issue similar to yours, consider creating a new GitHub Issue with
+a detailed description. Pull requests are also welcome!
 
 <!-- prettier-ignore -->
 > [!NOTE]

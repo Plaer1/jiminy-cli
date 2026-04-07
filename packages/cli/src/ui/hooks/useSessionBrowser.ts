@@ -15,7 +15,7 @@ import {
   type Config,
   type ConversationRecord,
   type ResumedSessionData,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   convertSessionToHistoryFormats,
   type SessionInfo,

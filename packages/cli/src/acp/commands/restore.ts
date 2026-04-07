@@ -9,7 +9,7 @@ import {
   getToolCallDataSchema,
   isNodeError,
   performRestore,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import type {

@@ -33,7 +33,7 @@ import {
   getDisplayString,
   isAutoModel,
   AuthType,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { useSettings } from '../contexts/SettingsContext.js';
 import { useConfig } from '../contexts/ConfigContext.js';
 import type { QuotaStats } from '../types.js';

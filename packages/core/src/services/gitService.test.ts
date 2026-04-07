@@ -193,7 +193,7 @@ describe('GitService', () => {
       await service.setupShadowGitRepository();
 
       const expectedConfigContent =
-        '[user]\n  name = Jiminy CLI\n  email = jiminy-cli@google.com\n[commit]\n  gpgsign = false\n';
+        '[user]\n  name = Jiminy CLI\n  email = jiminy-cli@users.noreply.github.com\n[commit]\n  gpgsign = false\n';
       const actualConfigContent = await fs.readFile(gitConfigPath, 'utf-8');
       expect(actualConfigContent).toBe(expectedConfigContent);
     });

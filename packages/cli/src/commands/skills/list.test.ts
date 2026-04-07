@@ -5,18 +5,18 @@
  */
 
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { coreEvents, type Config } from '@google/jiminy-cli-core';
+import { coreEvents, type Config } from '@plaer1/jiminy-cli-core';
 import { handleList, listCommand } from './list.js';
 import { loadSettings, type LoadedSettings } from '../../config/settings.js';
 import { loadCliConfig } from '../../config/config.js';
 import chalk from 'chalk';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const { mockCoreDebugLogger } = await import(
     '../../test-utils/mockDebugLogger.js'
   );
   return mockCoreDebugLogger(
-    await importOriginal<typeof import('@google/jiminy-cli-core')>(),
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>(),
     {
       stripAnsi: false,
     },

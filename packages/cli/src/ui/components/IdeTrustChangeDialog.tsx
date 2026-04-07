@@ -9,7 +9,7 @@ import { theme } from '../semantic-colors.js';
 import { useKeypress } from '../hooks/useKeypress.js';
 import { relaunchApp } from '../../utils/processUtils.js';
 import { type RestartReason } from '../hooks/useIdeTrustListener.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 
 interface IdeTrustChangeDialogProps {
   reason: RestartReason;

@@ -10,11 +10,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SettingScope, type LoadedSettings } from '../../config/settings.js';
 import { act } from 'react';
 import { waitFor } from '../../test-utils/async.js';
-import { debugLogger } from '@google/jiminy-cli-core';
+import { debugLogger } from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     isEditorAvailable: () => true, // Mock to behave predictably in CI

@@ -13,7 +13,7 @@ import {
   ApprovalMode,
   WRITE_FILE_DISPLAY_NAME,
   Kind,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import os from 'node:os';
 import { createMockSettings } from '../../../test-utils/settings.js';
 import type { IndividualToolCallDisplay } from '../../types.js';

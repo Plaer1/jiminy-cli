@@ -28,7 +28,7 @@ on:
 
 jobs:
   verify-release:
-    if: "github.repository == 'google-jiminy/jiminy-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     environment: "${{ github.event.inputs.environment || 'prod' }}"
     strategy:
       fail-fast: false

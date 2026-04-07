@@ -9,10 +9,10 @@ import { authCommand } from './authCommand.js';
 import { type CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import { SettingScope } from '../../config/settings.js';
-import type { JiminyClient } from '@google/jiminy-cli-core';
+import type { JiminyClient } from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/jiminy-cli-core', async () => {
-  const actual = await vi.importActual('@google/jiminy-cli-core');
+vi.mock('@plaer1/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     clearCachedCredentialFile: vi.fn().mockResolvedValue(undefined),
@@ -79,7 +79,7 @@ describe('authCommand', () => {
       expect(logoutCommand?.name).toBe('signout');
 
       const { clearCachedCredentialFile } = await import(
-        '@google/jiminy-cli-core'
+        '@plaer1/jiminy-cli-core'
       );
 
       await logoutCommand!.action!(mockContext, '');

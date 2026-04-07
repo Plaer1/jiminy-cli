@@ -17,11 +17,11 @@
 const { execFileSync } = require('child_process');
 
 const isDryRun = process.argv.includes('--dry-run');
-const REPO = 'google-jiminy/jiminy-cli';
+const REPO = 'Plaer1/jiminy-cli';
 const ORG = 'google-jiminy';
 const TEAM_SLUG = 'jiminy-cli-maintainers';
 const DISCUSSION_URL =
-  'https://github.com/google-jiminy/jiminy-cli/discussions/16706';
+  'https://github.com/Plaer1/jiminy-cli/discussions/16706';
 
 /**
  * Executes a GitHub CLI command safely using an argument array.

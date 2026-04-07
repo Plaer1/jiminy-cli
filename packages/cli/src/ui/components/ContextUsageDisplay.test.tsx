@@ -8,9 +8,9 @@ import { renderWithProviders } from '../../test-utils/render.js';
 import { ContextUsageDisplay } from './ContextUsageDisplay.js';
 import { describe, it, expect, vi } from 'vitest';
 
-vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/jiminy-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     tokenLimit: () => 10000,

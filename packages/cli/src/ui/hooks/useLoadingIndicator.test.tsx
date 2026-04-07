@@ -15,7 +15,7 @@ import {
 } from './usePhraseCycler.js';
 import { WITTY_LOADING_PHRASES } from '../constants/wittyPhrases.js';
 import { INFORMATIVE_TIPS } from '../constants/tips.js';
-import type { RetryAttemptPayload } from '@google/jiminy-cli-core';
+import type { RetryAttemptPayload } from '@plaer1/jiminy-cli-core';
 
 describe('useLoadingIndicator', () => {
   beforeEach(() => {

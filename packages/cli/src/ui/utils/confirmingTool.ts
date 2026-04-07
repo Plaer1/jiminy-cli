@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CoreToolCallStatus } from '@google/jiminy-cli-core';
+import { CoreToolCallStatus } from '@plaer1/jiminy-cli-core';
 import {
   type HistoryItemWithoutId,
   type IndividualToolCallDisplay,

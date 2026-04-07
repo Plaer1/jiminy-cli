@@ -10,7 +10,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { Text } from 'ink';
 import { type UIState } from '../contexts/UIStateContext.js';
 import { type RestartReason } from '../hooks/useIdeTrustListener.js';
-import { type IdeInfo } from '@google/jiminy-cli-core';
+import { type IdeInfo } from '@plaer1/jiminy-cli-core';
 
 // Mock child components
 vi.mock('../IdeIntegrationNudge.js', () => ({

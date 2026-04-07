@@ -12,7 +12,7 @@ import type {
   SlashCommandActionReturn,
 } from './types.js';
 import { CommandKind } from './types.js';
-import { performInit } from '@google/jiminy-cli-core';
+import { performInit } from '@plaer1/jiminy-cli-core';
 
 export const initCommand: SlashCommand = {
   name: 'init',

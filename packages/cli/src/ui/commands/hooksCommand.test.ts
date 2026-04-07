@@ -12,7 +12,7 @@ import {
   HookEventName,
   ConfigSource,
   type HookRegistryEntry,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { CommandContext } from './types.js';
 import { SettingScope } from '../../config/settings.js';
 

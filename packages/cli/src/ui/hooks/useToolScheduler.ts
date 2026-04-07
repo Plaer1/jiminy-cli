@@ -15,7 +15,7 @@ import {
   type EditorType,
   type ToolCallsUpdateMessage,
   CoreToolCallStatus,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { useCallback, useState, useMemo, useEffect, useRef } from 'react';
 
 // Re-exporting types compatible with hook expectations

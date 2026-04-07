@@ -7,7 +7,7 @@ context.
 ## Install
 
 ```bash
-npm install -g @google/jiminy-cli
+npm install -g @plaer1/jiminy-cli
 ```
 
 ## Get started

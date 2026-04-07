@@ -28,7 +28,7 @@ import {
   type MessageBus,
   LlmRole,
   type GitService,
-} from '@google/jiminy-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   SettingScope,
   type LoadedSettings,
@@ -37,7 +37,7 @@ import {
 import { loadCliConfig, type CliArgs } from '../config/config.js';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
-import { ApprovalMode } from '@google/jiminy-cli-core/src/policy/types.js';
+import { ApprovalMode } from '@plaer1/jiminy-cli-core/src/policy/types.js';
 
 vi.mock('../config/config.js', () => ({
   loadCliConfig: vi.fn(),
@@ -92,9 +92,9 @@ vi.mock('../ui/commands/initCommand.js', () => ({
   },
 }));
 vi.mock(
-  '@google/jiminy-cli-core',
+  '@plaer1/jiminy-cli-core',
   async (
-    importOriginal: () => Promise<typeof import('@google/jiminy-cli-core')>,
+    importOriginal: () => Promise<typeof import('@plaer1/jiminy-cli-core')>,
   ) => {
     const actual = await importOriginal();
     return {
