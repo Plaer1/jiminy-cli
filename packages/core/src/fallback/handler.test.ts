@@ -259,7 +259,7 @@ describe('handleFallback', () => {
 
       expect(result).toBe(false);
       expect(openBrowserSecurely).toHaveBeenCalledWith(
-        'https://goo.gle/set-up-gemini-code-assist',
+        'https://goo.gle/set-up-jiminy-code-assist',
       );
       expect(policyConfig.activateFallbackMode).not.toHaveBeenCalled();
     });

@@ -7,7 +7,7 @@
 import { render } from '../../test-utils/render.js';
 import { Tips } from './Tips.js';
 import { describe, it, expect, vi } from 'vitest';
-import type { Config } from '@google/gemini-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 
 describe('Tips', () => {
   it.each([
@@ -15,7 +15,7 @@ describe('Tips', () => {
     { fileCount: 5, description: 'renders fewer tips when GEMINI.md exists' },
   ])('$description', async ({ fileCount }) => {
     const config = {
-      getGeminiMdFileCount: vi.fn().mockReturnValue(fileCount),
+      getJiminyMdFileCount: vi.fn().mockReturnValue(fileCount),
     } as unknown as Config;
 
     const { lastFrame, unmount } = await render(<Tips config={config} />);

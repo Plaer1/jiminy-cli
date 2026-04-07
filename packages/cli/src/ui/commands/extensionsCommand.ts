@@ -9,7 +9,7 @@ import {
   listExtensions,
   getErrorMessage,
   type ExtensionInstallMetadata,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type { ExtensionUpdateInfo } from '../../config/extension.js';
 import {
   emptyIcon,
@@ -298,7 +298,7 @@ async function exploreAction(
     }
   }
 
-  const extensionsUrl = 'https://geminicli.com/extensions/';
+  const extensionsUrl = 'https://jiminycli.com/extensions/';
 
   // Only check for NODE_ENV for explicit test mode, not for unit test framework
   if (process.env['NODE_ENV'] === 'test') {

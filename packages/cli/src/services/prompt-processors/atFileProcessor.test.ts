@@ -9,12 +9,12 @@ import { createMockCommandContext } from '../../test-utils/mockCommandContext.js
 import { type CommandContext } from '../../ui/commands/types.js';
 import { AtFileProcessor } from './atFileProcessor.js';
 import { MessageType } from '../../ui/types.js';
-import type { Config } from '@google/gemini-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 import type { PartUnion } from '@google/genai';
 
 // Mock the core dependency
 const mockReadPathFromWorkspace = vi.hoisted(() => vi.fn());
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original = await importOriginal<object>();
   return {
     ...original,
@@ -208,7 +208,7 @@ describe('AtFileProcessor', () => {
       expect(context.ui.addItem).toHaveBeenCalledWith(
         {
           type: MessageType.INFO,
-          text: "File '@{ignored.txt}' was ignored by .gitignore or .geminiignore and was not included in the prompt.",
+          text: "File '@{ignored.txt}' was ignored by .gitignore or .jiminyignore and was not included in the prompt.",
         },
         expect.any(Number),
       );

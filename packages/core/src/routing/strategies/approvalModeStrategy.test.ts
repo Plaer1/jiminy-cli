@@ -42,9 +42,9 @@ describe('ApprovalModeStrategy', () => {
       getApprovalMode: vi.fn().mockReturnValue(ApprovalMode.DEFAULT),
       getApprovedPlanPath: vi.fn().mockReturnValue(undefined),
       getPlanModeRoutingEnabled: vi.fn().mockResolvedValue(true),
-      getGemini31Launched: vi.fn().mockResolvedValue(false),
+      getJiminy31Launched: vi.fn().mockResolvedValue(false),
       getUseCustomToolModel: vi.fn().mockImplementation(async () => {
-        const launched = await mockConfig.getGemini31Launched();
+        const launched = await mockConfig.getJiminy31Launched();
         const authType = mockConfig.getContentGeneratorConfig?.()?.authType;
         return launched && authType === AuthType.USE_GEMINI;
       }),
@@ -81,7 +81,7 @@ describe('ApprovalModeStrategy', () => {
     expect(decision).toBeNull();
   });
 
-  it('should route to PRO model if ApprovalMode is PLAN (Gemini 2.5)', async () => {
+  it('should route to PRO model if ApprovalMode is PLAN (Jiminy 2.5)', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(DEFAULT_GEMINI_MODEL_AUTO);
     vi.mocked(mockConfig.getApprovalMode).mockReturnValue(ApprovalMode.PLAN);
 
@@ -101,7 +101,7 @@ describe('ApprovalModeStrategy', () => {
     });
   });
 
-  it('should route to PRO model if ApprovalMode is PLAN (Gemini 3)', async () => {
+  it('should route to PRO model if ApprovalMode is PLAN (Jiminy 3)', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(PREVIEW_GEMINI_MODEL_AUTO);
     vi.mocked(mockConfig.getApprovalMode).mockReturnValue(ApprovalMode.PLAN);
 
@@ -121,7 +121,7 @@ describe('ApprovalModeStrategy', () => {
     });
   });
 
-  it('should route to FLASH model if an approved plan exists (Gemini 2.5)', async () => {
+  it('should route to FLASH model if an approved plan exists (Jiminy 2.5)', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(DEFAULT_GEMINI_MODEL_AUTO);
     vi.mocked(mockConfig.getApprovalMode).mockReturnValue(ApprovalMode.DEFAULT);
     vi.mocked(mockConfig.getApprovedPlanPath).mockReturnValue(
@@ -145,7 +145,7 @@ describe('ApprovalModeStrategy', () => {
     });
   });
 
-  it('should route to FLASH model if an approved plan exists (Gemini 3)', async () => {
+  it('should route to FLASH model if an approved plan exists (Jiminy 3)', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(PREVIEW_GEMINI_MODEL_AUTO);
     vi.mocked(mockConfig.getApprovalMode).mockReturnValue(ApprovalMode.DEFAULT);
     vi.mocked(mockConfig.getApprovedPlanPath).mockReturnValue(
@@ -222,9 +222,9 @@ describe('ApprovalModeStrategy', () => {
     expect(implementationDecision?.model).toBe(PREVIEW_GEMINI_FLASH_MODEL);
   });
 
-  it('should route to Preview Flash model when an approved plan exists and Gemini 3.1 is launched', async () => {
+  it('should route to Preview Flash model when an approved plan exists and Jiminy 3.1 is launched', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(GEMINI_MODEL_ALIAS_AUTO);
-    vi.mocked(mockConfig.getGemini31Launched).mockResolvedValue(true);
+    vi.mocked(mockConfig.getJiminy31Launched).mockResolvedValue(true);
 
     // Exit plan mode with approved plan
     vi.mocked(mockConfig.getApprovalMode).mockReturnValue(ApprovalMode.DEFAULT);
@@ -238,7 +238,7 @@ describe('ApprovalModeStrategy', () => {
       mockBaseLlmClient,
     );
 
-    // Should resolve to Preview Flash (3.0) because resolveClassifierModel uses preview variants for Gemini 3
+    // Should resolve to Preview Flash (3.0) because resolveClassifierModel uses preview variants for Jiminy 3
     expect(decision?.model).toBe(PREVIEW_GEMINI_FLASH_MODEL);
   });
 });

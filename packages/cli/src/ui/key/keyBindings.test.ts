@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
-import { Storage } from '@google/gemini-cli-core';
+import { Storage } from '@google/jiminy-cli-core';
 import {
   Command,
   commandCategories,
@@ -146,7 +146,7 @@ describe('loadCustomKeybindings', () => {
 
   beforeEach(async () => {
     tempDir = await fs.mkdtemp(
-      path.join(os.tmpdir(), 'gemini-keybindings-test-'),
+      path.join(os.tmpdir(), 'jiminy-keybindings-test-'),
     );
     tempFilePath = path.join(tempDir, 'keybindings.json');
     vi.spyOn(Storage, 'getUserKeybindingsPath').mockReturnValue(tempFilePath);

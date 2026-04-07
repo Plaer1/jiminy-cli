@@ -7,10 +7,10 @@
 import type React from 'react';
 import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
-import { type IdeContext, type MCPServerConfig } from '@google/gemini-cli-core';
+import { type IdeContext, type MCPServerConfig } from '@google/jiminy-cli-core';
 
 interface ContextSummaryDisplayProps {
-  geminiMdFileCount: number;
+  jiminyMdFileCount: number;
   contextFileNames: string[];
   mcpServers?: Record<string, MCPServerConfig>;
   blockedMcpServers?: Array<{ name: string; extensionName: string }>;
@@ -20,7 +20,7 @@ interface ContextSummaryDisplayProps {
 }
 
 export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
-  geminiMdFileCount,
+  jiminyMdFileCount,
   contextFileNames,
   mcpServers,
   blockedMcpServers,
@@ -33,7 +33,7 @@ export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
   const openFileCount = ideContext?.workspaceState?.openFiles?.length ?? 0;
 
   if (
-    geminiMdFileCount === 0 &&
+    jiminyMdFileCount === 0 &&
     mcpServerCount === 0 &&
     blockedMcpServerCount === 0 &&
     openFileCount === 0 &&
@@ -52,14 +52,14 @@ export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
     } (ctrl+g to view)`;
   })();
 
-  const geminiMdText = (() => {
-    if (geminiMdFileCount === 0) {
+  const jiminyMdText = (() => {
+    if (jiminyMdFileCount === 0) {
       return '';
     }
     const allNamesTheSame = new Set(contextFileNames).size < 2;
     const name = allNamesTheSame ? contextFileNames[0] : 'context';
-    return `${geminiMdFileCount} ${name} file${
-      geminiMdFileCount > 1 ? 's' : ''
+    return `${jiminyMdFileCount} ${name} file${
+      jiminyMdFileCount > 1 ? 's' : ''
     }`;
   })();
 
@@ -103,7 +103,7 @@ export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
 
   const summaryParts = [
     openFilesText,
-    geminiMdText,
+    jiminyMdText,
     mcpText,
     skillText,
     backgroundText,

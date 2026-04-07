@@ -6,7 +6,7 @@
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { performInit } from '@google/gemini-cli-core';
+import { performInit } from '@google/jiminy-cli-core';
 import type {
   Command,
   CommandContext,
@@ -27,8 +27,8 @@ export class InitCommand implements Command {
       throw new Error('Command requires a workspace.');
     }
 
-    const geminiMdPath = path.join(targetDir, 'GEMINI.md');
-    const result = performInit(fs.existsSync(geminiMdPath));
+    const jiminyMdPath = path.join(targetDir, 'GEMINI.md');
+    const result = performInit(fs.existsSync(jiminyMdPath));
 
     switch (result.type) {
       case 'message':
@@ -37,7 +37,7 @@ export class InitCommand implements Command {
           data: result,
         };
       case 'submit_prompt':
-        fs.writeFileSync(geminiMdPath, '', 'utf8');
+        fs.writeFileSync(jiminyMdPath, '', 'utf8');
 
         if (typeof result.content !== 'string') {
           throw new Error('Init command content must be a string.');
@@ -51,7 +51,7 @@ export class InitCommand implements Command {
           data: {
             type: 'message',
             messageType: 'info',
-            content: `A template GEMINI.md has been created at ${geminiMdPath}.\n\nTo populate it with project context, you can run the following prompt in a new chat:\n\n${result.content}`,
+            content: `A template GEMINI.md has been created at ${jiminyMdPath}.\n\nTo populate it with project context, you can run the following prompt in a new chat:\n\n${result.content}`,
           },
         };
 

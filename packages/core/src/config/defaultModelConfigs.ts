@@ -54,58 +54,58 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         },
       },
     },
-    // Because `gemini-2.5-pro` and related model configs are "user-facing"
+    // Because `jiminy-2.5-pro` and related model configs are "user-facing"
     // today, i.e. they could be passed via `--model`, we have to be careful to
     // ensure these model configs can be used interactively.
     // TODO(joshualitt): Introduce internal base configs for the various models,
     // note: we will have to think carefully about names.
-    'gemini-3-pro-preview': {
+    'jiminy-3-pro-preview': {
       extends: 'chat-base-3',
       modelConfig: {
-        model: 'gemini-3-pro-preview',
+        model: 'jiminy-3-pro-preview',
       },
     },
-    'gemini-3-flash-preview': {
+    'jiminy-3-flash-preview': {
       extends: 'chat-base-3',
       modelConfig: {
-        model: 'gemini-3-flash-preview',
+        model: 'jiminy-3-flash-preview',
       },
     },
-    'gemini-2.5-pro': {
+    'jiminy-2.5-pro': {
       extends: 'chat-base-2.5',
       modelConfig: {
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
       },
     },
-    'gemini-2.5-flash': {
+    'jiminy-2.5-flash': {
       extends: 'chat-base-2.5',
       modelConfig: {
-        model: 'gemini-2.5-flash',
+        model: 'jiminy-2.5-flash',
       },
     },
-    'gemini-2.5-flash-lite': {
+    'jiminy-2.5-flash-lite': {
       extends: 'chat-base-2.5',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
       },
     },
     // Bases for the internal model configs.
-    'gemini-2.5-flash-base': {
+    'jiminy-2.5-flash-base': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash',
+        model: 'jiminy-2.5-flash',
       },
     },
-    'gemini-3-flash-base': {
+    'jiminy-3-flash-base': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-3-flash-preview',
+        model: 'jiminy-3-flash-preview',
       },
     },
     classifier: {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
         generateContentConfig: {
           maxOutputTokens: 1024,
           thinkingConfig: {
@@ -117,7 +117,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'prompt-completion': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
         generateContentConfig: {
           temperature: 0.3,
           maxOutputTokens: 16000,
@@ -130,7 +130,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'fast-ack-helper': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
         generateContentConfig: {
           temperature: 0.2,
           maxOutputTokens: 120,
@@ -143,7 +143,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'edit-corrector': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
         generateContentConfig: {
           thinkingConfig: {
             thinkingBudget: 0,
@@ -154,7 +154,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'summarizer-default': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
         generateContentConfig: {
           maxOutputTokens: 2000,
         },
@@ -163,14 +163,14 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'summarizer-shell': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
         generateContentConfig: {
           maxOutputTokens: 2000,
         },
       },
     },
     'web-search': {
-      extends: 'gemini-3-flash-base',
+      extends: 'jiminy-3-flash-base',
       modelConfig: {
         generateContentConfig: {
           tools: [{ googleSearch: {} }],
@@ -178,7 +178,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       },
     },
     'web-fetch': {
-      extends: 'gemini-3-flash-base',
+      extends: 'jiminy-3-flash-base',
       modelConfig: {
         generateContentConfig: {
           tools: [{ urlContext: {} }],
@@ -187,60 +187,60 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     },
     // TODO(joshualitt): During cleanup, make modelConfig optional.
     'web-fetch-fallback': {
-      extends: 'gemini-3-flash-base',
+      extends: 'jiminy-3-flash-base',
       modelConfig: {},
     },
     'loop-detection': {
-      extends: 'gemini-3-flash-base',
+      extends: 'jiminy-3-flash-base',
       modelConfig: {},
     },
     'loop-detection-double-check': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-3-pro-preview',
+        model: 'jiminy-3-pro-preview',
       },
     },
     'llm-edit-fixer': {
-      extends: 'gemini-3-flash-base',
+      extends: 'jiminy-3-flash-base',
       modelConfig: {},
     },
     'next-speaker-checker': {
-      extends: 'gemini-3-flash-base',
+      extends: 'jiminy-3-flash-base',
       modelConfig: {},
     },
     'chat-compression-3-pro': {
       modelConfig: {
-        model: 'gemini-3-pro-preview',
+        model: 'jiminy-3-pro-preview',
       },
     },
     'chat-compression-3-flash': {
       modelConfig: {
-        model: 'gemini-3-flash-preview',
+        model: 'jiminy-3-flash-preview',
       },
     },
     'chat-compression-3.1-flash-lite': {
       modelConfig: {
-        model: 'gemini-3.1-flash-lite-preview',
+        model: 'jiminy-3.1-flash-lite-preview',
       },
     },
     'chat-compression-2.5-pro': {
       modelConfig: {
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
       },
     },
     'chat-compression-2.5-flash': {
       modelConfig: {
-        model: 'gemini-2.5-flash',
+        model: 'jiminy-2.5-flash',
       },
     },
     'chat-compression-2.5-flash-lite': {
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
       },
     },
     'chat-compression-default': {
       modelConfig: {
-        model: 'gemini-3-pro-preview',
+        model: 'jiminy-3-pro-preview',
       },
     },
   },
@@ -256,58 +256,58 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
   ],
   modelDefinitions: {
     // Concrete Models
-    'gemini-3.1-flash-lite-preview': {
+    'jiminy-3.1-flash-lite-preview': {
       tier: 'flash-lite',
-      family: 'gemini-3',
+      family: 'jiminy-3',
       isPreview: true,
       isVisible: true,
       features: { thinking: false, multimodalToolUse: true },
     },
-    'gemini-3.1-pro-preview': {
+    'jiminy-3.1-pro-preview': {
       tier: 'pro',
-      family: 'gemini-3',
+      family: 'jiminy-3',
       isPreview: true,
       isVisible: true,
       features: { thinking: true, multimodalToolUse: true },
     },
-    'gemini-3.1-pro-preview-customtools': {
+    'jiminy-3.1-pro-preview-customtools': {
       tier: 'pro',
-      family: 'gemini-3',
+      family: 'jiminy-3',
       isPreview: true,
       isVisible: false,
       features: { thinking: true, multimodalToolUse: true },
     },
-    'gemini-3-pro-preview': {
+    'jiminy-3-pro-preview': {
       tier: 'pro',
-      family: 'gemini-3',
+      family: 'jiminy-3',
       isPreview: true,
       isVisible: true,
       features: { thinking: true, multimodalToolUse: true },
     },
-    'gemini-3-flash-preview': {
+    'jiminy-3-flash-preview': {
       tier: 'flash',
-      family: 'gemini-3',
+      family: 'jiminy-3',
       isPreview: true,
       isVisible: true,
       features: { thinking: false, multimodalToolUse: true },
     },
-    'gemini-2.5-pro': {
+    'jiminy-2.5-pro': {
       tier: 'pro',
-      family: 'gemini-2.5',
+      family: 'jiminy-2.5',
       isPreview: false,
       isVisible: true,
       features: { thinking: false, multimodalToolUse: false },
     },
-    'gemini-2.5-flash': {
+    'jiminy-2.5-flash': {
       tier: 'flash',
-      family: 'gemini-2.5',
+      family: 'jiminy-2.5',
       isPreview: false,
       isVisible: true,
       features: { thinking: false, multimodalToolUse: false },
     },
-    'gemini-2.5-flash-lite': {
+    'jiminy-2.5-flash-lite': {
       tier: 'flash-lite',
-      family: 'gemini-2.5',
+      family: 'jiminy-2.5',
       isPreview: false,
       isVisible: true,
       features: { thinking: false, multimodalToolUse: false },
@@ -337,164 +337,164 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       isVisible: false,
       features: { thinking: false, multimodalToolUse: false },
     },
-    'auto-gemini-3': {
+    'auto-jiminy-3': {
       displayName: 'Auto (Jiminy 3)',
       tier: 'auto',
       isPreview: true,
       isVisible: true,
       dialogDescription:
-        'Let Jiminy CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
+        'Let Jiminy CLI decide the best model for the task: jiminy-3-pro, jiminy-3-flash',
       features: { thinking: true, multimodalToolUse: false },
     },
-    'auto-gemini-2.5': {
+    'auto-jiminy-2.5': {
       displayName: 'Auto (Jiminy 2.5)',
       tier: 'auto',
       isPreview: false,
       isVisible: true,
       dialogDescription:
-        'Let Jiminy CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
+        'Let Jiminy CLI decide the best model for the task: jiminy-2.5-pro, jiminy-2.5-flash',
       features: { thinking: false, multimodalToolUse: false },
     },
   },
   modelIdResolutions: {
-    'gemini-3.1-pro-preview': {
-      default: 'gemini-3.1-pro-preview',
+    'jiminy-3.1-pro-preview': {
+      default: 'jiminy-3.1-pro-preview',
       contexts: [
-        { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
+        { condition: { hasAccessToPreview: false }, target: 'jiminy-2.5-pro' },
       ],
     },
-    'gemini-3.1-pro-preview-customtools': {
-      default: 'gemini-3.1-pro-preview-customtools',
+    'jiminy-3.1-pro-preview-customtools': {
+      default: 'jiminy-3.1-pro-preview-customtools',
       contexts: [
-        { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
+        { condition: { hasAccessToPreview: false }, target: 'jiminy-2.5-pro' },
       ],
     },
-    'gemini-3-flash-preview': {
-      default: 'gemini-3-flash-preview',
+    'jiminy-3-flash-preview': {
+      default: 'jiminy-3-flash-preview',
       contexts: [
         {
           condition: { hasAccessToPreview: false },
-          target: 'gemini-2.5-flash',
+          target: 'jiminy-2.5-flash',
         },
       ],
     },
-    'gemini-3-pro-preview': {
-      default: 'gemini-3-pro-preview',
+    'jiminy-3-pro-preview': {
+      default: 'jiminy-3-pro-preview',
       contexts: [
-        { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
+        { condition: { hasAccessToPreview: false }, target: 'jiminy-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
-          target: 'gemini-3.1-pro-preview-customtools',
+          condition: { useJiminy3_1: true, useCustomTools: true },
+          target: 'jiminy-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
-          target: 'gemini-3.1-pro-preview',
+          condition: { useJiminy3_1: true },
+          target: 'jiminy-3.1-pro-preview',
         },
       ],
     },
-    'auto-gemini-3': {
-      default: 'gemini-3-pro-preview',
+    'auto-jiminy-3': {
+      default: 'jiminy-3-pro-preview',
       contexts: [
-        { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
+        { condition: { hasAccessToPreview: false }, target: 'jiminy-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
-          target: 'gemini-3.1-pro-preview-customtools',
+          condition: { useJiminy3_1: true, useCustomTools: true },
+          target: 'jiminy-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
-          target: 'gemini-3.1-pro-preview',
+          condition: { useJiminy3_1: true },
+          target: 'jiminy-3.1-pro-preview',
         },
       ],
     },
     auto: {
-      default: 'gemini-3-pro-preview',
+      default: 'jiminy-3-pro-preview',
       contexts: [
-        { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
+        { condition: { hasAccessToPreview: false }, target: 'jiminy-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
-          target: 'gemini-3.1-pro-preview-customtools',
+          condition: { useJiminy3_1: true, useCustomTools: true },
+          target: 'jiminy-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
-          target: 'gemini-3.1-pro-preview',
+          condition: { useJiminy3_1: true },
+          target: 'jiminy-3.1-pro-preview',
         },
       ],
     },
     pro: {
-      default: 'gemini-3-pro-preview',
+      default: 'jiminy-3-pro-preview',
       contexts: [
-        { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
+        { condition: { hasAccessToPreview: false }, target: 'jiminy-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
-          target: 'gemini-3.1-pro-preview-customtools',
+          condition: { useJiminy3_1: true, useCustomTools: true },
+          target: 'jiminy-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
-          target: 'gemini-3.1-pro-preview',
+          condition: { useJiminy3_1: true },
+          target: 'jiminy-3.1-pro-preview',
         },
       ],
     },
-    'auto-gemini-2.5': {
-      default: 'gemini-2.5-pro',
+    'auto-jiminy-2.5': {
+      default: 'jiminy-2.5-pro',
     },
-    'gemini-3.1-flash-lite-preview': {
-      default: 'gemini-3.1-flash-lite-preview',
+    'jiminy-3.1-flash-lite-preview': {
+      default: 'jiminy-3.1-flash-lite-preview',
       contexts: [
         {
-          condition: { useGemini3_1FlashLite: false },
-          target: 'gemini-2.5-flash-lite',
+          condition: { useJiminy3_1FlashLite: false },
+          target: 'jiminy-2.5-flash-lite',
         },
       ],
     },
     flash: {
-      default: 'gemini-3-flash-preview',
+      default: 'jiminy-3-flash-preview',
       contexts: [
         {
           condition: { hasAccessToPreview: false },
-          target: 'gemini-2.5-flash',
+          target: 'jiminy-2.5-flash',
         },
       ],
     },
     'flash-lite': {
-      default: 'gemini-2.5-flash-lite',
+      default: 'jiminy-2.5-flash-lite',
       contexts: [
         {
-          condition: { useGemini3_1FlashLite: true },
-          target: 'gemini-3.1-flash-lite-preview',
+          condition: { useJiminy3_1FlashLite: true },
+          target: 'jiminy-3.1-flash-lite-preview',
         },
       ],
     },
   },
   classifierIdResolutions: {
     flash: {
-      default: 'gemini-3-flash-preview',
+      default: 'jiminy-3-flash-preview',
       contexts: [
         {
-          condition: { requestedModels: ['auto-gemini-2.5', 'gemini-2.5-pro'] },
-          target: 'gemini-2.5-flash',
+          condition: { requestedModels: ['auto-jiminy-2.5', 'jiminy-2.5-pro'] },
+          target: 'jiminy-2.5-flash',
         },
         {
           condition: {
-            requestedModels: ['auto-gemini-3', 'gemini-3-pro-preview'],
+            requestedModels: ['auto-jiminy-3', 'jiminy-3-pro-preview'],
           },
-          target: 'gemini-3-flash-preview',
+          target: 'jiminy-3-flash-preview',
         },
       ],
     },
     pro: {
-      default: 'gemini-3-pro-preview',
+      default: 'jiminy-3-pro-preview',
       contexts: [
         {
-          condition: { requestedModels: ['auto-gemini-2.5', 'gemini-2.5-pro'] },
-          target: 'gemini-2.5-pro',
+          condition: { requestedModels: ['auto-jiminy-2.5', 'jiminy-2.5-pro'] },
+          target: 'jiminy-2.5-pro',
         },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
-          target: 'gemini-3.1-pro-preview-customtools',
+          condition: { useJiminy3_1: true, useCustomTools: true },
+          target: 'jiminy-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
-          target: 'gemini-3.1-pro-preview',
+          condition: { useJiminy3_1: true },
+          target: 'jiminy-3.1-pro-preview',
         },
       ],
     },
@@ -502,7 +502,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
   modelChains: {
     preview: [
       {
-        model: 'gemini-3-pro-preview',
+        model: 'jiminy-3-pro-preview',
         actions: {
           terminal: 'prompt',
           transient: 'prompt',
@@ -517,7 +517,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         },
       },
       {
-        model: 'gemini-3-flash-preview',
+        model: 'jiminy-3-flash-preview',
         isLastResort: true,
         actions: {
           terminal: 'prompt',
@@ -535,7 +535,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     ],
     default: [
       {
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         actions: {
           terminal: 'prompt',
           transient: 'prompt',
@@ -550,7 +550,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         },
       },
       {
-        model: 'gemini-2.5-flash',
+        model: 'jiminy-2.5-flash',
         isLastResort: true,
         actions: {
           terminal: 'prompt',
@@ -568,7 +568,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     ],
     lite: [
       {
-        model: 'gemini-2.5-flash-lite',
+        model: 'jiminy-2.5-flash-lite',
         actions: {
           terminal: 'silent',
           transient: 'silent',
@@ -583,7 +583,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         },
       },
       {
-        model: 'gemini-2.5-flash',
+        model: 'jiminy-2.5-flash',
         actions: {
           terminal: 'silent',
           transient: 'silent',
@@ -598,7 +598,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         },
       },
       {
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         isLastResort: true,
         actions: {
           terminal: 'silent',

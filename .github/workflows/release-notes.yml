@@ -1,5 +1,5 @@
 # This workflow is triggered on every new release.
-# It uses Gemini to generate release notes and creates a PR with the changes.
+# It uses Jiminy to generate release notes and creates a PR with the changes.
 name: 'Generate Release Notes'
 
 on:
@@ -22,7 +22,7 @@ on:
 
 jobs:
   generate-release-notes:
-    if: "github.repository == 'google-gemini/gemini-cli'"
+    if: "github.repository == 'google-jiminy/jiminy-cli'"
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'write'
@@ -67,11 +67,11 @@ jobs:
             echo "CONTINUE=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 'Generate Changelog with Gemini'
+      - name: 'Generate Changelog with Jiminy'
         if: "steps.validate_version.outputs.CONTINUE == 'true'"
-        uses: 'google-github-actions/run-gemini-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-gemini-cli@v0
+        uses: 'google-github-actions/run-jiminy-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-jiminy-cli@v0
         with:
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           prompt: |
             Activate the 'docs-changelog' skill.
 
@@ -99,5 +99,5 @@ jobs:
             Related to #18505
           branch: 'changelog-${{ steps.release_info.outputs.VERSION }}'
           base: 'main'
-          team-reviewers: 'gemini-cli-docs, gemini-cli-maintainers'
+          team-reviewers: 'jiminy-cli-docs, jiminy-cli-maintainers'
           delete-branch: true

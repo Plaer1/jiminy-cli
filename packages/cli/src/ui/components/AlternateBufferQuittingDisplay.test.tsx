@@ -12,7 +12,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AlternateBufferQuittingDisplay } from './AlternateBufferQuittingDisplay.js';
 import type { HistoryItem, HistoryItemWithoutId } from '../types.js';
 import { Text } from 'ink';
-import { CoreToolCallStatus } from '@google/gemini-cli-core';
+import { CoreToolCallStatus } from '@google/jiminy-cli-core';
 
 vi.mock('../utils/terminalSetup.js', () => ({
   getTerminalProgram: () => null,
@@ -29,17 +29,17 @@ vi.mock('../contexts/AppContext.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     getMCPServerStatus: vi.fn(),
   };
 });
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>Spinner</Text>,
+vi.mock('../JiminyRespondingSpinner.js', () => ({
+  JiminyRespondingSpinner: () => <Text>Spinner</Text>,
 }));
 
 const mockHistory: HistoryItem[] = [
@@ -209,11 +209,11 @@ describe('AlternateBufferQuittingDisplay', () => {
     unmount();
   });
 
-  it('renders with user and gemini messages', async () => {
+  it('renders with user and jiminy messages', async () => {
     persistentStateMock.setData({ tipsShown: 0 });
     const history: HistoryItem[] = [
-      { id: 1, type: 'user', text: 'Hello Gemini' },
-      { id: 2, type: 'gemini', text: 'Hello User!' },
+      { id: 1, type: 'user', text: 'Hello Jiminy' },
+      { id: 2, type: 'jiminy', text: 'Hello User!' },
     ];
     const { lastFrame, unmount } = await renderWithProviders(
       <AlternateBufferQuittingDisplay />,
@@ -225,7 +225,7 @@ describe('AlternateBufferQuittingDisplay', () => {
         },
       },
     );
-    expect(lastFrame()).toMatchSnapshot('with_user_gemini_messages');
+    expect(lastFrame()).toMatchSnapshot('with_user_jiminy_messages');
     unmount();
   });
 });

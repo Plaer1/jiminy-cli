@@ -11,7 +11,7 @@ import {
   EXTENSION_SETTINGS_FILENAME,
   EXTENSIONS_CONFIG_FILENAME,
 } from './variables.js';
-import { Storage, homedir } from '@google/gemini-cli-core';
+import { Storage, homedir } from '@google/jiminy-cli-core';
 
 export class ExtensionStorage {
   private readonly extensionName: string;
@@ -40,6 +40,6 @@ export class ExtensionStorage {
   }
 
   static async createTmpDir(): Promise<string> {
-    return fs.promises.mkdtemp(path.join(os.tmpdir(), 'gemini-extension'));
+    return fs.promises.mkdtemp(path.join(os.tmpdir(), 'jiminy-extension'));
   }
 }

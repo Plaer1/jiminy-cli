@@ -61,9 +61,9 @@ Populate `plans/99_surface_inventory.md` with every branded, user-visible string
 - `packages/core/src/code_assist/oauth2.ts`
 
 ## Known state triggers to verify
-- Launch `gemini` and observe the header.
-- Launch `gemini` and reach auth selection or auth restart states.
-- Launch `gemini`, then use `/about`, `/tools`, `/hooks`, `/settings`, and `/ide` where relevant.
+- Launch `jiminy` and observe the header.
+- Launch `jiminy` and reach auth selection or auth restart states.
+- Launch `jiminy`, then use `/about`, `/tools`, `/hooks`, `/settings`, and `/ide` where relevant.
 - Trigger startup warnings by considering home-directory, root-directory, or compatibility flows.
 - Trigger or inspect notification content and model-selection descriptions from their owning source files.
 

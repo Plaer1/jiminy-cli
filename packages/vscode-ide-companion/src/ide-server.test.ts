@@ -38,9 +38,9 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     tmpdir: vi.fn(() => '/tmp'),
@@ -146,16 +146,16 @@ describe('IDEServer', () => {
     const port = getPortFromMock(replaceMock);
     const expectedPortFile = path.join(
       '/tmp',
-      'gemini',
+      'jiminy',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
       workspacePath: expectedWorkspacePaths,
       authToken: 'test-auth-token',
     });
-    expect(fs.mkdir).toHaveBeenCalledWith(path.join('/tmp', 'gemini', 'ide'), {
+    expect(fs.mkdir).toHaveBeenCalledWith(path.join('/tmp', 'jiminy', 'ide'), {
       recursive: true,
     });
     expect(fs.writeFile).toHaveBeenCalledWith(
@@ -179,9 +179,9 @@ describe('IDEServer', () => {
     const port = getPortFromMock(replaceMock);
     const expectedPortFile = path.join(
       '/tmp',
-      'gemini',
+      'jiminy',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
@@ -209,9 +209,9 @@ describe('IDEServer', () => {
     const port = getPortFromMock(replaceMock);
     const expectedPortFile = path.join(
       '/tmp',
-      'gemini',
+      'jiminy',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
@@ -257,9 +257,9 @@ describe('IDEServer', () => {
     const port = getPortFromMock(replaceMock);
     const expectedPortFile = path.join(
       '/tmp',
-      'gemini',
+      'jiminy',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
@@ -298,9 +298,9 @@ describe('IDEServer', () => {
     const port = getPortFromMock(replaceMock);
     const portFile = path.join(
       '/tmp',
-      'gemini',
+      'jiminy',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     expect(fs.writeFile).toHaveBeenCalledWith(portFile, expect.any(String));
 
@@ -330,9 +330,9 @@ describe('IDEServer', () => {
       const port = getPortFromMock(replaceMock);
       const expectedPortFile = path.join(
         '/tmp',
-        'gemini',
+        'jiminy',
         'ide',
-        `gemini-ide-server-${process.ppid}-${port}.json`,
+        `jiminy-ide-server-${process.ppid}-${port}.json`,
       );
       const expectedContent = JSON.stringify({
         port: parseInt(port, 10),

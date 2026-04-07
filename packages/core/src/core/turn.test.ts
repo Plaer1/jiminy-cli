@@ -7,17 +7,17 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   Turn,
-  GeminiEventType,
-  type ServerGeminiToolCallRequestEvent,
-  type ServerGeminiErrorEvent,
+  JiminyEventType,
+  type ServerJiminyToolCallRequestEvent,
+  type ServerJiminyErrorEvent,
 } from './turn.js';
 import type { GenerateContentResponse, Part, Content } from '@google/genai';
 import { reportError } from '../utils/errorReporting.js';
 import {
   InvalidStreamError,
   StreamEventType,
-  type GeminiChat,
-} from './geminiChat.js';
+  type JiminyChat,
+} from './jiminyChat.js';
 import { LlmRole } from '../telemetry/types.js';
 
 const mockSendMessageStream = vi.fn();
@@ -58,7 +58,7 @@ describe('Turn', () => {
       getHistory: mockGetHistory,
       maybeIncludeSchemaDepthContext: mockMaybeIncludeSchemaDepthContext,
     };
-    turn = new Turn(mockChatInstance as unknown as GeminiChat, 'prompt-id-1');
+    turn = new Turn(mockChatInstance as unknown as JiminyChat, 'prompt-id-1');
     mockGetHistory.mockReturnValue([]);
     mockSendMessageStream.mockResolvedValue((async function* () {})());
   });
@@ -95,7 +95,7 @@ describe('Turn', () => {
       const events = [];
       const reqParts: Part[] = [{ text: 'Hi' }];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         new AbortController().signal,
       )) {
@@ -103,7 +103,7 @@ describe('Turn', () => {
       }
 
       expect(mockSendMessageStream).toHaveBeenCalledWith(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         'prompt-id-1',
         expect.any(AbortSignal),
@@ -112,8 +112,8 @@ describe('Turn', () => {
       );
 
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: 'Hello' },
-        { type: GeminiEventType.Content, value: ' world' },
+        { type: JiminyEventType.Content, value: 'Hello' },
+        { type: JiminyEventType.Content, value: ' world' },
       ]);
       expect(turn.getDebugResponses().length).toBe(2);
     });
@@ -144,7 +144,7 @@ describe('Turn', () => {
       const events = [];
       const reqParts: Part[] = [{ text: 'Use tools' }];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         new AbortController().signal,
       )) {
@@ -152,8 +152,8 @@ describe('Turn', () => {
       }
 
       expect(events.length).toBe(2);
-      const event1 = events[0] as ServerGeminiToolCallRequestEvent;
-      expect(event1.type).toBe(GeminiEventType.ToolCallRequest);
+      const event1 = events[0] as ServerJiminyToolCallRequestEvent;
+      expect(event1.type).toBe(JiminyEventType.ToolCallRequest);
       expect(event1.value).toEqual(
         expect.objectContaining({
           callId: 'fc1',
@@ -164,8 +164,8 @@ describe('Turn', () => {
       );
       expect(turn.pendingToolCalls[0]).toEqual(event1.value);
 
-      const event2 = events[1] as ServerGeminiToolCallRequestEvent;
-      expect(event2.type).toBe(GeminiEventType.ToolCallRequest);
+      const event2 = events[1] as ServerJiminyToolCallRequestEvent;
+      expect(event2.type).toBe(JiminyEventType.ToolCallRequest);
       expect(event2.value).toEqual(
         expect.objectContaining({
           name: 'tool2',
@@ -208,15 +208,15 @@ describe('Turn', () => {
       const events = [];
       const reqParts: Part[] = [{ text: 'Test abort' }];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         abortController.signal,
       )) {
         events.push(event);
       }
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: 'First part' },
-        { type: GeminiEventType.UserCancelled },
+        { type: JiminyEventType.Content, value: 'First part' },
+        { type: JiminyEventType.UserCancelled },
       ]);
       expect(turn.getDebugResponses().length).toBe(1);
     });
@@ -231,14 +231,14 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         new AbortController().signal,
       )) {
         events.push(event);
       }
 
-      expect(events).toEqual([{ type: GeminiEventType.InvalidStream }]);
+      expect(events).toEqual([{ type: JiminyEventType.InvalidStream }]);
       expect(turn.getDebugResponses().length).toBe(0);
       expect(reportError).not.toHaveBeenCalled(); // Should not report as error
     });
@@ -254,7 +254,7 @@ describe('Turn', () => {
       mockMaybeIncludeSchemaDepthContext.mockResolvedValue(undefined);
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         new AbortController().signal,
       )) {
@@ -262,8 +262,8 @@ describe('Turn', () => {
       }
 
       expect(events.length).toBe(1);
-      const errorEvent = events[0] as ServerGeminiErrorEvent;
-      expect(errorEvent.type).toBe(GeminiEventType.Error);
+      const errorEvent = events[0] as ServerJiminyErrorEvent;
+      expect(errorEvent.type).toBe(JiminyEventType.Error);
       expect(errorEvent.value).toEqual({
         error: {
           message: 'API Error',
@@ -273,7 +273,7 @@ describe('Turn', () => {
       expect(turn.getDebugResponses().length).toBe(0);
       expect(reportError).toHaveBeenCalledWith(
         error,
-        'Error when talking to Gemini API',
+        'Error when talking to Jiminy API',
         [...historyContent, { role: 'user', parts: reqParts }],
         'Turn.run-sendMessageStream',
       );
@@ -298,7 +298,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'Test undefined tool parts' }],
         new AbortController().signal,
       )) {
@@ -308,21 +308,21 @@ describe('Turn', () => {
       expect(events.length).toBe(3);
 
       // Assertions for each specific tool call event
-      const event1 = events[0] as ServerGeminiToolCallRequestEvent;
+      const event1 = events[0] as ServerJiminyToolCallRequestEvent;
       expect(event1.value).toMatchObject({
         callId: 'fc1',
         name: 'undefined_tool_name',
         args: { arg1: 'val1' },
       });
 
-      const event2 = events[1] as ServerGeminiToolCallRequestEvent;
+      const event2 = events[1] as ServerJiminyToolCallRequestEvent;
       expect(event2.value).toMatchObject({
         callId: 'fc2',
         name: 'tool2',
         args: {},
       });
 
-      const event3 = events[2] as ServerGeminiToolCallRequestEvent;
+      const event3 = events[2] as ServerJiminyToolCallRequestEvent;
       expect(event3.value).toMatchObject({
         callId: 'fc3',
         name: 'undefined_tool_name',
@@ -375,7 +375,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'Test' }],
         new AbortController().signal,
       )) {
@@ -383,9 +383,9 @@ describe('Turn', () => {
       }
 
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: contentText },
+        { type: JiminyEventType.Content, value: contentText },
         {
-          type: GeminiEventType.Finished,
+          type: JiminyEventType.Finished,
           value: { reason: finishReason, usageMetadata },
         },
       ]);
@@ -412,7 +412,7 @@ describe('Turn', () => {
       const events = [];
       const reqParts: Part[] = [{ text: 'Test no finish reason' }];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         new AbortController().signal,
       )) {
@@ -421,7 +421,7 @@ describe('Turn', () => {
 
       expect(events).toEqual([
         {
-          type: GeminiEventType.Content,
+          type: JiminyEventType.Content,
           value: 'Response without finish reason',
         },
       ]);
@@ -457,7 +457,7 @@ describe('Turn', () => {
       const events = [];
       const reqParts: Part[] = [{ text: 'Test multiple responses' }];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         new AbortController().signal,
       )) {
@@ -465,10 +465,10 @@ describe('Turn', () => {
       }
 
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: 'First part' },
-        { type: GeminiEventType.Content, value: 'Second part' },
+        { type: JiminyEventType.Content, value: 'First part' },
+        { type: JiminyEventType.Content, value: 'Second part' },
         {
-          type: GeminiEventType.Finished,
+          type: JiminyEventType.Finished,
           value: { reason: 'OTHER', usageMetadata: undefined },
         },
       ]);
@@ -500,7 +500,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'Test citations' }],
         new AbortController().signal,
       )) {
@@ -508,13 +508,13 @@ describe('Turn', () => {
       }
 
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: 'Some text.' },
+        { type: JiminyEventType.Content, value: 'Some text.' },
         {
-          type: GeminiEventType.Citation,
+          type: JiminyEventType.Citation,
           value: 'Citations:\n(Source 1 Title) https://example.com/source1',
         },
         {
-          type: GeminiEventType.Finished,
+          type: JiminyEventType.Finished,
           value: { reason: 'STOP', usageMetadata: undefined },
         },
       ]);
@@ -550,7 +550,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'test' }],
         new AbortController().signal,
       )) {
@@ -558,14 +558,14 @@ describe('Turn', () => {
       }
 
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: 'Some text.' },
+        { type: JiminyEventType.Content, value: 'Some text.' },
         {
-          type: GeminiEventType.Citation,
+          type: JiminyEventType.Citation,
           value:
             'Citations:\n(Title1) https://example.com/source1\n(Title2) https://example.com/source2',
         },
         {
-          type: GeminiEventType.Finished,
+          type: JiminyEventType.Finished,
           value: { reason: 'STOP', usageMetadata: undefined },
         },
       ]);
@@ -597,7 +597,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'test' }],
         new AbortController().signal,
       )) {
@@ -605,10 +605,10 @@ describe('Turn', () => {
       }
 
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: 'Some text.' },
+        { type: JiminyEventType.Content, value: 'Some text.' },
       ]);
       // No Citation event (but we do get a Finished event with undefined reason)
-      expect(events.some((e) => e.type === GeminiEventType.Citation)).toBe(
+      expect(events.some((e) => e.type === JiminyEventType.Citation)).toBe(
         false,
       );
     });
@@ -643,7 +643,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'test' }],
         new AbortController().signal,
       )) {
@@ -651,13 +651,13 @@ describe('Turn', () => {
       }
 
       expect(events).toEqual([
-        { type: GeminiEventType.Content, value: 'Some text.' },
+        { type: JiminyEventType.Content, value: 'Some text.' },
         {
-          type: GeminiEventType.Citation,
+          type: JiminyEventType.Citation,
           value: 'Citations:\n(Good Source) https://example.com/source1',
         },
         {
-          type: GeminiEventType.Finished,
+          type: JiminyEventType.Finished,
           value: { reason: 'STOP', usageMetadata: undefined },
         },
       ]);
@@ -681,14 +681,14 @@ describe('Turn', () => {
       const reqParts: Part[] = [{ text: 'Test malformed error handling' }];
 
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         abortController.signal,
       )) {
         events.push(event);
       }
 
-      expect(events).toEqual([{ type: GeminiEventType.UserCancelled }]);
+      expect(events).toEqual([{ type: JiminyEventType.UserCancelled }]);
 
       expect(reportError).not.toHaveBeenCalled();
     });
@@ -707,7 +707,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [],
         new AbortController().signal,
       )) {
@@ -715,8 +715,8 @@ describe('Turn', () => {
       }
 
       expect(events).toEqual([
-        { type: GeminiEventType.Retry },
-        { type: GeminiEventType.Content, value: 'Success' },
+        { type: JiminyEventType.Retry },
+        { type: JiminyEventType.Content, value: 'Success' },
       ]);
     });
 
@@ -726,7 +726,7 @@ describe('Turn', () => {
         part: { text: 'Hello' },
         responseId: 'trace-123',
         expectedEvent: {
-          type: GeminiEventType.Content,
+          type: JiminyEventType.Content,
           value: 'Hello',
           traceId: 'trace-123',
         },
@@ -736,7 +736,7 @@ describe('Turn', () => {
         part: { text: '[Thought: thinking]', thought: 'thinking' },
         responseId: 'trace-456',
         expectedEvent: {
-          type: GeminiEventType.Thought,
+          type: JiminyEventType.Thought,
           value: { subject: '', description: '[Thought: thinking]' },
           traceId: 'trace-456',
         },
@@ -755,7 +755,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'Hi' }],
         new AbortController().signal,
       )) {
@@ -799,7 +799,7 @@ describe('Turn', () => {
 
       const events = [];
       for await (const event of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         [{ text: 'Test mixed content' }],
         new AbortController().signal,
       )) {
@@ -816,31 +816,31 @@ describe('Turn', () => {
       expect(events.length).toBe(5);
 
       const thoughtEvent = events.find(
-        (e) => e.type === GeminiEventType.Thought,
+        (e) => e.type === JiminyEventType.Thought,
       );
       expect(thoughtEvent).toBeDefined();
       expect(thoughtEvent).toMatchObject({
-        type: GeminiEventType.Thought,
+        type: JiminyEventType.Thought,
         value: { subject: 'Planning', description: 'the solution' },
         traceId: 'trace-789',
       });
 
       const contentEvent = events.find(
-        (e) => e.type === GeminiEventType.Content,
+        (e) => e.type === JiminyEventType.Content,
       );
       expect(contentEvent).toBeDefined();
       expect(contentEvent).toMatchObject({
-        type: GeminiEventType.Content,
+        type: JiminyEventType.Content,
         value: 'I will help you with that.',
         traceId: 'trace-789',
       });
 
       const toolCallEvent = events.find(
-        (e) => e.type === GeminiEventType.ToolCallRequest,
+        (e) => e.type === JiminyEventType.ToolCallRequest,
       );
       expect(toolCallEvent).toBeDefined();
       expect(toolCallEvent).toMatchObject({
-        type: GeminiEventType.ToolCallRequest,
+        type: JiminyEventType.ToolCallRequest,
         value: expect.objectContaining({
           callId: 'fc1',
           name: 'ReadFile',
@@ -849,20 +849,20 @@ describe('Turn', () => {
       });
 
       const citationEvent = events.find(
-        (e) => e.type === GeminiEventType.Citation,
+        (e) => e.type === JiminyEventType.Citation,
       );
       expect(citationEvent).toBeDefined();
       expect(citationEvent).toMatchObject({
-        type: GeminiEventType.Citation,
+        type: JiminyEventType.Citation,
         value: expect.stringContaining('https://example.com'),
       });
 
       const finishedEvent = events.find(
-        (e) => e.type === GeminiEventType.Finished,
+        (e) => e.type === JiminyEventType.Finished,
       );
       expect(finishedEvent).toBeDefined();
       expect(finishedEvent).toMatchObject({
-        type: GeminiEventType.Finished,
+        type: JiminyEventType.Finished,
         value: { reason: 'STOP' },
       });
     });
@@ -883,7 +883,7 @@ describe('Turn', () => {
       mockSendMessageStream.mockResolvedValue(mockResponseStream);
       const reqParts: Part[] = [{ text: 'Hi' }];
       for await (const _ of turn.run(
-        { model: 'gemini' },
+        { model: 'jiminy' },
         reqParts,
         new AbortController().signal,
       )) {

@@ -11,7 +11,7 @@ import {
   SESSION_FILE_PREFIX,
   type Config,
   debugLogger,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 // Create a mock config for integration testing
 function createTestConfig(): Config {
@@ -72,7 +72,7 @@ describe('Session Cleanup Integration', () => {
     const path = await import('node:path');
     const os = await import('node:os');
 
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'gemini-test-'));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'jiminy-test-'));
     const chatsDir = path.join(tempDir, 'chats');
     await fs.mkdir(chatsDir, { recursive: true });
 
@@ -152,7 +152,7 @@ describe('Session Cleanup Integration', () => {
     const path = await import('node:path');
     const os = await import('node:os');
 
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'gemini-test-'));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'jiminy-test-'));
     const chatsDir = path.join(tempDir, 'chats');
     await fs.mkdir(chatsDir, { recursive: true });
 
@@ -259,7 +259,7 @@ describe('Session Cleanup Integration', () => {
     const path = await import('node:path');
     const os = await import('node:os');
 
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'gemini-test-'));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'jiminy-test-'));
     const chatsDir = path.join(tempDir, 'chats');
     const logsDir = path.join(tempDir, 'logs');
     const toolOutputsDir = path.join(tempDir, 'tool-outputs');

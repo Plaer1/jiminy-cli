@@ -72,7 +72,7 @@ function getSeccompBpfPath(): string {
     buf.writeUInt32LE(inst.k, offset + 4);
   }
 
-  const bpfPath = join(os.tmpdir(), `gemini-cli-seccomp-${process.pid}.bpf`);
+  const bpfPath = join(os.tmpdir(), `jiminy-cli-seccomp-${process.pid}.bpf`);
   fs.writeFileSync(bpfPath, buf);
   cachedBpfPath = bpfPath;
   return bpfPath;

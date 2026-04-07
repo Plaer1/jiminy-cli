@@ -15,7 +15,7 @@ import {
 } from 'vitest';
 import { handleInstall, installCommand } from './install.js';
 import yargs from 'yargs';
-import * as core from '@google/gemini-cli-core';
+import * as core from '@google/jiminy-cli-core';
 import type { Stats } from 'node:fs';
 import * as path from 'node:path';
 import { promptForSetting } from '../../config/extensions/extensionSettings.js';
@@ -67,9 +67,9 @@ vi.mock('../../config/trustedFolders.js', () => ({
   },
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     FolderTrustDiscoveryService: {
@@ -165,8 +165,8 @@ describe('handleInstall', () => {
   });
 
   function createMockExtension(
-    overrides: Partial<core.GeminiCLIExtension> = {},
-  ): core.GeminiCLIExtension {
+    overrides: Partial<core.JiminyCLIExtension> = {},
+  ): core.JiminyCLIExtension {
     return {
       name: 'mock-extension',
       version: '1.0.0',
@@ -284,7 +284,7 @@ describe('handleInstall', () => {
   it('should pass promptForSetting when skipSettings is not provided', async () => {
     mockInstallOrUpdateExtension.mockResolvedValue({
       name: 'test-extension',
-    } as unknown as core.GeminiCLIExtension);
+    } as unknown as core.JiminyCLIExtension);
 
     await handleInstall({
       source: 'http://google.com',
@@ -300,7 +300,7 @@ describe('handleInstall', () => {
   it('should pass null for requestSetting when skipSettings is true', async () => {
     mockInstallOrUpdateExtension.mockResolvedValue({
       name: 'test-extension',
-    } as unknown as core.GeminiCLIExtension);
+    } as unknown as core.JiminyCLIExtension);
 
     await handleInstall({
       source: 'http://google.com',

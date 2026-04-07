@@ -12,7 +12,7 @@ import {
   FatalConfigError,
   ideContextStore,
   coreEvents,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   loadTrustedFolders,
   TrustLevel,
@@ -25,9 +25,9 @@ import { createMockSettings } from '../test-utils/settings.js';
 // We explicitly do NOT mock 'fs' or 'proper-lockfile' here to ensure
 // we are testing the actual behavior on the real file system.
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: () => '/mock/home/user',
@@ -44,7 +44,7 @@ describe('Trusted Folders', () => {
 
   beforeEach(() => {
     // Create a temporary directory for each test
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-cli-test-'));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'jiminy-cli-test-'));
     trustedFoldersPath = path.join(tempDir, 'trustedFolders.json');
 
     // Set the environment variable to point to the temp file
@@ -428,8 +428,8 @@ describe('Trusted Folders', () => {
     };
 
     it('should return true when isHeadlessMode is true, ignoring config', async () => {
-      const geminiCore = await import('@google/gemini-cli-core');
-      vi.spyOn(geminiCore, 'isHeadlessMode').mockReturnValue(true);
+      const jiminyCore = await import('@google/jiminy-cli-core');
+      vi.spyOn(jiminyCore, 'isHeadlessMode').mockReturnValue(true);
 
       expect(isWorkspaceTrusted(mockSettings)).toEqual({
         isTrusted: true,
@@ -438,8 +438,8 @@ describe('Trusted Folders', () => {
     });
 
     it('should fall back to config when isHeadlessMode is false', async () => {
-      const geminiCore = await import('@google/gemini-cli-core');
-      vi.spyOn(geminiCore, 'isHeadlessMode').mockReturnValue(false);
+      const jiminyCore = await import('@google/jiminy-cli-core');
+      vi.spyOn(jiminyCore, 'isHeadlessMode').mockReturnValue(false);
 
       const config = { '/projectA': TrustLevel.DO_NOT_TRUST };
       fs.writeFileSync(trustedFoldersPath, JSON.stringify(config), 'utf-8');
@@ -450,8 +450,8 @@ describe('Trusted Folders', () => {
     });
 
     it('should return true for isPathTrusted when isHeadlessMode is true', async () => {
-      const geminiCore = await import('@google/gemini-cli-core');
-      vi.spyOn(geminiCore, 'isHeadlessMode').mockReturnValue(true);
+      const jiminyCore = await import('@google/jiminy-cli-core');
+      vi.spyOn(jiminyCore, 'isHeadlessMode').mockReturnValue(true);
 
       const folders = loadTrustedFolders();
       expect(folders.isPathTrusted('/any-untrusted-path')).toBe(true);

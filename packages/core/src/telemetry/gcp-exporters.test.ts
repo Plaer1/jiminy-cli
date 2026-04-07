@@ -82,7 +82,7 @@ describe('GCP Exporters', () => {
     describe('constructor', () => {
       it('should create a log exporter with project ID', () => {
         expect(exporter).toBeDefined();
-        expect(mockLogging.log).toHaveBeenCalledWith('gemini_cli');
+        expect(mockLogging.log).toHaveBeenCalledWith('jiminy_cli');
       });
 
       it('should create a log exporter without project ID', () => {

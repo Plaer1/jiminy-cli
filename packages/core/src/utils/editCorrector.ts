@@ -40,7 +40,7 @@ export async function ensureCorrectFileContent(
     return cachedResult;
   }
 
-  const unescapedContent = unescapeStringForGeminiBug(content);
+  const unescapedContent = unescapeStringForJiminyBug(content);
   if (unescapedContent === content) {
     fileContentCorrectionCache.set(content, content);
     return content;
@@ -136,7 +136,7 @@ Return ONLY the corrected string in the specified JSON format with the key 'corr
 /**
  * Unescapes a string that might have been overly escaped by an LLM.
  */
-export function unescapeStringForGeminiBug(inputString: string): string {
+export function unescapeStringForJiminyBug(inputString: string): string {
   // Regex explanation:
   // \\ : Matches exactly one literal backslash character.
   // (n|t|r|'|"|`|\\|\n) : This is a capturing group. It matches one of the following:

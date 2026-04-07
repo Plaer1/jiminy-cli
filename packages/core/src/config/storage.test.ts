@@ -80,18 +80,18 @@ vi.mock('../utils/paths.js', async (importOriginal) => {
 });
 
 describe('Storage – getGlobalSettingsPath', () => {
-  it('returns path to ~/.gemini/settings.json', () => {
+  it('returns path to ~/.jiminy/settings.json', () => {
     const expected = path.join(os.homedir(), GEMINI_DIR, 'settings.json');
     expect(Storage.getGlobalSettingsPath()).toBe(expected);
   });
 });
 
 describe('Storage - Security', () => {
-  it('falls back to tmp for gemini but returns empty for agents if the home directory cannot be determined', () => {
+  it('falls back to tmp for jiminy but returns empty for agents if the home directory cannot be determined', () => {
     vi.mocked(homedir).mockReturnValue('');
 
-    // .gemini falls back for backward compatibility
-    expect(Storage.getGlobalGeminiDir()).toBe(
+    // .jiminy falls back for backward compatibility
+    expect(Storage.getGlobalJiminyDir()).toBe(
       path.join(os.tmpdir(), GEMINI_DIR),
     );
 
@@ -112,42 +112,42 @@ describe('Storage – additional helpers', () => {
       .mockReturnValue(PROJECT_SLUG);
   });
 
-  it('getWorkspaceSettingsPath returns project/.gemini/settings.json', () => {
+  it('getWorkspaceSettingsPath returns project/.jiminy/settings.json', () => {
     const expected = path.join(projectRoot, GEMINI_DIR, 'settings.json');
     expect(storage.getWorkspaceSettingsPath()).toBe(expected);
   });
 
-  it('getUserCommandsDir returns ~/.gemini/commands', () => {
+  it('getUserCommandsDir returns ~/.jiminy/commands', () => {
     const expected = path.join(os.homedir(), GEMINI_DIR, 'commands');
     expect(Storage.getUserCommandsDir()).toBe(expected);
   });
 
-  it('getProjectCommandsDir returns project/.gemini/commands', () => {
+  it('getProjectCommandsDir returns project/.jiminy/commands', () => {
     const expected = path.join(projectRoot, GEMINI_DIR, 'commands');
     expect(storage.getProjectCommandsDir()).toBe(expected);
   });
 
-  it('getUserSkillsDir returns ~/.gemini/skills', () => {
+  it('getUserSkillsDir returns ~/.jiminy/skills', () => {
     const expected = path.join(os.homedir(), GEMINI_DIR, 'skills');
     expect(Storage.getUserSkillsDir()).toBe(expected);
   });
 
-  it('getProjectSkillsDir returns project/.gemini/skills', () => {
+  it('getProjectSkillsDir returns project/.jiminy/skills', () => {
     const expected = path.join(projectRoot, GEMINI_DIR, 'skills');
     expect(storage.getProjectSkillsDir()).toBe(expected);
   });
 
-  it('getUserAgentsDir returns ~/.gemini/agents', () => {
+  it('getUserAgentsDir returns ~/.jiminy/agents', () => {
     const expected = path.join(os.homedir(), GEMINI_DIR, 'agents');
     expect(Storage.getUserAgentsDir()).toBe(expected);
   });
 
-  it('getProjectAgentsDir returns project/.gemini/agents', () => {
+  it('getProjectAgentsDir returns project/.jiminy/agents', () => {
     const expected = path.join(projectRoot, GEMINI_DIR, 'agents');
     expect(storage.getProjectAgentsDir()).toBe(expected);
   });
 
-  it('getMcpOAuthTokensPath returns ~/.gemini/mcp-oauth-tokens.json', () => {
+  it('getMcpOAuthTokensPath returns ~/.jiminy/mcp-oauth-tokens.json', () => {
     const expected = path.join(
       os.homedir(),
       GEMINI_DIR,
@@ -156,19 +156,19 @@ describe('Storage – additional helpers', () => {
     expect(Storage.getMcpOAuthTokensPath()).toBe(expected);
   });
 
-  it('getGlobalBinDir returns ~/.gemini/tmp/bin', () => {
+  it('getGlobalBinDir returns ~/.jiminy/tmp/bin', () => {
     const expected = path.join(os.homedir(), GEMINI_DIR, 'tmp', 'bin');
     expect(Storage.getGlobalBinDir()).toBe(expected);
   });
 
-  it('getProjectTempPlansDir returns ~/.gemini/tmp/<identifier>/plans when no sessionId is provided', async () => {
+  it('getProjectTempPlansDir returns ~/.jiminy/tmp/<identifier>/plans when no sessionId is provided', async () => {
     await storage.initialize();
     const tempDir = storage.getProjectTempDir();
     const expected = path.join(tempDir, 'plans');
     expect(storage.getProjectTempPlansDir()).toBe(expected);
   });
 
-  it('getProjectTempPlansDir returns ~/.gemini/tmp/<identifier>/<sessionId>/plans when sessionId is provided', async () => {
+  it('getProjectTempPlansDir returns ~/.jiminy/tmp/<identifier>/<sessionId>/plans when sessionId is provided', async () => {
     const sessionId = 'test-session-id';
     const storageWithSession = new Storage(projectRoot, sessionId);
     ProjectRegistry.prototype.getShortId = vi
@@ -180,14 +180,14 @@ describe('Storage – additional helpers', () => {
     expect(storageWithSession.getProjectTempPlansDir()).toBe(expected);
   });
 
-  it('getProjectTempTrackerDir returns ~/.gemini/tmp/<identifier>/tracker when no sessionId is provided', async () => {
+  it('getProjectTempTrackerDir returns ~/.jiminy/tmp/<identifier>/tracker when no sessionId is provided', async () => {
     await storage.initialize();
     const tempDir = storage.getProjectTempDir();
     const expected = path.join(tempDir, 'tracker');
     expect(storage.getProjectTempTrackerDir()).toBe(expected);
   });
 
-  it('getProjectTempTrackerDir returns ~/.gemini/tmp/<identifier>/<sessionId>/tracker when sessionId is provided', async () => {
+  it('getProjectTempTrackerDir returns ~/.jiminy/tmp/<identifier>/<sessionId>/tracker when sessionId is provided', async () => {
     const sessionId = 'test-session-id';
     const storageWithSession = new Storage(projectRoot, sessionId);
     ProjectRegistry.prototype.getShortId = vi
@@ -392,12 +392,12 @@ describe('Storage - System Paths', () => {
 
     if (platform === 'darwin') {
       expect(result).toBe(
-        '/Library/Application Support/GeminiCli/settings.json',
+        '/Library/Application Support/JiminyCli/settings.json',
       );
     } else if (platform === 'win32') {
-      expect(result).toBe('C:\\ProgramData\\gemini-cli\\settings.json');
+      expect(result).toBe('C:\\ProgramData\\jiminy-cli\\settings.json');
     } else {
-      expect(result).toBe('/etc/gemini-cli/settings.json');
+      expect(result).toBe('/etc/jiminy-cli/settings.json');
     }
   });
 
@@ -416,11 +416,11 @@ describe('Storage - System Paths', () => {
     expect(result).not.toContain('/custom/path');
 
     if (platform === 'darwin') {
-      expect(result).toBe('/Library/Application Support/GeminiCli/policies');
+      expect(result).toBe('/Library/Application Support/JiminyCli/policies');
     } else if (platform === 'win32') {
-      expect(result).toBe('C:\\ProgramData\\gemini-cli\\policies');
+      expect(result).toBe('C:\\ProgramData\\jiminy-cli\\policies');
     } else {
-      expect(result).toBe('/etc/gemini-cli/policies');
+      expect(result).toBe('/etc/jiminy-cli/policies');
     }
   });
 });

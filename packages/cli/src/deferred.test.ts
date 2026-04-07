@@ -18,7 +18,7 @@ import {
   setDeferredCommand,
   type DeferredCommand,
 } from './deferred.js';
-import { ExitCodes } from '@google/gemini-cli-core';
+import { ExitCodes } from '@google/jiminy-cli-core';
 import type { ArgumentsCamelCase, CommandModule } from 'yargs';
 import { createMockSettings } from './test-utils/settings.js';
 
@@ -29,8 +29,8 @@ const { mockRunExitCleanup, mockCoreEvents } = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('@google/gemini-cli-core', async () => {
-  const actual = await vi.importActual('@google/gemini-cli-core');
+vi.mock('@google/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@google/jiminy-cli-core');
   return {
     ...actual,
     coreEvents: mockCoreEvents,
@@ -63,7 +63,7 @@ describe('deferred', () => {
       const mockHandler = vi.fn();
       setDeferredCommand({
         handler: mockHandler,
-        argv: { _: [], $0: 'gemini' } as ArgumentsCamelCase,
+        argv: { _: [], $0: 'jiminy' } as ArgumentsCamelCase,
         commandName: 'mcp',
       });
 
@@ -90,7 +90,7 @@ describe('deferred', () => {
 
       expect(mockCoreEvents.emitFeedback).toHaveBeenCalledWith(
         'error',
-        'MCP is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+        'MCP is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
       );
       expect(mockRunExitCleanup).toHaveBeenCalled();
       expect(mockExit).toHaveBeenCalledWith(ExitCodes.FATAL_CONFIG_ERROR);
@@ -110,7 +110,7 @@ describe('deferred', () => {
 
       expect(mockCoreEvents.emitFeedback).toHaveBeenCalledWith(
         'error',
-        'Extensions is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+        'Extensions is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
       );
       expect(mockRunExitCleanup).toHaveBeenCalled();
       expect(mockExit).toHaveBeenCalledWith(ExitCodes.FATAL_CONFIG_ERROR);
@@ -130,7 +130,7 @@ describe('deferred', () => {
 
       expect(mockCoreEvents.emitFeedback).toHaveBeenCalledWith(
         'error',
-        'Agent skills is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+        'Agent skills is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
       );
       expect(mockRunExitCleanup).toHaveBeenCalled();
       expect(mockExit).toHaveBeenCalledWith(ExitCodes.FATAL_CONFIG_ERROR);
@@ -165,7 +165,7 @@ describe('deferred', () => {
       expect(deferredModule.command).toBe(commandModule.command);
 
       // Execute the wrapper handler
-      const argv = { _: [], $0: 'gemini' } as ArgumentsCamelCase;
+      const argv = { _: [], $0: 'jiminy' } as ArgumentsCamelCase;
       await deferredModule.handler(argv);
 
       // Should check that it set the deferred command, but didn't run original handler yet
@@ -205,7 +205,7 @@ describe('deferred', () => {
 
       expect(mockCoreEvents.emitFeedback).toHaveBeenCalledWith(
         'error',
-        'MCP is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+        'MCP is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
       );
     });
 

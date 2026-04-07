@@ -10,7 +10,7 @@ import * as path from 'node:path';
 import { initCommand } from './initCommand.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import type { CommandContext } from './types.js';
-import type { SubmitPromptActionReturn } from '@google/gemini-cli-core';
+import type { SubmitPromptActionReturn } from '@google/jiminy-cli-core';
 
 // Mock the 'fs' module
 vi.mock('fs', async (importOriginal) => {
@@ -25,7 +25,7 @@ vi.mock('fs', async (importOriginal) => {
 describe('initCommand', () => {
   let mockContext: CommandContext;
   const targetDir = '/test/dir';
-  const geminiMdPath = path.join(targetDir, 'GEMINI.md');
+  const jiminyMdPath = path.join(targetDir, 'GEMINI.md');
 
   beforeEach(() => {
     // Create a fresh mock context for each test
@@ -74,7 +74,7 @@ describe('initCommand', () => {
     )) as SubmitPromptActionReturn;
 
     // Assert: Check that writeFileSync was called correctly
-    expect(fs.writeFileSync).toHaveBeenCalledWith(geminiMdPath, '', 'utf8');
+    expect(fs.writeFileSync).toHaveBeenCalledWith(jiminyMdPath, '', 'utf8');
 
     // Assert: Check that an informational message was added to the UI
     expect(mockContext.ui.addItem).toHaveBeenCalledWith(
@@ -88,7 +88,7 @@ describe('initCommand', () => {
     // Assert: Check that the correct prompt is submitted
     expect(result.type).toBe('submit_prompt');
     expect(result.content).toContain(
-      'You are an AI agent that brings the power of Gemini',
+      'You are an AI agent that brings the power of Jiminy',
     );
   });
 

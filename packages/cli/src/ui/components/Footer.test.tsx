@@ -8,7 +8,7 @@ import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { renderWithProviders } from '../../test-utils/render.js';
 import { Footer } from './Footer.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { type Config } from '@google/gemini-cli-core';
+import { type Config } from '@google/jiminy-cli-core';
 import path from 'node:path';
 
 // Normalize paths to POSIX slashes for stable cross-platform snapshots.
@@ -34,9 +34,9 @@ vi.mock('../../utils/installationInfo.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...original,
     shortenPath: (p: string, len: number) => {
@@ -49,7 +49,7 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
 });
 
 const defaultProps = {
-  model: 'gemini-pro',
+  model: 'jiminy-pro',
   targetDir: path.join(
     path.parse(process.cwd()).root,
     'Users',
@@ -104,7 +104,7 @@ const mockSessionStats = {
       latency: { avg: 0, max: 0, min: 0 },
     },
     models: {
-      'gemini-pro': {
+      'jiminy-pro': {
         api: {
           totalRequests: 0,
           totalErrors: 0,
@@ -200,7 +200,7 @@ describe('<Footer />', () => {
       // (Note: VimModeProvider defaults to 'INSERT' mode when enabled)
       expect(output).toContain('[INSERT]');
       // Other items should be present but might be shortened
-      expect(output).toContain('gemini-pro');
+      expect(output).toContain('jiminy-pro');
       unmount();
     });
   });
@@ -358,7 +358,7 @@ describe('<Footer />', () => {
     });
 
     it('should display custom sandbox info when SANDBOX env is set', async () => {
-      vi.stubEnv('SANDBOX', 'gemini-cli-test-sandbox');
+      vi.stubEnv('SANDBOX', 'jiminy-cli-test-sandbox');
       const { lastFrame, unmount } = await renderWithProviders(<Footer />, {
         config: mockConfig,
         width: 120,
@@ -399,7 +399,7 @@ describe('<Footer />', () => {
     });
 
     it('should prioritize untrusted message over sandbox info', async () => {
-      vi.stubEnv('SANDBOX', 'gemini-cli-test-sandbox');
+      vi.stubEnv('SANDBOX', 'jiminy-cli-test-sandbox');
       const { lastFrame, unmount } = await renderWithProviders(<Footer />, {
         config: mockConfig,
         width: 120,
@@ -560,7 +560,7 @@ describe('<Footer />', () => {
             metrics: {
               ...mockSessionStats.metrics,
               models: {
-                'gemini-pro': {
+                'jiminy-pro': {
                   api: {
                     totalRequests: 0,
                     totalErrors: 0,
@@ -682,7 +682,7 @@ describe('<Footer />', () => {
         config: mockConfig,
         width: 120,
         uiState: {
-          currentModel: 'gemini-pro',
+          currentModel: 'jiminy-pro',
           sessionStats: mockSessionStats,
         },
         settings: createMockSettings({
@@ -730,7 +730,7 @@ describe('<Footer />', () => {
       expect(output).toContain('/model');
       // Data should be present
       expect(output).toContain('main');
-      expect(output).toContain('gemini-pro');
+      expect(output).toContain('jiminy-pro');
       unmount();
     });
 
@@ -789,13 +789,13 @@ describe('<Footer />', () => {
         width: 120,
         uiState: {
           sessionStats: mockSessionStats,
-          currentModel: 'gemini-2.5-flash', // Fallback active, showing Flash
+          currentModel: 'jiminy-2.5-flash', // Fallback active, showing Flash
         },
       });
 
       // Footer should show the effective model (Flash), not the config model (Pro)
-      expect(lastFrame()).toContain('gemini-2.5-flash');
-      expect(lastFrame()).not.toContain('gemini-2.5-pro');
+      expect(lastFrame()).toContain('jiminy-2.5-flash');
+      expect(lastFrame()).not.toContain('jiminy-2.5-pro');
       unmount();
     });
 
@@ -805,11 +805,11 @@ describe('<Footer />', () => {
         width: 120,
         uiState: {
           sessionStats: mockSessionStats,
-          currentModel: 'gemini-2.5-pro', // Normal mode, showing Pro
+          currentModel: 'jiminy-2.5-pro', // Normal mode, showing Pro
         },
       });
 
-      expect(lastFrame()).toContain('gemini-2.5-pro');
+      expect(lastFrame()).toContain('jiminy-2.5-pro');
       unmount();
     });
   });

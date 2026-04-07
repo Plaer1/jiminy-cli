@@ -18,7 +18,7 @@ describe('AboutBox', () => {
     cliVersion: '1.0.0',
     osVersion: 'macOS',
     sandboxEnv: 'default',
-    modelVersion: 'gemini-pro',
+    modelVersion: 'jiminy-pro',
     selectedAuthType: 'oauth',
     gcpProject: '',
     ideClient: '',
@@ -29,10 +29,10 @@ describe('AboutBox', () => {
       <AboutBox {...defaultProps} />,
     );
     const output = lastFrame();
-    expect(output).toContain('About Gemini CLI');
+    expect(output).toContain('About Jiminy CLI');
     expect(output).toContain('1.0.0');
     expect(output).toContain('mock-commit-hash');
-    expect(output).toContain('gemini-pro');
+    expect(output).toContain('jiminy-pro');
     expect(output).toContain('default');
     expect(output).toContain('macOS');
     expect(output).toContain('Signed in with Google');

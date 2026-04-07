@@ -89,7 +89,7 @@ You should see `api-auditor` in the list of available skills.
 Now, try it out. Start a new session and ask a question that triggers the
 skill's description.
 
-**User:** "Can you audit http://geminicli.com"
+**User:** "Can you audit http://jiminycli.com"
 
 Jiminy recognizes the request matches the `api-auditor` description and asks for
 permission to activate it.
@@ -100,7 +100,7 @@ skill. I'll run the audit script now..."
 Jiminy then uses the `run_shell_command` tool to execute your bundled Node
 script:
 
-`node .jiminy/skills/api-auditor/scripts/audit.js http://geminili.com`
+`node .jiminy/skills/api-auditor/scripts/audit.js http://jiminyli.com`
 
 ## Next steps
 

@@ -50,7 +50,7 @@ describe('LSTool', () => {
       getFileService: () => new FileDiscoveryService(tempRootDir),
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       storage: mockStorage,
       isPathAllowed(this: Config, absolutePath: string): boolean {
@@ -188,7 +188,7 @@ describe('LSTool', () => {
       expect(result.returnDisplay).toBe('Listed 2 item(s). (2 ignored)');
     });
 
-    it('should respect geminiignore patterns', async () => {
+    it('should respect jiminyignore patterns', async () => {
       await fs.writeFile(path.join(tempRootDir, 'file1.txt'), 'content1');
       await fs.writeFile(path.join(tempRootDir, 'file2.log'), 'content1');
       await fs.writeFile(

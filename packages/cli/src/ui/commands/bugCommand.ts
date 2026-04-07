@@ -20,7 +20,7 @@ import {
   getVersion,
   INITIAL_HISTORY_LENGTH,
   debugLogger,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { terminalCapabilityManager } from '../utils/terminalCapabilityManager.js';
 import { exportHistoryToFile } from '../utils/historyExportUtils.js';
 import path from 'node:path';
@@ -37,7 +37,7 @@ export const bugCommand: SlashCommand = {
     const osVersion = `${process.platform} ${process.version}`;
     let sandboxEnv = 'no sandbox';
     if (process.env['SANDBOX'] && process.env['SANDBOX'] !== 'sandbox-exec') {
-      sandboxEnv = process.env['SANDBOX'].replace(/^gemini-(?:code-)?/, '');
+      sandboxEnv = process.env['SANDBOX'].replace(/^jiminy-(?:code-)?/, '');
     } else if (process.env['SANDBOX'] === 'sandbox-exec') {
       sandboxEnv = `sandbox-exec (${
         process.env['SEATBELT_PROFILE'] || 'unknown'
@@ -73,7 +73,7 @@ export const bugCommand: SlashCommand = {
       info += `* **IDE Client:** ${ideClient}\n`;
     }
 
-    const chat = agentContext?.geminiClient?.getChat();
+    const chat = agentContext?.jiminyClient?.getChat();
     const history = chat?.getHistory() || [];
     let historyFileMessage = '';
     let problemValue = bugDescription;

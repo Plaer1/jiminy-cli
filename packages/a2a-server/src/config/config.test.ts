@@ -21,12 +21,12 @@ import {
   FatalAuthenticationError,
   PolicyDecision,
   PRIORITY_YOLO_ALLOW_ALL,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 // Mock dependencies
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     PRIORITY_YOLO_ALLOW_ALL: 998,
@@ -281,7 +281,7 @@ describe('loadConfig', () => {
 
     expect(FileDiscoveryService).toHaveBeenCalledWith(expect.any(String), {
       respectGitIgnore: false,
-      respectGeminiIgnore: undefined,
+      respectJiminyIgnore: undefined,
       customIgnoreFilePaths: [testPath],
     });
   });

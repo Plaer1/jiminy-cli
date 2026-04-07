@@ -18,7 +18,7 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import {
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   ExtensionUninstallEvent,
   ExtensionDisableEvent,
   ExtensionEnableEvent,
@@ -26,7 +26,7 @@ import {
   loadAgentsFromDirectory,
   loadSkillsFromDir,
   getRealPath,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   loadSettings,
   createTestMergedSettings,
@@ -107,9 +107,9 @@ const mockIntegrityManager = vi.hoisted(() => ({
   verify: vi.fn().mockResolvedValue('verified'),
   store: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     logExtensionEnable: mockLogExtensionEnable,
@@ -197,10 +197,10 @@ describe('extension tests', () => {
     });
     vi.mocked(loadSkillsFromDir).mockResolvedValue([]);
     tempHomeDir = getRealPath(
-      fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-cli-test-home-')),
+      fs.mkdtempSync(path.join(os.tmpdir(), 'jiminy-cli-test-home-')),
     );
     tempWorkspaceDir = getRealPath(
-      fs.mkdtempSync(path.join(tempHomeDir, 'gemini-cli-test-workspace-')),
+      fs.mkdtempSync(path.join(tempHomeDir, 'jiminy-cli-test-workspace-')),
     );
     userExtensionsDir = path.join(tempHomeDir, EXTENSIONS_DIRECTORY_NAME);
     mockRequestConsent = vi.fn();
@@ -1123,7 +1123,7 @@ name = "yolo-checker"
         );
 
         fs.writeFileSync(
-          path.join(sourceExtDir, 'gemini-extension.json'),
+          path.join(sourceExtDir, 'jiminy-extension.json'),
           JSON.stringify({
             name: 'hook-extension-install',
             version: '1.0.0',
@@ -1192,7 +1192,7 @@ name = "yolo-checker"
       );
     });
 
-    it('should throw an error and cleanup if gemini-extension.json is missing', async () => {
+    it('should throw an error and cleanup if jiminy-extension.json is missing', async () => {
       const sourceExtDir = getRealPath(path.join(tempHomeDir, 'bad-extension'));
       fs.mkdirSync(sourceExtDir, { recursive: true });
       const configPath = path.join(sourceExtDir, EXTENSIONS_CONFIG_FILENAME);
@@ -1208,7 +1208,7 @@ name = "yolo-checker"
       expect(fs.existsSync(targetExtDir)).toBe(false);
     });
 
-    it('should throw an error for invalid JSON in gemini-extension.json', async () => {
+    it('should throw an error for invalid JSON in jiminy-extension.json', async () => {
       const sourceExtDir = getRealPath(path.join(tempHomeDir, 'bad-json-ext'));
       fs.mkdirSync(sourceExtDir, { recursive: true });
       const configPath = path.join(sourceExtDir, EXTENSIONS_CONFIG_FILENAME);
@@ -1222,7 +1222,7 @@ name = "yolo-checker"
       ).rejects.toThrow(`Failed to load extension config from ${configPath}`);
     });
 
-    it('should throw an error for missing name in gemini-extension.json', async () => {
+    it('should throw an error for missing name in jiminy-extension.json', async () => {
       const sourceExtDir = getRealPath(
         createExtension({
           extensionsDir: tempHomeDir,
@@ -1417,7 +1417,7 @@ name = "yolo-checker"
     it('should add the workspace to trusted folders if user consents', async () => {
       const trustedFoldersPath = path.join(
         tempHomeDir,
-        '.gemini',
+        '.jiminy',
         'trustedFolders.json',
       );
       vi.mocked(isWorkspaceTrusted).mockReturnValue({
@@ -1848,8 +1848,8 @@ ${INSTALL_WARNING_MESSAGE}`,
     });
 
     describe('installing from github', () => {
-      const gitUrl = 'https://github.com/google/gemini-test-extension.git';
-      const extensionName = 'gemini-test-extension';
+      const gitUrl = 'https://github.com/google/jiminy-test-extension.git';
+      const extensionName = 'jiminy-test-extension';
 
       beforeEach(() => {
         // Mock the git clone behavior for github installs that fallback to it.
@@ -1979,7 +1979,7 @@ ${INSTALL_WARNING_MESSAGE}`,
         // has no github releases so it is the only install method.
         expect(mockRequestConsent).toHaveBeenCalledExactlyOnceWith(
           expect.stringContaining(
-            'Installing extension "gemini-test-extension"',
+            'Installing extension "jiminy-test-extension"',
           ),
         );
         expect(mockGit.clone).toHaveBeenCalled();
@@ -2138,10 +2138,10 @@ ${INSTALL_WARNING_MESSAGE}`,
     });
 
     it('should uninstall an extension by its source URL', async () => {
-      const gitUrl = 'https://github.com/google/gemini-sql-extension.git';
+      const gitUrl = 'https://github.com/google/jiminy-sql-extension.git';
       const sourceExtDir = createExtension({
         extensionsDir: userExtensionsDir,
-        name: 'gemini-sql-extension',
+        name: 'jiminy-sql-extension',
         version: '1.0.0',
         installMetadata: {
           source: gitUrl,
@@ -2155,9 +2155,9 @@ ${INSTALL_WARNING_MESSAGE}`,
       expect(fs.existsSync(sourceExtDir)).toBe(false);
       expect(mockLogExtensionUninstall).toHaveBeenCalled();
       expect(ExtensionUninstallEvent).toHaveBeenCalledWith(
-        'gemini-sql-extension',
-        hashValue('gemini-sql-extension'),
-        hashValue('https://github.com/google/gemini-sql-extension'),
+        'jiminy-sql-extension',
+        hashValue('jiminy-sql-extension'),
+        hashValue('https://github.com/google/jiminy-sql-extension'),
         'success',
       );
     });
@@ -2286,7 +2286,7 @@ ${INSTALL_WARNING_MESSAGE}`,
       vi.restoreAllMocks();
     });
 
-    const getActiveExtensions = (): GeminiCLIExtension[] => {
+    const getActiveExtensions = (): JiminyCLIExtension[] => {
       const extensions = extensionManager.getExtensions();
       return extensions.filter((e) => e.isActive);
     };

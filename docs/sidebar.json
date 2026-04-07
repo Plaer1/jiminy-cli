@@ -16,7 +16,7 @@
           { "label": "CLI cheatsheet", "slug": "docs/cli/cli-reference" },
           {
             "label": "Jiminy 3 on Jiminy CLI",
-            "slug": "docs/get-started/gemini-3"
+            "slug": "docs/get-started/jiminy-3"
           }
         ]
       },
@@ -153,8 +153,8 @@
             "slug": "docs/cli/enterprise"
           },
           {
-            "label": "Ignore files (.geminiignore)",
-            "slug": "docs/cli/gemini-ignore"
+            "label": "Ignore files (.jiminyignore)",
+            "slug": "docs/cli/jiminy-ignore"
           },
           {
             "label": "Model configuration",
@@ -162,7 +162,7 @@
           },
           {
             "label": "Project context (GEMINI.md)",
-            "slug": "docs/cli/gemini-md"
+            "slug": "docs/cli/jiminy-md"
           },
           { "label": "Settings", "slug": "docs/cli/settings" },
           {

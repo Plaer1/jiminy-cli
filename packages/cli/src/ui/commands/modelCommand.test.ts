@@ -8,7 +8,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { modelCommand } from './modelCommand.js';
 import { type CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
-import type { Config } from '@google/gemini-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 import { MessageType } from '../types.js';
 
 describe('modelCommand', () => {
@@ -109,13 +109,13 @@ describe('modelCommand', () => {
         },
       } as unknown as Config;
 
-      await setCommand!.action!(mockContext, 'gemini-pro');
+      await setCommand!.action!(mockContext, 'jiminy-pro');
 
-      expect(mockSetModel).toHaveBeenCalledWith('gemini-pro', true);
+      expect(mockSetModel).toHaveBeenCalledWith('jiminy-pro', true);
       expect(mockContext.ui.addItem).toHaveBeenCalledWith(
         expect.objectContaining({
           type: MessageType.INFO,
-          text: expect.stringContaining('Model set to gemini-pro'),
+          text: expect.stringContaining('Model set to jiminy-pro'),
         }),
       );
     });
@@ -144,13 +144,13 @@ describe('modelCommand', () => {
         },
       } as unknown as Config;
 
-      await setCommand!.action!(mockContext, 'gemini-pro --persist');
+      await setCommand!.action!(mockContext, 'jiminy-pro --persist');
 
-      expect(mockSetModel).toHaveBeenCalledWith('gemini-pro', false);
+      expect(mockSetModel).toHaveBeenCalledWith('jiminy-pro', false);
       expect(mockContext.ui.addItem).toHaveBeenCalledWith(
         expect.objectContaining({
           type: MessageType.INFO,
-          text: expect.stringContaining('Model set to gemini-pro (persisted)'),
+          text: expect.stringContaining('Model set to jiminy-pro (persisted)'),
         }),
       );
     });

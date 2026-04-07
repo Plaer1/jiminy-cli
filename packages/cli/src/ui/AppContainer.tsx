@@ -38,14 +38,14 @@ import {
   type IdeInfo,
   type IdeContext,
   type UserTierId,
-  type GeminiUserTier,
+  type JiminyUserTier,
   type UserFeedbackPayload,
   type AgentDefinition,
   ApprovalMode,
   IdeClient,
   ideContextStore,
   getErrorMessage,
-  getAllGeminiMdFilenames,
+  getAllJiminyMdFilenames,
   AuthType,
   clearCachedCredentialFile,
   type ResumedSessionData,
@@ -76,7 +76,7 @@ import {
   logBillingEvent,
   ApiKeyUpdatedEvent,
   type InjectionSource,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { validateAuthMethod } from '../config/auth.js';
 import process from 'node:process';
 import { useHistory } from './hooks/useHistoryManager.js';
@@ -102,7 +102,7 @@ import { basename } from 'node:path';
 import { computeTerminalTitle } from '../utils/windowTitle.js';
 import { useTextBuffer } from './components/shared/text-buffer.js';
 import { useLogger } from './hooks/useLogger.js';
-import { useGeminiStream } from './hooks/useGeminiStream.js';
+import { useJiminyStream } from './hooks/useJiminyStream.js';
 import { type BackgroundShell } from './hooks/shellCommandProcessor.js';
 import { useVim } from './hooks/vim.js';
 import { type LoadableSettingScope, SettingScope } from '../config/settings.js';
@@ -202,7 +202,7 @@ export const AppContainer = (props: AppContainerProps) => {
   const notificationsEnabled = isNotificationsEnabled(settings);
 
   const historyManager = useHistory({
-    chatRecordingService: config.getGeminiClient()?.getChatRecordingService(),
+    chatRecordingService: config.getJiminyClient()?.getChatRecordingService(),
   });
 
   useMemoryMonitor(historyManager);
@@ -369,7 +369,7 @@ export const AppContainer = (props: AppContainerProps) => {
       ? { remaining, limit, resetTime }
       : undefined;
   });
-  const [paidTier, setPaidTier] = useState<GeminiUserTier | undefined>(
+  const [paidTier, setPaidTier] = useState<JiminyUserTier | undefined>(
     undefined,
   );
 
@@ -425,9 +425,9 @@ export const AppContainer = (props: AppContainerProps) => {
         }
 
         const additionalContext = result.getAdditionalContext();
-        const geminiClient = config.getGeminiClient();
-        if (additionalContext && geminiClient) {
-          await geminiClient.addHistory({
+        const jiminyClient = config.getJiminyClient();
+        if (additionalContext && jiminyClient) {
+          await jiminyClient.addHistory({
             role: 'user',
             parts: [
               { text: `<hook_context>${additionalContext}</hook_context>` },
@@ -698,13 +698,13 @@ export const AppContainer = (props: AppContainerProps) => {
     settings.merged.security.auth.selectedType !== AuthType.USE_GEMINI;
 
   // Session browser and resume functionality
-  const isGeminiClientInitialized = config.getGeminiClient()?.isInitialized();
+  const isJiminyClientInitialized = config.getJiminyClient()?.isInitialized();
 
   const { loadHistoryForResume, isResuming } = useSessionResume({
     config,
     historyManager,
     refreshStatic,
-    isGeminiClientInitialized,
+    isJiminyClientInitialized,
     setQuittingMessages,
     resumedSessionData,
     isAuthenticating,
@@ -987,7 +987,7 @@ Logging in with Google... Restarting Jiminy CLI to continue.
       if (config.isJitContextEnabled()) {
         await config.getContextManager()?.refresh();
         flattenedMemory = flattenMemory(config.getUserMemory());
-        fileCount = config.getGeminiMdFileCount();
+        fileCount = config.getJiminyMdFileCount();
       } else {
         const result = await refreshServerHierarchicalMemory(config);
         flattenedMemory = flattenMemory(result.memoryContent);
@@ -1088,7 +1088,7 @@ Logging in with Google... Restarting Jiminy CLI to continue.
     streamingState,
     submitQuery,
     initError,
-    pendingHistoryItems: pendingGeminiHistoryItems,
+    pendingHistoryItems: pendingJiminyHistoryItems,
     thought,
     cancelOngoingRequest,
     pendingToolCalls,
@@ -1103,8 +1103,8 @@ Logging in with Google... Restarting Jiminy CLI to continue.
     backgroundShells,
     dismissBackgroundShell,
     retryStatus,
-  } = useGeminiStream(
-    config.getGeminiClient(),
+  } = useJiminyStream(
+    config.getJiminyClient(),
     historyManager.history,
     historyManager.addItem,
     config,
@@ -1126,8 +1126,8 @@ Logging in with Google... Restarting Jiminy CLI to continue.
   );
 
   const pendingHistoryItems = useMemo(
-    () => [...pendingSlashCommandHistoryItems, ...pendingGeminiHistoryItems],
-    [pendingSlashCommandHistoryItems, pendingGeminiHistoryItems],
+    () => [...pendingSlashCommandHistoryItems, ...pendingJiminyHistoryItems],
+    [pendingSlashCommandHistoryItems, pendingJiminyHistoryItems],
   );
 
   const hasPendingToolConfirmation = useMemo(
@@ -1449,12 +1449,12 @@ Logging in with Google... Restarting Jiminy CLI to continue.
       ? Array.isArray(fromSettings)
         ? fromSettings
         : [fromSettings]
-      : getAllGeminiMdFilenames();
+      : getAllJiminyMdFilenames();
   }, [settings.merged.context.fileName]);
   // Initial prompt handling
   const initialPrompt = useMemo(() => config.getQuestion(), [config]);
   const initialPromptSubmitted = useRef(false);
-  const geminiClient = config.getGeminiClient();
+  const jiminyClient = config.getJiminyClient();
 
   useEffect(() => {
     if (
@@ -1466,7 +1466,7 @@ Logging in with Google... Restarting Jiminy CLI to continue.
       !isThemeDialogOpen &&
       !isEditorDialogOpen &&
       !showPrivacyNotice &&
-      geminiClient?.isInitialized?.()
+      jiminyClient?.isInitialized?.()
     ) {
       void handleFinalSubmit(initialPrompt);
       initialPromptSubmitted.current = true;
@@ -1480,7 +1480,7 @@ Logging in with Google... Restarting Jiminy CLI to continue.
     isThemeDialogOpen,
     isEditorDialogOpen,
     showPrivacyNotice,
-    geminiClient,
+    jiminyClient,
   ]);
 
   const [idePromptAnswered, setIdePromptAnswered] = useState(false);
@@ -2159,12 +2159,12 @@ Logging in with Google... Restarting Jiminy CLI to continue.
     [pendingHistoryItems],
   );
 
-  const [geminiMdFileCount, setGeminiMdFileCount] = useState<number>(
-    config.getGeminiMdFileCount(),
+  const [jiminyMdFileCount, setJiminyMdFileCount] = useState<number>(
+    config.getJiminyMdFileCount(),
   );
   useEffect(() => {
     const handleMemoryChanged = (result: MemoryChangedPayload) => {
-      setGeminiMdFileCount(result.fileCount);
+      setJiminyMdFileCount(result.fileCount);
     };
     coreEvents.on(CoreEvent.MemoryChanged, handleMemoryChanged);
     return () => {
@@ -2232,10 +2232,10 @@ Logging in with Google... Restarting Jiminy CLI to continue.
       confirmUpdateExtensionRequests,
       loopDetectionConfirmationRequest,
       permissionConfirmationRequest,
-      geminiMdFileCount,
+      jiminyMdFileCount,
       streamingState,
       initError,
-      pendingGeminiHistoryItems,
+      pendingJiminyHistoryItems,
       thought,
       shellModeActive,
       userMessages: inputHistory,
@@ -2357,10 +2357,10 @@ Logging in with Google... Restarting Jiminy CLI to continue.
       confirmUpdateExtensionRequests,
       loopDetectionConfirmationRequest,
       permissionConfirmationRequest,
-      geminiMdFileCount,
+      jiminyMdFileCount,
       streamingState,
       initError,
-      pendingGeminiHistoryItems,
+      pendingJiminyHistoryItems,
       thought,
       shellModeActive,
       inputHistory,

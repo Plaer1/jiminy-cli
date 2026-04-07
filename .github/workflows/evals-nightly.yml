@@ -22,18 +22,18 @@ permissions:
 jobs:
   evals:
     name: 'Evals (USUALLY_PASSING) nightly run'
-    runs-on: 'gemini-cli-ubuntu-16-core'
-    if: "github.repository == 'google-gemini/gemini-cli'"
+    runs-on: 'jiminy-cli-ubuntu-16-core'
+    if: "github.repository == 'google-jiminy/jiminy-cli'"
     strategy:
       fail-fast: false
       matrix:
         model:
-          - 'gemini-3.1-pro-preview-customtools'
-          - 'gemini-3-pro-preview'
-          - 'gemini-3-flash-preview'
-          - 'gemini-2.5-pro'
-          - 'gemini-2.5-flash'
-          - 'gemini-2.5-flash-lite'
+          - 'jiminy-3.1-pro-preview-customtools'
+          - 'jiminy-3-pro-preview'
+          - 'jiminy-3-flash-preview'
+          - 'jiminy-2.5-pro'
+          - 'jiminy-2.5-flash'
+          - 'jiminy-2.5-flash-lite'
         run_attempt: [1, 2, 3]
     steps:
       - name: 'Checkout'
@@ -87,8 +87,8 @@ jobs:
   aggregate-results:
     name: 'Aggregate Results'
     needs: ['evals']
-    if: "github.repository == 'google-gemini/gemini-cli' && always()"
-    runs-on: 'gemini-cli-ubuntu-16-core'
+    if: "github.repository == 'google-jiminy/jiminy-cli' && always()"
+    runs-on: 'jiminy-cli-ubuntu-16-core'
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8' # ratchet:actions/checkout@v5

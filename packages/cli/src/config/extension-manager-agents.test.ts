@@ -9,7 +9,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import { ExtensionManager } from './extension-manager.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 import { createTestMergedSettings } from './settings.js';
 import { createExtension } from '../test-utils/createExtension.js';
 import { EXTENSIONS_DIRECTORY_NAME } from './extensions/variables.js';
@@ -24,9 +24,9 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-// Mock @google/gemini-cli-core
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
-  const core = await importOriginal<typeof import('@google/gemini-cli-core')>();
+// Mock @google/jiminy-cli-core
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
+  const core = await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...core,
     homedir: mockHomedir,
@@ -44,11 +44,11 @@ describe('ExtensionManager agents loading', () => {
     vi.clearAllMocks();
     vi.spyOn(debugLogger, 'warn').mockImplementation(() => {});
 
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-test-agents-'));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'jiminy-test-agents-'));
     mockHomedir.mockReturnValue(tempDir);
 
     // Create the extensions directory that ExtensionManager expects
-    extensionsDir = path.join(tempDir, '.gemini', EXTENSIONS_DIRECTORY_NAME);
+    extensionsDir = path.join(tempDir, '.jiminy', EXTENSIONS_DIRECTORY_NAME);
     fs.mkdirSync(extensionsDir, { recursive: true });
 
     extensionManager = new ExtensionManager({

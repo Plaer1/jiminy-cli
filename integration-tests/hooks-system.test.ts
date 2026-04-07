@@ -2294,7 +2294,7 @@ console.log(JSON.stringify({
           )}));`;
 
           // Create script path predictably
-          const scriptPath = join(os.tmpdir(), 'gemini-cli-tests-ask-hook.js');
+          const scriptPath = join(os.tmpdir(), 'jiminy-cli-tests-ask-hook.js');
           writeFileSync(scriptPath, hookScript);
 
           // 2. Setup rig with YOLO mode enabled but with the 'ask' hook
@@ -2332,7 +2332,7 @@ console.log(JSON.stringify({
           });
 
           // Bypass terminal setup prompt and other startup banners
-          const stateDir = join(rig.homeDir!, '.gemini');
+          const stateDir = join(rig.homeDir!, '.jiminy');
           if (!existsSync(stateDir)) mkdirSync(stateDir, { recursive: true });
           writeFileSync(
             join(stateDir, 'state.json'),
@@ -2397,7 +2397,7 @@ console.log(JSON.stringify({
 
           const scriptPath = join(
             os.tmpdir(),
-            'gemini-cli-tests-ask-cancel-hook.js',
+            'jiminy-cli-tests-ask-cancel-hook.js',
           );
           writeFileSync(scriptPath, hookScript);
 
@@ -2435,7 +2435,7 @@ console.log(JSON.stringify({
           });
 
           // Bypass terminal setup prompt and other startup banners
-          const stateDir = join(rig.homeDir!, '.gemini');
+          const stateDir = join(rig.homeDir!, '.jiminy');
           if (!existsSync(stateDir)) mkdirSync(stateDir, { recursive: true });
           writeFileSync(
             join(stateDir, 'state.json'),

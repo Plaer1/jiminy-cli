@@ -22,7 +22,7 @@ export type OverageOption =
 // Event: Overage Menu Shown
 // ============================================================================
 
-export const EVENT_OVERAGE_MENU_SHOWN = 'gemini_cli.overage_menu_shown';
+export const EVENT_OVERAGE_MENU_SHOWN = 'jiminy_cli.overage_menu_shown';
 
 export class OverageMenuShownEvent implements BaseTelemetryEvent {
   'event.name': 'overage_menu_shown';
@@ -64,7 +64,7 @@ export class OverageMenuShownEvent implements BaseTelemetryEvent {
 // ============================================================================
 
 export const EVENT_OVERAGE_OPTION_SELECTED =
-  'gemini_cli.overage_option_selected';
+  'jiminy_cli.overage_option_selected';
 
 export class OverageOptionSelectedEvent implements BaseTelemetryEvent {
   'event.name': 'overage_option_selected';
@@ -106,7 +106,7 @@ export class OverageOptionSelectedEvent implements BaseTelemetryEvent {
 // ============================================================================
 
 export const EVENT_EMPTY_WALLET_MENU_SHOWN =
-  'gemini_cli.empty_wallet_menu_shown';
+  'jiminy_cli.empty_wallet_menu_shown';
 
 export class EmptyWalletMenuShownEvent implements BaseTelemetryEvent {
   'event.name': 'empty_wallet_menu_shown';
@@ -137,7 +137,7 @@ export class EmptyWalletMenuShownEvent implements BaseTelemetryEvent {
 // Event: Credit Purchase Click
 // ============================================================================
 
-export const EVENT_CREDIT_PURCHASE_CLICK = 'gemini_cli.credit_purchase_click';
+export const EVENT_CREDIT_PURCHASE_CLICK = 'jiminy_cli.credit_purchase_click';
 
 export class CreditPurchaseClickEvent implements BaseTelemetryEvent {
   'event.name': 'credit_purchase_click';
@@ -174,7 +174,7 @@ export class CreditPurchaseClickEvent implements BaseTelemetryEvent {
 // Event: Credits Used
 // ============================================================================
 
-export const EVENT_CREDITS_USED = 'gemini_cli.credits_used';
+export const EVENT_CREDITS_USED = 'jiminy_cli.credits_used';
 
 export class CreditsUsedEvent implements BaseTelemetryEvent {
   'event.name': 'credits_used';
@@ -215,7 +215,7 @@ export class CreditsUsedEvent implements BaseTelemetryEvent {
 // Event: API Key Updated (Auth Type Changed)
 // ============================================================================
 
-export const EVENT_API_KEY_UPDATED = 'gemini_cli.api_key_updated';
+export const EVENT_API_KEY_UPDATED = 'jiminy_cli.api_key_updated';
 
 export class ApiKeyUpdatedEvent implements BaseTelemetryEvent {
   'event.name': 'api_key_updated';

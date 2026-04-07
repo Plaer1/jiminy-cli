@@ -41,7 +41,7 @@ describe('createMockCommandContext', () => {
     // This is the most important test for factory's logic.
     const mockConfig = {
       getProjectRoot: () => '/test/project',
-      getModel: () => 'gemini-pro',
+      getModel: () => 'jiminy-pro',
     };
 
     const overrides = {
@@ -54,7 +54,7 @@ describe('createMockCommandContext', () => {
 
     expect(context.services.agentContext).toBeDefined();
     expect(context.services.agentContext?.config?.getModel()).toBe(
-      'gemini-pro',
+      'jiminy-pro',
     );
     expect(context.services.agentContext?.config?.getProjectRoot()).toBe(
       '/test/project',

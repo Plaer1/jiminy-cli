@@ -6,7 +6,7 @@
 
 import type { ToolResult } from '../tools/tools.js';
 import type { Content } from '@google/genai';
-import type { GeminiClient } from '../core/client.js';
+import type { JiminyClient } from '../core/client.js';
 import { getResponseText, partToString } from './partUtils.js';
 import { debugLogger } from './debugLogger.js';
 import type { ModelConfigKey } from '../services/modelConfigService.js';
@@ -22,7 +22,7 @@ import { LlmRole } from '../telemetry/llmRole.js';
 export type Summarizer = (
   config: Config,
   result: ToolResult,
-  geminiClient: GeminiClient,
+  jiminyClient: JiminyClient,
   abortSignal: AbortSignal,
 ) => Promise<string>;
 
@@ -30,14 +30,14 @@ export type Summarizer = (
  * The default summarizer for tool results.
  *
  * @param result The result of the tool execution.
- * @param geminiClient The Jiminy client to use for summarization.
+ * @param jiminyClient The Jiminy client to use for summarization.
  * @param abortSignal The abort signal to use for summarization.
  * @returns The summary of the result.
  */
 export const defaultSummarizer: Summarizer = (
   _config: Config,
   result: ToolResult,
-  _geminiClient: GeminiClient,
+  _jiminyClient: JiminyClient,
   _abortSignal: AbortSignal,
 ) => Promise.resolve(JSON.stringify(result.llmContent));
 
@@ -58,14 +58,14 @@ Return the summary string which should first contain an overall summarization of
 export const llmSummarizer: Summarizer = async (
   config,
   result,
-  geminiClient,
+  jiminyClient,
   abortSignal,
 ) =>
   summarizeToolOutput(
     config,
     { model: 'summarizer-default' },
     partToString(result.llmContent),
-    geminiClient,
+    jiminyClient,
     abortSignal,
   );
 
@@ -73,7 +73,7 @@ export async function summarizeToolOutput(
   config: Config,
   modelConfigKey: ModelConfigKey,
   textToSummarize: string,
-  geminiClient: GeminiClient,
+  jiminyClient: JiminyClient,
   abortSignal: AbortSignal,
 ): Promise<string> {
   const maxOutputTokens =
@@ -91,7 +91,7 @@ export async function summarizeToolOutput(
 
   const contents: Content[] = [{ role: 'user', parts: [{ text: prompt }] }];
   try {
-    const parsedResponse = await geminiClient.generateContent(
+    const parsedResponse = await jiminyClient.generateContent(
       modelConfigKey,
       contents,
       abortSignal,

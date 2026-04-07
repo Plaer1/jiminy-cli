@@ -1,4 +1,4 @@
-# `Gemini CLI SDK`
+# `Jiminy CLI SDK`
 
 > **Implementation Status:** Core agent loop, tool execution, and session
 > context are implemented. Advanced features like hooks, skills, subagents, and
@@ -8,16 +8,16 @@
 
 ## `Simple Example`
 
-> **Status:** Implemented. `GeminiCliAgent` supports `session()` and
+> **Status:** Implemented. `JiminyCliAgent` supports `session()` and
 > `resumeSession()`.
 
-Equivalent to `gemini -p "what does this project do?"`. Loads all workspace and
+Equivalent to `jiminy -p "what does this project do?"`. Loads all workspace and
 user settings.
 
 ```ts
-import { GeminiCliAgent } from '@google/gemini-cli-sdk';
+import { JiminyCliAgent } from '@google/jiminy-cli-sdk';
 
-const simpleAgent = new GeminiCliAgent({
+const simpleAgent = new JiminyCliAgent({
   cwd: '/path/to/some/dir',
 });
 
@@ -45,9 +45,9 @@ System instructions can be provided by a static string OR dynamically via a
 function:
 
 ```ts
-import { GeminiCliAgent } from "@google/gemini-cli-sdk";
+import { JiminyCliAgent } from "@google/jiminy-cli-sdk";
 
-const agent = new GeminiCliAgent({
+const agent = new JiminyCliAgent({
   instructions: "This is a static string instruction"; // this is valid
   instructions: (ctx) => `The current time is ${new Date().toISOString()} in session ${ctx.sessionId}.`
 });
@@ -61,11 +61,11 @@ Validation:
 
 ## `Custom Tools`
 
-> **Status:** Implemented. `tool()` helper and `GeminiCliAgent` support custom
+> **Status:** Implemented. `tool()` helper and `JiminyCliAgent` support custom
 > tool definitions and execution.
 
 ```ts
-import { GeminiCliAgent, tool, z } from "@google/gemini-cli-sdk";
+import { JiminyCliAgent, tool, z } from "@google/jiminy-cli-sdk";
 
 const addTool = tool({
   name: 'add',
@@ -76,7 +76,7 @@ const addTool = tool({
   }),
 }, (({a, b}) => ({result: a + b}),);
 
-const toolAgent = new GeminiCliAgent({
+const toolAgent = new JiminyCliAgent({
   tools: [addTool],
 });
 
@@ -96,7 +96,7 @@ Validation:
 SDK users can provide programmatic custom hooks
 
 ```ts
-import { GeminiCliAgent, hook, z } from '@google/gemini-cli-sdk';
+import { JiminyCliAgent, hook, z } from '@google/jiminy-cli-sdk';
 import { reformat } from './reformat.js';
 
 const myHook = hook(
@@ -111,7 +111,7 @@ const myHook = hook(
     // void return is a no-op
     if (!filePath.endsWith('.ts')) return;
 
-    // ctx.fs gives us a filesystem interface that obeys Gemini CLI permissions/sandbox
+    // ctx.fs gives us a filesystem interface that obeys Jiminy CLI permissions/sandbox
     const reformatted = await reformat(await ctx.fs.read(filePath));
     await ctx.fs.write(filePath, reformatted);
 
@@ -129,7 +129,7 @@ SDK Hooks can also run as standalone scripts to implement userland "command"
 style hooks:
 
 ```ts
-import { hook } from "@google/gemini-cli-sdk";
+import { hook } from "@google/jiminy-cli-sdk";
 
 // define a hook as above
 const myHook = hook({...}, (hook) => {...});
@@ -146,7 +146,7 @@ Validation (these are probably hardest to validate):
 
 ## `Custom Skills`
 
-> **Status:** Implemented. `skillDir` helper and `GeminiCliAgent` support
+> **Status:** Implemented. `skillDir` helper and `JiminyCliAgent` support
 > loading skills from filesystem.
 
 Custom skills can be referenced by individual directories or by "skill roots"
@@ -164,9 +164,9 @@ skill-dir/
 ### Usage
 
 ```typescript
-import { GeminiCliAgent, skillDir } from '@google/gemini-sdk';
+import { JiminyCliAgent, skillDir } from '@google/jiminy-sdk';
 
-const agent = new GeminiCliAgent({
+const agent = new JiminyCliAgent({
   instructions: 'You are a helpful assistant.',
   skills: [
     // Load a single skill from a directory
@@ -182,7 +182,7 @@ const agent = new GeminiCliAgent({
 > **Status:** Not Implemented.
 
 ```ts
-import { GeminiCliAgent, subagent } from "@google/gemini-cli";
+import { JiminyCliAgent, subagent } from "@google/jiminy-cli";
 
 const mySubagent = subagent({
   name: "my-subagent",
@@ -195,10 +195,10 @@ const mySubagent = subagent({
   // OR (in an ideal world)...
 
   // pass a full standalone agent
-  agent: new GeminiCliAgent(...);
+  agent: new JiminyCliAgent(...);
 });
 
-const agent = new GeminiCliAgent({
+const agent = new JiminyCliAgent({
   subagents: [mySubagent]
 });
 ```
@@ -207,11 +207,11 @@ const agent = new GeminiCliAgent({
 
 > **Status:** Not Implemented.
 
-Potentially the most important feature of the Gemini CLI SDK is support for
+Potentially the most important feature of the Jiminy CLI SDK is support for
 extensions, which modularly encapsulate all of the primitives listed above:
 
 ```ts
-import { GeminiCliAgent, extension } from "@google/gemini-cli-sdk";
+import { JiminyCliAgent, extension } from "@google/jiminy-cli-sdk";
 
 const myExtension = extension({
   name: "my-extension",
@@ -233,10 +233,10 @@ The SDK will include a wrapper utility to interact with the agent via ACP
 instead of the SDK's natural API.
 
 ```ts
-import { GeminiCliAgent } from "@google/gemini-cli-sdk";
-import { GeminiCliAcpServer } from "@google/gemini-cli-sdk/acp";
+import { JiminyCliAgent } from "@google/jiminy-cli-sdk";
+import { JiminyCliAcpServer } from "@google/jiminy-cli-sdk/acp";
 
-const server = new GeminiCliAcpServer(new GeminiCliAgent({...}));
+const server = new JiminyCliAcpServer(new JiminyCliAgent({...}));
 server.start(); // calling start runs a stdio ACP server
 
 const client = server.connect({
@@ -274,8 +274,8 @@ export interface SessionContext {
   fs: AgentFilesystem;
   shell: AgentShell;
   // the agent and session are passed as context
-  agent: GeminiCliAgent;
-  session: GeminiCliSession;
+  agent: JiminyCliAgent;
+  session: JiminyCliSession;
 }
 
 export interface AgentFilesystem {
@@ -305,7 +305,7 @@ export interface AgentShellOptions {
 
 export interface AgentShellProcess {
   // figure out how to have a streaming shell process here that supports stdin too
-  // investigate how Gemini CLI already does this
+  // investigate how Jiminy CLI already does this
 }
 ```
 
@@ -314,7 +314,7 @@ export interface AgentShellProcess {
 - To validate the SDK, it would be useful to have a robust way to mock the
   underlying model API so that the tests could be closer to end-to-end but still
   deterministic.
-- Need to work in both Gemini-CLI-triggered approvals and optional
+- Need to work in both Jiminy-CLI-triggered approvals and optional
   developer-initiated user prompts / HITL stuff.
 - Need to think about how subagents inherit message context \- e.g. do they have
   the same session id?
@@ -328,13 +328,13 @@ Based on the current implementation status, we can proceed with:
 ## Feature 3: Custom Hooks Support
 
 Implement support for loading and registering custom hooks. This involves adding
-a `hooks` option to `GeminiCliAgentOptions`.
+a `hooks` option to `JiminyCliAgentOptions`.
 
 **Tasks:**
 
 1.  Define `Hook` interface and helper functions.
-2.  Add `hooks` option to `GeminiCliAgentOptions`.
-3.  Implement hook registration logic in `GeminiCliAgent`.
+2.  Add `hooks` option to `JiminyCliAgentOptions`.
+3.  Implement hook registration logic in `JiminyCliAgent`.
 
 IMPORTANT: Hook signatures should be strongly typed all the way through. You'll
 need to create a mapping of the string event name to the request/response types.

@@ -253,7 +253,7 @@ describe('applySubstitutions', () => {
     expect(result).toContain('mocked-sub-agents');
   });
 
-  it('should use legacy snippets when isGemini3 is false', () => {
+  it('should use legacy snippets when isJiminy3 is false', () => {
     const result = applySubstitutions(
       'Agents: ${SubAgents}',
       mockConfig,

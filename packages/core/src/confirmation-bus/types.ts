@@ -12,6 +12,7 @@ import type {
 } from '../tools/tools.js';
 import type { ToolCall } from '../scheduler/types.js';
 import type { SandboxPermissions } from '../services/sandboxManager.js';
+import { type ApprovalMode } from '../policy/types.js';
 
 export enum MessageBusType {
   TOOL_CONFIRMATION_REQUEST = 'tool-confirmation-request',
@@ -148,6 +149,7 @@ export interface UpdatePolicy {
   commandPrefix?: string | string[];
   mcpName?: string;
   allowRedirection?: boolean;
+  modes?: ApprovalMode[];
 }
 
 export interface ToolPolicyRejection {

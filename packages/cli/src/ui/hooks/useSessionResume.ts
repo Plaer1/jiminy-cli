@@ -10,7 +10,7 @@ import {
   type Config,
   type ResumedSessionData,
   convertSessionToClientHistory,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type { Part } from '@google/genai';
 import type { HistoryItemWithoutId } from '../types.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
@@ -20,7 +20,7 @@ interface UseSessionResumeParams {
   config: Config;
   historyManager: UseHistoryManagerReturn;
   refreshStatic: () => void;
-  isGeminiClientInitialized: boolean;
+  isJiminyClientInitialized: boolean;
   setQuittingMessages: (messages: null) => void;
   resumedSessionData?: ResumedSessionData;
   isAuthenticating: boolean;
@@ -35,7 +35,7 @@ export function useSessionResume({
   config,
   historyManager,
   refreshStatic,
-  isGeminiClientInitialized,
+  isJiminyClientInitialized,
   setQuittingMessages,
   resumedSessionData,
   isAuthenticating,
@@ -58,7 +58,7 @@ export function useSessionResume({
       resumedData: ResumedSessionData,
     ) => {
       // Wait for the client.
-      if (!isGeminiClientInitialized) {
+      if (!isJiminyClientInitialized) {
         return;
       }
 
@@ -84,7 +84,7 @@ export function useSessionResume({
         }
 
         // Give the history to the Jiminy client.
-        await config.getGeminiClient()?.resumeChat(clientHistory, resumedData);
+        await config.getJiminyClient()?.resumeChat(clientHistory, resumedData);
       } catch (error) {
         coreEvents.emitFeedback(
           'error',
@@ -95,7 +95,7 @@ export function useSessionResume({
         setIsResuming(false);
       }
     },
-    [config, isGeminiClientInitialized, setQuittingMessages],
+    [config, isJiminyClientInitialized, setQuittingMessages],
   );
 
   // Handle interactive resume from the command line (-r/--resume without -p/--prompt-interactive).
@@ -105,7 +105,7 @@ export function useSessionResume({
     if (
       resumedSessionData &&
       !isAuthenticating &&
-      isGeminiClientInitialized &&
+      isJiminyClientInitialized &&
       !hasLoadedResumedSession.current
     ) {
       hasLoadedResumedSession.current = true;
@@ -121,7 +121,7 @@ export function useSessionResume({
   }, [
     resumedSessionData,
     isAuthenticating,
-    isGeminiClientInitialized,
+    isJiminyClientInitialized,
     loadHistoryForResume,
   ]);
 

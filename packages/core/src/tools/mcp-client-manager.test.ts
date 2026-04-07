@@ -16,7 +16,7 @@ import {
 import { McpClientManager } from './mcp-client-manager.js';
 import { McpClient, MCPDiscoveryState, MCPServerStatus } from './mcp-client.js';
 import type { ToolRegistry } from './tool-registry.js';
-import type { Config, GeminiCLIExtension } from '../config/config.js';
+import type { Config, JiminyCLIExtension } from '../config/config.js';
 import type { PromptRegistry } from '../prompts/prompt-registry.js';
 import type { ResourceRegistry } from '../resources/resource-registry.js';
 
@@ -57,7 +57,7 @@ describe('McpClientManager', () => {
       getExcludedMcpServers: vi.fn().mockReturnValue([]),
       getMcpServerCommand: vi.fn().mockReturnValue(''),
       getMcpEnablementCallbacks: vi.fn().mockReturnValue(undefined),
-      getGeminiClient: vi.fn().mockReturnValue({
+      getJiminyClient: vi.fn().mockReturnValue({
         isInitialized: vi.fn(),
       }),
       refreshMcpContext: vi.fn(),
@@ -426,7 +426,7 @@ describe('McpClientManager', () => {
       const mcpServers = {
         'test-server': { command: 'node', args: ['server.js'] },
       };
-      const extension: GeminiCLIExtension = {
+      const extension: JiminyCLIExtension = {
         name: 'test-extension',
         mcpServers,
         isActive: true,
@@ -455,7 +455,7 @@ describe('McpClientManager', () => {
       await manager.startConfiguredMcpServers();
       expect(mockedMcpClient.connect).toHaveBeenCalledTimes(1);
 
-      const extension: GeminiCLIExtension = {
+      const extension: JiminyCLIExtension = {
         name: 'test-extension',
         mcpServers: {
           'test-server': { command: 'node', args: ['ext-server.js'] },
@@ -489,7 +489,7 @@ describe('McpClientManager', () => {
         env: { USER_VAR: 'user-val', OVERRIDE_VAR: 'user-override' },
       };
 
-      const extension: GeminiCLIExtension = {
+      const extension: JiminyCLIExtension = {
         name: 'test-extension',
         mcpServers: {
           'test-server': {
@@ -615,7 +615,7 @@ describe('McpClientManager', () => {
     it('should prevent one extension from hijacking another extension server name', async () => {
       const manager = setupManager(new McpClientManager('0.0.1', mockConfig));
 
-      const extension1: GeminiCLIExtension = {
+      const extension1: JiminyCLIExtension = {
         name: 'extension-1',
         isActive: true,
         id: 'ext-1',
@@ -627,7 +627,7 @@ describe('McpClientManager', () => {
         },
       };
 
-      const extension2: GeminiCLIExtension = {
+      const extension2: JiminyCLIExtension = {
         name: 'extension-2',
         isActive: true,
         id: 'ext-2',
@@ -659,7 +659,7 @@ describe('McpClientManager', () => {
       const mcpServers = {
         'blocked-server': { command: 'node', args: ['server.js'] },
       };
-      const extension: GeminiCLIExtension = {
+      const extension: JiminyCLIExtension = {
         name: 'test-extension',
         mcpServers,
         isActive: true,

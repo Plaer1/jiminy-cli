@@ -78,7 +78,7 @@ export type ConversationRecordExtra =
       type: 'user' | 'info' | 'error' | 'warning';
     }
   | {
-      type: 'gemini';
+      type: 'jiminy';
       toolCalls?: ToolCallRecord[];
       thoughts?: Array<ThoughtSummary & { timestamp: string }>;
       tokens?: TokensSummary | null;
@@ -123,7 +123,7 @@ export interface ResumedSessionData {
  * - Token usage statistics
  * - Assistant thoughts and reasoning
  *
- * Sessions are stored as JSON files in ~/.gemini/tmp/<project_hash>/chats/
+ * Sessions are stored as JSON files in ~/.jiminy/tmp/<project_hash>/chats/
  */
 export class ChatRecordingService {
   private conversationFile: string | null = null;
@@ -256,7 +256,7 @@ export class ChatRecordingService {
           message.content,
           message.displayContent,
         );
-        if (msg.type === 'gemini') {
+        if (msg.type === 'jiminy') {
           // If it's a new Jiminy message then incorporate any queued thoughts.
           conversation.messages.push({
             ...msg,
@@ -315,7 +315,7 @@ export class ChatRecordingService {
       const lastMsg = this.getLastMessage(conversation);
       // If the last message already has token info, it's because this new token info is for a
       // new message that hasn't been recorded yet.
-      if (lastMsg && lastMsg.type === 'gemini' && !lastMsg.tokens) {
+      if (lastMsg && lastMsg.type === 'jiminy' && !lastMsg.tokens) {
         lastMsg.tokens = tokens;
         this.queuedTokens = null;
         this.writeConversation(conversation);
@@ -365,16 +365,16 @@ export class ChatRecordingService {
         // message from tool calls, when we dequeued the thoughts.
         if (
           !lastMsg ||
-          lastMsg.type !== 'gemini' ||
+          lastMsg.type !== 'jiminy' ||
           this.queuedThoughts.length > 0
         ) {
           const newMsg: MessageRecord = {
-            ...this.newMessage('gemini' as const, ''),
+            ...this.newMessage('jiminy' as const, ''),
             // This isn't strictly necessary, but TypeScript apparently can't
             // tell that the first parameter to newMessage() becomes the
             // resulting message's type, and so it thinks that toolCalls may
             // not be present.  Confirming the type here satisfies it.
-            type: 'gemini' as const,
+            type: 'jiminy' as const,
             toolCalls: enrichedToolCalls,
             thoughts: this.queuedThoughts,
             model,
@@ -792,7 +792,7 @@ export class ChatRecordingService {
 
         // Update the conversation records tool results if they've changed.
         for (const message of conversation.messages) {
-          if (message.type === 'gemini' && message.toolCalls) {
+          if (message.type === 'jiminy' && message.toolCalls) {
             for (const toolCall of message.toolCalls) {
               const newParts = partsMap.get(toolCall.id);
               if (newParts !== undefined) {

@@ -13,7 +13,7 @@ import {
   type LoadableSettingScope,
   type LoadedSettings,
 } from '../../config/settings.js';
-import type { AgentDefinition, AgentOverride } from '@google/gemini-cli-core';
+import type { AgentDefinition, AgentOverride } from '@google/jiminy-cli-core';
 import { getCachedStringWidth } from '../utils/textUtils.js';
 import {
   BaseSettingsDialog,
@@ -48,7 +48,7 @@ const AGENT_CONFIG_FIELDS: AgentConfigField[] = [
   {
     key: 'model',
     label: 'Model',
-    description: "Model to use (e.g., 'gemini-2.0-flash' or 'inherit')",
+    description: "Model to use (e.g., 'jiminy-2.0-flash' or 'inherit')",
     type: 'string',
     path: ['modelConfig', 'model'],
     defaultValue: 'inherit',

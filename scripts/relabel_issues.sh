@@ -7,7 +7,7 @@ set -o pipefail
 
 OLD_LABEL="${1}"
 NEW_LABEL="${2}"
-REPO="${3:-google-gemini/gemini-cli}"
+REPO="${3:-google-jiminy/jiminy-cli}"
 
 if [[ -z "${OLD_LABEL}" ]] || [[ -z "${NEW_LABEL}" ]]; then
   echo "Usage: $0 <old-label> <new-label> [repository]"

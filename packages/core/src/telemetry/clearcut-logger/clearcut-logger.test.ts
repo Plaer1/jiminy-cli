@@ -90,7 +90,7 @@ expect.extend({
   ) {
     const event = JSON.parse(received[0].source_extension_json) as LogEvent;
     const metadata = event['event_metadata'][0];
-    const data = metadata.find((m) => m.gemini_cli_key === key)?.value;
+    const data = metadata.find((m) => m.jiminy_cli_key === key)?.value;
 
     const pass = data !== undefined && data === value;
 
@@ -105,7 +105,7 @@ expect.extend({
     const event = JSON.parse(received[0].source_extension_json) as LogEvent;
     const metadata = event['event_metadata'][0];
 
-    const pass = metadata.some((m) => m.gemini_cli_key === key);
+    const pass = metadata.some((m) => m.jiminy_cli_key === key);
 
     return {
       pass,
@@ -287,7 +287,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
 
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_GOOGLE_ACCOUNTS_COUNT,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GOOGLE_ACCOUNTS_COUNT,
         value: '9001',
       });
     });
@@ -321,43 +321,43 @@ describe('ClearcutLogger', () => {
       expect(event?.event_metadata[0]).toEqual(
         expect.arrayContaining([
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_SESSION_ID,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_SESSION_ID,
             value: session_id,
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_AUTH_TYPE,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_AUTH_TYPE,
             value: JSON.stringify(auth_type),
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_GOOGLE_ACCOUNTS_COUNT,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GOOGLE_ACCOUNTS_COUNT,
             value: `${google_accounts}`,
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_SURFACE,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_SURFACE,
             value: surface,
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_VERSION,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_VERSION,
             value: cli_version,
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_GIT_COMMIT_HASH,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GIT_COMMIT_HASH,
             value: git_commit_hash,
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_PROMPT_ID,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_PROMPT_ID,
             value: prompt_id,
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_OS,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_OS,
             value: process.platform,
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_USER_SETTINGS,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_USER_SETTINGS,
             value: logger?.getConfigJson(),
           },
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_ACTIVE_APPROVAL_MODE,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_ACTIVE_APPROVAL_MODE,
             value: 'default',
           },
         ]),
@@ -370,7 +370,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
 
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_NODE_VERSION,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_NODE_VERSION,
         value: process.versions.node,
       });
     });
@@ -386,7 +386,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.TOOL_CALL, []);
 
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_USER_SETTINGS,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_USER_SETTINGS,
         value: logger?.getConfigJson(),
       });
     });
@@ -402,7 +402,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
 
       const gpuInfoEntry = event?.event_metadata[0].find(
-        (item) => item.gemini_cli_key === EventMetadataKey.GEMINI_CLI_GPU_INFO,
+        (item) => item.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_GPU_INFO,
       );
       expect(gpuInfoEntry).toBeDefined();
       expect(gpuInfoEntry?.value).toBe('Single GPU');
@@ -420,7 +420,7 @@ describe('ClearcutLogger', () => {
       const metadata = event?.event_metadata[0];
 
       const gpuInfoEntry = metadata?.find(
-        (m) => m.gemini_cli_key === EventMetadataKey.GEMINI_CLI_GPU_INFO,
+        (m) => m.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_GPU_INFO,
       );
       expect(gpuInfoEntry?.value).toBe('GPU 1, GPU 2');
     });
@@ -437,7 +437,7 @@ describe('ClearcutLogger', () => {
       const metadata = event?.event_metadata[0];
 
       const gpuInfoEntry = metadata?.find(
-        (m) => m.gemini_cli_key === EventMetadataKey.GEMINI_CLI_GPU_INFO,
+        (m) => m.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_GPU_INFO,
       );
       expect(gpuInfoEntry?.value).toBe('NA');
     });
@@ -453,7 +453,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
 
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_GPU_INFO,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GPU_INFO,
         value: 'FAILED',
       });
     });
@@ -468,12 +468,12 @@ describe('ClearcutLogger', () => {
       const metadata = event?.event_metadata[0];
 
       const cpuInfoEntry = metadata?.find(
-        (m) => m.gemini_cli_key === EventMetadataKey.GEMINI_CLI_CPU_INFO,
+        (m) => m.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_CPU_INFO,
       );
       expect(cpuInfoEntry).toBeUndefined();
 
       const cpuCoresEntry = metadata?.find(
-        (m) => m.gemini_cli_key === EventMetadataKey.GEMINI_CLI_CPU_CORES,
+        (m) => m.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_CPU_CORES,
       );
       expect(cpuCoresEntry?.value).toBe('8');
     });
@@ -575,7 +575,7 @@ describe('ClearcutLogger', () => {
         }
         const event = logger?.createLogEvent(EventNames.API_ERROR, []);
         expect(event?.event_metadata[0]).toContainEqual({
-          gemini_cli_key: EventMetadataKey.GEMINI_CLI_SURFACE,
+          jiminy_cli_key: EventMetadataKey.GEMINI_CLI_SURFACE,
           value: expected,
         });
       },
@@ -589,7 +589,7 @@ describe('ClearcutLogger', () => {
 
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_GH_WORKFLOW_NAME,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GH_WORKFLOW_NAME,
         value: 'test-workflow',
       });
     });
@@ -601,7 +601,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       const hasWorkflowName = event?.event_metadata[0].some(
         (item) =>
-          item.gemini_cli_key === EventMetadataKey.GEMINI_CLI_GH_WORKFLOW_NAME,
+          item.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_GH_WORKFLOW_NAME,
       );
       expect(hasWorkflowName).toBe(false);
     });
@@ -614,7 +614,7 @@ describe('ClearcutLogger', () => {
 
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_GH_EVENT_NAME,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GH_EVENT_NAME,
         value: 'issues',
       });
     });
@@ -626,7 +626,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       const hasEventName = event?.event_metadata[0].some(
         (item) =>
-          item.gemini_cli_key === EventMetadataKey.GEMINI_CLI_GH_EVENT_NAME,
+          item.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_GH_EVENT_NAME,
       );
       expect(hasEventName).toBe(false);
     });
@@ -640,7 +640,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
 
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_GH_PR_NUMBER,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GH_PR_NUMBER,
         value: '123',
       });
     });
@@ -652,7 +652,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       const hasPRNumber = event?.event_metadata[0].some(
         (item) =>
-          item.gemini_cli_key === EventMetadataKey.GEMINI_CLI_GH_PR_NUMBER,
+          item.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_GH_PR_NUMBER,
       );
       expect(hasPRNumber).toBe(false);
     });
@@ -666,7 +666,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
 
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_GH_ISSUE_NUMBER,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GH_ISSUE_NUMBER,
         value: '456',
       });
     });
@@ -678,7 +678,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       const hasIssueNumber = event?.event_metadata[0].some(
         (item) =>
-          item.gemini_cli_key === EventMetadataKey.GEMINI_CLI_GH_ISSUE_NUMBER,
+          item.jiminy_cli_key === EventMetadataKey.GEMINI_CLI_GH_ISSUE_NUMBER,
       );
       expect(hasIssueNumber).toBe(false);
     });
@@ -692,7 +692,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
 
       expect(event?.event_metadata[0]).toContainEqual({
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_GH_CUSTOM_TRACKING_ID,
+        jiminy_cli_key: EventMetadataKey.GEMINI_CLI_GH_CUSTOM_TRACKING_ID,
         value: 'abc-789',
       });
     });
@@ -704,7 +704,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       const hasTrackingId = event?.event_metadata[0].some(
         (item) =>
-          item.gemini_cli_key ===
+          item.jiminy_cli_key ===
           EventMetadataKey.GEMINI_CLI_GH_CUSTOM_TRACKING_ID,
       );
       expect(hasTrackingId).toBe(false);
@@ -713,22 +713,22 @@ describe('ClearcutLogger', () => {
 
   describe('GITHUB_REPOSITORY metadata', () => {
     it('includes hashed repository when GITHUB_REPOSITORY is set', () => {
-      vi.stubEnv('GITHUB_REPOSITORY', 'google/gemini-cli');
+      vi.stubEnv('GITHUB_REPOSITORY', 'google/jiminy-cli');
       const { logger } = setup({});
 
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       const repositoryMetadata = event?.event_metadata[0].find(
         (item) =>
-          item.gemini_cli_key ===
+          item.jiminy_cli_key ===
           EventMetadataKey.GEMINI_CLI_GH_REPOSITORY_NAME_HASH,
       );
       expect(repositoryMetadata).toBeDefined();
       expect(repositoryMetadata?.value).toMatch(/^[a-f0-9]{64}$/);
-      expect(repositoryMetadata?.value).not.toBe('google/gemini-cli');
+      expect(repositoryMetadata?.value).not.toBe('google/jiminy-cli');
     });
 
     it('hashes repository name consistently', () => {
-      vi.stubEnv('GITHUB_REPOSITORY', 'google/gemini-cli');
+      vi.stubEnv('GITHUB_REPOSITORY', 'google/jiminy-cli');
       const { logger } = setup({});
 
       const event1 = logger?.createLogEvent(EventNames.API_ERROR, []);
@@ -736,12 +736,12 @@ describe('ClearcutLogger', () => {
 
       const hash1 = event1?.event_metadata[0].find(
         (item) =>
-          item.gemini_cli_key ===
+          item.jiminy_cli_key ===
           EventMetadataKey.GEMINI_CLI_GH_REPOSITORY_NAME_HASH,
       )?.value;
       const hash2 = event2?.event_metadata[0].find(
         (item) =>
-          item.gemini_cli_key ===
+          item.jiminy_cli_key ===
           EventMetadataKey.GEMINI_CLI_GH_REPOSITORY_NAME_HASH,
       )?.value;
 
@@ -751,12 +751,12 @@ describe('ClearcutLogger', () => {
     });
 
     it('produces different hashes for different repositories', () => {
-      vi.stubEnv('GITHUB_REPOSITORY', 'google/gemini-cli');
+      vi.stubEnv('GITHUB_REPOSITORY', 'google/jiminy-cli');
       const { logger: logger1 } = setup({});
       const event1 = logger1?.createLogEvent(EventNames.API_ERROR, []);
       const hash1 = event1?.event_metadata[0].find(
         (item) =>
-          item.gemini_cli_key ===
+          item.jiminy_cli_key ===
           EventMetadataKey.GEMINI_CLI_GH_REPOSITORY_NAME_HASH,
       )?.value;
 
@@ -766,7 +766,7 @@ describe('ClearcutLogger', () => {
       const event2 = logger2?.createLogEvent(EventNames.API_ERROR, []);
       const hash2 = event2?.event_metadata[0].find(
         (item) =>
-          item.gemini_cli_key ===
+          item.jiminy_cli_key ===
           EventMetadataKey.GEMINI_CLI_GH_REPOSITORY_NAME_HASH,
       )?.value;
 
@@ -782,7 +782,7 @@ describe('ClearcutLogger', () => {
       const event = logger?.createLogEvent(EventNames.API_ERROR, []);
       const hasRepository = event?.event_metadata[0].some(
         (item) =>
-          item.gemini_cli_key ===
+          item.jiminy_cli_key ===
           EventMetadataKey.GEMINI_CLI_GH_REPOSITORY_NAME_HASH,
       );
       expect(hasRepository).toBe(false);
@@ -845,7 +845,7 @@ describe('ClearcutLogger', () => {
         logger!.enqueueLogEvent(
           logger!.createLogEvent(EventNames.API_ERROR, [
             {
-              gemini_cli_key: EventMetadataKey.GEMINI_CLI_AI_ADDED_LINES,
+              jiminy_cli_key: EventMetadataKey.GEMINI_CLI_AI_ADDED_LINES,
               value: `${i}`,
             },
           ]),
@@ -863,7 +863,7 @@ describe('ClearcutLogger', () => {
       logger!.enqueueLogEvent(
         logger!.createLogEvent(EventNames.API_ERROR, [
           {
-            gemini_cli_key: EventMetadataKey.GEMINI_CLI_AI_ADDED_LINES,
+            jiminy_cli_key: EventMetadataKey.GEMINI_CLI_AI_ADDED_LINES,
             value: `${TEST_ONLY.MAX_EVENTS}`,
           },
         ]),
@@ -1021,7 +1021,7 @@ describe('ClearcutLogger', () => {
     it('logs a successful routing event', () => {
       const { logger } = setup();
       const event = new ModelRoutingEvent(
-        'gemini-pro',
+        'jiminy-pro',
         'default-strategy',
         123,
         'some reasoning',
@@ -1037,7 +1037,7 @@ describe('ClearcutLogger', () => {
       expect(events[0]).toHaveEventName(EventNames.MODEL_ROUTING);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_ROUTING_DECISION,
-        'gemini-pro',
+        'jiminy-pro',
       ]);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_ROUTING_DECISION_SOURCE,
@@ -1056,7 +1056,7 @@ describe('ClearcutLogger', () => {
     it('logs a failed routing event with a reason', () => {
       const { logger } = setup();
       const event = new ModelRoutingEvent(
-        'gemini-pro',
+        'jiminy-pro',
         'router-exception',
         234,
         'some reasoning',
@@ -1072,7 +1072,7 @@ describe('ClearcutLogger', () => {
       expect(events[0]).toHaveEventName(EventNames.MODEL_ROUTING);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_ROUTING_DECISION,
-        'gemini-pro',
+        'jiminy-pro',
       ]);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_ROUTING_DECISION_SOURCE,
@@ -1095,7 +1095,7 @@ describe('ClearcutLogger', () => {
     it('logs a successful routing event with numerical routing fields', () => {
       const { logger } = setup();
       const event = new ModelRoutingEvent(
-        'gemini-pro',
+        'jiminy-pro',
         'NumericalClassifier (Strict)',
         123,
         '[Score: 90 / Threshold: 80] reasoning',
@@ -1563,7 +1563,7 @@ describe('ClearcutLogger', () => {
   describe('logCreditsUsedEvent', () => {
     it('logs an event with model, consumed, and remaining credits', () => {
       const { logger } = setup();
-      const event = new CreditsUsedEvent('gemini-3-pro-preview', 10, 490);
+      const event = new CreditsUsedEvent('jiminy-3-pro-preview', 10, 490);
 
       logger?.logCreditsUsedEvent(event);
 
@@ -1572,7 +1572,7 @@ describe('ClearcutLogger', () => {
       expect(events[0]).toHaveEventName(EventNames.CREDITS_USED);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_BILLING_MODEL,
-        '"gemini-3-pro-preview"',
+        '"jiminy-3-pro-preview"',
       ]);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_BILLING_CREDITS_CONSUMED,
@@ -1589,7 +1589,7 @@ describe('ClearcutLogger', () => {
     it('logs an event with model, selected option, and credit balance', () => {
       const { logger } = setup();
       const event = new OverageOptionSelectedEvent(
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
         'use_credits',
         350,
       );
@@ -1601,7 +1601,7 @@ describe('ClearcutLogger', () => {
       expect(events[0]).toHaveEventName(EventNames.OVERAGE_OPTION_SELECTED);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_BILLING_MODEL,
-        '"gemini-3-pro-preview"',
+        '"jiminy-3-pro-preview"',
       ]);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_BILLING_SELECTED_OPTION,
@@ -1617,7 +1617,7 @@ describe('ClearcutLogger', () => {
   describe('logEmptyWalletMenuShownEvent', () => {
     it('logs an event with the model', () => {
       const { logger } = setup();
-      const event = new EmptyWalletMenuShownEvent('gemini-3-pro-preview');
+      const event = new EmptyWalletMenuShownEvent('jiminy-3-pro-preview');
 
       logger?.logEmptyWalletMenuShownEvent(event);
 
@@ -1626,7 +1626,7 @@ describe('ClearcutLogger', () => {
       expect(events[0]).toHaveEventName(EventNames.EMPTY_WALLET_MENU_SHOWN);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_BILLING_MODEL,
-        '"gemini-3-pro-preview"',
+        '"jiminy-3-pro-preview"',
       ]);
     });
   });
@@ -1636,7 +1636,7 @@ describe('ClearcutLogger', () => {
       const { logger } = setup();
       const event = new CreditPurchaseClickEvent(
         'empty_wallet_menu',
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
       );
 
       logger?.logCreditPurchaseClickEvent(event);
@@ -1646,7 +1646,7 @@ describe('ClearcutLogger', () => {
       expect(events[0]).toHaveEventName(EventNames.CREDIT_PURCHASE_CLICK);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_BILLING_MODEL,
-        '"gemini-3-pro-preview"',
+        '"jiminy-3-pro-preview"',
       ]);
       expect(events[0]).toHaveMetadataValue([
         EventMetadataKey.GEMINI_CLI_BILLING_PURCHASE_SOURCE,

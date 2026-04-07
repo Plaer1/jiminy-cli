@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// File for 'gemini mcp list' command
+// File for 'jiminy mcp list' command
 import type { CommandModule } from 'yargs';
 import {
   type MergedSettings,
@@ -17,8 +17,8 @@ import {
   debugLogger,
   applyAdminAllowlist,
   getAdminBlockedMcpServersMessage,
-} from '@google/gemini-cli-core';
-import type { MCPServerConfig } from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
+import type { MCPServerConfig } from '@google/jiminy-cli-core';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { ExtensionManager } from '../../config/extension-manager.js';
 import {

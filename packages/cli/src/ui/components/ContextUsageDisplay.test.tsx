@@ -8,9 +8,9 @@ import { renderWithProviders } from '../../test-utils/render.js';
 import { ContextUsageDisplay } from './ContextUsageDisplay.js';
 import { describe, it, expect, vi } from 'vitest';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     tokenLimit: () => 10000,
@@ -22,7 +22,7 @@ describe('ContextUsageDisplay', () => {
     const { lastFrame, unmount } = await renderWithProviders(
       <ContextUsageDisplay
         promptTokenCount={5000}
-        model="gemini-pro"
+        model="jiminy-pro"
         terminalWidth={120}
       />,
     );
@@ -35,7 +35,7 @@ describe('ContextUsageDisplay', () => {
     const { lastFrame, unmount } = await renderWithProviders(
       <ContextUsageDisplay
         promptTokenCount={0}
-        model="gemini-pro"
+        model="jiminy-pro"
         terminalWidth={120}
       />,
     );
@@ -48,7 +48,7 @@ describe('ContextUsageDisplay', () => {
     const { lastFrame, unmount } = await renderWithProviders(
       <ContextUsageDisplay
         promptTokenCount={2000}
-        model="gemini-pro"
+        model="jiminy-pro"
         terminalWidth={80}
       />,
       { width: 80 },
@@ -63,7 +63,7 @@ describe('ContextUsageDisplay', () => {
     const { lastFrame, unmount } = await renderWithProviders(
       <ContextUsageDisplay
         promptTokenCount={8000}
-        model="gemini-pro"
+        model="jiminy-pro"
         terminalWidth={120}
       />,
     );
@@ -76,7 +76,7 @@ describe('ContextUsageDisplay', () => {
     const { lastFrame, unmount } = await renderWithProviders(
       <ContextUsageDisplay
         promptTokenCount={10000}
-        model="gemini-pro"
+        model="jiminy-pro"
         terminalWidth={120}
       />,
     );

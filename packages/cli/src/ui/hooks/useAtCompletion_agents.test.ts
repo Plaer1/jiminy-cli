@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { renderHook } from '../../test-utils/render.js';
 import { waitFor } from '../../test-utils/async.js';
 import { useAtCompletion } from './useAtCompletion.js';
-import type { Config, AgentDefinition } from '@google/gemini-cli-core';
-import { createTmpDir, cleanupTmpDir } from '@google/gemini-cli-test-utils';
+import type { Config, AgentDefinition } from '@google/jiminy-cli-core';
+import { createTmpDir, cleanupTmpDir } from '@google/jiminy-cli-test-utils';
 import type { Suggestion } from '../components/SuggestionsDisplay.js';
 import { CommandKind } from '../commands/types.js';
 
@@ -59,7 +59,7 @@ describe('useAtCompletion with Agents', () => {
     mockConfig = {
       getFileFilteringOptions: vi.fn(() => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       })),
       getEnableRecursiveFileSearch: () => true,
       getFileFilteringDisableFuzzySearch: () => false,

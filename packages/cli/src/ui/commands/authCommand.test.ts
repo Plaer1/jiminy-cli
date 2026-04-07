@@ -9,10 +9,10 @@ import { authCommand } from './authCommand.js';
 import { type CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import { SettingScope } from '../../config/settings.js';
-import type { GeminiClient } from '@google/gemini-cli-core';
+import type { JiminyClient } from '@google/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', async () => {
-  const actual = await vi.importActual('@google/gemini-cli-core');
+vi.mock('@google/jiminy-cli-core', async () => {
+  const actual = await vi.importActual('@google/jiminy-cli-core');
   return {
     ...actual,
     clearCachedCredentialFile: vi.fn().mockResolvedValue(undefined),
@@ -26,7 +26,7 @@ describe('authCommand', () => {
     mockContext = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: {
+          jiminyClient: {
             stripThoughtsFromHistory: vi.fn(),
           },
         },
@@ -79,7 +79,7 @@ describe('authCommand', () => {
       expect(logoutCommand?.name).toBe('signout');
 
       const { clearCachedCredentialFile } = await import(
-        '@google/gemini-cli-core'
+        '@google/jiminy-cli-core'
       );
 
       await logoutCommand!.action!(mockContext, '');
@@ -104,9 +104,9 @@ describe('authCommand', () => {
       const mockStripThoughts = vi.fn();
       const mockClient = {
         stripThoughtsFromHistory: mockStripThoughts,
-      } as unknown as GeminiClient;
+      } as unknown as JiminyClient;
       if (mockContext.services.agentContext?.config) {
-        mockContext.services.agentContext.config.getGeminiClient = vi.fn(
+        mockContext.services.agentContext.config.getJiminyClient = vi.fn(
           () => mockClient,
         );
       }
@@ -114,7 +114,7 @@ describe('authCommand', () => {
       await logoutCommand!.action!(mockContext, '');
 
       expect(
-        mockContext.services.agentContext?.geminiClient
+        mockContext.services.agentContext?.jiminyClient
           .stripThoughtsFromHistory,
       ).toHaveBeenCalled();
     });

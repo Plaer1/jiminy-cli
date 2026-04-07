@@ -31,7 +31,7 @@ import {
   type TelemetryTarget,
   type ConfigParameters,
   type ExtensionLoader,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 import { logger } from '../utils/logger.js';
 import type { Settings } from './settings.js';
@@ -110,7 +110,7 @@ export async function loadConfig(
     // Git-aware file filtering settings
     fileFiltering: {
       respectGitIgnore: settings.fileFiltering?.respectGitIgnore,
-      respectGeminiIgnore: settings.fileFiltering?.respectGeminiIgnore,
+      respectJiminyIgnore: settings.fileFiltering?.respectJiminyIgnore,
       enableRecursiveFileSearch:
         settings.fileFiltering?.enableRecursiveFileSearch,
       customIgnoreFilePaths: [
@@ -133,7 +133,7 @@ export async function loadConfig(
 
   const fileService = new FileDiscoveryService(workspaceDir, {
     respectGitIgnore: configParams?.fileFiltering?.respectGitIgnore,
-    respectGeminiIgnore: configParams?.fileFiltering?.respectGeminiIgnore,
+    respectJiminyIgnore: configParams?.fileFiltering?.respectJiminyIgnore,
     customIgnoreFilePaths: configParams?.fileFiltering?.customIgnoreFilePaths,
   });
   const { memoryContent, fileCount, filePaths } =
@@ -145,8 +145,8 @@ export async function loadConfig(
       folderTrust,
     );
   configParams.userMemory = memoryContent;
-  configParams.geminiMdFileCount = fileCount;
-  configParams.geminiMdFilePaths = filePaths;
+  configParams.jiminyMdFileCount = fileCount;
+  configParams.jiminyMdFilePaths = filePaths;
 
   // Set an initial config to use to get a code assist server.
   // This is needed to fetch admin controls.
@@ -235,10 +235,10 @@ export function loadEnvironment(): void {
 function findEnvFile(startDir: string): string | null {
   let currentDir = path.resolve(startDir);
   while (true) {
-    // prefer gemini-specific .env under GEMINI_DIR
-    const geminiEnvPath = path.join(currentDir, GEMINI_DIR, '.env');
-    if (fs.existsSync(geminiEnvPath)) {
-      return geminiEnvPath;
+    // prefer jiminy-specific .env under GEMINI_DIR
+    const jiminyEnvPath = path.join(currentDir, GEMINI_DIR, '.env');
+    if (fs.existsSync(jiminyEnvPath)) {
+      return jiminyEnvPath;
     }
     const envPath = path.join(currentDir, '.env');
     if (fs.existsSync(envPath)) {
@@ -246,10 +246,10 @@ function findEnvFile(startDir: string): string | null {
     }
     const parentDir = path.dirname(currentDir);
     if (parentDir === currentDir || !parentDir) {
-      // check .env under home as fallback, again preferring gemini-specific .env
-      const homeGeminiEnvPath = path.join(process.cwd(), GEMINI_DIR, '.env');
-      if (fs.existsSync(homeGeminiEnvPath)) {
-        return homeGeminiEnvPath;
+      // check .env under home as fallback, again preferring jiminy-specific .env
+      const homeJiminyEnvPath = path.join(process.cwd(), GEMINI_DIR, '.env');
+      if (fs.existsSync(homeJiminyEnvPath)) {
+        return homeJiminyEnvPath;
       }
       const homeEnvPath = path.join(homedir(), '.env');
       if (fs.existsSync(homeEnvPath)) {
@@ -336,7 +336,7 @@ async function refreshAuthentication(
       `[${logPrefix}] GOOGLE_CLOUD_PROJECT: ${process.env['GOOGLE_CLOUD_PROJECT']}`,
     );
   } else if (process.env['GEMINI_API_KEY']) {
-    logger.info(`[${logPrefix}] Using Gemini API Key`);
+    logger.info(`[${logPrefix}] Using Jiminy API Key`);
     await config.refreshAuth(AuthType.USE_GEMINI);
   } else {
     const errorMessage = `[${logPrefix}] Unable to set GeneratorConfig. Please provide a GEMINI_API_KEY or set USE_CCPA.`;

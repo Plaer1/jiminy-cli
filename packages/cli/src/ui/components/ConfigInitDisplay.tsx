@@ -11,8 +11,8 @@ import {
   coreEvents,
   type McpClient,
   MCPServerStatus,
-} from '@google/gemini-cli-core';
-import { GeminiSpinner } from './GeminiSpinner.js';
+} from '@google/jiminy-cli-core';
+import { JiminySpinner } from './JiminySpinner.js';
 import { theme } from '../semantic-colors.js';
 
 export const ConfigInitDisplay = ({
@@ -68,7 +68,7 @@ export const ConfigInitDisplay = ({
   return (
     <Box marginTop={1}>
       <Text>
-        <GeminiSpinner /> <Text color={theme.text.primary}>{message}</Text>
+        <JiminySpinner /> <Text color={theme.text.primary}>{message}</Text>
       </Text>
     </Box>
   );

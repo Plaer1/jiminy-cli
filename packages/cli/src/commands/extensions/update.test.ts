@@ -34,9 +34,9 @@ const debugLogger = vi.hoisted(() => ({
   }),
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: {
@@ -100,7 +100,7 @@ describe('extensions update command', () => {
 
       expect(emitFeedback).toHaveBeenCalledWith(
         'error',
-        'Extension "missing-extension" not found.\n\nInstalled extensions:\next1 (1.0.0)\next2 (2.0.0)\n\nRun "gemini extensions list" for details.',
+        'Extension "missing-extension" not found.\n\nInstalled extensions:\next1 (1.0.0)\next2 (2.0.0)\n\nRun "jiminy extensions list" for details.',
       );
       expect(mockUpdateExtension).not.toHaveBeenCalled();
       mockCwd.mockRestore();

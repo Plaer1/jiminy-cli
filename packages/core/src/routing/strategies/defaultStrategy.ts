@@ -25,8 +25,8 @@ export class DefaultStrategy implements TerminalStrategy {
   ): Promise<RoutingDecision> {
     const defaultModel = resolveModel(
       config.getModel(),
-      config.getGemini31LaunchedSync?.() ?? false,
-      config.getGemini31FlashLiteLaunchedSync?.() ?? false,
+      config.getJiminy31LaunchedSync?.() ?? false,
+      config.getJiminy31FlashLiteLaunchedSync?.() ?? false,
       false,
       config.getHasAccessToPreviewModel?.() ?? true,
       config,

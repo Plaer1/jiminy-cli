@@ -15,7 +15,7 @@ import {
   debugLogger,
   unescapePath,
   type EditorType,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   toCodePoints,
   cpLen,
@@ -3312,7 +3312,7 @@ export function useTextBuffer({
   }, []);
 
   const openInExternalEditor = useCallback(async (): Promise<void> => {
-    const tmpDir = fs.mkdtempSync(pathMod.join(os.tmpdir(), 'gemini-edit-'));
+    const tmpDir = fs.mkdtempSync(pathMod.join(os.tmpdir(), 'jiminy-edit-'));
     const filePath = pathMod.join(tmpDir, 'buffer.txt');
     // Expand paste placeholders so user sees full content in editor
     const expandedText = expandPastePlaceholders(text, pastedContent);

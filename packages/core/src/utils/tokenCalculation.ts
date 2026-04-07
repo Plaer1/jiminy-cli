@@ -17,7 +17,7 @@ const NON_ASCII_TOKENS_PER_CHAR = 1.3;
 // Fixed token estimate for images
 const IMAGE_TOKEN_ESTIMATE = 3000;
 // Fixed token estimate for PDFs (~100 pages at 258 tokens/page)
-// See: https://ai.google.dev/gemini-api/docs/document-processing
+// See: https://ai.google.dev/jiminy-api/docs/document-processing
 const PDF_TOKEN_ESTIMATE = 25800;
 
 // Maximum number of characters to process with the full character-by-character heuristic.
@@ -59,11 +59,11 @@ function estimateMediaTokens(part: Part): number | undefined {
 
   if (mimeType?.startsWith('image/')) {
     // Images: 3,000 tokens (covers up to 4K resolution on Jiminy 3)
-    // See: https://ai.google.dev/gemini-api/docs/vision#token_counting
+    // See: https://ai.google.dev/jiminy-api/docs/vision#token_counting
     return IMAGE_TOKEN_ESTIMATE;
   } else if (mimeType?.startsWith('application/pdf')) {
     // PDFs: 25,800 tokens (~100 pages at 258 tokens/page)
-    // See: https://ai.google.dev/gemini-api/docs/document-processing
+    // See: https://ai.google.dev/jiminy-api/docs/document-processing
     return PDF_TOKEN_ESTIMATE;
   }
   return undefined;

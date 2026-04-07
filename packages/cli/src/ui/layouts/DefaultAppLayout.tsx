@@ -5,8 +5,16 @@
  */
 
 import type React from 'react';
+import * as fs from 'node:fs/promises';
 import { useState, useEffect, useCallback } from 'react';
 import { Box } from 'ink';
+import {
+  ApprovalMode,
+  MessageBusType,
+  MODES_BY_PERMISSIVENESS,
+  SHELL_TOOL_NAME,
+} from '@google/jiminy-cli-core';
+import toml from '@iarna/toml';
 import { Notifications } from '../components/Notifications.js';
 import { MainContent } from '../components/MainContent.js';
 import { DialogManager } from '../components/DialogManager.js';
@@ -18,20 +26,143 @@ import { useAlternateBuffer } from '../hooks/useAlternateBuffer.js';
 import { CopyModeWarning } from '../components/CopyModeWarning.js';
 import { BackgroundShellDisplay } from '../components/BackgroundShellDisplay.js';
 import { StreamingState } from '../types.js';
-import type {
-  SUDO_CHOICE_ENTER,
+import {
+  SUDO_CHOICE_ASK_LATER,
+  SUDO_CHOICE_NEVER,
   SudoPasswordPrompt,
   SUDO_CHOICE_SKIP,
-  type SudoPromptStage,
+  type SudoChoice,
 } from '../components/SudoPasswordPrompt.js';
+import type { SudoPromptStage } from '../components/SudoPasswordPrompt.js';
 import { useConfig } from '../contexts/ConfigContext.js';
 import { useKeypress, type Key } from '../hooks/useKeypress.js';
 import { KeypressPriority } from '../contexts/KeypressContext.js';
+import { useSettings } from '../contexts/SettingsContext.js';
+
+const SUDO_POLICY_COMMAND_PREFIX = 'sudo';
+
+interface PersistedTomlRule {
+  toolName?: string;
+  decision?: string;
+  commandPrefix?: string | string[];
+  modes?: string[];
+}
+
+interface PersistedTomlPolicyFile {
+  rule?: PersistedTomlRule[];
+}
+
+function matchesPersistedSudoApprovalRule(
+  rule: PersistedTomlRule,
+  currentMode: ApprovalMode,
+): boolean {
+  if (
+    rule.toolName !== SHELL_TOOL_NAME ||
+    rule.decision !== 'allow' ||
+    rule.commandPrefix === undefined
+  ) {
+    return false;
+  }
+
+  const commandPrefixes = Array.isArray(rule.commandPrefix)
+    ? rule.commandPrefix
+    : [rule.commandPrefix];
+
+  if (!commandPrefixes.includes(SUDO_POLICY_COMMAND_PREFIX)) {
+    return false;
+  }
+
+  return (
+    !rule.modes || rule.modes.length === 0 || rule.modes.includes(currentMode)
+  );
+}
+
+export function hasPersistedSudoApprovalRuleFromToml(
+  content: string,
+  currentMode: ApprovalMode,
+): boolean {
+  const parsed = toml.parse(content) as PersistedTomlPolicyFile;
+  return (
+    Array.isArray(parsed.rule) &&
+    parsed.rule.some((rule) =>
+      matchesPersistedSudoApprovalRule(rule, currentMode),
+    )
+  );
+}
+
+async function hasPersistedSudoApprovalRuleAtPath(
+  policyPath: string,
+  currentMode: ApprovalMode,
+): Promise<boolean> {
+  try {
+    const content = await fs.readFile(policyPath, 'utf-8');
+    return hasPersistedSudoApprovalRuleFromToml(content, currentMode);
+  } catch (error) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 'ENOENT'
+    ) {
+      return false;
+    }
+
+    return false;
+  }
+}
 
 export const DefaultAppLayout: React.FC = () => {
   const uiState = useUIState();
   const config = useConfig();
+  const settings = useSettings();
   const isAlternateBuffer = useAlternateBuffer();
+  const allowPermanentSudoApproval =
+    settings.merged.security.enablePermanentToolApproval &&
+    !config.getDisableAlwaysAllow() &&
+    config.isTrustedFolder();
+
+  const shouldSkipSudoChoicePrompt = useCallback(async (): Promise<boolean> => {
+    if (!allowPermanentSudoApproval) {
+      return false;
+    }
+
+    const currentMode = config.getApprovalMode();
+    const policyPaths = [config.storage.getAutoSavedPolicyPath()];
+
+    if (config.getWorkspacePoliciesDir() !== undefined) {
+      policyPaths.unshift(config.storage.getWorkspaceAutoSavedPolicyPath());
+    }
+
+    for (const policyPath of policyPaths) {
+      if (await hasPersistedSudoApprovalRuleAtPath(policyPath, currentMode)) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [allowPermanentSudoApproval, config]);
+
+  const persistSudoApproval = useCallback(async (): Promise<void> => {
+    const currentMode = config.getApprovalMode();
+    const modeIndex = MODES_BY_PERMISSIVENESS.indexOf(currentMode);
+    const modes =
+      modeIndex === -1
+        ? [ApprovalMode.YOLO]
+        : MODES_BY_PERMISSIVENESS.slice(modeIndex);
+    const persistScope =
+      config.isTrustedFolder() && config.getWorkspacePoliciesDir() !== undefined
+        ? 'workspace'
+        : 'user';
+
+    await config.getMessageBus().publish({
+      type: MessageBusType.UPDATE_POLICY,
+      toolName: SHELL_TOOL_NAME,
+      commandPrefix: SUDO_POLICY_COMMAND_PREFIX,
+      persist: true,
+      persistScope,
+      modes,
+    });
+  }, [config]);
 
   // Sudo password prompt state — owned here so there's one always-active
   // registration regardless of which branch of the dialog conditional renders.
@@ -63,25 +194,37 @@ export const DefaultAppLayout: React.FC = () => {
           setSudoConfirm('');
           setSudoMismatch(false);
           setSudoResolver(() => resolve);
-          setSudoStage('choice');
+
+          void shouldSkipSudoChoicePrompt()
+            .then((skipChoicePrompt) => {
+              setSudoStage(skipChoicePrompt ? 'enter' : 'choice');
+            })
+            .catch(() => {
+              setSudoStage('choice');
+            });
         }),
     );
     return () => {
       config.sudoPasswordService.registerPasswordPrompter(null);
     };
-  }, [config.sudoPasswordService]);
+  }, [config.sudoPasswordService, shouldSkipSudoChoicePrompt]);
 
   // Handle the RadioButtonSelect choice (stage: 'choice')
   const handleSudoChoice = useCallback(
-    (choice: typeof SUDO_CHOICE_ENTER | typeof SUDO_CHOICE_SKIP) => {
+    (choice: SudoChoice) => {
       if (choice === SUDO_CHOICE_SKIP) {
         config.sudoPasswordService.setSkipForSession();
+        cancelSudo(sudoResolver);
+      } else if (choice === SUDO_CHOICE_NEVER) {
+        void persistSudoApproval();
+        setSudoStage('enter');
+      } else if (choice === SUDO_CHOICE_ASK_LATER) {
         cancelSudo(sudoResolver);
       } else {
         setSudoStage('enter');
       }
     },
-    [sudoResolver, cancelSudo, config.sudoPasswordService],
+    [sudoResolver, cancelSudo, config.sudoPasswordService, persistSudoApproval],
   );
 
   // Handle keypresses during 'enter' and 'confirm' stages
@@ -200,6 +343,7 @@ export const DefaultAppLayout: React.FC = () => {
             stage={sudoStage}
             password={sudoStage === 'confirm' ? sudoConfirm : sudoPassword}
             mismatch={sudoMismatch}
+            showNeverAskAgain={allowPermanentSudoApproval}
             onChoice={handleSudoChoice}
           />
         ) : (

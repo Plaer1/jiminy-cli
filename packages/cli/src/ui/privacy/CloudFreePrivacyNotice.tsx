@@ -8,7 +8,7 @@ import { Box, Newline, Text } from 'ink';
 import { RadioButtonSelect } from '../components/shared/RadioButtonSelect.js';
 import { usePrivacySettings } from '../hooks/usePrivacySettings.js';
 
-import type { Config } from '@google/gemini-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 import { theme } from '../semantic-colors.js';
 import { useKeypress } from '../hooks/useKeypress.js';
 
@@ -61,7 +61,7 @@ export const CloudFreePrivacyNotice = ({
         </Text>
         <Newline />
         <Text>
-          https://developers.google.com/gemini-code-assist/resources/privacy-notices
+          https://developers.google.com/jiminy-code-assist/resources/privacy-notices
         </Text>
         <Newline />
         <Text color={theme.text.secondary}>Press Esc to exit.</Text>

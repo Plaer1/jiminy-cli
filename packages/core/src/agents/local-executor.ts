@@ -6,7 +6,7 @@
 
 import { type AgentLoopContext } from '../config/agent-loop-context.js';
 import { reportError } from '../utils/errorReporting.js';
-import { GeminiChat, StreamEventType } from '../core/geminiChat.js';
+import { JiminyChat, StreamEventType } from '../core/jiminyChat.js';
 import {
   Type,
   type Content,
@@ -122,7 +122,7 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
     return {
       config: this.context.config,
       promptId: this.context.promptId,
-      geminiClient: this.context.geminiClient,
+      jiminyClient: this.context.jiminyClient,
       sandboxManager: this.context.sandboxManager,
       toolRegistry: this.toolRegistry,
       promptRegistry: this.promptRegistry,
@@ -314,7 +314,7 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
    * or stop the agent loop.
    */
   private async executeTurn(
-    chat: GeminiChat,
+    chat: JiminyChat,
     currentMessage: Content,
     turnCounter: number,
     combinedSignal: AbortSignal,
@@ -419,7 +419,7 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
    * @returns The final result string if recovery was successful, or `null` if it failed.
    */
   private async executeFinalWarningTurn(
-    chat: GeminiChat,
+    chat: JiminyChat,
     turnCounter: number,
     reason:
       | AgentTerminateMode.TIMEOUT
@@ -545,7 +545,7 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
       new AgentStartEvent(this.agentId, this.definition.name),
     );
 
-    let chat: GeminiChat | undefined;
+    let chat: JiminyChat | undefined;
     let tools: FunctionDeclaration[] | undefined;
     try {
       // Inject standard runtime context into inputs
@@ -808,7 +808,7 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
   }
 
   private async tryCompressChat(
-    chat: GeminiChat,
+    chat: JiminyChat,
     prompt_id: string,
   ): Promise<void> {
     const model = this.definition.modelConfig.model ?? DEFAULT_GEMINI_MODEL;
@@ -848,7 +848,7 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
    * @returns The model's response, including any tool calls or text.
    */
   private async callModel(
-    chat: GeminiChat,
+    chat: JiminyChat,
     message: Content,
     signal: AbortSignal,
     promptId: string,
@@ -940,11 +940,11 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
     return { functionCalls, textResponse };
   }
 
-  /** Initializes a `GeminiChat` instance for the agent run. */
+  /** Initializes a `JiminyChat` instance for the agent run. */
   private async createChatObject(
     inputs: AgentInputs,
     tools: FunctionDeclaration[],
-  ): Promise<GeminiChat> {
+  ): Promise<JiminyChat> {
     const { promptConfig } = this.definition;
 
     if (!promptConfig.systemPrompt && !promptConfig.initialMessages) {
@@ -964,7 +964,7 @@ export class LocalAgentExecutor<TOutput extends z.ZodTypeAny> {
       : undefined;
 
     try {
-      return new GeminiChat(
+      return new JiminyChat(
         this.executionContext,
         systemInstruction,
         [{ functionDeclarations: tools }],

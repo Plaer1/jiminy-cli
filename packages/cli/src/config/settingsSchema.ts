@@ -21,7 +21,7 @@ import {
   type AgentOverride,
   type CustomTheme,
   type SandboxConfig,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type { SessionRetentionSettings } from './settings.js';
 import { DEFAULT_MIN_RETENTION } from '../utils/sessionCleanup.js';
 
@@ -1325,13 +1325,13 @@ const SETTINGS_SCHEMA = {
             description: 'Respect .gitignore files when searching.',
             showInDialog: true,
           },
-          respectGeminiIgnore: {
+          respectJiminyIgnore: {
             type: 'boolean',
-            label: 'Respect .geminiignore',
+            label: 'Respect .jiminyignore',
             category: 'Context',
             requiresRestart: true,
             default: true,
-            description: 'Respect .geminiignore files when searching.',
+            description: 'Respect .jiminyignore files when searching.',
             showInDialog: true,
           },
           enableRecursiveFileSearch: {
@@ -1361,7 +1361,7 @@ const SETTINGS_SCHEMA = {
             requiresRestart: true,
             default: [] as string[],
             description:
-              'Additional ignore file paths to respect. These files take precedence over .geminiignore and .gitignore. Files earlier in the array take precedence over files later in the array, e.g. the first file takes precedence over the second one.',
+              'Additional ignore file paths to respect. These files take precedence over .jiminyignore and .gitignore. Files earlier in the array take precedence over files later in the array, e.g. the first file takes precedence over the second one.',
             showInDialog: true,
             items: { type: 'string' },
             mergeStrategy: MergeStrategy.UNION,
@@ -1978,7 +1978,7 @@ const SETTINGS_SCHEMA = {
         label: 'Extension Registry URI',
         category: 'Experimental',
         requiresRestart: true,
-        default: 'https://geminicli.com/extensions.json',
+        default: 'https://jiminycli.com/extensions.json',
         description:
           'The URI (web URL or local file path) of the extension registry.',
         showInDialog: false,
@@ -3013,8 +3013,8 @@ export const SETTINGS_SCHEMA_DEFINITIONS: Record<
             condition: {
               type: 'object',
               properties: {
-                useGemini3_1: { type: 'boolean' },
-                useGemini3_1FlashLite: { type: 'boolean' },
+                useJiminy3_1: { type: 'boolean' },
+                useJiminy3_1FlashLite: { type: 'boolean' },
                 useCustomTools: { type: 'boolean' },
                 hasAccessToPreview: { type: 'boolean' },
                 requestedModels: {

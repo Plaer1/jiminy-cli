@@ -11,7 +11,7 @@ describe('tierUtils', () => {
   describe('isUltraTier', () => {
     it('should return true if tier name contains "ultra" (case-insensitive)', () => {
       expect(isUltraTier('Advanced Ultra')).toBe(true);
-      expect(isUltraTier('gemini ultra')).toBe(true);
+      expect(isUltraTier('jiminy ultra')).toBe(true);
       expect(isUltraTier('ULTRA')).toBe(true);
     });
 

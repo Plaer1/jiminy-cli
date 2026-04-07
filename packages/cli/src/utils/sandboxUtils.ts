@@ -8,11 +8,11 @@ import os from 'node:os';
 import fs from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { quote } from 'shell-quote';
-import { debugLogger, GEMINI_DIR } from '@google/gemini-cli-core';
+import { debugLogger, GEMINI_DIR } from '@google/jiminy-cli-core';
 
-export const LOCAL_DEV_SANDBOX_IMAGE_NAME = 'gemini-cli-sandbox';
-export const SANDBOX_NETWORK_NAME = 'gemini-cli-sandbox';
-export const SANDBOX_PROXY_NAME = 'gemini-cli-sandbox-proxy';
+export const LOCAL_DEV_SANDBOX_IMAGE_NAME = 'jiminy-cli-sandbox';
+export const SANDBOX_NETWORK_NAME = 'jiminy-cli-sandbox';
+export const SANDBOX_PROXY_NAME = 'jiminy-cli-sandbox-proxy';
 export const BUILTIN_SEATBELT_PROFILES = [
   'permissive-open',
   'permissive-proxied',
@@ -142,8 +142,8 @@ export function entrypoint(workdir: string, cliArgs: string[]): string[] {
         ? 'npm run debug --'
         : 'npm rebuild && npm run start --'
       : isDebugMode
-        ? `node --inspect-brk=0.0.0.0:${process.env['DEBUG_PORT'] || '9229'} $(which gemini)`
-        : 'gemini';
+        ? `node --inspect-brk=0.0.0.0:${process.env['DEBUG_PORT'] || '9229'} $(which jiminy)`
+        : 'jiminy';
 
   const args = [...shellCmds, cliCmd, ...quotedCliArgs];
   return ['bash', '-c', args.join(' ')];

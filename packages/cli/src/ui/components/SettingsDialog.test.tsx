@@ -26,7 +26,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SettingsDialog } from './SettingsDialog.js';
 import { SettingScope } from '../../config/settings.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { makeFakeConfig } from '@google/gemini-cli-core';
+import { makeFakeConfig } from '@google/jiminy-cli-core';
 import { act } from 'react';
 import { TEST_ONLY } from '../../utils/settingsUtils.js';
 import {
@@ -1583,7 +1583,7 @@ describe('SettingsDialog', () => {
             loadMemoryFromIncludeDirectories: true,
             fileFiltering: {
               respectGitIgnore: true,
-              respectGeminiIgnore: true,
+              respectJiminyIgnore: true,
               enableRecursiveFileSearch: true,
               enableFuzzySearch: true,
             },
@@ -1668,7 +1668,7 @@ describe('SettingsDialog', () => {
           context: {
             fileFiltering: {
               respectGitIgnore: false,
-              respectGeminiIgnore: true,
+              respectJiminyIgnore: true,
               enableRecursiveFileSearch: false,
               enableFuzzySearch: false,
             },
@@ -1728,7 +1728,7 @@ describe('SettingsDialog', () => {
             loadMemoryFromIncludeDirectories: false,
             fileFiltering: {
               respectGitIgnore: false,
-              respectGeminiIgnore: false,
+              respectJiminyIgnore: false,
               enableRecursiveFileSearch: false,
               enableFuzzySearch: true,
             },

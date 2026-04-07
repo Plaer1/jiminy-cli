@@ -19,12 +19,12 @@ import {
   type ConversationRecord,
   type MessageRecord,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   coreEvents,
   convertSessionToClientHistory,
   uiTelemetryService,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 // Mock modules
 vi.mock('fs/promises');
@@ -37,9 +37,9 @@ vi.mock('../../utils/sessionUtils.js', async (importOriginal) => {
     getSessionFiles: vi.fn(),
   };
 });
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     uiTelemetryService: {
@@ -65,7 +65,7 @@ describe('useSessionBrowser', () => {
     },
     setSessionId: vi.fn(),
     getSessionId: vi.fn(),
-    getGeminiClient: vi.fn().mockReturnValue({
+    getJiminyClient: vi.fn().mockReturnValue({
       getChatRecordingService: vi.fn().mockReturnValue({
         deleteSession: vi.fn(),
       }),
@@ -179,7 +179,7 @@ describe('convertSessionToHistoryFormats', () => {
   it('should convert basic user and model messages', () => {
     const messages: MessageRecord[] = [
       { type: 'user', content: 'Hello' } as MessageRecord,
-      { type: 'gemini', content: 'Hi there' } as MessageRecord,
+      { type: 'jiminy', content: 'Hi there' } as MessageRecord,
     ];
 
     const result = convertSessionToHistoryFormats(messages);
@@ -187,7 +187,7 @@ describe('convertSessionToHistoryFormats', () => {
     expect(result.uiHistory).toHaveLength(2);
     expect(result.uiHistory[0]).toMatchObject({ type: 'user', text: 'Hello' });
     expect(result.uiHistory[1]).toMatchObject({
-      type: 'gemini',
+      type: 'jiminy',
       text: 'Hi there',
     });
 
@@ -206,7 +206,7 @@ describe('convertSessionToHistoryFormats', () => {
   it('should convert thinking tokens (thoughts) to thinking history items', () => {
     const messages: MessageRecord[] = [
       {
-        type: 'gemini',
+        type: 'jiminy',
         content: 'Hi there',
         thoughts: [
           {
@@ -229,7 +229,7 @@ describe('convertSessionToHistoryFormats', () => {
       },
     });
     expect(result.uiHistory[1]).toMatchObject({
-      type: 'gemini',
+      type: 'jiminy',
       text: 'Hi there',
     });
   });
@@ -281,7 +281,7 @@ describe('convertSessionToHistoryFormats', () => {
     const messages: MessageRecord[] = [
       { type: 'user', content: 'What time is it?' } as MessageRecord,
       {
-        type: 'gemini',
+        type: 'jiminy',
         content: '',
         toolCalls: [
           {

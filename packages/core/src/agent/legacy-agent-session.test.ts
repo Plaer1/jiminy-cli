@@ -8,8 +8,8 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { FinishReason } from '@google/genai';
 import { LegacyAgentSession } from './legacy-agent-session.js';
 import type { LegacyAgentSessionDeps } from './legacy-agent-session.js';
-import { GeminiEventType } from '../core/turn.js';
-import type { ServerGeminiStreamEvent } from '../core/turn.js';
+import { JiminyEventType } from '../core/turn.js';
+import type { ServerJiminyStreamEvent } from '../core/turn.js';
 import type { AgentEvent } from './types.js';
 import { ToolErrorType } from '../tools/tool-error.js';
 import type {
@@ -39,7 +39,7 @@ function createMockDeps(
 
   const mockConfig = {
     getMaxSessionTurns: vi.fn().mockReturnValue(-1),
-    getModel: vi.fn().mockReturnValue('gemini-2.5-pro'),
+    getModel: vi.fn().mockReturnValue('jiminy-2.5-pro'),
   };
 
   return {
@@ -55,8 +55,8 @@ function createMockDeps(
 }
 
 async function* makeStream(
-  events: ServerGeminiStreamEvent[],
-): AsyncGenerator<ServerGeminiStreamEvent> {
+  events: ServerJiminyStreamEvent[],
+): AsyncGenerator<ServerJiminyStreamEvent> {
   for (const event of events) {
     yield event;
   }
@@ -131,9 +131,9 @@ describe('LegacyAgentSession', () => {
       >;
       sendMock.mockReturnValue(
         makeStream([
-          { type: GeminiEventType.Content, value: 'hello' },
+          { type: JiminyEventType.Content, value: 'hello' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -154,7 +154,7 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         makeStream([
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -183,7 +183,7 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         makeStream([
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -228,9 +228,9 @@ describe('LegacyAgentSession', () => {
             resolveHang = resolve;
           });
           yield {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
-          } as ServerGeminiStreamEvent;
+          } as ServerJiminyStreamEvent;
         })(),
       );
 
@@ -255,18 +255,18 @@ describe('LegacyAgentSession', () => {
       sendMock
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'first response' },
+            { type: JiminyEventType.Content, value: 'first response' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
         )
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'second response' },
+            { type: JiminyEventType.Content, value: 'second response' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
@@ -320,10 +320,10 @@ describe('LegacyAgentSession', () => {
       >;
       sendMock.mockReturnValue(
         makeStream([
-          { type: GeminiEventType.Content, value: 'Hello' },
-          { type: GeminiEventType.Content, value: ' World' },
+          { type: JiminyEventType.Content, value: 'Hello' },
+          { type: JiminyEventType.Content, value: ' World' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -361,11 +361,11 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValueOnce(
         makeStream([
           {
-            type: GeminiEventType.ToolCallRequest,
+            type: JiminyEventType.ToolCallRequest,
             value: makeToolRequest('call-1', 'read_file'),
           },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -373,9 +373,9 @@ describe('LegacyAgentSession', () => {
       // Second turn: model provides final answer
       sendMock.mockReturnValueOnce(
         makeStream([
-          { type: GeminiEventType.Content, value: 'Done!' },
+          { type: JiminyEventType.Content, value: 'Done!' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -420,20 +420,20 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValueOnce(
         makeStream([
           {
-            type: GeminiEventType.ToolCallRequest,
+            type: JiminyEventType.ToolCallRequest,
             value: makeToolRequest('call-1', 'write_file'),
           },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
       );
       sendMock.mockReturnValueOnce(
         makeStream([
-          { type: GeminiEventType.Content, value: 'Failed' },
+          { type: JiminyEventType.Content, value: 'Failed' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -480,11 +480,11 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValueOnce(
         makeStream([
           {
-            type: GeminiEventType.ToolCallRequest,
+            type: JiminyEventType.ToolCallRequest,
             value: makeToolRequest('call-1', 'dangerous_tool'),
           },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -526,11 +526,11 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValueOnce(
         makeStream([
           {
-            type: GeminiEventType.ToolCallRequest,
+            type: JiminyEventType.ToolCallRequest,
             value: makeToolRequest('call-1', 'write_file'),
           },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -585,7 +585,7 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         makeStream([
           {
-            type: GeminiEventType.AgentExecutionStopped,
+            type: JiminyEventType.AgentExecutionStopped,
             value: { reason: 'hook', systemMessage: 'Halted by hook' },
           },
         ]),
@@ -609,12 +609,12 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         makeStream([
           {
-            type: GeminiEventType.AgentExecutionBlocked,
+            type: JiminyEventType.AgentExecutionBlocked,
             value: { reason: 'Blocked by hook' },
           },
-          { type: GeminiEventType.Content, value: 'Final answer' },
+          { type: JiminyEventType.Content, value: 'Final answer' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -656,7 +656,7 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         makeStream([
           {
-            type: GeminiEventType.Error,
+            type: JiminyEventType.Error,
             value: { error: new Error('API error') },
           },
         ]),
@@ -680,10 +680,10 @@ describe('LegacyAgentSession', () => {
       // LoopDetected followed by more content — stream continues
       sendMock.mockReturnValue(
         makeStream([
-          { type: GeminiEventType.LoopDetected },
-          { type: GeminiEventType.Content, value: 'continuing after loop' },
+          { type: JiminyEventType.LoopDetected },
+          { type: JiminyEventType.Content, value: 'continuing after loop' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -733,7 +733,7 @@ describe('LegacyAgentSession', () => {
       >;
       sendMock.mockReturnValue(
         makeStream([
-          { type: GeminiEventType.Content, value: 'should not be reached' },
+          { type: JiminyEventType.Content, value: 'should not be reached' },
         ]),
       );
 
@@ -753,12 +753,12 @@ describe('LegacyAgentSession', () => {
       expect(sendMock).not.toHaveBeenCalled();
     });
 
-    it('treats GeminiClient MaxSessionTurns as a terminal max_turns stream end', async () => {
+    it('treats JiminyClient MaxSessionTurns as a terminal max_turns stream end', async () => {
       const sendMock = deps.client.sendMessageStream as ReturnType<
         typeof vi.fn
       >;
       sendMock.mockReturnValue(
-        makeStream([{ type: GeminiEventType.MaxSessionTurns }]),
+        makeStream([{ type: JiminyEventType.MaxSessionTurns }]),
       );
 
       const session = new LegacyAgentSession(deps);
@@ -832,17 +832,17 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         (async function* () {
           yield {
-            type: GeminiEventType.Content,
+            type: JiminyEventType.Content,
             value: 'start',
-          } as ServerGeminiStreamEvent;
+          } as ServerJiminyStreamEvent;
           // Wait until externally resolved (by abort)
           await new Promise<void>((resolve) => {
             resolveHang = resolve;
           });
           yield {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
-          } as ServerGeminiStreamEvent;
+          } as ServerJiminyStreamEvent;
         })(),
       );
 
@@ -873,11 +873,11 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         makeStream([
           {
-            type: GeminiEventType.ToolCallRequest,
+            type: JiminyEventType.ToolCallRequest,
             value: makeToolRequest('call-1', 'slow_tool'),
           },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -926,9 +926,9 @@ describe('LegacyAgentSession', () => {
       >;
       sendMock.mockReturnValue(
         makeStream([
-          { type: GeminiEventType.Content, value: 'hi' },
+          { type: JiminyEventType.Content, value: 'hi' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -950,9 +950,9 @@ describe('LegacyAgentSession', () => {
       >;
       sendMock.mockReturnValue(
         makeStream([
-          { type: GeminiEventType.Content, value: 'hello later' },
+          { type: JiminyEventType.Content, value: 'hello later' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -984,18 +984,18 @@ describe('LegacyAgentSession', () => {
       sendMock
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'first answer' },
+            { type: JiminyEventType.Content, value: 'first answer' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
         )
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'second answer' },
+            { type: JiminyEventType.Content, value: 'second answer' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
@@ -1040,18 +1040,18 @@ describe('LegacyAgentSession', () => {
       sendMock
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'first answer' },
+            { type: JiminyEventType.Content, value: 'first answer' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
         )
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'second answer' },
+            { type: JiminyEventType.Content, value: 'second answer' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
@@ -1102,18 +1102,18 @@ describe('LegacyAgentSession', () => {
       sendMock
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'first answer' },
+            { type: JiminyEventType.Content, value: 'first answer' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
         )
         .mockReturnValueOnce(
           makeStream([
-            { type: GeminiEventType.Content, value: 'second answer' },
+            { type: JiminyEventType.Content, value: 'second answer' },
             {
-              type: GeminiEventType.Finished,
+              type: JiminyEventType.Finished,
               value: { reason: FinishReason.STOP, usageMetadata: undefined },
             },
           ]),
@@ -1166,9 +1166,9 @@ describe('LegacyAgentSession', () => {
       >;
       sendMock.mockReturnValue(
         makeStream([
-          { type: GeminiEventType.Content, value: 'Hello' },
+          { type: JiminyEventType.Content, value: 'Hello' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -1189,7 +1189,7 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValue(
         makeStream([
           {
-            type: GeminiEventType.Error,
+            type: JiminyEventType.Error,
             value: { error: new Error('API error') },
           },
         ]),
@@ -1212,11 +1212,11 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValueOnce(
         makeStream([
           {
-            type: GeminiEventType.ToolCallRequest,
+            type: JiminyEventType.ToolCallRequest,
             value: makeToolRequest('call-1', 'read_file'),
           },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: {
               reason: FinishReason.STOP,
               usageMetadata: {
@@ -1230,9 +1230,9 @@ describe('LegacyAgentSession', () => {
       // Second turn: final answer
       sendMock.mockReturnValueOnce(
         makeStream([
-          { type: GeminiEventType.Content, value: 'Answer' },
+          { type: JiminyEventType.Content, value: 'Answer' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),
@@ -1260,11 +1260,11 @@ describe('LegacyAgentSession', () => {
       sendMock.mockReturnValueOnce(
         makeStream([
           {
-            type: GeminiEventType.ToolCallRequest,
+            type: JiminyEventType.ToolCallRequest,
             value: makeToolRequest('call-1', 'read_file'),
           },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: {
               reason: FinishReason.STOP,
               usageMetadata: {
@@ -1277,9 +1277,9 @@ describe('LegacyAgentSession', () => {
       );
       sendMock.mockReturnValueOnce(
         makeStream([
-          { type: GeminiEventType.Content, value: 'Done' },
+          { type: JiminyEventType.Content, value: 'Done' },
           {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: { reason: FinishReason.STOP, usageMetadata: undefined },
           },
         ]),

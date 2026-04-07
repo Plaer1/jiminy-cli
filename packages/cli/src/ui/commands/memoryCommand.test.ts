@@ -19,11 +19,11 @@ import {
   addMemory,
   listMemoryFiles,
   flattenMemory,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...original,
     getErrorMessage: vi.fn((error: unknown) => {
@@ -34,7 +34,7 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
       if (config.isJitContextEnabled()) {
         await config.getContextManager()?.refresh();
         const memoryContent = original.flattenMemory(config.getUserMemory());
-        const fileCount = config.getGeminiMdFileCount() || 0;
+        const fileCount = config.getJiminyMdFileCount() || 0;
         return {
           type: 'message',
           messageType: 'info',
@@ -76,17 +76,17 @@ describe('memoryCommand', () => {
   describe('/memory show', () => {
     let showCommand: SlashCommand;
     let mockGetUserMemory: Mock;
-    let mockGetGeminiMdFileCount: Mock;
+    let mockGetJiminyMdFileCount: Mock;
 
     beforeEach(() => {
       showCommand = getSubCommand('show');
 
       mockGetUserMemory = vi.fn();
-      mockGetGeminiMdFileCount = vi.fn();
+      mockGetJiminyMdFileCount = vi.fn();
 
       vi.mocked(showMemory).mockImplementation((config) => {
         const memoryContent = flattenMemory(config.getUserMemory());
-        const fileCount = config.getGeminiMdFileCount() || 0;
+        const fileCount = config.getJiminyMdFileCount() || 0;
         let content;
         if (memoryContent.length > 0) {
           content = `Current memory content from ${fileCount} file(s):\n\n---\n${memoryContent}\n---`;
@@ -105,7 +105,7 @@ describe('memoryCommand', () => {
           agentContext: {
             config: {
               getUserMemory: mockGetUserMemory,
-              getGeminiMdFileCount: mockGetGeminiMdFileCount,
+              getJiminyMdFileCount: mockGetJiminyMdFileCount,
               getExtensionLoader: () => new SimpleExtensionLoader([]),
             },
           },
@@ -117,7 +117,7 @@ describe('memoryCommand', () => {
       if (!showCommand.action) throw new Error('Command has no action');
 
       mockGetUserMemory.mockReturnValue('');
-      mockGetGeminiMdFileCount.mockReturnValue(0);
+      mockGetJiminyMdFileCount.mockReturnValue(0);
 
       await showCommand.action(mockContext, '');
 
@@ -136,7 +136,7 @@ describe('memoryCommand', () => {
       const memoryContent = 'This is a test memory.';
 
       mockGetUserMemory.mockReturnValue(memoryContent);
-      mockGetGeminiMdFileCount.mockReturnValue(1);
+      mockGetJiminyMdFileCount.mockReturnValue(1);
 
       await showCommand.action(mockContext, '');
 
@@ -210,21 +210,21 @@ describe('memoryCommand', () => {
   describe('/memory reload', () => {
     let reloadCommand: SlashCommand;
     let mockSetUserMemory: Mock;
-    let mockSetGeminiMdFileCount: Mock;
-    let mockSetGeminiMdFilePaths: Mock;
+    let mockSetJiminyMdFileCount: Mock;
+    let mockSetJiminyMdFilePaths: Mock;
     let mockContextManagerRefresh: Mock;
 
     beforeEach(() => {
       reloadCommand = getSubCommand('reload');
       mockSetUserMemory = vi.fn();
-      mockSetGeminiMdFileCount = vi.fn();
-      mockSetGeminiMdFilePaths = vi.fn();
+      mockSetJiminyMdFileCount = vi.fn();
+      mockSetJiminyMdFilePaths = vi.fn();
       mockContextManagerRefresh = vi.fn().mockResolvedValue(undefined);
 
       const mockConfig = {
         setUserMemory: mockSetUserMemory,
-        setGeminiMdFileCount: mockSetGeminiMdFileCount,
-        setGeminiMdFilePaths: mockSetGeminiMdFilePaths,
+        setJiminyMdFileCount: mockSetJiminyMdFileCount,
+        setJiminyMdFilePaths: mockSetJiminyMdFilePaths,
         getWorkingDir: () => '/test/dir',
         getDebugMode: () => false,
         getFileService: () => ({}) as FileDiscoveryService,
@@ -247,7 +247,7 @@ describe('memoryCommand', () => {
           refresh: mockContextManagerRefresh,
         }),
         getUserMemory: vi.fn().mockReturnValue(''),
-        getGeminiMdFileCount: vi.fn().mockReturnValue(0),
+        getJiminyMdFileCount: vi.fn().mockReturnValue(0),
       };
 
       mockContext = createMockCommandContext({
@@ -275,7 +275,7 @@ describe('memoryCommand', () => {
 
       vi.mocked(config.isJitContextEnabled).mockReturnValue(true);
       vi.mocked(config.getUserMemory).mockReturnValue('JIT Memory Content');
-      vi.mocked(config.getGeminiMdFileCount).mockReturnValue(3);
+      vi.mocked(config.getJiminyMdFileCount).mockReturnValue(3);
 
       await reloadCommand.action(mockContext, '');
 
@@ -356,8 +356,8 @@ describe('memoryCommand', () => {
 
       expect(mockRefreshMemory).toHaveBeenCalledOnce();
       expect(mockSetUserMemory).not.toHaveBeenCalled();
-      expect(mockSetGeminiMdFileCount).not.toHaveBeenCalled();
-      expect(mockSetGeminiMdFilePaths).not.toHaveBeenCalled();
+      expect(mockSetJiminyMdFileCount).not.toHaveBeenCalled();
+      expect(mockSetJiminyMdFilePaths).not.toHaveBeenCalled();
 
       expect(mockContext.ui.addItem).toHaveBeenCalledWith(
         {
@@ -393,13 +393,13 @@ describe('memoryCommand', () => {
 
   describe('/memory list', () => {
     let listCommand: SlashCommand;
-    let mockGetGeminiMdfilePaths: Mock;
+    let mockGetJiminyMdfilePaths: Mock;
 
     beforeEach(() => {
       listCommand = getSubCommand('list');
-      mockGetGeminiMdfilePaths = vi.fn();
+      mockGetJiminyMdfilePaths = vi.fn();
       vi.mocked(listMemoryFiles).mockImplementation((config) => {
-        const filePaths = config.getGeminiMdFilePaths() || [];
+        const filePaths = config.getJiminyMdFilePaths() || [];
         const fileCount = filePaths.length;
         let content;
         if (fileCount > 0) {
@@ -417,7 +417,7 @@ describe('memoryCommand', () => {
         services: {
           agentContext: {
             config: {
-              getGeminiMdFilePaths: mockGetGeminiMdfilePaths,
+              getJiminyMdFilePaths: mockGetJiminyMdfilePaths,
             },
           },
         },
@@ -427,7 +427,7 @@ describe('memoryCommand', () => {
     it('should display a message if no GEMINI.md files are found', async () => {
       if (!listCommand.action) throw new Error('Command has no action');
 
-      mockGetGeminiMdfilePaths.mockReturnValue([]);
+      mockGetJiminyMdfilePaths.mockReturnValue([]);
 
       await listCommand.action(mockContext, '');
 
@@ -444,7 +444,7 @@ describe('memoryCommand', () => {
       if (!listCommand.action) throw new Error('Command has no action');
 
       const filePaths = ['/path/one/GEMINI.md', '/path/two/GEMINI.md'];
-      mockGetGeminiMdfilePaths.mockReturnValue(filePaths);
+      mockGetJiminyMdfilePaths.mockReturnValue(filePaths);
 
       await listCommand.action(mockContext, '');
 

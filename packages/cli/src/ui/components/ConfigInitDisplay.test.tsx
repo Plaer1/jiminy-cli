@@ -23,12 +23,12 @@ import {
   MCPServerStatus,
   type McpClient,
   coreEvents,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { Text } from 'ink';
 
-// Mock GeminiSpinner
-vi.mock('./GeminiSpinner.js', () => ({
-  GeminiSpinner: () => <Text>Spinner</Text>,
+// Mock JiminySpinner
+vi.mock('./JiminySpinner.js', () => ({
+  JiminySpinner: () => <Text>Spinner</Text>,
 }));
 
 describe('ConfigInitDisplay', () => {

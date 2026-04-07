@@ -13,11 +13,11 @@ import {
   spawnAsync,
   escapePath,
   Storage,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 /**
  * Supported image file extensions based on Jiminy API.
- * See: https://ai.google.dev/gemini-api/docs/image-understanding
+ * See: https://ai.google.dev/jiminy-api/docs/image-understanding
  */
 export const IMAGE_EXTENSIONS = [
   '.png',

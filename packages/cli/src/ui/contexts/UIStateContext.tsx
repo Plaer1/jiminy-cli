@@ -29,7 +29,7 @@ import type {
   AgentDefinition,
   FolderDiscoveryResults,
   PolicyUpdateConfirmationRequest,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { type TransientMessageType } from '../../utils/events.js';
 import type { DOMElement } from 'ink';
 import type { SessionStatsState } from '../contexts/SessionContext.js';
@@ -137,10 +137,10 @@ export interface UIState {
   confirmUpdateExtensionRequests: ConfirmationRequest[];
   loopDetectionConfirmationRequest: LoopDetectionConfirmationRequest | null;
   permissionConfirmationRequest: PermissionConfirmationRequest | null;
-  geminiMdFileCount: number;
+  jiminyMdFileCount: number;
   streamingState: StreamingState;
   initError: string | null;
-  pendingGeminiHistoryItems: HistoryItemWithoutId[];
+  pendingJiminyHistoryItems: HistoryItemWithoutId[];
   thought: ThoughtSummary | null;
   shellModeActive: boolean;
   userMessages: string[];

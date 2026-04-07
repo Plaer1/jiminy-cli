@@ -18,14 +18,14 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { quote, parse } from 'shell-quote';
 import { promisify } from 'node:util';
-import type { Config, SandboxConfig } from '@google/gemini-cli-core';
+import type { Config, SandboxConfig } from '@google/jiminy-cli-core';
 import {
   coreEvents,
   debugLogger,
   FatalSandboxError,
   GEMINI_DIR,
   homedir,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { ConsolePatcher } from '../ui/utils/ConsolePatcher.js';
 import { randomBytes } from 'node:crypto';
 import {
@@ -237,7 +237,7 @@ export async function start_sandbox(
 
     debugLogger.log(`hopping into sandbox (command: ${command}) ...`);
 
-    // determine full path for gemini-cli to distinguish linked vs installed setting
+    // determine full path for jiminy-cli to distinguish linked vs installed setting
     const gcPath = process.argv[1] ? fs.realpathSync(process.argv[1]) : '';
 
     const projectSandboxDockerfile = path.join(
@@ -253,14 +253,14 @@ export async function start_sandbox(
     const workdir = path.resolve(process.cwd());
     const containerWorkdir = getContainerPath(workdir);
 
-    // if BUILD_SANDBOX is set, then call scripts/build_sandbox.js under gemini-cli repo
+    // if BUILD_SANDBOX is set, then call scripts/build_sandbox.js under jiminy-cli repo
     //
-    // note this can only be done with binary linked from gemini-cli repo
+    // note this can only be done with binary linked from jiminy-cli repo
     if (process.env['BUILD_SANDBOX']) {
-      if (!gcPath.includes('gemini-cli/packages/')) {
+      if (!gcPath.includes('jiminy-cli/packages/')) {
         throw new FatalSandboxError(
-          'Cannot build sandbox using installed gemini binary; ' +
-            'run `npm link ./packages/cli` under gemini-cli repo to switch to linked binary.',
+          'Cannot build sandbox using installed jiminy binary; ' +
+            'run `npm link ./packages/cli` under jiminy-cli repo to switch to linked binary.',
         );
       } else {
         debugLogger.log('building sandbox ...');
@@ -292,8 +292,8 @@ export async function start_sandbox(
     if (!(await ensureSandboxImageIsPresent(command, image, cliConfig))) {
       const remedy =
         image === LOCAL_DEV_SANDBOX_IMAGE_NAME
-          ? 'Try running `npm run build:all` or `npm run build:sandbox` under the gemini-cli repo to build it locally, or check the image name and your network connection.'
-          : 'Please check the image name, your network connection, or notify gemini-cli-dev@google.com if the issue persists.';
+          ? 'Try running `npm run build:all` or `npm run build:sandbox` under the jiminy-cli repo to build it locally, or check the image name and your network connection.'
+          : 'Please check the image name, your network connection, or notify jiminy-cli-dev@google.com if the issue persists.';
       throw new FatalSandboxError(
         `Sandbox image '${image}' is missing or could not be pulled. ${remedy}`,
       );
@@ -488,7 +488,7 @@ export async function start_sandbox(
       process.env['GEMINI_CLI_INTEGRATION_TEST'] === 'true';
     let containerName;
     if (isIntegrationTest) {
-      containerName = `gemini-cli-integration-test-${randomBytes(4).toString(
+      containerName = `jiminy-cli-integration-test-${randomBytes(4).toString(
         'hex',
       )}`;
       debugLogger.log(`ContainerName: ${containerName}`);
@@ -669,10 +669,10 @@ export async function start_sandbox(
 
       // Instead of passing --user to the main sandbox container, we let it
       // start as root, then create a user with the host's UID/GID, and
-      // finally switch to that user to run the gemini process. This is
+      // finally switch to that user to run the jiminy process. This is
       // necessary on Linux to ensure the user exists within the
       // container's /etc/passwd file, which is required by os.userInfo().
-      const username = 'gemini';
+      const username = 'jiminy';
       const homeDir = getContainerPath(homedir());
 
       const setupUserCommands = [
@@ -806,14 +806,14 @@ export async function start_sandbox(
 // Unlike Docker/Podman, LXC does not launch a transient container from an
 // image. The user creates and manages their own LXC container; Jiminy runs
 // inside it via `lxc exec`. The container name is stored in config.image
-// (default: "gemini-sandbox"). The workspace is bind-mounted into the
+// (default: "jiminy-sandbox"). The workspace is bind-mounted into the
 // container at the same absolute path.
 async function start_lxc_sandbox(
   config: SandboxConfig,
   nodeArgs: string[] = [],
   cliArgs: string[] = [],
 ): Promise<number> {
-  const containerName = config.image || 'gemini-sandbox';
+  const containerName = config.image || 'jiminy-sandbox';
   const workdir = path.resolve(process.cwd());
 
   debugLogger.log(
@@ -890,7 +890,7 @@ async function start_lxc_sandbox(
   try {
     // Bind-mount the working directory into the container at the same path.
     // Using "lxc config device add" is idempotent when the device name matches.
-    const workspaceDeviceName = `gemini-workspace-${randomBytes(4).toString(
+    const workspaceDeviceName = `jiminy-workspace-${randomBytes(4).toString(
       'hex',
     )}`;
     devicesToRemove.push(workspaceDeviceName);
@@ -919,7 +919,7 @@ async function start_lxc_sandbox(
     if (config.allowedPaths) {
       for (const hostPath of config.allowedPaths) {
         if (hostPath && path.isAbsolute(hostPath) && fs.existsSync(hostPath)) {
-          const allowedDeviceName = `gemini-allowed-${randomBytes(4).toString(
+          const allowedDeviceName = `jiminy-allowed-${randomBytes(4).toString(
             'hex',
           )}`;
           devicesToRemove.push(allowedDeviceName);

@@ -98,7 +98,7 @@ describe('ShellTool', () => {
       get config() {
         return this;
       },
-      geminiClient: {
+      jiminyClient: {
         stripThoughtsFromHistory: vi.fn(),
       },
 
@@ -133,7 +133,7 @@ describe('ShellTool', () => {
         const projectTempDir = this.storage.getProjectTempDir();
         return `Path not in workspace: Attempted path "${absolutePath}" resolves outside the allowed workspace directories: ${workspaceDirs.join(', ')} or the project temp directory: ${projectTempDir}`;
       },
-      getGeminiClient: vi.fn().mockReturnValue({}),
+      getJiminyClient: vi.fn().mockReturnValue({}),
       getShellToolInactivityTimeout: vi.fn().mockReturnValue(1000),
       getEnableInteractiveShell: vi.fn().mockReturnValue(false),
       getEnableShellOutputEfficiency: vi.fn().mockReturnValue(true),
@@ -467,7 +467,7 @@ describe('ShellTool', () => {
         mockConfig,
         { model: 'summarizer-shell' },
         expect.any(String),
-        mockConfig.geminiClient,
+        mockConfig.jiminyClient,
         mockAbortSignal,
       );
       expect(result.llmContent).toBe('summarized output');
@@ -891,7 +891,7 @@ describe('ShellTool', () => {
     });
 
     it('should return the schema from the resolver when modelId is provided', () => {
-      const modelId = 'gemini-2.0-flash';
+      const modelId = 'jiminy-2.0-flash';
       const schema = shellTool.getSchema(modelId);
       expect(schema.name).toBe(SHELL_TOOL_NAME);
       expect(schema.description).toMatchSnapshot();

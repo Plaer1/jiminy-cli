@@ -9,7 +9,7 @@ import {
   checkExhaustive,
   CoreToolCallStatus,
   isUserVisibleHook,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { Box, Text, useIsScreenReaderEnabled } from 'ink';
 import { useState, useEffect, useMemo } from 'react';
 import { useConfig } from '../contexts/ConfigContext.js';

@@ -15,7 +15,7 @@ import {
 } from './usePhraseCycler.js';
 import { WITTY_LOADING_PHRASES } from '../constants/wittyPhrases.js';
 import { INFORMATIVE_TIPS } from '../constants/tips.js';
-import type { RetryAttemptPayload } from '@google/gemini-cli-core';
+import type { RetryAttemptPayload } from '@google/jiminy-cli-core';
 
 describe('useLoadingIndicator', () => {
   beforeEach(() => {
@@ -226,7 +226,7 @@ describe('useLoadingIndicator', () => {
 
   it('should reflect retry status in currentLoadingPhrase when provided', async () => {
     const retryStatus = {
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
       attempt: 2,
       maxAttempts: 3,
       delayMs: 1000,
@@ -243,7 +243,7 @@ describe('useLoadingIndicator', () => {
 
   it('should hide low-verbosity retry status for early retry attempts', async () => {
     const retryStatus = {
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
       attempt: 1,
       maxAttempts: 5,
       delayMs: 1000,
@@ -264,7 +264,7 @@ describe('useLoadingIndicator', () => {
 
   it('should show a generic retry phrase in low error verbosity mode for later retries', async () => {
     const retryStatus = {
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
       attempt: 2,
       maxAttempts: 5,
       delayMs: 1000,

@@ -10,7 +10,7 @@ import type {
   CommandContext,
 } from './types.js';
 import { CommandKind } from './types.js';
-import type { MessageActionReturn } from '@google/gemini-cli-core';
+import type { MessageActionReturn } from '@google/jiminy-cli-core';
 import {
   DiscoveredMCPTool,
   getMCPDiscoveryState,
@@ -22,7 +22,7 @@ import {
   mcpServerRequiresOAuth,
   CoreEvent,
   coreEvents,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 import { MessageType, type HistoryItemMcpStatus } from '../types.js';
 import {
@@ -112,7 +112,7 @@ const authCommand: SlashCommand = {
       });
 
       // Import dynamically to avoid circular dependencies
-      const { MCPOAuthProvider } = await import('@google/gemini-cli-core');
+      const { MCPOAuthProvider } = await import('@google/jiminy-cli-core');
 
       let oauthConfig = server.oauth;
       if (!oauthConfig) {
@@ -138,9 +138,9 @@ const authCommand: SlashCommand = {
         await mcpClientManager.restartServer(serverName);
       }
       // Update the client with the new tools
-      const geminiClient = context.services.agentContext?.geminiClient;
-      if (geminiClient?.isInitialized()) {
-        await geminiClient.setTools();
+      const jiminyClient = context.services.agentContext?.jiminyClient;
+      if (jiminyClient?.isInitialized()) {
+        await jiminyClient.setTools();
       }
 
       // Reload the slash commands to reflect the changes.
@@ -363,9 +363,9 @@ const reloadCommand: SlashCommand = {
     await mcpClientManager.restart();
 
     // Update the client with the new tools
-    const geminiClient = agentContext.geminiClient;
-    if (geminiClient?.isInitialized()) {
-      await geminiClient.setTools();
+    const jiminyClient = agentContext.jiminyClient;
+    if (jiminyClient?.isInitialized()) {
+      await jiminyClient.setTools();
     }
 
     // Reload the slash commands to reflect the changes.
@@ -469,8 +469,8 @@ async function handleEnableDisable(
     );
     await mcpClientManager.restart();
   }
-  if (agentContext.geminiClient?.isInitialized())
-    await agentContext.geminiClient.setTools();
+  if (agentContext.jiminyClient?.isInitialized())
+    await agentContext.jiminyClient.setTools();
   context.ui.reloadCommands();
 
   return { type: 'message', messageType: 'info', content: msg };

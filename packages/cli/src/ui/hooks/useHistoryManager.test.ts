@@ -97,7 +97,7 @@ describe('useHistoryManager', () => {
       text: 'First',
     };
     const itemData2: Omit<HistoryItem, 'id'> = {
-      type: 'gemini', // Replaced HistoryItemType.Gemini
+      type: 'jiminy', // Replaced HistoryItemType.Jiminy
       text: 'Second',
     };
 
@@ -121,7 +121,7 @@ describe('useHistoryManager', () => {
     const { result } = await renderHook(() => useHistory());
     const timestamp = Date.now();
     const initialItem: Omit<HistoryItem, 'id'> = {
-      type: 'gemini', // Replaced HistoryItemType.Gemini
+      type: 'jiminy', // Replaced HistoryItemType.Jiminy
       text: 'Initial content',
     };
     let itemId!: number;
@@ -172,7 +172,7 @@ describe('useHistoryManager', () => {
       text: 'First',
     };
     const itemData2: Omit<HistoryItem, 'id'> = {
-      type: 'gemini', // Replaced HistoryItemType.Gemini
+      type: 'jiminy', // Replaced HistoryItemType.Jiminy
       text: 'Second',
     };
 
@@ -202,8 +202,8 @@ describe('useHistoryManager', () => {
       text: 'Duplicate message',
     };
     const itemData3: Omit<HistoryItem, 'id'> = {
-      type: 'gemini', // Replaced HistoryItemType.Gemini
-      text: 'Gemini response',
+      type: 'jiminy', // Replaced HistoryItemType.Jiminy
+      text: 'Jiminy response',
     };
     const itemData4: Omit<HistoryItem, 'id'> = {
       type: 'user', // Replaced HistoryItemType.User
@@ -219,7 +219,7 @@ describe('useHistoryManager', () => {
 
     expect(result.current.history).toHaveLength(3);
     expect(result.current.history[0].text).toBe('Duplicate message');
-    expect(result.current.history[1].text).toBe('Gemini response');
+    expect(result.current.history[1].text).toBe('Jiminy response');
     expect(result.current.history[2].text).toBe('Another user message');
   });
 
@@ -231,8 +231,8 @@ describe('useHistoryManager', () => {
       text: 'Message 1',
     };
     const itemData2: Omit<HistoryItem, 'id'> = {
-      type: 'gemini', // Replaced HistoryItemType.Gemini
-      text: 'Gemini response',
+      type: 'jiminy', // Replaced HistoryItemType.Jiminy
+      text: 'Jiminy response',
     };
     const itemData3: Omit<HistoryItem, 'id'> = {
       type: 'user', // Replaced HistoryItemType.User
@@ -247,7 +247,7 @@ describe('useHistoryManager', () => {
 
     expect(result.current.history).toHaveLength(3);
     expect(result.current.history[0].text).toBe('Message 1');
-    expect(result.current.history[1].text).toBe('Gemini response');
+    expect(result.current.history[1].text).toBe('Jiminy response');
     expect(result.current.history[2].text).toBe('Message 1');
   });
 

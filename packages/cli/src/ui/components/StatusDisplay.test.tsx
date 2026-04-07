@@ -11,7 +11,7 @@ import { StatusDisplay } from './StatusDisplay.js';
 import { UIStateContext, type UIState } from '../contexts/UIStateContext.js';
 import { ConfigContext } from '../contexts/ConfigContext.js';
 import { SettingsContext } from '../contexts/SettingsContext.js';
-import type { Config } from '@google/gemini-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 import type { LoadedSettings } from '../../config/settings.js';
 import { createMockSettings } from '../../test-utils/settings.js';
 import type { TextBuffer } from './shared/text-buffer.js';
@@ -49,7 +49,7 @@ const createMockUIState = (overrides: UIStateOverrides = {}): UIState =>
     queueErrorMessage: null,
     activeHooks: [],
     ideContextState: null,
-    geminiMdFileCount: 0,
+    jiminyMdFileCount: 0,
     contextFileNames: [],
     backgroundShellCount: 0,
     buffer: { text: '' },

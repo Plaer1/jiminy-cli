@@ -1,22 +1,22 @@
 # By default, require reviews from the maintainers for all files.
-* @google-gemini/gemini-cli-maintainers
+* @google-jiminy/jiminy-cli-maintainers
 
 # Require reviews from the release approvers for critical files.
 # These patterns override the rule above.
-/package.json @google-gemini/gemini-cli-askmode-approvers
-/package-lock.json @google-gemini/gemini-cli-askmode-approvers
-/GEMINI.md @google-gemini/gemini-cli-askmode-approvers
-/SECURITY.md @google-gemini/gemini-cli-askmode-approvers
-/LICENSE @google-gemini/gemini-cli-askmode-approvers
-/.github/workflows/ @google-gemini/gemini-cli-askmode-approvers
-/packages/cli/package.json @google-gemini/gemini-cli-askmode-approvers
-/packages/core/package.json @google-gemini/gemini-cli-askmode-approvers
+/package.json @google-jiminy/jiminy-cli-askmode-approvers
+/package-lock.json @google-jiminy/jiminy-cli-askmode-approvers
+/GEMINI.md @google-jiminy/jiminy-cli-askmode-approvers
+/SECURITY.md @google-jiminy/jiminy-cli-askmode-approvers
+/LICENSE @google-jiminy/jiminy-cli-askmode-approvers
+/.github/workflows/ @google-jiminy/jiminy-cli-askmode-approvers
+/packages/cli/package.json @google-jiminy/jiminy-cli-askmode-approvers
+/packages/core/package.json @google-jiminy/jiminy-cli-askmode-approvers
 
 # Docs have a dedicated approver group in addition to maintainers
-/docs/ @google-gemini/gemini-cli-maintainers @google-gemini/gemini-cli-docs
-/README.md @google-gemini/gemini-cli-maintainers @google-gemini/gemini-cli-docs
+/docs/ @google-jiminy/jiminy-cli-maintainers @google-jiminy/jiminy-cli-docs
+/README.md @google-jiminy/jiminy-cli-maintainers @google-jiminy/jiminy-cli-docs
 
 # Prompt contents, tool definitions, and evals require reviews from prompt approvers
-/packages/core/src/prompts/ @google-gemini/gemini-cli-prompt-approvers
-/packages/core/src/tools/ @google-gemini/gemini-cli-prompt-approvers
-/evals/ @google-gemini/gemini-cli-prompt-approvers
+/packages/core/src/prompts/ @google-jiminy/jiminy-cli-prompt-approvers
+/packages/core/src/tools/ @google-jiminy/jiminy-cli-prompt-approvers
+/evals/ @google-jiminy/jiminy-cli-prompt-approvers

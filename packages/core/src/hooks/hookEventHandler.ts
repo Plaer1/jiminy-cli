@@ -371,7 +371,7 @@ export class HookEventHandler {
   private createBaseInput(eventName: HookEventName): HookInput {
     // Get the transcript path from the ChatRecordingService if available
     const transcriptPath =
-      this.context.geminiClient
+      this.context.jiminyClient
         ?.getChatRecordingService()
         ?.getConversationFilePath() ?? '';
 

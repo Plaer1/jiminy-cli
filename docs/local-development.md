@@ -138,11 +138,11 @@ Here is a basic example:
 
 ```typescript
 import { runInDevTraceSpan } from '@google/jiminy-cli-core';
-import { GeminiCliOperation } from '@google/jiminy-cli-core/lib/telemetry/constants.js';
+import { JiminyCliOperation } from '@google/jiminy-cli-core/lib/telemetry/constants.js';
 
 await runInDevTraceSpan(
   {
-    operation: GeminiCliOperation.ToolCall,
+    operation: JiminyCliOperation.ToolCall,
     attributes: {
       [GEN_AI_AGENT_NAME]: 'jiminy-cli',
     },
@@ -170,7 +170,7 @@ await runInDevTraceSpan(
 In this example:
 
 - `operation`: The operation type of the span, represented by the
-  `GeminiCliOperation` enum.
+  `JiminyCliOperation` enum.
 - `metadata.input`: (Optional) An object containing the input data for the
   traced operation.
 - `metadata.output`: (Optional) An object containing the output data from the

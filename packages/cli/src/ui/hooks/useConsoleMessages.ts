@@ -10,7 +10,7 @@ import {
   coreEvents,
   CoreEvent,
   type ConsoleLogPayload,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 export interface UseErrorCountReturn {
   errorCount: number;

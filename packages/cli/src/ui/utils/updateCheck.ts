@@ -5,7 +5,7 @@
  */
 
 import semver from 'semver';
-import { getPackageJson, debugLogger } from '@google/gemini-cli-core';
+import { getPackageJson, debugLogger } from '@google/jiminy-cli-core';
 import type { LoadedSettings } from '../../config/settings.js';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';

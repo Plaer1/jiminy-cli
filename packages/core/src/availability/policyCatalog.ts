@@ -29,8 +29,8 @@ type PolicyConfig = Omit<ModelPolicy, 'actions' | 'stateTransitions'> & {
 export interface ModelPolicyOptions {
   previewEnabled: boolean;
   userTier?: UserTierId;
-  useGemini31?: boolean;
-  useGemini31FlashLite?: boolean;
+  useJiminy31?: boolean;
+  useJiminy31FlashLite?: boolean;
   useCustomToolModel?: boolean;
 }
 
@@ -85,8 +85,8 @@ export function getModelPolicyChain(
   if (options.previewEnabled) {
     const previewModel = resolveModel(
       PREVIEW_GEMINI_MODEL,
-      options.useGemini31,
-      options.useGemini31FlashLite,
+      options.useJiminy31,
+      options.useJiminy31FlashLite,
       options.useCustomToolModel,
     );
     return [

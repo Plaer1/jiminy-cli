@@ -11,7 +11,7 @@ import {
   ValidationRequiredError,
   isAccountSuspendedError,
   ProjectIdRequiredError,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 import type { AccountSuspensionInfo } from '../ui/contexts/UIStateContext.js';
 

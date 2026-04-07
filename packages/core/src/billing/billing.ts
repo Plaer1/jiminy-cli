@@ -7,7 +7,7 @@
 import type {
   AvailableCredits,
   CreditType,
-  GeminiUserTier,
+  JiminyUserTier,
 } from '../code_assist/types.js';
 import {
   PREVIEW_GEMINI_MODEL,
@@ -52,7 +52,7 @@ const G1_AI_BASE_URL = 'https://one.google.com/ai';
 const ACCOUNT_CHOOSER_URL = 'https://accounts.google.com/AccountChooser';
 
 /** UTM parameters for CLI tracking */
-const UTM_SOURCE = 'gemini_cli';
+const UTM_SOURCE = 'jiminy_cli';
 // TODO: change to 'desktop' when G1 service fix is rolled out
 const UTM_MEDIUM = 'web';
 
@@ -113,7 +113,7 @@ export function buildG1Url(
  * @returns The credit amount as a number, 0 if eligible but empty, or null if not eligible
  */
 export function getG1CreditBalance(
-  tier: GeminiUserTier | null | undefined,
+  tier: JiminyUserTier | null | undefined,
 ): number | null {
   if (!tier?.availableCredits) {
     return null;

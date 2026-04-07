@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { GeminiCliAgent, tool, z } from '../src/index.js';
+import { JiminyCliAgent, tool, z } from '../src/index.js';
 
 async function main() {
   const myTool = tool(
@@ -22,7 +22,7 @@ async function main() {
     },
   );
 
-  const agent = new GeminiCliAgent({
+  const agent = new JiminyCliAgent({
     instructions: 'Make sure to always talk like a pirate.',
     tools: [myTool],
   });

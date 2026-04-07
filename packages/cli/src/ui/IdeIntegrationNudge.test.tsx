@@ -8,12 +8,12 @@ import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { renderWithProviders } from '../test-utils/render.js';
 import { act } from 'react';
 import { IdeIntegrationNudge } from './IdeIntegrationNudge.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 
 // Mock debugLogger
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     debugLogger: {
@@ -59,7 +59,7 @@ describe('IdeIntegrationNudge', () => {
     );
     const frame = lastFrame();
 
-    expect(frame).toContain('Do you want to connect VS Code to Gemini CLI?');
+    expect(frame).toContain('Do you want to connect VS Code to Jiminy CLI?');
     expect(frame).toContain('Yes');
     expect(frame).toContain('No (esc)');
     expect(frame).toContain("No, don't ask again");

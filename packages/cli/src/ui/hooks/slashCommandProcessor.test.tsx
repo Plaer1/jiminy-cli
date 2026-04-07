@@ -20,8 +20,8 @@ import {
   MCPDiscoveryState,
   makeFakeConfig,
   coreEvents,
-  type GeminiClient,
-} from '@google/gemini-cli-core';
+  type JiminyClient,
+} from '@google/jiminy-cli-core';
 
 const {
   logSlashCommand,
@@ -46,9 +46,9 @@ vi.mock('./useAlternateBuffer.js', () => ({
   useAlternateBuffer: mockUseAlternateBuffer,
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
 
   return {
     ...original,
@@ -577,8 +577,8 @@ describe('useSlashCommandProcessor', () => {
       const mockClient = {
         setHistory: vi.fn(),
         stripThoughtsFromHistory: vi.fn(),
-      } as unknown as GeminiClient;
-      vi.spyOn(mockConfig, 'getGeminiClient').mockReturnValue(mockClient);
+      } as unknown as JiminyClient;
+      vi.spyOn(mockConfig, 'getJiminyClient').mockReturnValue(mockClient);
 
       const command = createTestCommand({
         name: 'load',

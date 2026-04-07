@@ -1,6 +1,6 @@
-# Gemini CLI Core (`@google/gemini-cli-core`)
+# Jiminy CLI Core (`@google/jiminy-cli-core`)
 
-Backend logic for Gemini CLI: API orchestration, prompt construction, tool
+Backend logic for Jiminy CLI: API orchestration, prompt construction, tool
 execution, and agent management.
 
 ## Architecture
@@ -42,6 +42,6 @@ execution, and agent management.
 
 ## Testing
 
-- Run tests: `npm test -w @google/gemini-cli-core`
+- Run tests: `npm test -w @google/jiminy-cli-core`
 - Run a specific test:
-  `npm test -w @google/gemini-cli-core -- src/path/to/file.test.ts`
+  `npm test -w @google/jiminy-cli-core -- src/path/to/file.test.ts`

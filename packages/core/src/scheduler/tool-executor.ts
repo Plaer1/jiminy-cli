@@ -36,7 +36,7 @@ import {
 } from './types.js';
 import type { PartListUnion, Part } from '@google/genai';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_TOOL_CALL_ID,
   GEN_AI_TOOL_DESCRIPTION,
   GEN_AI_TOOL_NAME,
@@ -81,7 +81,7 @@ export class ToolExecutor {
 
     return runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.ToolCall,
+        operation: JiminyCliOperation.ToolCall,
         logPrompts: this.config.getTelemetryLogPromptsEnabled(),
         attributes: {
           [GEN_AI_TOOL_NAME]: toolName,

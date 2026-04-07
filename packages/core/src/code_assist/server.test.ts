@@ -12,7 +12,7 @@ import {
   ActionStatus,
   InitiationMethod,
   type LoadCodeAssistResponse,
-  type GeminiUserTier,
+  type JiminyUserTier,
   type SetCodeAssistGlobalUserSettingRequest,
   type CodeAssistGlobalUserSettingResponse,
 } from './types.js';
@@ -668,7 +668,7 @@ describe('CodeAssistServer', () => {
     const mockResponse = {
       buckets: [
         {
-          modelId: 'gemini-2.5-pro',
+          modelId: 'jiminy-2.5-pro',
           tokenType: 'REQUESTS',
           remainingFraction: 0.75,
           resetTime: '2025-10-22T16:01:15Z',
@@ -756,7 +756,7 @@ describe('CodeAssistServer', () => {
     );
 
     // Initial state: server has a paidTier without availableCredits
-    (server as unknown as { paidTier: GeminiUserTier }).paidTier = {
+    (server as unknown as { paidTier: JiminyUserTier }).paidTier = {
       id: 'test-tier',
       name: 'tier',
     };

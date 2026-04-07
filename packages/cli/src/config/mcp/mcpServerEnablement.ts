@@ -6,7 +6,7 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { Storage, coreEvents } from '@google/gemini-cli-core';
+import { Storage, coreEvents } from '@google/jiminy-cli-core';
 
 /**
  * Stored in JSON file - represents persistent enablement state.
@@ -215,7 +215,7 @@ export class McpServerEnablementManager {
   }
 
   constructor() {
-    this.configDir = Storage.getGlobalGeminiDir();
+    this.configDir = Storage.getGlobalJiminyDir();
     this.configFilePath = path.join(this.configDir, MCP_ENABLEMENT_FILENAME);
   }
 

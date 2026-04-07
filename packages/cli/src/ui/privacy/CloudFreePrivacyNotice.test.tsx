@@ -10,7 +10,7 @@ import { act } from 'react';
 import { CloudFreePrivacyNotice } from './CloudFreePrivacyNotice.js';
 import { usePrivacySettings } from '../hooks/usePrivacySettings.js';
 import { useKeypress } from '../hooks/useKeypress.js';
-import type { Config } from '@google/gemini-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 import { RadioButtonSelect } from '../components/shared/RadioButtonSelect.js';
 
 // Mocks
@@ -69,12 +69,12 @@ describe('CloudFreePrivacyNotice', () => {
     {
       stateName: 'non-free tier state',
       mockState: { isFreeTier: false },
-      expectedText: 'Gemini Code Assist Privacy Notice',
+      expectedText: 'Jiminy Code Assist Privacy Notice',
     },
     {
       stateName: 'free tier state',
       mockState: { isFreeTier: true },
-      expectedText: 'Gemini Code Assist for Individuals Privacy Notice',
+      expectedText: 'Jiminy Code Assist for Individuals Privacy Notice',
     },
   ])('renders correctly in $stateName', async ({ mockState, expectedText }) => {
     mockedUsePrivacySettings.mockReturnValue({

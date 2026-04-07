@@ -9,7 +9,7 @@ import open from 'open';
 import path from 'node:path';
 import { bugCommand } from './bugCommand.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
-import { getVersion } from '@google/gemini-cli-core';
+import { getVersion } from '@google/jiminy-cli-core';
 import { GIT_COMMIT_INFO } from '../../generated/git-commit.js';
 import { formatBytes } from '../utils/formatters.js';
 
@@ -26,9 +26,9 @@ vi.mock('../utils/historyExportUtils.js', async (importOriginal) => {
 });
 import { exportHistoryToFile } from '../utils/historyExportUtils.js';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     IdeClient: {
@@ -69,7 +69,7 @@ describe('bugCommand', () => {
   beforeEach(() => {
     vi.mocked(getVersion).mockResolvedValue('0.1.0');
     vi.mocked(formatBytes).mockReturnValue('100 MB');
-    vi.stubEnv('SANDBOX', 'gemini-test');
+    vi.stubEnv('SANDBOX', 'jiminy-test');
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2024-01-01T00:00:00Z'));
   });
@@ -85,12 +85,12 @@ describe('bugCommand', () => {
       services: {
         agentContext: {
           config: {
-            getModel: () => 'gemini-pro',
+            getModel: () => 'jiminy-pro',
             getBugCommand: () => undefined,
             getIdeMode: () => true,
             getContentGeneratorConfig: () => ({ authType: 'oauth-personal' }),
           },
-          geminiClient: {
+          jiminyClient: {
             getChat: () => ({
               getHistory: () => [],
             }),
@@ -108,7 +108,7 @@ describe('bugCommand', () => {
 * **Session ID:** test-session-id
 * **Operating System:** test-platform v20.0.0
 * **Sandbox Environment:** test
-* **Model Version:** gemini-pro
+* **Model Version:** jiminy-pro
 * **Auth Type:** oauth-personal
 * **Memory Usage:** 100 MB
 * **Terminal Name:** Test Terminal
@@ -130,15 +130,15 @@ describe('bugCommand', () => {
       services: {
         agentContext: {
           config: {
-            getModel: () => 'gemini-pro',
+            getModel: () => 'jiminy-pro',
             getBugCommand: () => undefined,
             getIdeMode: () => true,
             getContentGeneratorConfig: () => ({ authType: 'vertex-ai' }),
             storage: {
-              getProjectTempDir: () => '/tmp/gemini',
+              getProjectTempDir: () => '/tmp/jiminy',
             },
           },
-          geminiClient: {
+          jiminyClient: {
             getChat: () => ({
               getHistory: () => history,
             }),
@@ -151,7 +151,7 @@ describe('bugCommand', () => {
     await bugCommand.action(mockContext, 'Bug with history');
 
     const expectedPath = path.join(
-      '/tmp/gemini',
+      '/tmp/jiminy',
       'bug-report-history-1704067200000.json',
     );
     expect(exportHistoryToFile).toHaveBeenCalledWith({
@@ -178,12 +178,12 @@ describe('bugCommand', () => {
       services: {
         agentContext: {
           config: {
-            getModel: () => 'gemini-pro',
+            getModel: () => 'jiminy-pro',
             getBugCommand: () => ({ urlTemplate: customTemplate }),
             getIdeMode: () => true,
             getContentGeneratorConfig: () => ({ authType: 'vertex-ai' }),
           },
-          geminiClient: {
+          jiminyClient: {
             getChat: () => ({
               getHistory: () => [],
             }),
@@ -201,7 +201,7 @@ describe('bugCommand', () => {
 * **Session ID:** test-session-id
 * **Operating System:** test-platform v20.0.0
 * **Sandbox Environment:** test
-* **Model Version:** gemini-pro
+* **Model Version:** jiminy-pro
 * **Auth Type:** vertex-ai
 * **Memory Usage:** 100 MB
 * **Terminal Name:** Test Terminal

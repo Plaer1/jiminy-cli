@@ -65,7 +65,7 @@ describe('handleAutoUpdate', () => {
         latest: '2.0.0',
         current: '1.0.0',
         type: 'major',
-        name: '@google/gemini-cli',
+        name: '@google/jiminy-cli',
       },
       message: 'An update is available!',
     };
@@ -411,7 +411,7 @@ describe('setUpdateHandler', () => {
         latest: '2.0.0',
         current: '1.0.0',
         type: 'major',
-        name: '@google/gemini-cli',
+        name: '@google/jiminy-cli',
       },
       message: 'Update available',
     };
@@ -466,7 +466,7 @@ describe('setUpdateHandler', () => {
         latest: '2.0.0',
         current: '1.0.0',
         type: 'major',
-        name: '@google/gemini-cli',
+        name: '@google/jiminy-cli',
       },
       message: 'Update available',
     };

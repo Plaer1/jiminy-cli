@@ -160,16 +160,16 @@ you are still subscribed to Google AI Pro or Ultra in your
 
 To learn more about your privacy policy and terms of service governed by your
 subscription, visit
-[Jiminy Code Assist: Terms of Service and Privacy Policies](https://developers.google.com/gemini-code-assist/resources/privacy-notices).
+[Jiminy Code Assist: Terms of Service and Privacy Policies](https://developers.google.com/jiminy-code-assist/resources/privacy-notices).
 
 ### I've upgraded to Google AI Pro or Ultra but it still says I am hitting quota limits. Is this a bug?
 
-The higher limits in your Google AI Pro or Ultra subscription are for Gemini 2.5
-across both Gemini 2.5 Pro and Flash. They are shared quota across Jiminy CLI
+The higher limits in your Google AI Pro or Ultra subscription are for Jiminy 2.5
+across both Jiminy 2.5 Pro and Flash. They are shared quota across Jiminy CLI
 and agent mode in Jiminy Code Assist IDE extensions. You can learn more about
 quota limits for Jiminy CLI, Jiminy Code Assist and agent mode in Jiminy Code
 Assist at
-[Quotas and limits](https://developers.google.com/gemini-code-assist/resources/quotas).
+[Quotas and limits](https://developers.google.com/jiminy-code-assist/resources/quotas).
 
 ### If I upgrade to higher limits for Jiminy CLI and Jiminy Code Assist by purchasing a Google AI Pro or Ultra subscription, will Jiminy start using my data to improve its machine learning models?
 
@@ -177,7 +177,7 @@ Google does not use your data to improve Google's machine learning models if you
 purchase a paid plan. Note: If you decide to remain on the free version of
 Jiminy Code Assist, Jiminy Code Assist for individuals, you can also opt out of
 using your data to improve Google's machine learning models. See the
-[Jiminy Code Assist for individuals privacy notice](https://developers.google.com/gemini-code-assist/resources/privacy-notice-gemini-code-assist-individuals)
+[Jiminy Code Assist for individuals privacy notice](https://developers.google.com/jiminy-code-assist/resources/privacy-notice-jiminy-code-assist-individuals)
 for more information.
 
 ## Not seeing your question?

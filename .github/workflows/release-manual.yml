@@ -94,7 +94,7 @@ jobs:
         if: "${{github.event.inputs.force_skip_tests != 'true'}}"
         uses: './.github/actions/run-tests'
         with:
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           working-directory: '.'
 
       - name: 'Prepare Release Branch And Bundle'

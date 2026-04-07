@@ -71,9 +71,9 @@ const mockCoreEvents = vi.hoisted(() => ({
   emitFeedback: vi.fn(),
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: mockCoreEvents,
@@ -136,7 +136,7 @@ describe('Settings Repro', () => {
       },
       security: {
         auth: {
-          selectedType: 'gemini-api-key',
+          selectedType: 'jiminy-api-key',
         },
         folderTrust: {
           enabled: true,

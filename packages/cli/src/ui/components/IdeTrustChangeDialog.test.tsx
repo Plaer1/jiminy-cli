@@ -9,7 +9,7 @@ import { act } from 'react';
 import * as processUtils from '../../utils/processUtils.js';
 import { renderWithProviders } from '../../test-utils/render.js';
 import { IdeTrustChangeDialog } from './IdeTrustChangeDialog.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 
 describe('IdeTrustChangeDialog', () => {
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe('IdeTrustChangeDialog', () => {
     expect(frameText).toContain(
       'Workspace trust has changed due to a change in the IDE connection.',
     );
-    expect(frameText).toContain("Press 'r' to restart Gemini");
+    expect(frameText).toContain("Press 'r' to restart Jiminy");
     unmount();
   });
 
@@ -38,7 +38,7 @@ describe('IdeTrustChangeDialog', () => {
     expect(frameText).toContain(
       'Workspace trust has changed due to a change in the IDE trust.',
     );
-    expect(frameText).toContain("Press 'r' to restart Gemini");
+    expect(frameText).toContain("Press 'r' to restart Jiminy");
     unmount();
   });
 

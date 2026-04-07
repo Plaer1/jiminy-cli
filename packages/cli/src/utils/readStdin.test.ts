@@ -6,9 +6,9 @@
 
 import { vi, describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { readStdin } from './readStdin.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', () => ({
+vi.mock('@google/jiminy-cli-core', () => ({
   debugLogger: {
     warn: vi.fn(),
   },
@@ -66,7 +66,7 @@ describe('readStdin', () => {
   it('should read and accumulate data from stdin', async () => {
     mockStdin.read
       .mockReturnValueOnce('I love ')
-      .mockReturnValueOnce('Gemini!')
+      .mockReturnValueOnce('Jiminy!')
       .mockReturnValueOnce(null);
 
     const promise = readStdin();
@@ -77,7 +77,7 @@ describe('readStdin', () => {
     // Trigger end to resolve
     onEndHandler();
 
-    await expect(promise).resolves.toBe('I love Gemini!');
+    await expect(promise).resolves.toBe('I love Jiminy!');
   });
 
   it('should handle empty stdin input', async () => {

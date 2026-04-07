@@ -21,8 +21,8 @@ import {
   debugLogger,
   ExitCodes,
   coreEvents,
-} from '@google/gemini-cli-core';
-import type { Config } from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 import * as auth from './config/auth.js';
 import { type LoadedSettings } from './config/settings.js';
 
@@ -33,7 +33,7 @@ function createLocalMockConfig(overrides: Partial<Config> = {}): Config {
 }
 
 describe('validateNonInterActiveAuth', () => {
-  let originalEnvGeminiApiKey: string | undefined;
+  let originalEnvJiminyApiKey: string | undefined;
   let originalEnvVertexAi: string | undefined;
   let originalEnvGcp: string | undefined;
   let debugLoggerErrorSpy: ReturnType<typeof vi.spyOn>;
@@ -42,7 +42,7 @@ describe('validateNonInterActiveAuth', () => {
   let mockSettings: LoadedSettings;
 
   beforeEach(() => {
-    originalEnvGeminiApiKey = process.env['GEMINI_API_KEY'];
+    originalEnvJiminyApiKey = process.env['GEMINI_API_KEY'];
     originalEnvVertexAi = process.env['GOOGLE_GENAI_USE_VERTEXAI'];
     originalEnvGcp = process.env['GOOGLE_GENAI_USE_GCA'];
     delete process.env['GEMINI_API_KEY'];
@@ -82,8 +82,8 @@ describe('validateNonInterActiveAuth', () => {
   });
 
   afterEach(() => {
-    if (originalEnvGeminiApiKey !== undefined) {
-      process.env['GEMINI_API_KEY'] = originalEnvGeminiApiKey;
+    if (originalEnvJiminyApiKey !== undefined) {
+      process.env['GEMINI_API_KEY'] = originalEnvJiminyApiKey;
     } else {
       delete process.env['GEMINI_API_KEY'];
     }
@@ -327,7 +327,7 @@ describe('validateNonInterActiveAuth', () => {
       );
     }
     expect(debugLoggerErrorSpy).toHaveBeenCalledWith(
-      "The enforced authentication type is 'oauth-personal', but the current type is 'gemini-api-key'. Please re-authenticate with the correct type.",
+      "The enforced authentication type is 'oauth-personal', but the current type is 'jiminy-api-key'. Please re-authenticate with the correct type.",
     );
     expect(processExitSpy).toHaveBeenCalledWith(
       ExitCodes.FATAL_AUTHENTICATION_ERROR,
@@ -354,7 +354,7 @@ describe('validateNonInterActiveAuth', () => {
       );
     }
     expect(debugLoggerErrorSpy).toHaveBeenCalledWith(
-      "The enforced authentication type is 'oauth-personal', but the current type is 'gemini-api-key'. Please re-authenticate with the correct type.",
+      "The enforced authentication type is 'oauth-personal', but the current type is 'jiminy-api-key'. Please re-authenticate with the correct type.",
     );
     expect(processExitSpy).toHaveBeenCalledWith(
       ExitCodes.FATAL_AUTHENTICATION_ERROR,
@@ -426,7 +426,7 @@ describe('validateNonInterActiveAuth', () => {
         expect(payload.error.type).toBe('Error');
         expect(payload.error.code).toBe(ExitCodes.FATAL_AUTHENTICATION_ERROR);
         expect(payload.error.message).toContain(
-          "The enforced authentication type is 'gemini-api-key', but the current type is 'oauth-personal'. Please re-authenticate with the correct type.",
+          "The enforced authentication type is 'jiminy-api-key', but the current type is 'oauth-personal'. Please re-authenticate with the correct type.",
         );
       }
     });

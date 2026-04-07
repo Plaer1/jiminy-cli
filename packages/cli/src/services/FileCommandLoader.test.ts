@@ -6,7 +6,7 @@
 
 import * as glob from 'glob';
 import * as path from 'node:path';
-import { GEMINI_DIR, Storage, type Config } from '@google/gemini-cli-core';
+import { GEMINI_DIR, Storage, type Config } from '@google/jiminy-cli-core';
 import mock from 'mock-fs';
 import { FileCommandLoader } from './FileCommandLoader.js';
 import { assert, vi } from 'vitest';
@@ -57,9 +57,9 @@ vi.mock('./prompt-processors/argumentProcessor.js', async (importOriginal) => {
       .mockImplementation(() => new original.DefaultArgumentProcessor()),
   };
 });
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...original,
     Storage: original.Storage,
@@ -549,7 +549,7 @@ describe('FileCommandLoader', () => {
           'project.toml': 'prompt = "Project command"',
         },
         [extensionDir]: {
-          'gemini-extension.json': JSON.stringify({
+          'jiminy-extension.json': JSON.stringify({
             name: 'test-ext',
             version: '1.0.0',
           }),
@@ -598,7 +598,7 @@ describe('FileCommandLoader', () => {
 
       mock({
         [extensionDir]: {
-          'gemini-extension.json': JSON.stringify({
+          'jiminy-extension.json': JSON.stringify({
             name: 'test-ext',
             version: '1.0.0',
           }),
@@ -702,7 +702,7 @@ describe('FileCommandLoader', () => {
 
       mock({
         [extensionDir1]: {
-          'gemini-extension.json': JSON.stringify({
+          'jiminy-extension.json': JSON.stringify({
             name: 'active-ext',
             version: '1.0.0',
           }),
@@ -711,7 +711,7 @@ describe('FileCommandLoader', () => {
           },
         },
         [extensionDir2]: {
-          'gemini-extension.json': JSON.stringify({
+          'jiminy-extension.json': JSON.stringify({
             name: 'inactive-ext',
             version: '1.0.0',
           }),
@@ -759,7 +759,7 @@ describe('FileCommandLoader', () => {
 
       mock({
         [extensionDir]: {
-          'gemini-extension.json': JSON.stringify({
+          'jiminy-extension.json': JSON.stringify({
             name: 'no-commands',
             version: '1.0.0',
           }),
@@ -795,7 +795,7 @@ describe('FileCommandLoader', () => {
 
       mock({
         [extensionDir]: {
-          'gemini-extension.json': JSON.stringify({
+          'jiminy-extension.json': JSON.stringify({
             name: 'a',
             version: '1.0.0',
           }),
@@ -861,7 +861,7 @@ describe('FileCommandLoader', () => {
 
       mock({
         [extensionDir]: {
-          'gemini-extension.json': JSON.stringify({
+          'jiminy-extension.json': JSON.stringify({
             name: 'my-test-ext',
             id: extensionId,
             version: '1.0.0',

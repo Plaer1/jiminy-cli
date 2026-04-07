@@ -30,7 +30,7 @@ describe('Runtime Hooks', () => {
     fs.mkdirSync(testDir, { recursive: true });
 
     config = new Config({
-      model: 'gemini-3-flash-preview',
+      model: 'jiminy-3-flash-preview',
       targetDir: testDir,
       sessionId: 'test-session',
       debugMode: false,

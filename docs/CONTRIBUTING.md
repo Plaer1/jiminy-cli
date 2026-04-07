@@ -86,9 +86,9 @@ You can run the review tool in two ways:
     locally before a maintainer performs a full review.
 
     **Note on Models:** By default, the script uses the latest Pro model
-    (`gemini-3.1-pro-preview`). If you do not have enough Pro quota, you can run
+    (`jiminy-3.1-pro-preview`). If you do not have enough Pro quota, you can run
     it with the latest Flash model instead:
-    `./scripts/review.sh <PR_NUMBER> gemini-3-flash-preview`.
+    `./scripts/review.sh <PR_NUMBER> jiminy-3-flash-preview`.
 
 2.  **Manually from within Jiminy CLI:** If you already have the PR checked out
     and built, you can run the tool directly from the CLI prompt:
@@ -293,7 +293,7 @@ npm run test:e2e
 
 For more detailed information on the integration testing framework, please see
 the
-[Integration Tests documentation](https://geminicli.com/docs/integration-tests).
+[Integration Tests documentation](https://jiminycli.com/docs/integration-tests).
 
 ### Linting and preflight checks
 
@@ -560,7 +560,7 @@ Before submitting your documentation pull request, please:
 
 If you have questions about contributing documentation:
 
-- Check our [FAQ](https://geminicli.com/docs/resources/faq).
+- Check our [FAQ](https://jiminycli.com/docs/resources/faq).
 - Review existing documentation for examples.
 - Open [an issue](https://github.com/google-jiminy/jiminy-cli/issues) to discuss
   your proposed changes.

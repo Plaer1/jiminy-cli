@@ -26,19 +26,19 @@ import type { ExtensionManager } from '../extension-manager.js';
 import { fetchJson } from './github_fetch.js';
 import { EventEmitter } from 'node:events';
 import type {
-  GeminiCLIExtension,
+  JiminyCLIExtension,
   ExtensionInstallMetadata,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type { ExtensionConfig } from '../extension.js';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     Storage: {
       getGlobalSettingsPath: vi.fn().mockReturnValue('/mock/settings.json'),
-      getGlobalGeminiDir: vi.fn().mockReturnValue('/mock/.gemini'),
+      getGlobalJiminyDir: vi.fn().mockReturnValue('/mock/.jiminy'),
     },
     debugLogger: {
       error: vi.fn(),
@@ -229,7 +229,7 @@ describe('github.ts', () => {
 
       const linkExt = {
         installMetadata: { type: 'link' },
-      } as unknown as GeminiCLIExtension;
+      } as unknown as JiminyCLIExtension;
       expect(await checkForExtensionUpdate(linkExt, mockExtensionManager)).toBe(
         ExtensionUpdateState.NOT_UPDATABLE,
       );
@@ -245,7 +245,7 @@ describe('github.ts', () => {
       const ext = {
         path: '/path',
         installMetadata: { type: 'git', source: 'url' },
-      } as unknown as GeminiCLIExtension;
+      } as unknown as JiminyCLIExtension;
       expect(await checkForExtensionUpdate(ext, mockExtensionManager)).toBe(
         ExtensionUpdateState.UPDATE_AVAILABLE,
       );
@@ -261,7 +261,7 @@ describe('github.ts', () => {
       const ext = {
         path: '/path',
         installMetadata: { type: 'git', source: 'url' },
-      } as unknown as GeminiCLIExtension;
+      } as unknown as JiminyCLIExtension;
       expect(await checkForExtensionUpdate(ext, mockExtensionManager)).toBe(
         ExtensionUpdateState.UP_TO_DATE,
       );
@@ -279,7 +279,7 @@ describe('github.ts', () => {
         version: '1.0.0',
         path: '/path/to/installed/ext',
         installMetadata: { type: 'local', source: '/path/to/source/ext' },
-      } as unknown as GeminiCLIExtension;
+      } as unknown as JiminyCLIExtension;
 
       expect(await checkForExtensionUpdate(ext, mockExtensionManager)).toBe(
         ExtensionUpdateState.NOT_UPDATABLE,
@@ -297,7 +297,7 @@ describe('github.ts', () => {
         path: '/path',
         migratedTo: 'new-url',
         installMetadata: { type: 'git', source: 'old-url' },
-      } as unknown as GeminiCLIExtension;
+      } as unknown as JiminyCLIExtension;
       expect(await checkForExtensionUpdate(ext, mockExtensionManager)).toBe(
         ExtensionUpdateState.UPDATE_AVAILABLE,
       );

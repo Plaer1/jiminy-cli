@@ -6,18 +6,18 @@
 
 /**
  * @fileoverview Pure, stateless-per-call translation functions that convert
- * ServerGeminiStreamEvent objects into AgentEvent objects.
+ * ServerJiminyStreamEvent objects into AgentEvent objects.
  *
  * No side effects, no generators. Each call to `translateEvent` takes an event
  * and mutable TranslationState, returning zero or more AgentEvents.
  */
 
 import type { FinishReason } from '@google/genai';
-import { GeminiEventType } from '../core/turn.js';
+import { JiminyEventType } from '../core/turn.js';
 import type {
-  ServerGeminiStreamEvent,
+  ServerJiminyStreamEvent,
   StructuredError,
-  GeminiFinishedEventValue,
+  JiminyFinishedEventValue,
 } from '../core/turn.js';
 import type {
   AgentEvent,
@@ -27,7 +27,7 @@ import type {
   AgentEventType,
 } from './types.js';
 import {
-  geminiPartsToContentParts,
+  jiminyPartsToContentParts,
   toolResultDisplayToContentParts,
   buildToolResponseData,
 } from './content-utils.js';
@@ -90,23 +90,23 @@ function ensureStreamStart(state: TranslationState, out: AgentEvent[]): void {
 // ---------------------------------------------------------------------------
 
 /**
- * Translates a single ServerGeminiStreamEvent into zero or more AgentEvents.
+ * Translates a single ServerJiminyStreamEvent into zero or more AgentEvents.
  * Mutates `state` (counter, flags) as a side effect.
  */
 export function translateEvent(
-  event: ServerGeminiStreamEvent,
+  event: ServerJiminyStreamEvent,
   state: TranslationState,
 ): AgentEvent[] {
   const out: AgentEvent[] = [];
 
   switch (event.type) {
-    case GeminiEventType.ModelInfo:
+    case JiminyEventType.ModelInfo:
       state.model = event.value;
       ensureStreamStart(state, out);
       out.push(makeEvent('session_update', state, { model: event.value }));
       break;
 
-    case GeminiEventType.Content:
+    case JiminyEventType.Content:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('message', state, {
@@ -116,7 +116,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.Thought:
+    case JiminyEventType.Thought:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('message', state, {
@@ -129,7 +129,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.Citation:
+    case JiminyEventType.Citation:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('message', state, {
@@ -140,15 +140,15 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.Finished:
+    case JiminyEventType.Finished:
       handleFinished(event.value, state, out);
       break;
 
-    case GeminiEventType.Error:
+    case JiminyEventType.Error:
       handleError(event.value.error, state, out);
       break;
 
-    case GeminiEventType.UserCancelled:
+    case JiminyEventType.UserCancelled:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('agent_end', state, {
@@ -157,7 +157,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.MaxSessionTurns:
+    case JiminyEventType.MaxSessionTurns:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('agent_end', state, {
@@ -169,7 +169,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.LoopDetected:
+    case JiminyEventType.LoopDetected:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('error', state, {
@@ -181,7 +181,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.ContextWindowWillOverflow:
+    case JiminyEventType.ContextWindowWillOverflow:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('error', state, {
@@ -192,7 +192,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.AgentExecutionStopped:
+    case JiminyEventType.AgentExecutionStopped:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('agent_end', state, {
@@ -204,7 +204,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.AgentExecutionBlocked:
+    case JiminyEventType.AgentExecutionBlocked:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('error', state, {
@@ -216,7 +216,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.InvalidStream:
+    case JiminyEventType.InvalidStream:
       ensureStreamStart(state, out);
       out.push(
         makeEvent('error', state, {
@@ -227,7 +227,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.ToolCallRequest:
+    case JiminyEventType.ToolCallRequest:
       ensureStreamStart(state, out);
       state.pendingToolNames.set(event.value.callId, event.value.name);
       out.push(
@@ -239,7 +239,7 @@ export function translateEvent(
       );
       break;
 
-    case GeminiEventType.ToolCallResponse: {
+    case JiminyEventType.ToolCallResponse: {
       ensureStreamStart(state, out);
       const displayContent = toolResultDisplayToContentParts(
         event.value.resultDisplay,
@@ -251,7 +251,7 @@ export function translateEvent(
           name: state.pendingToolNames.get(event.value.callId) ?? 'unknown',
           content: event.value.error
             ? [{ type: 'text', text: event.value.error.message }]
-            : geminiPartsToContentParts(event.value.responseParts),
+            : jiminyPartsToContentParts(event.value.responseParts),
           isError: event.value.error !== undefined,
           ...(displayContent ? { displayContent } : {}),
           ...(data ? { data } : {}),
@@ -261,13 +261,13 @@ export function translateEvent(
       break;
     }
 
-    case GeminiEventType.ToolCallConfirmation:
+    case JiminyEventType.ToolCallConfirmation:
       // Elicitations are handled separately by the session layer
       break;
 
     // Internal concerns — no AgentEvent emitted
-    case GeminiEventType.ChatCompressed:
-    case GeminiEventType.Retry:
+    case JiminyEventType.ChatCompressed:
+    case JiminyEventType.Retry:
       break;
 
     default:
@@ -285,7 +285,7 @@ export function translateEvent(
 // ---------------------------------------------------------------------------
 
 function handleFinished(
-  value: GeminiFinishedEventValue,
+  value: JiminyFinishedEventValue,
   state: TranslationState,
   out: AgentEvent[],
 ): void {

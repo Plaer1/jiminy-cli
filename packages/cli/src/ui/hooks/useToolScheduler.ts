@@ -15,7 +15,7 @@ import {
   type EditorType,
   type ToolCallsUpdateMessage,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useCallback, useState, useMemo, useEffect, useRef } from 'react';
 
 // Re-exporting types compatible with hook expectations
@@ -28,14 +28,14 @@ export type MarkToolsAsSubmittedFn = (callIds: string[]) => void;
 export type CancelAllFn = (signal: AbortSignal) => void;
 
 /**
- * The shape expected by useGeminiStream.
+ * The shape expected by useJiminyStream.
  * It matches the Core ToolCall structure + the UI metadata flag.
  */
 export type TrackedToolCall = ToolCall & {
-  responseSubmittedToGemini?: boolean;
+  responseSubmittedToJiminy?: boolean;
 };
 
-// Narrowed types for specific statuses (used by useGeminiStream)
+// Narrowed types for specific statuses (used by useJiminyStream)
 export type TrackedScheduledToolCall = Extract<
   TrackedToolCall,
   { status: 'scheduled' }
@@ -181,7 +181,7 @@ export function useToolScheduler(
       // 1. Await Core Scheduler directly
       const results = await scheduler.schedule(request, signal);
 
-      // 2. Trigger legacy reinjection logic (useGeminiStream loop)
+      // 2. Trigger legacy reinjection logic (useJiminyStream loop)
       // Since this hook instance owns the "root" scheduler, we always trigger
       // onComplete when it finishes its batch.
       await onCompleteRef.current(results);
@@ -205,7 +205,7 @@ export function useToolScheduler(
         for (const [sid, calls] of Object.entries(nextMap)) {
           nextMap[sid] = calls.map((tc) =>
             callIdsToMark.includes(tc.request.callId)
-              ? { ...tc, responseSubmittedToGemini: true }
+              ? { ...tc, responseSubmittedToJiminy: true }
               : tc,
           );
         }
@@ -271,7 +271,7 @@ function adaptToolCalls(
 
   return coreCalls.map((coreCall): TrackedToolCall => {
     const prev = prevMap.get(coreCall.request.callId);
-    const responseSubmittedToGemini = prev?.responseSubmittedToGemini ?? false;
+    const responseSubmittedToJiminy = prev?.responseSubmittedToJiminy ?? false;
 
     let status = coreCall.status;
     // If a tool call has completed but scheduled a tail call, it is in a transitional
@@ -289,7 +289,7 @@ function adaptToolCalls(
     return {
       ...coreCall,
       status,
-      responseSubmittedToGemini,
+      responseSubmittedToJiminy,
     } as TrackedToolCall;
   });
 }

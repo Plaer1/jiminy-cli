@@ -42,11 +42,11 @@ export interface LSToolParams {
   ignore?: string[];
 
   /**
-   * Whether to respect .gitignore and .geminiignore patterns (optional, defaults to true)
+   * Whether to respect .gitignore and .jiminyignore patterns (optional, defaults to true)
    */
   file_filtering_options?: {
     respect_git_ignore?: boolean;
-    respect_gemini_ignore?: boolean;
+    respect_jiminy_ignore?: boolean;
   };
 }
 
@@ -219,10 +219,10 @@ class LSToolInvocation extends BaseToolInvocation<LSToolParams, ToolResult> {
             this.params.file_filtering_options?.respect_git_ignore ??
             this.config.getFileFilteringOptions().respectGitIgnore ??
             DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
-          respectGeminiIgnore:
-            this.params.file_filtering_options?.respect_gemini_ignore ??
-            this.config.getFileFilteringOptions().respectGeminiIgnore ??
-            DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+          respectJiminyIgnore:
+            this.params.file_filtering_options?.respect_jiminy_ignore ??
+            this.config.getFileFilteringOptions().respectJiminyIgnore ??
+            DEFAULT_FILE_FILTERING_OPTIONS.respectJiminyIgnore,
         });
 
       const entries = [];

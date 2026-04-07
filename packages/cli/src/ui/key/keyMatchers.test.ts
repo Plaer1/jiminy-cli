@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
-import { Storage } from '@google/gemini-cli-core';
+import { Storage } from '@google/jiminy-cli-core';
 import {
   defaultKeyMatchers,
   Command,
@@ -512,7 +512,7 @@ describe('loadKeyMatchers integration', () => {
 
   beforeEach(async () => {
     tempDir = await fs.mkdtemp(
-      path.join(os.tmpdir(), 'gemini-keymatchers-test-'),
+      path.join(os.tmpdir(), 'jiminy-keymatchers-test-'),
     );
     tempFilePath = path.join(tempDir, 'keybindings.json');
     vi.spyOn(Storage, 'getUserKeybindingsPath').mockReturnValue(tempFilePath);

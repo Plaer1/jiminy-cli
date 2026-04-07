@@ -47,7 +47,7 @@ import {
   type ExtensionEvents,
   type MCPServerConfig,
   type ExtensionInstallMetadata,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   type HookDefinition,
   type HookEventName,
   type ResolvedExtensionSetting,
@@ -60,7 +60,7 @@ import {
   type PolicyRule,
   type SafetyCheckerRule,
   HookType,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { maybeRequestConsentOrFail } from './extensions/consent.js';
 import { resolveEnvVarsInObject } from '../utils/envVarResolver.js';
 import { ExtensionStorage } from './extensions/storage.js';
@@ -110,8 +110,8 @@ export class ExtensionManager extends ExtensionLoader {
     | undefined;
   private telemetryConfig: Config;
   private workspaceDir: string;
-  private loadedExtensions: GeminiCLIExtension[] | undefined;
-  private loadingPromise: Promise<GeminiCLIExtension[]> | null = null;
+  private loadedExtensions: JiminyCLIExtension[] | undefined;
+  private loadingPromise: Promise<JiminyCLIExtension[]> | null = null;
 
   constructor(options: ExtensionManagerParams) {
     super(options.eventEmitter);
@@ -166,7 +166,7 @@ export class ExtensionManager extends ExtensionLoader {
     this.requestSetting = requestSetting;
   }
 
-  getExtensions(): GeminiCLIExtension[] {
+  getExtensions(): JiminyCLIExtension[] {
     if (!this.loadedExtensions) {
       throw new Error(
         'Extensions not yet loaded, must call `loadExtensions` first',
@@ -179,7 +179,7 @@ export class ExtensionManager extends ExtensionLoader {
     installMetadata: ExtensionInstallMetadata,
     previousExtensionConfig?: ExtensionConfig,
     requestConsentOverride?: (consent: string) => Promise<boolean>,
-  ): Promise<GeminiCLIExtension> {
+  ): Promise<JiminyCLIExtension> {
     if ((this.settings.security?.allowedExtensions?.length ?? 0) > 0) {
       const extensionAllowed = this.settings.security?.allowedExtensions.some(
         (pattern) => {
@@ -212,7 +212,7 @@ export class ExtensionManager extends ExtensionLoader {
     const isUpdate = !!previousExtensionConfig;
     let newExtensionConfig: ExtensionConfig | null = null;
     let localSourcePath: string | undefined;
-    let extension: GeminiCLIExtension | null;
+    let extension: JiminyCLIExtension | null;
     try {
       if (!isWorkspaceTrusted(this.settings).isTrusted) {
         if (
@@ -586,14 +586,14 @@ Would you like to attempt to install via "git clone" instead?`,
     );
   }
 
-  protected override async startExtension(extension: GeminiCLIExtension) {
+  protected override async startExtension(extension: JiminyCLIExtension) {
     await super.startExtension(extension);
     if (extension.themes && !themeManager.hasExtensionThemes(extension.name)) {
       themeManager.registerExtensionThemes(extension.name, extension.themes);
     }
   }
 
-  protected override async stopExtension(extension: GeminiCLIExtension) {
+  protected override async stopExtension(extension: JiminyCLIExtension) {
     await super.stopExtension(extension);
     if (extension.themes) {
       themeManager.unregisterExtensionThemes(extension.name, extension.themes);
@@ -603,7 +603,7 @@ Would you like to attempt to install via "git clone" instead?`,
   /**
    * Loads all installed extensions, should only be called once.
    */
-  async loadExtensions(): Promise<GeminiCLIExtension[]> {
+  async loadExtensions(): Promise<JiminyCLIExtension[]> {
     if (this.loadedExtensions) {
       throw new Error('Extensions already loaded, only load extensions once.');
     }
@@ -633,7 +633,7 @@ Would you like to attempt to install via "git clone" instead?`,
 
         const builtExtensionsOrNull = await Promise.all(extensionPromises);
         const builtExtensions = builtExtensionsOrNull.filter(
-          (ext): ext is GeminiCLIExtension => ext !== null,
+          (ext): ext is JiminyCLIExtension => ext !== null,
         );
 
         const seenNames = new Set<string>();
@@ -675,7 +675,7 @@ Would you like to attempt to install via "git clone" instead?`,
    */
   async loadExtension(
     extensionDir: string,
-  ): Promise<GeminiCLIExtension | null> {
+  ): Promise<JiminyCLIExtension | null> {
     if (this.loadingPromise) {
       await this.loadingPromise;
     }
@@ -705,7 +705,7 @@ Would you like to attempt to install via "git clone" instead?`,
    */
   private async _buildExtension(
     extensionDir: string,
-  ): Promise<GeminiCLIExtension | null> {
+  ): Promise<JiminyCLIExtension | null> {
     try {
       const stats = await fs.promises.stat(extensionDir);
       if (!stats.isDirectory()) {
@@ -992,7 +992,7 @@ Would you like to attempt to install via "git clone" instead?`,
   }
 
   override async restartExtension(
-    extension: GeminiCLIExtension,
+    extension: JiminyCLIExtension,
   ): Promise<void> {
     const extensionDir = extension.path;
     await this.unloadExtension(extension);
@@ -1004,7 +1004,7 @@ Would you like to attempt to install via "git clone" instead?`,
    * appropriate.
    */
   private unloadExtension(
-    extension: GeminiCLIExtension,
+    extension: JiminyCLIExtension,
   ): Promise<void> | undefined {
     this.loadedExtensions = this.getExtensions().filter(
       (entry) => extension !== entry,
@@ -1099,7 +1099,7 @@ Would you like to attempt to install via "git clone" instead?`,
     }
   }
 
-  toOutputString(extension: GeminiCLIExtension): string {
+  toOutputString(extension: JiminyCLIExtension): string {
     const userEnabled = this.extensionEnablementManager.isEnabled(
       extension.name,
       homedir(),

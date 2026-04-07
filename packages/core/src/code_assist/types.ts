@@ -80,17 +80,17 @@ export type LoadCodeAssistMode =
  * http://google3/google/internal/cloud/code/v1internal/cloudcode.proto;l=224
  */
 export interface LoadCodeAssistResponse {
-  currentTier?: GeminiUserTier | null;
-  allowedTiers?: GeminiUserTier[] | null;
+  currentTier?: JiminyUserTier | null;
+  allowedTiers?: JiminyUserTier[] | null;
   ineligibleTiers?: IneligibleTier[] | null;
   cloudaicompanionProject?: string | null;
-  paidTier?: GeminiUserTier | null;
+  paidTier?: JiminyUserTier | null;
 }
 
 /**
- * GeminiUserTier reflects the structure received from the CodeAssist when calling LoadCodeAssist.
+ * JiminyUserTier reflects the structure received from the CodeAssist when calling LoadCodeAssist.
  */
-export interface GeminiUserTier {
+export interface JiminyUserTier {
   id?: UserTierId;
   name?: string;
   description?: string;
@@ -208,7 +208,7 @@ export enum OnboardUserStatusCode {
 }
 
 /**
- * Status of user onboarded to gemini
+ * Status of user onboarded to jiminy
  */
 export interface OnboardUserStatus {
   statusCode: OnboardUserStatusCode;

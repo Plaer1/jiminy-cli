@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// File for 'gemini mcp remove' command
+// File for 'jiminy mcp remove' command
 import type { CommandModule } from 'yargs';
 import { loadSettings, SettingScope } from '../../config/settings.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 import { exitCli } from '../utils.js';
 
 async function removeMcpServer(

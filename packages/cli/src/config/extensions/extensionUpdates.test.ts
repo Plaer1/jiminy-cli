@@ -11,9 +11,9 @@ import type { ExtensionConfig } from '../extension.js';
 import {
   debugLogger,
   type ExtensionInstallMetadata,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   coreEvents,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { ExtensionManager } from '../extension-manager.js';
 import { createTestMergedSettings } from '../settings.js';
 import { isWorkspaceTrusted } from '../trustedFolders.js';
@@ -42,9 +42,9 @@ vi.mock('node:fs', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     KeychainTokenStorage: vi.fn(),
@@ -221,14 +221,14 @@ describe('extensionUpdates', () => {
           settings: [],
           resolvedSettings: [],
           skills: [],
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
       vi.spyOn(manager, 'uninstallExtension').mockResolvedValue(undefined);
       // Mock loadExtension to return something so the method doesn't crash at the end
       vi.spyOn(manager, 'loadExtension').mockResolvedValue({
         name: 'test-ext',
         version: '1.1.0',
-      } as unknown as GeminiCLIExtension);
+      } as unknown as JiminyCLIExtension);
 
       // 4. Mock External Helpers
       // This is the key fix: we explicitly mock `getMissingSettings` to return
@@ -253,7 +253,7 @@ describe('extensionUpdates', () => {
       expect(coreEvents.emitFeedback).toHaveBeenCalledWith(
         'warning',
         expect.stringContaining(
-          'Please run "gemini extensions config test-ext [setting-name]"',
+          'Please run "jiminy extensions config test-ext [setting-name]"',
         ),
       );
     });
@@ -290,13 +290,13 @@ describe('extensionUpdates', () => {
           installMetadata,
           path: '/mock/extensions/test-ext',
           isActive: true,
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
       vi.spyOn(manager, 'uninstallExtension').mockResolvedValue(undefined);
       vi.spyOn(manager, 'loadExtension').mockResolvedValue({
         name: 'test-ext',
         version: '1.1.0',
-      } as unknown as GeminiCLIExtension);
+      } as unknown as JiminyCLIExtension);
 
       const storeSpy = vi.spyOn(manager, 'storeExtensionIntegrity');
 

@@ -9,13 +9,13 @@ import {
   listMemoryFiles,
   refreshMemory,
   showMemory,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type {
   Command,
   CommandContext,
   CommandExecutionResponse,
 } from './types.js';
-import type { AgentLoopContext } from '@google/gemini-cli-core';
+import type { AgentLoopContext } from '@google/jiminy-cli-core';
 
 const DEFAULT_SANITIZATION_CONFIG = {
   allowedEnvironmentVariables: [],

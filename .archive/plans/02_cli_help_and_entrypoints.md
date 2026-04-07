@@ -16,8 +16,8 @@ Populate `plans/99_surface_inventory.md` with every branded, user-visible string
 ## What to include
 - Top-level help banners and launch blurbs.
 - Help text for concrete CLI subcommands where branded text appears.
-- Slash-command descriptions visible after launching `gemini`.
-- Command-hint outputs that literally tell the user to run `gemini ...` or show branded launch/resume commands.
+- Slash-command descriptions visible after launching `jiminy`.
+- Command-hint outputs that literally tell the user to run `jiminy ...` or show branded launch/resume commands.
 
 ## What to exclude
 - Internal-only command modules with no user-visible string.
@@ -43,22 +43,22 @@ Populate `plans/99_surface_inventory.md` with every branded, user-visible string
 - `packages/cli/src/commands/mcp/enableDisable.ts`
 - `packages/cli/src/config/mcp/mcpServerEnablement.ts`
 - `packages/core/src/tools/mcp-client.ts`
-- `packages/cli/src/gemini.tsx`
+- `packages/cli/src/jiminy.tsx`
 
 ## Known access paths to verify
-- `gemini --help`
-- `gemini extensions --help`
-- `gemini hooks --help`
-- `gemini hooks migrate --help`
-- `gemini mcp add --help`
-- `gemini mcp remove --help`
-- Launch `gemini`, then inspect slash-command descriptions for:
+- `jiminy --help`
+- `jiminy extensions --help`
+- `jiminy hooks --help`
+- `jiminy hooks migrate --help`
+- `jiminy mcp add --help`
+- `jiminy mcp remove --help`
+- Launch `jiminy`, then inspect slash-command descriptions for:
   - `/help`
   - `/docs`
   - `/settings`
   - `/tools`
   - `/skills`
-- Launch `gemini`, then inspect session summary and command-hint outputs.
+- Launch `jiminy`, then inspect session summary and command-hint outputs.
 
 ## Entry rules specific to this phase
 - Record each branded string occurrence separately, even within the same help surface.

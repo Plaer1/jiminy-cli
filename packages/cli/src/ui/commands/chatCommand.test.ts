@@ -9,7 +9,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { SlashCommand, CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import type { Content } from '@google/genai';
-import { AuthType, type GeminiClient } from '@google/gemini-cli-core';
+import { AuthType, type JiminyClient } from '@google/jiminy-cli-core';
 
 import * as fsPromises from 'node:fs/promises';
 import { chatCommand, debugCommand } from './chatCommand.js';
@@ -77,12 +77,12 @@ describe('chatCommand', () => {
               authType: AuthType.LOGIN_WITH_GOOGLE,
             }),
             storage: {
-              getProjectTempDir: () => '/project/root/.gemini/tmp/mockhash',
+              getProjectTempDir: () => '/project/root/.jiminy/tmp/mockhash',
             },
           },
-          geminiClient: {
+          jiminyClient: {
             getChat: mockGetChat,
-          } as unknown as GeminiClient,
+          } as unknown as JiminyClient,
         },
         logger: {
           saveCheckpoint: mockSaveCheckpoint,
@@ -275,7 +275,7 @@ describe('chatCommand', () => {
     it('should resume a conversation with matching authType', async () => {
       const conversation: Content[] = [
         { role: 'user', parts: [{ text: 'system setup' }] },
-        { role: 'user', parts: [{ text: 'hello gemini' }] },
+        { role: 'user', parts: [{ text: 'hello jiminy' }] },
         { role: 'model', parts: [{ text: 'hello world' }] },
       ];
       mockLoadCheckpoint.mockResolvedValue({
@@ -288,8 +288,8 @@ describe('chatCommand', () => {
       expect(result).toEqual({
         type: 'load_history',
         history: [
-          { type: 'user', text: 'hello gemini' },
-          { type: 'gemini', text: 'hello world' },
+          { type: 'user', text: 'hello jiminy' },
+          { type: 'jiminy', text: 'hello world' },
         ] as HistoryItemWithoutId[],
         clientHistory: conversation,
       });
@@ -298,7 +298,7 @@ describe('chatCommand', () => {
     it('should block resuming a conversation with mismatched authType', async () => {
       const conversation: Content[] = [
         { role: 'user', parts: [{ text: 'system setup' }] },
-        { role: 'user', parts: [{ text: 'hello gemini' }] },
+        { role: 'user', parts: [{ text: 'hello jiminy' }] },
         { role: 'model', parts: [{ text: 'hello world' }] },
       ];
       mockLoadCheckpoint.mockResolvedValue({
@@ -318,7 +318,7 @@ describe('chatCommand', () => {
     it('should resume a legacy conversation without authType', async () => {
       const conversation: Content[] = [
         { role: 'user', parts: [{ text: 'system setup' }] },
-        { role: 'user', parts: [{ text: 'hello gemini' }] },
+        { role: 'user', parts: [{ text: 'hello jiminy' }] },
         { role: 'model', parts: [{ text: 'hello world' }] },
       ];
       mockLoadCheckpoint.mockResolvedValue({ history: conversation });
@@ -328,8 +328,8 @@ describe('chatCommand', () => {
       expect(result).toEqual({
         type: 'load_history',
         history: [
-          { type: 'user', text: 'hello gemini' },
-          { type: 'gemini', text: 'hello world' },
+          { type: 'user', text: 'hello jiminy' },
+          { type: 'jiminy', text: 'hello world' },
         ] as HistoryItemWithoutId[],
         clientHistory: conversation,
       });
@@ -449,7 +449,7 @@ describe('chatCommand', () => {
     beforeEach(() => {
       shareCommand = getSubCommand('share');
       vi.spyOn(process, 'cwd').mockReturnValue(
-        path.resolve('/usr/local/google/home/myuser/gemini-cli'),
+        path.resolve('/usr/local/google/home/myuser/jiminy-cli'),
       );
       vi.spyOn(Date, 'now').mockReturnValue(1234567890);
       mockGetHistory.mockReturnValue(mockHistory);
@@ -460,7 +460,7 @@ describe('chatCommand', () => {
       const result = await shareCommand?.action?.(mockContext, '');
       const expectedPath = path.join(
         process.cwd(),
-        'gemini-conversation-1234567890.json',
+        'jiminy-conversation-1234567890.json',
       );
       expect(mockExport).toHaveBeenCalledWith({
         history: mockHistory,

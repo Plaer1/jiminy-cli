@@ -9,16 +9,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execSync } from 'node:child_process';
-import { TestRig } from '@google/gemini-cli-test-utils';
+import { TestRig } from '@google/jiminy-cli-test-utils';
 import {
   createUnauthorizedToolError,
   parseAgentMarkdown,
   Storage,
   getProjectHash,
   SESSION_FILE_PREFIX,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
-export * from '@google/gemini-cli-test-utils';
+export * from '@google/jiminy-cli-test-utils';
 
 // Indicates the consistency expectation for this test.
 // - ALWAYS_PASSES - Means that the test is expected to pass 100% of the time. These
@@ -63,7 +63,7 @@ export function evalTest(policy: EvalPolicy, evalCase: EvalCase) {
 
           // If it's an agent file, calculate hash for acknowledgement
           if (
-            filePath.startsWith('.gemini/agents/') &&
+            filePath.startsWith('.jiminy/agents/') &&
             filePath.endsWith('.md')
           ) {
             const hash = crypto
@@ -93,7 +93,7 @@ export function evalTest(policy: EvalPolicy, evalCase: EvalCase) {
         if (Object.keys(acknowledgedAgents).length > 0) {
           const ackPath = path.join(
             rig.homeDir!,
-            '.gemini',
+            '.jiminy',
             'acknowledgments',
             'agents.json',
           );
@@ -129,7 +129,7 @@ export function evalTest(policy: EvalPolicy, evalCase: EvalCase) {
 
         // Temporarily set GEMINI_CLI_HOME so Storage writes to the same
         // directory the CLI subprocess will use (rig.homeDir).
-        const originalGeminiHome = process.env['GEMINI_CLI_HOME'];
+        const originalJiminyHome = process.env['GEMINI_CLI_HOME'];
         process.env['GEMINI_CLI_HOME'] = rig.homeDir!;
         try {
           const storage = new Storage(fs.realpathSync(rig.testDir!));
@@ -159,10 +159,10 @@ export function evalTest(policy: EvalPolicy, evalCase: EvalCase) {
           console.warn('Failed to write session history:', e);
         } finally {
           // Restore original GEMINI_CLI_HOME.
-          if (originalGeminiHome === undefined) {
+          if (originalJiminyHome === undefined) {
             delete process.env['GEMINI_CLI_HOME'];
           } else {
-            process.env['GEMINI_CLI_HOME'] = originalGeminiHome;
+            process.env['GEMINI_CLI_HOME'] = originalJiminyHome;
           }
         }
       }

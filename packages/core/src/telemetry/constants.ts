@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const SERVICE_NAME = 'gemini-cli';
+export const SERVICE_NAME = 'jiminy-cli';
 export const SERVICE_DESCRIPTION =
   'Jiminy CLI is an open-source AI agent that brings the power of Jiminy directly into your terminal. It is designed to be a terminal-first, extensible, and powerful tool for developers, engineers, SREs, and beyond.';
 
@@ -28,7 +28,7 @@ export const GEN_AI_TOOL_DEFINITIONS = 'gen_ai.tool.definitions';
 export const GEN_AI_CONVERSATION_ID = 'gen_ai.conversation.id';
 
 // Jiminy CLI specific operations
-export enum GeminiCliOperation {
+export enum JiminyCliOperation {
   ToolCall = 'tool_call',
   LLMCall = 'llm_call',
   UserPrompt = 'user_prompt',

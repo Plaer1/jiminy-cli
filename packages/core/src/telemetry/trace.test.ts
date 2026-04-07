@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { trace, SpanStatusCode, diag, type Tracer } from '@opentelemetry/api';
 import { runInDevTraceSpan, truncateForTelemetry } from './trace.js';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_CONVERSATION_ID,
   GEN_AI_AGENT_DESCRIPTION,
   GEN_AI_AGENT_NAME,
@@ -110,14 +110,14 @@ describe('runInDevTraceSpan', () => {
     const fn = vi.fn(async () => 'result');
 
     const result = await runInDevTraceSpan(
-      { operation: GeminiCliOperation.LLMCall },
+      { operation: JiminyCliOperation.LLMCall },
       fn,
     );
 
     expect(result).toBe('result');
     expect(trace.getTracer).toHaveBeenCalled();
     expect(mockTracer.startActiveSpan).toHaveBeenCalledWith(
-      GeminiCliOperation.LLMCall,
+      JiminyCliOperation.LLMCall,
       {},
       expect.any(Function),
     );
@@ -125,10 +125,10 @@ describe('runInDevTraceSpan', () => {
 
   it('should set default attributes on the span metadata', async () => {
     await runInDevTraceSpan(
-      { operation: GeminiCliOperation.LLMCall },
+      { operation: JiminyCliOperation.LLMCall },
       async ({ metadata }) => {
         expect(metadata.attributes[GEN_AI_OPERATION_NAME]).toBe(
-          GeminiCliOperation.LLMCall,
+          JiminyCliOperation.LLMCall,
         );
         expect(metadata.attributes[GEN_AI_AGENT_NAME]).toBe(SERVICE_NAME);
         expect(metadata.attributes[GEN_AI_AGENT_DESCRIPTION]).toBe(
@@ -143,7 +143,7 @@ describe('runInDevTraceSpan', () => {
 
   it('should set span attributes from metadata on completion', async () => {
     await runInDevTraceSpan(
-      { operation: GeminiCliOperation.LLMCall },
+      { operation: JiminyCliOperation.LLMCall },
       async ({ metadata }) => {
         metadata.input = { query: 'hello' };
         metadata.output = { response: 'world' };
@@ -169,7 +169,7 @@ describe('runInDevTraceSpan', () => {
   it('should handle errors in the wrapped function', async () => {
     const error = new Error('test error');
     await expect(
-      runInDevTraceSpan({ operation: GeminiCliOperation.LLMCall }, async () => {
+      runInDevTraceSpan({ operation: JiminyCliOperation.LLMCall }, async () => {
         throw error;
       }),
     ).rejects.toThrow(error);
@@ -189,7 +189,7 @@ describe('runInDevTraceSpan', () => {
     }
 
     const resultStream = await runInDevTraceSpan(
-      { operation: GeminiCliOperation.LLMCall },
+      { operation: JiminyCliOperation.LLMCall },
       async () => testStream(),
     );
 
@@ -212,7 +212,7 @@ describe('runInDevTraceSpan', () => {
     }
 
     const resultStream = await runInDevTraceSpan(
-      { operation: GeminiCliOperation.LLMCall },
+      { operation: JiminyCliOperation.LLMCall },
       async () => errorStream(),
     );
 
@@ -231,7 +231,7 @@ describe('runInDevTraceSpan', () => {
     });
 
     await runInDevTraceSpan(
-      { operation: GeminiCliOperation.LLMCall },
+      { operation: JiminyCliOperation.LLMCall },
       async ({ metadata }) => {
         metadata.input = 'trigger error';
       },

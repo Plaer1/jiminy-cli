@@ -14,13 +14,13 @@ import {
   CoreToolCallStatus,
   Kind,
   makeFakeConfig,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { renderWithProviders } from '../../../test-utils/render.js';
 import { createMockSettings } from '../../../test-utils/settings.js';
 import { tryParseJSON } from '../../../utils/jsonoutput.js';
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>MockRespondingSpinner</Text>,
+vi.mock('../JiminyRespondingSpinner.js', () => ({
+  JiminyRespondingSpinner: () => <Text>MockRespondingSpinner</Text>,
 }));
 
 vi.mock('../TerminalOutput.js', () => ({

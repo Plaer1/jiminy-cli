@@ -19,16 +19,16 @@ import {
   debugLogger,
   ApprovalMode,
   type MCPServerConfig,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   Storage,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { loadCliConfig, parseArguments, type CliArgs } from './config.js';
 import {
   type Settings,
   type MergedSettings,
   createTestMergedSettings,
 } from './settings.js';
-import * as ServerConfig from '@google/gemini-cli-core';
+import * as ServerConfig from '@google/jiminy-cli-core';
 
 import { isWorkspaceTrusted } from './trustedFolders.js';
 import { ExtensionManager } from './extension-manager.js';
@@ -98,9 +98,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@google/gemini-cli-core', async () => {
+vi.mock('@google/jiminy-cli-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@google/gemini-cli-core',
+    '@google/jiminy-cli-core',
   );
   return {
     ...actualServer,
@@ -135,12 +135,12 @@ vi.mock('@google/gemini-cli-core', async () => {
     ),
     DEFAULT_MEMORY_FILE_FILTERING_OPTIONS: {
       respectGitIgnore: false,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
       customIgnoreFilePaths: [],
     },
     DEFAULT_FILE_FILTERING_OPTIONS: {
       respectGitIgnore: true,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
       customIgnoreFilePaths: [],
     },
     createPolicyEngineConfig: vi.fn(async () => ({
@@ -151,7 +151,7 @@ vi.mock('@google/gemini-cli-core', async () => {
     })),
     getAdminErrorMessage: vi.fn(
       (_feature) =>
-        `YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli`,
+        `YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli`,
     ),
     isHeadlessMode: vi.fn((opts) => {
       if (process.env['VITEST'] === 'true') {
@@ -181,7 +181,7 @@ vi.mock('./extension-manager.js', () => {
 
 // Global setup to ensure clean environment for all tests in this file
 const originalArgv = process.argv;
-const originalGeminiModel = process.env['GEMINI_MODEL'];
+const originalJiminyModel = process.env['GEMINI_MODEL'];
 const originalStdoutIsTTY = process.stdout.isTTY;
 const originalStdinIsTTY = process.stdin.isTTY;
 
@@ -208,8 +208,8 @@ beforeEach(() => {
 
 afterEach(() => {
   process.argv = originalArgv;
-  if (originalGeminiModel !== undefined) {
-    process.env['GEMINI_MODEL'] = originalGeminiModel;
+  if (originalJiminyModel !== undefined) {
+    process.env['GEMINI_MODEL'] = originalJiminyModel;
   } else {
     delete process.env['GEMINI_MODEL'];
   }
@@ -395,8 +395,8 @@ describe('parseArguments', () => {
       {
         description:
           'should convert positional query argument to prompt by default',
-        argv: ['node', 'script.js', 'Hi Gemini'],
-        expectedQuery: 'Hi Gemini',
+        argv: ['node', 'script.js', 'Hi Jiminy'],
+        expectedQuery: 'Hi Jiminy',
         expectedModel: undefined,
         debug: false,
       },
@@ -417,10 +417,10 @@ describe('parseArguments', () => {
           '@path',
           './file.md',
           '--model',
-          'gemini-2.5-pro',
+          'jiminy-2.5-pro',
         ],
         expectedQuery: '@path ./file.md',
-        expectedModel: 'gemini-2.5-pro',
+        expectedModel: 'jiminy-2.5-pro',
         debug: false,
       },
       {
@@ -893,8 +893,8 @@ describe('loadCliConfig', () => {
     expect(config.getFileFilteringRespectGitIgnore()).toBe(
       DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
     );
-    expect(config.getFileFilteringRespectGeminiIgnore()).toBe(
-      DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+    expect(config.getFileFilteringRespectJiminyIgnore()).toBe(
+      DEFAULT_FILE_FILTERING_OPTIONS.respectJiminyIgnore,
     );
     expect(config.getCustomIgnoreFilePaths()).toEqual(
       DEFAULT_FILE_FILTERING_OPTIONS.customIgnoreFilePaths,
@@ -981,7 +981,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       200, // maxDirs
     );
@@ -1010,7 +1010,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       200,
     );
@@ -1038,7 +1038,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       200,
     );
@@ -1450,7 +1450,7 @@ describe('Approval mode tool exclusion logic', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 
@@ -1879,17 +1879,17 @@ describe('loadCliConfig model selection', () => {
     const config = await loadCliConfig(
       createTestMergedSettings({
         model: {
-          name: 'gemini-2.5-pro',
+          name: 'jiminy-2.5-pro',
         },
       }),
       'test-session',
       argv,
     );
 
-    expect(config.getModel()).toBe('gemini-2.5-pro');
+    expect(config.getModel()).toBe('jiminy-2.5-pro');
   });
 
-  it('uses the default gemini model if nothing is set', async () => {
+  it('uses the default jiminy model if nothing is set', async () => {
     process.argv = ['node', 'script.js']; // No model set.
     const argv = await parseArguments(createTestMergedSettings());
     const config = await loadCliConfig(
@@ -1900,27 +1900,27 @@ describe('loadCliConfig model selection', () => {
       argv,
     );
 
-    expect(config.getModel()).toBe('auto-gemini-3');
+    expect(config.getModel()).toBe('auto-jiminy-3');
   });
 
   it('always prefers model from argv', async () => {
-    process.argv = ['node', 'script.js', '--model', 'gemini-2.5-flash-preview'];
+    process.argv = ['node', 'script.js', '--model', 'jiminy-2.5-flash-preview'];
     const argv = await parseArguments(createTestMergedSettings());
     const config = await loadCliConfig(
       createTestMergedSettings({
         model: {
-          name: 'gemini-2.5-pro',
+          name: 'jiminy-2.5-pro',
         },
       }),
       'test-session',
       argv,
     );
 
-    expect(config.getModel()).toBe('gemini-2.5-flash-preview');
+    expect(config.getModel()).toBe('jiminy-2.5-flash-preview');
   });
 
   it('selects the model from argv if provided', async () => {
-    process.argv = ['node', 'script.js', '--model', 'gemini-2.5-flash-preview'];
+    process.argv = ['node', 'script.js', '--model', 'jiminy-2.5-flash-preview'];
     const argv = await parseArguments(createTestMergedSettings());
     const config = await loadCliConfig(
       createTestMergedSettings({
@@ -1930,7 +1930,7 @@ describe('loadCliConfig model selection', () => {
       argv,
     );
 
-    expect(config.getModel()).toBe('gemini-2.5-flash-preview');
+    expect(config.getModel()).toBe('jiminy-2.5-flash-preview');
   });
 
   it('selects the default auto model if provided via auto alias', async () => {
@@ -1944,7 +1944,7 @@ describe('loadCliConfig model selection', () => {
       argv,
     );
 
-    expect(config.getModel()).toBe('auto-gemini-3');
+    expect(config.getModel()).toBe('auto-jiminy-3');
   });
 });
 
@@ -2488,7 +2488,7 @@ describe('loadCliConfig interactive', () => {
 
   it('should be interactive if positional prompt words are provided with other flags', async () => {
     process.stdin.isTTY = true;
-    process.argv = ['node', 'script.js', '--model', 'gemini-2.5-pro', 'Hello'];
+    process.argv = ['node', 'script.js', '--model', 'jiminy-2.5-pro', 'Hello'];
     const argv = await parseArguments(createTestMergedSettings());
     const config = await loadCliConfig(
       createTestMergedSettings(),
@@ -2504,7 +2504,7 @@ describe('loadCliConfig interactive', () => {
       'node',
       'script.js',
       '--model',
-      'gemini-2.5-pro',
+      'jiminy-2.5-pro',
       '--yolo',
       'Hello world',
     ];
@@ -2555,7 +2555,7 @@ describe('loadCliConfig interactive', () => {
       'node',
       'script.js',
       '--model',
-      'gemini-2.5-pro',
+      'jiminy-2.5-pro',
       'write',
       'a',
       'function',
@@ -2572,7 +2572,7 @@ describe('loadCliConfig interactive', () => {
     expect(config.isInteractive()).toBe(true);
     expect(argv.query).toBe('write a function to sort array');
     expect(argv.promptInteractive).toBe('write a function to sort array');
-    expect(argv.model).toBe('gemini-2.5-pro');
+    expect(argv.model).toBe('jiminy-2.5-pro');
   });
 
   it('should handle empty positional arguments', async () => {
@@ -2615,7 +2615,7 @@ describe('loadCliConfig interactive', () => {
 
   it('should be interactive if no positional prompt words are provided with flags', async () => {
     process.stdin.isTTY = true;
-    process.argv = ['node', 'script.js', '--model', 'gemini-2.5-pro'];
+    process.argv = ['node', 'script.js', '--model', 'jiminy-2.5-pro'];
     const argv = await parseArguments(createTestMergedSettings());
     const config = await loadCliConfig(
       createTestMergedSettings(),
@@ -3020,13 +3020,13 @@ describe('loadCliConfig fileFiltering', () => {
       value: false,
     },
     {
-      property: 'respectGeminiIgnore',
-      getter: (c) => c.getFileFilteringRespectGeminiIgnore(),
+      property: 'respectJiminyIgnore',
+      getter: (c) => c.getFileFilteringRespectJiminyIgnore(),
       value: true,
     },
     {
-      property: 'respectGeminiIgnore',
-      getter: (c) => c.getFileFilteringRespectGeminiIgnore(),
+      property: 'respectJiminyIgnore',
+      getter: (c) => c.getFileFilteringRespectJiminyIgnore(),
       value: false,
     },
     {
@@ -3261,14 +3261,14 @@ describe('Telemetry configuration via environment variables', () => {
 
   it('should prioritize GEMINI_TELEMETRY_OTLP_ENDPOINT over settings and default env var', async () => {
     vi.stubEnv('OTEL_EXPORTER_OTLP_ENDPOINT', 'http://default.env.com');
-    vi.stubEnv('GEMINI_TELEMETRY_OTLP_ENDPOINT', 'http://gemini.env.com');
+    vi.stubEnv('GEMINI_TELEMETRY_OTLP_ENDPOINT', 'http://jiminy.env.com');
     process.argv = ['node', 'script.js'];
     const argv = await parseArguments(createTestMergedSettings());
     const settings = createTestMergedSettings({
       telemetry: { otlpEndpoint: 'http://settings.com' },
     });
     const config = await loadCliConfig(settings, 'test-session', argv);
-    expect(config.getTelemetryOtlpEndpoint()).toBe('http://gemini.env.com');
+    expect(config.getTelemetryOtlpEndpoint()).toBe('http://jiminy.env.com');
   });
 
   it('should prioritize GEMINI_TELEMETRY_OTLP_PROTOCOL over settings', async () => {
@@ -3294,14 +3294,14 @@ describe('Telemetry configuration via environment variables', () => {
   });
 
   it('should prioritize GEMINI_TELEMETRY_OUTFILE over settings', async () => {
-    vi.stubEnv('GEMINI_TELEMETRY_OUTFILE', '/gemini/env/telemetry.log');
+    vi.stubEnv('GEMINI_TELEMETRY_OUTFILE', '/jiminy/env/telemetry.log');
     process.argv = ['node', 'script.js'];
     const argv = await parseArguments(createTestMergedSettings());
     const settings = createTestMergedSettings({
       telemetry: { outfile: '/settings/telemetry.log' },
     });
     const config = await loadCliConfig(settings, 'test-session', argv);
-    expect(config.getTelemetryOutfile()).toBe('/gemini/env/telemetry.log');
+    expect(config.getTelemetryOutfile()).toBe('/jiminy/env/telemetry.log');
   });
 
   it('should prioritize GEMINI_TELEMETRY_USE_COLLECTOR over settings', async () => {
@@ -3542,7 +3542,7 @@ describe('loadCliConfig disableYoloMode', () => {
       security: { disableYoloMode: true },
     });
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 });
@@ -3574,7 +3574,7 @@ describe('loadCliConfig secureModeEnabled', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 
@@ -3588,7 +3588,7 @@ describe('loadCliConfig secureModeEnabled', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 
@@ -3680,7 +3680,7 @@ describe('loadCliConfig mcpEnabled', () => {
   describe('extension plan settings', () => {
     beforeEach(() => {
       vi.spyOn(Storage.prototype, 'getProjectTempDir').mockReturnValue(
-        '/mock/home/user/.gemini/tmp/test-project',
+        '/mock/home/user/.jiminy/tmp/test-project',
       );
     });
 
@@ -3696,7 +3696,7 @@ describe('loadCliConfig mcpEnabled', () => {
           name: 'ext-plan',
           isActive: true,
           plan: { directory: 'ext-plans-dir' },
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
 
       const config = await loadCliConfig(settings, 'test-session', argv);
@@ -3718,7 +3718,7 @@ describe('loadCliConfig mcpEnabled', () => {
           name: 'ext-plan',
           isActive: true,
           plan: { directory: 'ext-plans-dir' },
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
 
       const config = await loadCliConfig(settings, 'test-session', argv);
@@ -3738,7 +3738,7 @@ describe('loadCliConfig mcpEnabled', () => {
           name: 'ext-plan',
           isActive: false,
           plan: { directory: 'ext-plans-dir-inactive' },
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
 
       const config = await loadCliConfig(settings, 'test-session', argv);
@@ -3764,7 +3764,7 @@ describe('loadCliConfig mcpEnabled', () => {
           '/mock',
           'home',
           'user',
-          '.gemini',
+          '.jiminy',
           'tmp',
           'test-project',
           'test-session',

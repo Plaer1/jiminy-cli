@@ -7,9 +7,9 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import { join as pathJoin } from 'node:path';
-import { getErrorMessage } from '@google/gemini-cli-core';
+import { getErrorMessage } from '@google/jiminy-cli-core';
 
-const warningsFilePath = pathJoin(os.tmpdir(), 'gemini-cli-warnings.txt');
+const warningsFilePath = pathJoin(os.tmpdir(), 'jiminy-cli-warnings.txt');
 
 export async function getStartupWarnings(): Promise<string[]> {
   try {

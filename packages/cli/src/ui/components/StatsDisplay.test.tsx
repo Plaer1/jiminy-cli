@@ -12,7 +12,7 @@ import { type SessionMetrics } from '../contexts/SessionContext.js';
 import {
   ToolCallDecision,
   type RetrieveUserQuotaResponse,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 // Mock the context to provide controlled data for testing
 vi.mock('../contexts/SessionContext.js', async (importOriginal) => {
@@ -92,7 +92,7 @@ describe('<StatsDisplay />', () => {
   it('renders a table with two models correctly', async () => {
     const metrics = createTestMetrics({
       models: {
-        'gemini-2.5-pro': {
+        'jiminy-2.5-pro': {
           api: { totalRequests: 3, totalErrors: 0, totalLatencyMs: 15000 },
           tokens: {
             input: 500,
@@ -105,7 +105,7 @@ describe('<StatsDisplay />', () => {
           },
           roles: {},
         },
-        'gemini-2.5-flash': {
+        'jiminy-2.5-flash': {
           api: { totalRequests: 5, totalErrors: 1, totalLatencyMs: 4500 },
           tokens: {
             input: 15000,
@@ -124,8 +124,8 @@ describe('<StatsDisplay />', () => {
     const { lastFrame } = await renderWithMockedStats(metrics);
     const output = lastFrame();
 
-    expect(output).toContain('gemini-2.5-pro');
-    expect(output).toContain('gemini-2.5-flash');
+    expect(output).toContain('jiminy-2.5-pro');
+    expect(output).toContain('jiminy-2.5-flash');
     expect(output).toContain('15,000');
     expect(output).toContain('10,000');
     expect(output).toMatchSnapshot();
@@ -134,7 +134,7 @@ describe('<StatsDisplay />', () => {
   it('renders all sections when all data is present', async () => {
     const metrics = createTestMetrics({
       models: {
-        'gemini-2.5-pro': {
+        'jiminy-2.5-pro': {
           api: { totalRequests: 1, totalErrors: 0, totalLatencyMs: 100 },
           tokens: {
             input: 50,
@@ -182,7 +182,7 @@ describe('<StatsDisplay />', () => {
     expect(output).toContain('Performance');
     expect(output).toContain('Interaction Summary');
     expect(output).toContain('User Agreement');
-    expect(output).toContain('gemini-2.5-pro');
+    expect(output).toContain('jiminy-2.5-pro');
     expect(output).toMatchSnapshot();
   });
 
@@ -229,7 +229,7 @@ describe('<StatsDisplay />', () => {
     it('hides Efficiency section when cache is not used', async () => {
       const metrics = createTestMetrics({
         models: {
-          'gemini-2.5-pro': {
+          'jiminy-2.5-pro': {
             api: { totalRequests: 1, totalErrors: 0, totalLatencyMs: 100 },
             tokens: {
               input: 100,
@@ -414,7 +414,7 @@ describe('<StatsDisplay />', () => {
 
       const metrics = createTestMetrics({
         models: {
-          'gemini-2.5-pro': {
+          'jiminy-2.5-pro': {
             api: { totalRequests: 1, totalErrors: 0, totalLatencyMs: 100 },
             tokens: {
               input: 50,
@@ -435,7 +435,7 @@ describe('<StatsDisplay />', () => {
       const quotas: RetrieveUserQuotaResponse = {
         buckets: [
           {
-            modelId: 'gemini-2.5-pro',
+            modelId: 'jiminy-2.5-pro',
             remainingAmount: '75',
             remainingFraction: 0.75,
             resetTime,
@@ -479,12 +479,12 @@ describe('<StatsDisplay />', () => {
       const quotas: RetrieveUserQuotaResponse = {
         buckets: [
           {
-            modelId: 'gemini-2.5-pro',
+            modelId: 'jiminy-2.5-pro',
             remainingAmount: '10',
             remainingFraction: 0.1, // limit = 100
           },
           {
-            modelId: 'gemini-2.5-flash',
+            modelId: 'jiminy-2.5-flash',
             remainingAmount: '700',
             remainingFraction: 0.7, // limit = 1000
           },
@@ -530,7 +530,7 @@ describe('<StatsDisplay />', () => {
       vi.useFakeTimers();
       vi.setSystemTime(now);
 
-      // No models in metrics, but a quota for gemini-2.5-flash
+      // No models in metrics, but a quota for jiminy-2.5-flash
       const metrics = createTestMetrics();
 
       const resetTime = new Date(now.getTime() + 1000 * 60 * 120).toISOString(); // 2 hours from now
@@ -538,7 +538,7 @@ describe('<StatsDisplay />', () => {
       const quotas: RetrieveUserQuotaResponse = {
         buckets: [
           {
-            modelId: 'gemini-2.5-flash',
+            modelId: 'jiminy-2.5-flash',
             remainingAmount: '50',
             remainingFraction: 0.5,
             resetTime,
@@ -564,7 +564,7 @@ describe('<StatsDisplay />', () => {
       );
       const output = lastFrame();
 
-      expect(output).toContain('gemini-2.5-flash');
+      expect(output).toContain('jiminy-2.5-flash');
       expect(output).toContain('-'); // for requests
       expect(output).toContain('50%');
       expect(output).toContain('Usage resets');

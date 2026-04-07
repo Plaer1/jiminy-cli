@@ -15,7 +15,7 @@ import {
   type Config,
   CoreToolCallStatus,
   type SerializableConfirmationDetails,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type { ConfirmingToolState } from '../hooks/useConfirmingTool.js';
 import { theme } from '../semantic-colors.js';
 
@@ -27,9 +27,9 @@ vi.mock('./StickyHeader.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     validatePlanPath: vi.fn().mockResolvedValue(undefined),
@@ -49,7 +49,7 @@ describe('ToolConfirmationQueue', () => {
     getIdeMode: () => false,
     getApprovalMode: () => 'default',
     getDisableAlwaysAllow: () => false,
-    getModel: () => 'gemini-pro',
+    getModel: () => 'jiminy-pro',
     getDebugMode: () => false,
     getTargetDir: () => '/mock/target/dir',
     getFileSystemService: () => ({

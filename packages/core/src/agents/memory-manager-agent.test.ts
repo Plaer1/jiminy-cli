@@ -53,8 +53,8 @@ describe('MemoryManagerAgent', () => {
   it('should have a system prompt with memory management instructions', () => {
     const agent = MemoryManagerAgent(createMockConfig());
     const prompt = agent.promptConfig.systemPrompt;
-    const globalGeminiDir = Storage.getGlobalGeminiDir();
-    expect(prompt).toContain(`Global (${globalGeminiDir}`);
+    const globalJiminyDir = Storage.getGlobalJiminyDir();
+    expect(prompt).toContain(`Global (${globalJiminyDir}`);
     expect(prompt).toContain('Project (./');
     expect(prompt).toContain('Memory Hierarchy');
     expect(prompt).toContain('De-duplicating');
@@ -77,9 +77,9 @@ describe('MemoryManagerAgent', () => {
   it('should inject hierarchical memory into initial context', () => {
     const config = createMockConfig({
       global:
-        '--- Context from: ../../.gemini/GEMINI.md ---\nglobal context\n--- End of Context from: ../../.gemini/GEMINI.md ---',
+        '--- Context from: ../../.jiminy/GEMINI.md ---\nglobal context\n--- End of Context from: ../../.jiminy/GEMINI.md ---',
       project:
-        '--- Context from: .gemini/GEMINI.md ---\nproject context\n--- End of Context from: .gemini/GEMINI.md ---',
+        '--- Context from: .jiminy/GEMINI.md ---\nproject context\n--- End of Context from: .jiminy/GEMINI.md ---',
     });
 
     const agent = MemoryManagerAgent(config);

@@ -5,13 +5,13 @@
  */
 
 import { useEffect } from 'react';
-import { type Config } from '@google/gemini-cli-core';
+import { type Config } from '@google/jiminy-cli-core';
 import { loadTrustedFolders } from '../../config/trustedFolders.js';
 import { expandHomeDir, batchAddDirectories } from '../utils/directoryUtils.js';
 import {
   debugLogger,
   refreshServerHierarchicalMemory,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { MultiFolderTrustDialog } from '../components/MultiFolderTrustDialog.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType, type HistoryItem } from '../types.js';
@@ -43,9 +43,9 @@ async function finishAddingDirectories(
   }
 
   if (added.length > 0) {
-    const gemini = config.getGeminiClient();
-    if (gemini) {
-      await gemini.addDirectoryContext();
+    const jiminy = config.getJiminyClient();
+    if (jiminy) {
+      await jiminy.addDirectoryContext();
     }
   }
 

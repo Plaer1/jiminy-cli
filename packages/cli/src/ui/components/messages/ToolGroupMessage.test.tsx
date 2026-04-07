@@ -22,7 +22,7 @@ import {
   EDIT_DISPLAY_NAME,
   READ_FILE_DISPLAY_NAME,
   GLOB_DISPLAY_NAME,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import os from 'node:os';
 import { createMockSettings } from '../../../test-utils/settings.js';
 
@@ -57,7 +57,7 @@ describe('<ToolGroupMessage />', () => {
   });
 
   const baseMockConfig = makeFakeConfig({
-    model: 'gemini-pro',
+    model: 'jiminy-pro',
     targetDir: os.tmpdir(),
     debugMode: false,
     folderTrust: false,

@@ -139,7 +139,7 @@ The manifest file defines the extension's behavior and configuration.
   extension directory name.
 - `version`: The version of the extension.
 - `description`: A short description of the extension. This will be displayed on
-  [geminicli.com/extensions](https://geminicli.com/extensions).
+  [jiminycli.com/extensions](https://jiminycli.com/extensions).
 - `migratedTo`: The URL of the new repository source for the extension. If this
   is set, the CLI will automatically check this new source for updates and
   migrate the extension's installation to the new source if an update is found.

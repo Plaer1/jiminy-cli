@@ -14,8 +14,8 @@ import { extensionsCommand } from '../commands/extensions.js';
 import { skillsCommand } from '../commands/skills.js';
 import { hooksCommand } from '../commands/hooks.js';
 import {
-  setGeminiMdFilename as setServerGeminiMdFilename,
-  getCurrentGeminiMdFilename,
+  setJiminyMdFilename as setServerJiminyMdFilename,
+  getCurrentJiminyMdFilename,
   ApprovalMode,
   DEFAULT_GEMINI_EMBEDDING_MODEL,
   DEFAULT_FILE_FILTERING_OPTIONS,
@@ -40,13 +40,13 @@ import {
   applyRequiredServers,
   getAdminBlockedMcpServersMessage,
   getProjectRootForWorktree,
-  isGeminiWorktree,
+  isJiminyWorktree,
   type WorktreeSettings,
   type HookDefinition,
   type HookEventName,
   type OutputFormat,
   detectIdeFromEnv,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   type Settings,
   type MergedSettings,
@@ -67,7 +67,7 @@ import {
 } from './policy.js';
 import { ExtensionManager } from './extension-manager.js';
 import { McpServerEnablementManager } from './mcp/mcpServerEnablement.js';
-import type { ExtensionEvents } from '@google/gemini-cli-core/src/utils/extensionLoader.js';
+import type { ExtensionEvents } from '@google/jiminy-cli-core/src/utils/extensionLoader.js';
 import { requestConsentNonInteractive } from './extensions/consent.js';
 import { promptForSetting } from './extensions/extensionSettings.js';
 import type { EventEmitter } from 'node:stream';
@@ -358,7 +358,7 @@ export async function parseArguments(
           string: true,
           nargs: 1,
           description:
-            '[DEPRECATED: Use Policy Engine instead See https://geminicli.com/docs/core/policy-engine] Tools that are allowed to run without confirmation',
+            '[DEPRECATED: Use Policy Engine instead See https://jiminycli.com/docs/core/policy-engine] Tools that are allowed to run without confirmation',
           coerce: coerceCommaSeparated,
         })
         .option('extensions', {
@@ -384,8 +384,8 @@ export async function parseArguments(
           description:
             'Resume a previous session. Use "latest" for most recent or index number (e.g. --resume 5)',
           coerce: (value: string): string => {
-            // When --resume passed with a value (`gemini --resume 123`): value = "123" (string)
-            // When --resume passed without a value (`gemini --resume`): value = "" (string)
+            // When --resume passed with a value (`jiminy --resume 123`): value = "123" (string)
+            // When --resume passed without a value (`jiminy --resume`): value = "" (string)
             // When --resume not passed at all: this `coerce` function is not called at all, and
             //   `yargsInstance.argv.resume` is undefined.
             const trimmed = value.trim();
@@ -550,13 +550,13 @@ export async function loadCliConfig(
 
   // Set the context filename in the server's memoryTool module BEFORE loading memory
   // TODO(b/343434939): This is a bit of a hack. The contextFileName should ideally be passed
-  // directly to the Config constructor in core, and have core handle setGeminiMdFilename.
-  // However, loadHierarchicalGeminiMemory is called *before* createServerConfig.
+  // directly to the Config constructor in core, and have core handle setJiminyMdFilename.
+  // However, loadHierarchicalJiminyMemory is called *before* createServerConfig.
   if (settings.context?.fileName) {
-    setServerGeminiMdFilename(settings.context.fileName);
+    setServerJiminyMdFilename(settings.context.fileName);
   } else {
     // Reset to default if not provided in settings.
-    setServerGeminiMdFilename(getCurrentGeminiMdFilename());
+    setServerJiminyMdFilename(getCurrentJiminyMdFilename());
   }
 
   const fileService = new FileDiscoveryService(cwd);
@@ -630,7 +630,7 @@ export async function loadCliConfig(
   let filePaths: string[] = [];
 
   if (!experimentalJitContext) {
-    // Call the (now wrapper) loadHierarchicalGeminiMemory which calls the server's version
+    // Call the (now wrapper) loadHierarchicalJiminyMemory which calls the server's version
     const result = await loadServerHierarchicalMemory(
       cwd,
       settings.context?.loadMemoryFromIncludeDirectories || false
@@ -928,8 +928,8 @@ export async function loadCliConfig(
     enableEnvironmentVariableRedaction:
       settings.security?.environmentVariableRedaction?.enabled,
     userMemory: memoryContent,
-    geminiMdFileCount: fileCount,
-    geminiMdFilePaths: filePaths,
+    jiminyMdFileCount: fileCount,
+    jiminyMdFilePaths: filePaths,
     approvalMode,
     disableYoloMode:
       settings.security?.disableYoloMode || settings.admin?.secureModeEnabled,
@@ -1053,7 +1053,7 @@ async function resolveWorktreeSettings(
     const toplevel = stdout.trim();
     const projectRoot = await getProjectRootForWorktree(toplevel);
 
-    if (isGeminiWorktree(toplevel, projectRoot)) {
+    if (isJiminyWorktree(toplevel, projectRoot)) {
       worktreePath = toplevel;
     }
   } catch (_e) {

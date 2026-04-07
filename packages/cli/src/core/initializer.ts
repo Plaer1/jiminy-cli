@@ -14,7 +14,7 @@ import {
   logCliConfiguration,
   startupProfiler,
   debugLogger,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { type LoadedSettings } from '../config/settings.js';
 import { performInitialAuth } from './auth.js';
 import { validateTheme } from './theme.js';
@@ -25,7 +25,7 @@ export interface InitializationResult {
   accountSuspensionInfo: AccountSuspensionInfo | null;
   themeError: string | null;
   shouldOpenAuthDialog: boolean;
-  geminiMdFileCount: number;
+  jiminyMdFileCount: number;
 }
 
 /**
@@ -75,6 +75,6 @@ export async function initializeApp(
     accountSuspensionInfo,
     themeError,
     shouldOpenAuthDialog,
-    geminiMdFileCount: config.getGeminiMdFileCount(),
+    jiminyMdFileCount: config.getJiminyMdFileCount(),
   };
 }

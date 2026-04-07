@@ -9,8 +9,8 @@ import { render } from '../../../test-utils/render.js';
 import { Text } from 'ink';
 import { McpProgressIndicator } from './ToolShared.js';
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>MockSpinner</Text>,
+vi.mock('../JiminyRespondingSpinner.js', () => ({
+  JiminyRespondingSpinner: () => <Text>MockSpinner</Text>,
 }));
 
 describe('McpProgressIndicator', () => {

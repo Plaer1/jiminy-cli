@@ -18,8 +18,8 @@ import {
   isProModel,
   isOverageEligibleModel,
   getDisplayString,
-  type GeminiUserTier,
-} from '@google/gemini-cli-core';
+  type JiminyUserTier,
+} from '@google/jiminy-cli-core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { type UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType } from '../types.js';
@@ -38,7 +38,7 @@ interface UseQuotaAndFallbackArgs {
   config: Config;
   historyManager: UseHistoryManagerReturn;
   userTier: UserTierId | undefined;
-  paidTier: GeminiUserTier | null | undefined;
+  paidTier: JiminyUserTier | null | undefined;
   settings: LoadedSettings;
   setModelSwitchedFromQuotaError: (value: boolean) => void;
   onShowAuthSelection: () => void;

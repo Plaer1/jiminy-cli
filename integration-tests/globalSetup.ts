@@ -13,7 +13,7 @@ import { mkdir, readdir, rm } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { canUseRipgrep } from '../packages/core/src/tools/ripGrep.js';
-import { disableMouseTracking } from '@google/gemini-cli-core';
+import { disableMouseTracking } from '@google/jiminy-cli-core';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
@@ -32,7 +32,7 @@ export async function setup() {
   }
   // We also need to set the config dir explicitly, since the code might
   // construct the path before the HOME env var is set.
-  process.env['GEMINI_CONFIG_DIR'] = join(runDir, '.gemini');
+  process.env['GEMINI_CONFIG_DIR'] = join(runDir, '.jiminy');
 
   // Download ripgrep to avoid race conditions in parallel tests
   const available = await canUseRipgrep();

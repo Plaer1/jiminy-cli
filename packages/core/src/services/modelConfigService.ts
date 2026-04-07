@@ -54,11 +54,11 @@ export interface ModelConfigAlias {
 
 // A model definition is a mapping from a model name to a list of features
 // that the model supports. Model names can be either direct model IDs
-// (gemini-2.5-pro) or aliases (auto).
+// (jiminy-2.5-pro) or aliases (auto).
 export interface ModelDefinition {
   displayName?: string;
   tier?: string; // 'pro' | 'flash' | 'flash-lite' | 'custom' | 'auto'
-  family?: string; // The gemini family, e.g. 'gemini-3' | 'gemini-2'
+  family?: string; // The jiminy family, e.g. 'jiminy-3' | 'jiminy-2'
   isPreview?: boolean;
   // Specifies whether the model should be visible in the dialog.
   isVisible?: boolean;
@@ -89,8 +89,8 @@ export interface ModelResolution {
 
 /** The actual state of the current session. */
 export interface ResolutionContext {
-  useGemini3_1?: boolean;
-  useGemini3_1FlashLite?: boolean;
+  useJiminy3_1?: boolean;
+  useJiminy3_1FlashLite?: boolean;
   useCustomTools?: boolean;
   hasAccessToPreview?: boolean;
   requestedModel?: string;
@@ -98,8 +98,8 @@ export interface ResolutionContext {
 
 /** The requirements defined in the registry. */
 export interface ResolutionCondition {
-  useGemini3_1?: boolean;
-  useGemini3_1FlashLite?: boolean;
+  useJiminy3_1?: boolean;
+  useJiminy3_1FlashLite?: boolean;
   useCustomTools?: boolean;
   hasAccessToPreview?: boolean;
   /** Matches if the current model is in this list. */
@@ -142,7 +142,7 @@ export class ModelConfigService {
     }
 
     // For unknown models, return an implicit custom definition to match legacy behavior.
-    if (!modelId.startsWith('gemini-')) {
+    if (!modelId.startsWith('jiminy-')) {
       return {
         tier: 'custom',
         family: 'custom',
@@ -165,10 +165,10 @@ export class ModelConfigService {
       if (value === undefined) return true;
 
       switch (key) {
-        case 'useGemini3_1':
-          return value === context.useGemini3_1;
-        case 'useGemini3_1FlashLite':
-          return value === context.useGemini3_1FlashLite;
+        case 'useJiminy3_1':
+          return value === context.useJiminy3_1;
+        case 'useJiminy3_1FlashLite':
+          return value === context.useJiminy3_1FlashLite;
         case 'useCustomTools':
           return value === context.useCustomTools;
         case 'hasAccessToPreview':

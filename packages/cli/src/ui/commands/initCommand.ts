@@ -12,7 +12,7 @@ import type {
   SlashCommandActionReturn,
 } from './types.js';
 import { CommandKind } from './types.js';
-import { performInit } from '@google/gemini-cli-core';
+import { performInit } from '@google/jiminy-cli-core';
 
 export const initCommand: SlashCommand = {
   name: 'init',
@@ -31,13 +31,13 @@ export const initCommand: SlashCommand = {
       };
     }
     const targetDir = context.services.agentContext.config.getTargetDir();
-    const geminiMdPath = path.join(targetDir, 'GEMINI.md');
+    const jiminyMdPath = path.join(targetDir, 'GEMINI.md');
 
-    const result = performInit(fs.existsSync(geminiMdPath));
+    const result = performInit(fs.existsSync(jiminyMdPath));
 
     if (result.type === 'submit_prompt') {
       // Create an empty GEMINI.md file
-      fs.writeFileSync(geminiMdPath, '', 'utf8');
+      fs.writeFileSync(jiminyMdPath, '', 'utf8');
 
       context.ui.addItem(
         {

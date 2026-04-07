@@ -250,7 +250,7 @@ describe('save_memory', () => {
       },
       {
         id: 'msg-2',
-        type: 'gemini',
+        type: 'jiminy',
         content: [{ text: 'Noted! What are you working on today?' }],
         timestamp: '2026-01-01T00:00:05Z',
       },
@@ -266,7 +266,7 @@ describe('save_memory', () => {
       },
       {
         id: 'msg-4',
-        type: 'gemini',
+        type: 'jiminy',
         content: [
           {
             text: 'It looks like the database connection might not be initialized before the query runs.',
@@ -284,7 +284,7 @@ describe('save_memory', () => {
       },
       {
         id: 'msg-6',
-        type: 'gemini',
+        type: 'jiminy',
         content: [{ text: 'Great! Anything else you would like to work on?' }],
         timestamp: '2026-01-01T00:02:05Z',
       },
@@ -328,7 +328,7 @@ describe('save_memory', () => {
       },
       {
         id: 'msg-2',
-        type: 'gemini',
+        type: 'jiminy',
         content: [{ text: 'Got it, I will keep that in mind!' }],
         timestamp: '2026-01-01T00:00:05Z',
       },
@@ -344,7 +344,7 @@ describe('save_memory', () => {
       },
       {
         id: 'msg-4',
-        type: 'gemini',
+        type: 'jiminy',
         content: [
           { text: 'Understood, 2-space indentation for this project.' },
         ],

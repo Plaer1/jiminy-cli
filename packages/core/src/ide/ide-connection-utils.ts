@@ -107,7 +107,7 @@ export function getStdioConfigFromEnv(): StdioConfig | undefined {
   return { command, args };
 }
 
-const IDE_SERVER_FILE_REGEX = /^gemini-ide-server-(\d+)-\d+\.json$/;
+const IDE_SERVER_FILE_REGEX = /^jiminy-ide-server-(\d+)-\d+\.json$/;
 
 export async function getConnectionConfigFromFile(
   pid: number,
@@ -118,21 +118,21 @@ export async function getConnectionConfigFromFile(
   try {
     const portFile = path.join(
       os.tmpdir(),
-      'gemini',
+      'jiminy',
       'ide',
-      `gemini-ide-server-${pid}.json`,
+      `jiminy-ide-server-${pid}.json`,
     );
     const portFileContents = await fs.promises.readFile(portFile, 'utf8');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return JSON.parse(portFileContents);
   } catch (_) {
     // For newer extension versions, the file name matches the pattern
-    // /^gemini-ide-server-${pid}-\d+\.json$/. If multiple IDE
+    // /^jiminy-ide-server-${pid}-\d+\.json$/. If multiple IDE
     // windows are open, multiple files matching the pattern are expected to
     // exist.
   }
 
-  const portFileDir = path.join(os.tmpdir(), 'gemini', 'ide');
+  const portFileDir = path.join(os.tmpdir(), 'jiminy', 'ide');
   let portFiles;
   try {
     portFiles = await fs.promises.readdir(portFileDir);

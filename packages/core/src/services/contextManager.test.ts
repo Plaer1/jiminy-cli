@@ -19,7 +19,7 @@ vi.mock('../utils/memoryDiscovery.js', async (importOriginal) => {
     getGlobalMemoryPaths: vi.fn(),
     getExtensionMemoryPaths: vi.fn(),
     getEnvironmentMemoryPaths: vi.fn(),
-    readGeminiMdFiles: vi.fn(),
+    readJiminyMdFiles: vi.fn(),
     loadJitSubdirectoryMemory: vi.fn(),
     deduplicatePathsByFileIdentity: vi.fn(),
     concatenateInstructions: vi
@@ -63,7 +63,7 @@ describe('ContextManager', () => {
 
   describe('refresh', () => {
     it('should load and format global and environment memory', async () => {
-      const globalPaths = ['/home/user/.gemini/GEMINI.md'];
+      const globalPaths = ['/home/user/.jiminy/GEMINI.md'];
       const envPaths = ['/app/GEMINI.md'];
 
       vi.mocked(memoryDiscovery.getGlobalMemoryPaths).mockResolvedValue(
@@ -73,7 +73,7 @@ describe('ContextManager', () => {
         envPaths,
       );
 
-      vi.mocked(memoryDiscovery.readGeminiMdFiles).mockResolvedValue([
+      vi.mocked(memoryDiscovery.readJiminyMdFiles).mockResolvedValue([
         { filePath: globalPaths[0], content: 'Global Content' },
         { filePath: envPaths[0], content: 'Env Content' },
       ]);
@@ -84,7 +84,7 @@ describe('ContextManager', () => {
       expect(memoryDiscovery.getEnvironmentMemoryPaths).toHaveBeenCalledWith([
         '/app',
       ]);
-      expect(memoryDiscovery.readGeminiMdFiles).toHaveBeenCalledWith(
+      expect(memoryDiscovery.readJiminyMdFiles).toHaveBeenCalledWith(
         expect.arrayContaining([...globalPaths, ...envPaths]),
         'tree',
       );
@@ -106,7 +106,7 @@ describe('ContextManager', () => {
       vi.mocked(memoryDiscovery.getEnvironmentMemoryPaths).mockResolvedValue([
         '/app/src/GEMINI.md',
       ]);
-      vi.mocked(memoryDiscovery.readGeminiMdFiles).mockResolvedValue([
+      vi.mocked(memoryDiscovery.readJiminyMdFiles).mockResolvedValue([
         { filePath: '/app/GEMINI.md', content: 'content' },
         { filePath: '/app/src/GEMINI.md', content: 'env content' },
       ]);
@@ -121,10 +121,10 @@ describe('ContextManager', () => {
     it('should not load environment memory if folder is not trusted', async () => {
       vi.mocked(mockConfig.isTrustedFolder).mockReturnValue(false);
       vi.mocked(memoryDiscovery.getGlobalMemoryPaths).mockResolvedValue([
-        '/home/user/.gemini/GEMINI.md',
+        '/home/user/.jiminy/GEMINI.md',
       ]);
-      vi.mocked(memoryDiscovery.readGeminiMdFiles).mockResolvedValue([
-        { filePath: '/home/user/.gemini/GEMINI.md', content: 'Global Content' },
+      vi.mocked(memoryDiscovery.readJiminyMdFiles).mockResolvedValue([
+        { filePath: '/home/user/.jiminy/GEMINI.md', content: 'Global Content' },
       ]);
 
       await contextManager.refresh();
@@ -135,8 +135,8 @@ describe('ContextManager', () => {
     });
 
     it('should deduplicate files by file identity in case-insensitive filesystems', async () => {
-      const globalPaths = ['/home/user/.gemini/GEMINI.md'];
-      const envPaths = ['/app/gemini.md', '/app/GEMINI.md'];
+      const globalPaths = ['/home/user/.jiminy/GEMINI.md'];
+      const envPaths = ['/app/jiminy.md', '/app/GEMINI.md'];
 
       vi.mocked(memoryDiscovery.getGlobalMemoryPaths).mockResolvedValue(
         globalPaths,
@@ -149,13 +149,13 @@ describe('ContextManager', () => {
       vi.mocked(
         memoryDiscovery.deduplicatePathsByFileIdentity,
       ).mockResolvedValue({
-        paths: ['/home/user/.gemini/GEMINI.md', '/app/gemini.md'],
+        paths: ['/home/user/.jiminy/GEMINI.md', '/app/jiminy.md'],
         identityMap: new Map<string, string>(),
       });
 
-      vi.mocked(memoryDiscovery.readGeminiMdFiles).mockResolvedValue([
-        { filePath: '/home/user/.gemini/GEMINI.md', content: 'Global Content' },
-        { filePath: '/app/gemini.md', content: 'Project Content' },
+      vi.mocked(memoryDiscovery.readJiminyMdFiles).mockResolvedValue([
+        { filePath: '/home/user/.jiminy/GEMINI.md', content: 'Global Content' },
+        { filePath: '/app/jiminy.md', content: 'Project Content' },
       ]);
 
       await contextManager.refresh();
@@ -164,13 +164,13 @@ describe('ContextManager', () => {
         memoryDiscovery.deduplicatePathsByFileIdentity,
       ).toHaveBeenCalledWith(
         expect.arrayContaining([
-          '/home/user/.gemini/GEMINI.md',
-          '/app/gemini.md',
+          '/home/user/.jiminy/GEMINI.md',
+          '/app/jiminy.md',
           '/app/GEMINI.md',
         ]),
       );
-      expect(memoryDiscovery.readGeminiMdFiles).toHaveBeenCalledWith(
-        ['/home/user/.gemini/GEMINI.md', '/app/gemini.md'],
+      expect(memoryDiscovery.readJiminyMdFiles).toHaveBeenCalledWith(
+        ['/home/user/.jiminy/GEMINI.md', '/app/jiminy.md'],
         'tree',
       );
       expect(contextManager.getEnvironmentMemory()).toContain(

@@ -129,7 +129,7 @@ describe('UiTelemetryService', () => {
 
     const event = {
       'event.name': EVENT_API_RESPONSE,
-      model: 'gemini-2.5-pro',
+      model: 'jiminy-2.5-pro',
       duration_ms: 500,
       usage: {
         input_token_count: 10,
@@ -153,7 +153,7 @@ describe('UiTelemetryService', () => {
     it('should process a single ApiResponseEvent', () => {
       const event = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 10,
@@ -168,7 +168,7 @@ describe('UiTelemetryService', () => {
       service.addEvent(event);
 
       const metrics = service.getMetrics();
-      expect(metrics.models['gemini-2.5-pro']).toEqual({
+      expect(metrics.models['jiminy-2.5-pro']).toEqual({
         api: {
           totalRequests: 1,
           totalErrors: 0,
@@ -191,7 +191,7 @@ describe('UiTelemetryService', () => {
     it('should aggregate multiple ApiResponseEvents for the same model', () => {
       const event1 = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 10,
@@ -206,7 +206,7 @@ describe('UiTelemetryService', () => {
       };
       const event2 = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 600,
         usage: {
           input_token_count: 15,
@@ -224,7 +224,7 @@ describe('UiTelemetryService', () => {
       service.addEvent(event2);
 
       const metrics = service.getMetrics();
-      expect(metrics.models['gemini-2.5-pro']).toEqual({
+      expect(metrics.models['jiminy-2.5-pro']).toEqual({
         api: {
           totalRequests: 2,
           totalErrors: 0,
@@ -247,7 +247,7 @@ describe('UiTelemetryService', () => {
     it('should handle ApiResponseEvents for different models', () => {
       const event1 = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 10,
@@ -262,7 +262,7 @@ describe('UiTelemetryService', () => {
       };
       const event2 = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-flash',
+        model: 'jiminy-2.5-flash',
         duration_ms: 1000,
         usage: {
           input_token_count: 100,
@@ -280,10 +280,10 @@ describe('UiTelemetryService', () => {
       service.addEvent(event2);
 
       const metrics = service.getMetrics();
-      expect(metrics.models['gemini-2.5-pro']).toBeDefined();
-      expect(metrics.models['gemini-2.5-flash']).toBeDefined();
-      expect(metrics.models['gemini-2.5-pro'].api.totalRequests).toBe(1);
-      expect(metrics.models['gemini-2.5-flash'].api.totalRequests).toBe(1);
+      expect(metrics.models['jiminy-2.5-pro']).toBeDefined();
+      expect(metrics.models['jiminy-2.5-flash']).toBeDefined();
+      expect(metrics.models['jiminy-2.5-pro'].api.totalRequests).toBe(1);
+      expect(metrics.models['jiminy-2.5-flash'].api.totalRequests).toBe(1);
       expect(service.getLastPromptTokenCount()).toBe(0);
     });
   });
@@ -292,7 +292,7 @@ describe('UiTelemetryService', () => {
     it('should process a single ApiErrorEvent', () => {
       const event = {
         'event.name': EVENT_API_ERROR,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 300,
         error: 'Something went wrong',
       } as ApiErrorEvent & { 'event.name': typeof EVENT_API_ERROR };
@@ -300,7 +300,7 @@ describe('UiTelemetryService', () => {
       service.addEvent(event);
 
       const metrics = service.getMetrics();
-      expect(metrics.models['gemini-2.5-pro']).toEqual({
+      expect(metrics.models['jiminy-2.5-pro']).toEqual({
         api: {
           totalRequests: 1,
           totalErrors: 1,
@@ -322,7 +322,7 @@ describe('UiTelemetryService', () => {
     it('should aggregate ApiErrorEvents and ApiResponseEvents', () => {
       const responseEvent = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 10,
@@ -337,7 +337,7 @@ describe('UiTelemetryService', () => {
       };
       const errorEvent = {
         'event.name': EVENT_API_ERROR,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 300,
         error: 'Something went wrong',
       } as ApiErrorEvent & { 'event.name': typeof EVENT_API_ERROR };
@@ -346,7 +346,7 @@ describe('UiTelemetryService', () => {
       service.addEvent(errorEvent);
 
       const metrics = service.getMetrics();
-      expect(metrics.models['gemini-2.5-pro']).toEqual({
+      expect(metrics.models['jiminy-2.5-pro']).toEqual({
         api: {
           totalRequests: 2,
           totalErrors: 1,
@@ -368,7 +368,7 @@ describe('UiTelemetryService', () => {
     it('should update role metrics when processing an ApiErrorEvent with a role', () => {
       const event = {
         'event.name': EVENT_API_ERROR,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 300,
         error: 'Something went wrong',
         role: 'utility_tool',
@@ -377,7 +377,7 @@ describe('UiTelemetryService', () => {
       service.addEvent(event);
 
       const metrics = service.getMetrics();
-      expect(metrics.models['gemini-2.5-pro'].roles['utility_tool']).toEqual({
+      expect(metrics.models['jiminy-2.5-pro'].roles['utility_tool']).toEqual({
         totalRequests: 1,
         totalErrors: 1,
         totalLatencyMs: 300,
@@ -592,7 +592,7 @@ describe('UiTelemetryService', () => {
       // First, set up some initial token count
       const event = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 100,
@@ -619,7 +619,7 @@ describe('UiTelemetryService', () => {
       // Set up initial token count
       const event = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 100,
@@ -646,7 +646,7 @@ describe('UiTelemetryService', () => {
       // Set up initial state with some metrics
       const event = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 100,
@@ -680,7 +680,7 @@ describe('UiTelemetryService', () => {
       // Set up initial token count
       const event = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 100,
@@ -712,7 +712,7 @@ describe('UiTelemetryService', () => {
       // Set up initial state with some metrics
       const event = {
         'event.name': EVENT_API_RESPONSE,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
         duration_ms: 500,
         usage: {
           input_token_count: 100,
@@ -727,7 +727,7 @@ describe('UiTelemetryService', () => {
       service.addEvent(event);
       service.setLastPromptTokenCount(123);
 
-      expect(service.getMetrics().models['gemini-2.5-pro']).toBeDefined();
+      expect(service.getMetrics().models['jiminy-2.5-pro']).toBeDefined();
       expect(service.getLastPromptTokenCount()).toBe(123);
 
       service.clear();
@@ -763,8 +763,8 @@ describe('UiTelemetryService', () => {
             content: 'Hello',
           },
           {
-            type: 'gemini',
-            model: 'gemini-1.5-pro',
+            type: 'jiminy',
+            model: 'jiminy-1.5-pro',
             tokens: {
               input: 10,
               output: 20,
@@ -779,8 +779,8 @@ describe('UiTelemetryService', () => {
             ],
           },
           {
-            type: 'gemini',
-            model: 'gemini-1.5-pro',
+            type: 'jiminy',
+            model: 'jiminy-1.5-pro',
             tokens: {
               input: 100,
               output: 200,
@@ -802,7 +802,7 @@ describe('UiTelemetryService', () => {
 
       expect(clearSpy).toHaveBeenCalledWith('resumed-session');
       const metrics = service.getMetrics();
-      const modelMetrics = metrics.models['gemini-1.5-pro'];
+      const modelMetrics = metrics.models['jiminy-1.5-pro'];
 
       expect(modelMetrics).toBeDefined();
       expect(modelMetrics.tokens.prompt).toBe(110); // 10 + 100

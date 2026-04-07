@@ -65,13 +65,13 @@ export function applySubstitutions(
   prompt: string,
   context: AgentLoopContext,
   skillsPrompt: string,
-  isGemini3: boolean = false,
+  isJiminy3: boolean = false,
 ): string {
   let result = prompt;
 
   result = result.replace(/\${AgentSkills}/g, skillsPrompt);
 
-  const activeSnippets = isGemini3 ? snippets : legacySnippets;
+  const activeSnippets = isJiminy3 ? snippets : legacySnippets;
   const subAgentsContent = activeSnippets.renderSubAgents(
     context.config
       .getAgentRegistry()

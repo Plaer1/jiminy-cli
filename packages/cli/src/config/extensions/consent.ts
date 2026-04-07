@@ -6,7 +6,7 @@
 
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
-import { debugLogger, type SkillDefinition } from '@google/gemini-cli-core';
+import { debugLogger, type SkillDefinition } from '@google/jiminy-cli-core';
 import chalk from 'chalk';
 
 import type { ConfirmationRequest } from '../../ui/types.js';
@@ -185,7 +185,7 @@ async function extensionConsentString(
   }
   if (sanitizedConfig.contextFileName) {
     output.push(
-      `This extension will append info to your gemini.md context using ${sanitizedConfig.contextFileName}`,
+      `This extension will append info to your jiminy.md context using ${sanitizedConfig.contextFileName}`,
     );
   }
   if (sanitizedConfig.excludeTools) {

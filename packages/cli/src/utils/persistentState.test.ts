@@ -7,13 +7,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { Storage, debugLogger } from '@google/gemini-cli-core';
+import { Storage, debugLogger } from '@google/jiminy-cli-core';
 import { PersistentState } from './persistentState.js';
 
 vi.mock('node:fs');
-vi.mock('@google/gemini-cli-core', () => ({
+vi.mock('@google/jiminy-cli-core', () => ({
   Storage: {
-    getGlobalGeminiDir: vi.fn(),
+    getGlobalJiminyDir: vi.fn(),
   },
   debugLogger: {
     warn: vi.fn(),
@@ -27,7 +27,7 @@ describe('PersistentState', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(Storage.getGlobalGeminiDir).mockReturnValue(mockDir);
+    vi.mocked(Storage.getGlobalJiminyDir).mockReturnValue(mockDir);
     persistentState = new PersistentState();
   });
 

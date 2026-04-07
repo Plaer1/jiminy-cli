@@ -21,9 +21,9 @@ const mocks = vi.hoisted(() => ({
   writeToStderr: vi.fn(),
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     writeToStderr: mocks.writeToStderr,
@@ -187,7 +187,7 @@ describe('relaunchAppInChildProcess', () => {
         '--max-old-space-size=4096',
         '--experimental-modules',
       ];
-      const additionalScriptArgs = ['--model', 'gemini-1.5-pro', '--debug'];
+      const additionalScriptArgs = ['--model', 'jiminy-1.5-pro', '--debug'];
 
       // Extract the argument construction logic from relaunchAppInChildProcess
       const script = mockArgv[1];
@@ -214,7 +214,7 @@ describe('relaunchAppInChildProcess', () => {
         '/path/to/cli.js',
         // Additional script arguments passed to function
         '--model',
-        'gemini-1.5-pro',
+        'jiminy-1.5-pro',
         '--debug',
         // Original script arguments (everything after the script in process.argv)
         'command',

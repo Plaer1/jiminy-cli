@@ -7,7 +7,7 @@
 import {
   type Config,
   type FallbackIntent,
-  type GeminiUserTier,
+  type JiminyUserTier,
   type OverageOption,
   getG1CreditBalance,
   shouldAutoUseCredits,
@@ -25,7 +25,7 @@ import {
   UserAccountManager,
   recordOverageOptionSelected,
   recordCreditPurchaseClick,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { MessageType } from '../types.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import type {
@@ -36,7 +36,7 @@ import type {
 
 interface CreditsFlowArgs {
   config: Config;
-  paidTier: GeminiUserTier;
+  paidTier: JiminyUserTier;
   overageStrategy: 'ask' | 'always' | 'never';
   failedModel: string;
   fallbackModel: string;

@@ -23,7 +23,7 @@ vi.mock('../utils/llm-edit-fixer.js', () => ({
 }));
 
 vi.mock('../core/client.js', () => ({
-  GeminiClient: vi.fn().mockImplementation(() => ({
+  JiminyClient: vi.fn().mockImplementation(() => ({
     generateJson: mockGenerateJson,
     getHistory: vi.fn().mockResolvedValue([]),
   })),
@@ -78,7 +78,7 @@ describe('EditTool', () => {
   let tempDir: string;
   let rootDir: string;
   let mockConfig: Config;
-  let geminiClient: any;
+  let jiminyClient: any;
   let fileSystemService: StandardFileSystemService;
   let baseLlmClient: BaseLlmClient;
 
@@ -88,7 +88,7 @@ describe('EditTool', () => {
     rootDir = path.join(tempDir, 'root');
     fs.mkdirSync(rootDir);
 
-    geminiClient = {
+    jiminyClient = {
       generateJson: mockGenerateJson,
       getHistory: vi.fn().mockResolvedValue([]),
     };
@@ -104,7 +104,7 @@ describe('EditTool', () => {
       getSessionId: vi.fn(() => 'mock-session-id'),
       getContentGeneratorConfig: vi.fn(() => ({ authType: 'mock' })),
       getProxy: vi.fn(() => undefined),
-      getGeminiClient: vi.fn().mockReturnValue(geminiClient),
+      getJiminyClient: vi.fn().mockReturnValue(jiminyClient),
       getBaseLlmClient: vi.fn().mockReturnValue(baseLlmClient),
       getTargetDir: () => rootDir,
       getApprovalMode: vi.fn(),
@@ -125,8 +125,8 @@ describe('EditTool', () => {
       getUserAgent: () => 'test-agent',
       getUserMemory: () => '',
       setUserMemory: vi.fn(),
-      getGeminiMdFileCount: () => 0,
-      setGeminiMdFileCount: vi.fn(),
+      getJiminyMdFileCount: () => 0,
+      setJiminyMdFileCount: vi.fn(),
       getToolRegistry: () => ({}) as any,
       isInteractive: () => false,
       getDisableLLMCorrection: vi.fn(() => true),

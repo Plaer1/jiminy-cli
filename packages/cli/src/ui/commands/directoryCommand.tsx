@@ -18,7 +18,7 @@ import { MessageType, type HistoryItem } from '../types.js';
 import {
   refreshServerHierarchicalMemory,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   expandHomeDir,
   getDirectorySuggestions,
@@ -60,12 +60,12 @@ async function finishAddingDirectories(
   }
 
   if (added.length > 0) {
-    const gemini = config.geminiClient;
-    if (gemini) {
-      await gemini.addDirectoryContext();
+    const jiminy = config.jiminyClient;
+    if (jiminy) {
+      await jiminy.addDirectoryContext();
 
       // Persist directories to session file for resume support
-      const chatRecordingService = gemini.getChatRecordingService();
+      const chatRecordingService = jiminy.getChatRecordingService();
       const workspaceContext = config.getWorkspaceContext();
       chatRecordingService?.recordDirectories(
         workspaceContext.getDirectories(),

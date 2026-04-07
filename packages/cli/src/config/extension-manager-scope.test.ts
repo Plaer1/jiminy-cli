@@ -13,13 +13,13 @@ import { createTestMergedSettings } from './settings.js';
 import {
   loadAgentsFromDirectory,
   loadSkillsFromDir,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 let currentTempHome = '';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: () => currentTempHome,
@@ -49,17 +49,17 @@ describe('ExtensionManager Settings Scope', () => {
     });
     vi.mocked(loadSkillsFromDir).mockResolvedValue([]);
     currentTempHome = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-cli-test-home-'),
+      path.join(os.tmpdir(), 'jiminy-cli-test-home-'),
     );
     tempWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-cli-test-workspace-'),
+      path.join(os.tmpdir(), 'jiminy-cli-test-workspace-'),
     );
-    extensionsDir = path.join(currentTempHome, '.gemini', 'extensions');
+    extensionsDir = path.join(currentTempHome, '.jiminy', 'extensions');
     extensionDir = path.join(extensionsDir, extensionName);
 
     fs.mkdirSync(extensionDir, { recursive: true });
 
-    // Create gemini-extension.json
+    // Create jiminy-extension.json
     const extensionConfig = {
       name: extensionName,
       version: '1.0.0',
@@ -72,7 +72,7 @@ describe('ExtensionManager Settings Scope', () => {
       ],
     };
     fs.writeFileSync(
-      path.join(extensionDir, 'gemini-extension.json'),
+      path.join(extensionDir, 'jiminy-extension.json'),
       JSON.stringify(extensionConfig),
     );
 

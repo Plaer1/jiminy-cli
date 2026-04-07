@@ -29,7 +29,7 @@ function createMockConfig(logPromptsEnabled: boolean): Config {
     getSessionId: () => 'test-session-id',
     getExperiments: () => undefined,
     getExperimentsAsync: async () => undefined,
-    getModel: () => 'gemini-1.5-flash',
+    getModel: () => 'jiminy-1.5-flash',
     isInteractive: () => true,
     getUserEmail: () => undefined,
     getContentGeneratorConfig: () => undefined,
@@ -93,7 +93,7 @@ describe('Telemetry Sanitization', () => {
         const event = new HookCallEvent(
           'BeforeTool',
           HookType.Command,
-          '/path/to/.gemini/hooks/check-secrets.sh --api-key=abc123',
+          '/path/to/.jiminy/hooks/check-secrets.sh --api-key=abc123',
           { tool_name: 'ReadFile', args: { file: 'secret.txt' } },
           100,
           true,
@@ -110,7 +110,7 @@ describe('Telemetry Sanitization', () => {
         expect(attributes['hook_type']).toBe('command');
         // With logPrompts=true, full hook name is included
         expect(attributes['hook_name']).toBe(
-          '/path/to/.gemini/hooks/check-secrets.sh --api-key=abc123',
+          '/path/to/.jiminy/hooks/check-secrets.sh --api-key=abc123',
         );
         expect(attributes['duration_ms']).toBe(100);
         expect(attributes['success']).toBe(true);
@@ -159,7 +159,7 @@ describe('Telemetry Sanitization', () => {
         const event = new HookCallEvent(
           'BeforeTool',
           HookType.Command,
-          '/path/to/.gemini/hooks/check-secrets.sh --api-key=abc123',
+          '/path/to/.jiminy/hooks/check-secrets.sh --api-key=abc123',
           { tool_name: 'ReadFile', args: { file: 'secret.txt' } },
           100,
           true,
@@ -187,7 +187,7 @@ describe('Telemetry Sanitization', () => {
       it('should sanitize hook_name when logPrompts is disabled', () => {
         const testCases = [
           {
-            input: '/path/to/.gemini/hooks/check-secrets.sh --api-key=abc123',
+            input: '/path/to/.jiminy/hooks/check-secrets.sh --api-key=abc123',
             expected: 'check-secrets.sh',
             description: 'full path with arguments',
           },
@@ -359,10 +359,10 @@ describe('Telemetry Sanitization', () => {
         const event = new HookCallEvent(
           'BeforeModel',
           HookType.Command,
-          '$GEMINI_PROJECT_DIR/.gemini/hooks/add-context.sh',
+          '$GEMINI_PROJECT_DIR/.jiminy/hooks/add-context.sh',
           {
             llm_request: {
-              model: 'gemini-1.5-flash',
+              model: 'jiminy-1.5-flash',
               messages: [{ role: 'user', content: 'Hello' }],
             },
           },
@@ -386,7 +386,7 @@ describe('Telemetry Sanitization', () => {
 
         // In enterprise mode, everything is logged
         expect(attributes['hook_name']).toBe(
-          '$GEMINI_PROJECT_DIR/.gemini/hooks/add-context.sh',
+          '$GEMINI_PROJECT_DIR/.jiminy/hooks/add-context.sh',
         );
         expect(attributes['hook_input']).toBeDefined();
         expect(attributes['hook_output']).toBeDefined();
@@ -399,10 +399,10 @@ describe('Telemetry Sanitization', () => {
         const event = new HookCallEvent(
           'BeforeModel',
           HookType.Command,
-          '$GEMINI_PROJECT_DIR/.gemini/hooks/add-context.sh',
+          '$GEMINI_PROJECT_DIR/.jiminy/hooks/add-context.sh',
           {
             llm_request: {
-              model: 'gemini-1.5-flash',
+              model: 'jiminy-1.5-flash',
               messages: [{ role: 'user', content: 'Hello' }],
             },
           },

@@ -14,7 +14,7 @@ import {
   PREVIEW_GEMINI_MODEL,
   DEFAULT_GEMINI_FLASH_MODEL,
   AuthType,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 // Mock the child component to make it easier to test the parent
 vi.mock('./shared/RadioButtonSelect.js', () => ({
@@ -66,8 +66,8 @@ describe('ProQuotaDialog', () => {
       it('should render switch, upgrade, and stop options for LOGIN_WITH_GOOGLE', async () => {
         const { unmount } = await render(
           <ProQuotaDialog
-            failedModel="gemini-2.5-pro"
-            fallbackModel="gemini-2.5-flash"
+            failedModel="jiminy-2.5-pro"
+            fallbackModel="jiminy-2.5-flash"
             message="paid tier quota error"
             isTerminalQuotaError={true}
             isModelNotFoundError={false}
@@ -80,7 +80,7 @@ describe('ProQuotaDialog', () => {
           expect.objectContaining({
             items: [
               {
-                label: 'Switch to gemini-2.5-flash',
+                label: 'Switch to jiminy-2.5-flash',
                 value: 'retry_always',
                 key: 'retry_always',
               },
@@ -104,8 +104,8 @@ describe('ProQuotaDialog', () => {
       it('should NOT render upgrade option for USE_GEMINI', async () => {
         const { unmount } = await render(
           <ProQuotaDialog
-            failedModel="gemini-2.5-pro"
-            fallbackModel="gemini-2.5-flash"
+            failedModel="jiminy-2.5-pro"
+            fallbackModel="jiminy-2.5-flash"
             message="paid tier quota error"
             isTerminalQuotaError={true}
             isModelNotFoundError={false}
@@ -118,7 +118,7 @@ describe('ProQuotaDialog', () => {
           expect.objectContaining({
             items: [
               {
-                label: 'Switch to gemini-2.5-flash',
+                label: 'Switch to jiminy-2.5-flash',
                 value: 'retry_always',
                 key: 'retry_always',
               },
@@ -168,8 +168,8 @@ describe('ProQuotaDialog', () => {
       it('should render switch, upgrade, and stop options for LOGIN_WITH_GOOGLE (free tier)', async () => {
         const { unmount } = await render(
           <ProQuotaDialog
-            failedModel="gemini-2.5-pro"
-            fallbackModel="gemini-2.5-flash"
+            failedModel="jiminy-2.5-pro"
+            fallbackModel="jiminy-2.5-flash"
             message="free tier quota error"
             isTerminalQuotaError={true}
             isModelNotFoundError={false}
@@ -182,7 +182,7 @@ describe('ProQuotaDialog', () => {
           expect.objectContaining({
             items: [
               {
-                label: 'Switch to gemini-2.5-flash',
+                label: 'Switch to jiminy-2.5-flash',
                 value: 'retry_always',
                 key: 'retry_always',
               },
@@ -206,13 +206,13 @@ describe('ProQuotaDialog', () => {
       it('should NOT render upgrade option for LOGIN_WITH_GOOGLE if tier is Ultra', async () => {
         const { unmount } = await render(
           <ProQuotaDialog
-            failedModel="gemini-2.5-pro"
-            fallbackModel="gemini-2.5-flash"
+            failedModel="jiminy-2.5-pro"
+            fallbackModel="jiminy-2.5-flash"
             message="free tier quota error"
             isTerminalQuotaError={true}
             isModelNotFoundError={false}
             authType={AuthType.LOGIN_WITH_GOOGLE}
-            tierName="Gemini Advanced Ultra"
+            tierName="Jiminy Advanced Ultra"
             onChoice={mockOnChoice}
           />,
         );
@@ -221,7 +221,7 @@ describe('ProQuotaDialog', () => {
           expect.objectContaining({
             items: [
               {
-                label: 'Switch to gemini-2.5-flash',
+                label: 'Switch to jiminy-2.5-flash',
                 value: 'retry_always',
                 key: 'retry_always',
               },
@@ -242,8 +242,8 @@ describe('ProQuotaDialog', () => {
       it('should render keep trying, switch, and stop options', async () => {
         const { unmount } = await render(
           <ProQuotaDialog
-            failedModel="gemini-2.5-pro"
-            fallbackModel="gemini-2.5-flash"
+            failedModel="jiminy-2.5-pro"
+            fallbackModel="jiminy-2.5-flash"
             message="capacity error"
             isTerminalQuotaError={false}
             isModelNotFoundError={false}
@@ -260,7 +260,7 @@ describe('ProQuotaDialog', () => {
                 key: 'retry_once',
               },
               {
-                label: 'Switch to gemini-2.5-flash',
+                label: 'Switch to jiminy-2.5-flash',
                 value: 'retry_always',
                 key: 'retry_always',
               },
@@ -277,9 +277,9 @@ describe('ProQuotaDialog', () => {
       it('should render switch, upgrade, and stop options for LOGIN_WITH_GOOGLE', async () => {
         const { unmount } = await render(
           <ProQuotaDialog
-            failedModel="gemini-3-pro-preview"
-            fallbackModel="gemini-2.5-pro"
-            message="You don't have access to gemini-3-pro-preview yet."
+            failedModel="jiminy-3-pro-preview"
+            fallbackModel="jiminy-2.5-pro"
+            message="You don't have access to jiminy-3-pro-preview yet."
             isTerminalQuotaError={false}
             isModelNotFoundError={true}
             authType={AuthType.LOGIN_WITH_GOOGLE}
@@ -291,7 +291,7 @@ describe('ProQuotaDialog', () => {
           expect.objectContaining({
             items: [
               {
-                label: 'Switch to gemini-2.5-pro',
+                label: 'Switch to jiminy-2.5-pro',
                 value: 'retry_always',
                 key: 'retry_always',
               },
@@ -315,9 +315,9 @@ describe('ProQuotaDialog', () => {
       it('should NOT render upgrade option for USE_GEMINI', async () => {
         const { unmount } = await render(
           <ProQuotaDialog
-            failedModel="gemini-3-pro-preview"
-            fallbackModel="gemini-2.5-pro"
-            message="You don't have access to gemini-3-pro-preview yet."
+            failedModel="jiminy-3-pro-preview"
+            fallbackModel="jiminy-2.5-pro"
+            message="You don't have access to jiminy-3-pro-preview yet."
             isTerminalQuotaError={false}
             isModelNotFoundError={true}
             authType={AuthType.USE_GEMINI}
@@ -329,7 +329,7 @@ describe('ProQuotaDialog', () => {
           expect.objectContaining({
             items: [
               {
-                label: 'Switch to gemini-2.5-pro',
+                label: 'Switch to jiminy-2.5-pro',
                 value: 'retry_always',
                 key: 'retry_always',
               },
@@ -351,8 +351,8 @@ describe('ProQuotaDialog', () => {
     it('should call onChoice with the selected value', async () => {
       const { unmount } = await render(
         <ProQuotaDialog
-          failedModel="gemini-2.5-pro"
-          fallbackModel="gemini-2.5-flash"
+          failedModel="jiminy-2.5-pro"
+          fallbackModel="jiminy-2.5-flash"
           message=""
           isTerminalQuotaError={false}
           onChoice={mockOnChoice}

@@ -34,7 +34,7 @@ describe('Tracker Tools Integration', () => {
       sessionId: 'test-session',
       targetDir: tempDir,
       cwd: tempDir,
-      model: 'gemini-3-flash',
+      model: 'jiminy-3-flash',
       debugMode: false,
     });
     messageBus = new MessageBus(null as unknown as PolicyEngine, false);

@@ -15,9 +15,9 @@ import {
 } from 'vitest';
 import {
   MemoryTool,
-  setGeminiMdFilename,
-  getCurrentGeminiMdFilename,
-  getAllGeminiMdFilenames,
+  setJiminyMdFilename,
+  getCurrentJiminyMdFilename,
+  getAllJiminyMdFilenames,
   DEFAULT_CONTEXT_FILENAME,
 } from './memoryTool.js';
 import * as fs from 'node:fs/promises';
@@ -53,7 +53,7 @@ vi.mock('fs', () => ({
 
 vi.mock('os');
 
-const MEMORY_SECTION_HEADER = '## Gemini Added Memories';
+const MEMORY_SECTION_HEADER = '## Jiminy Added Memories';
 
 describe('MemoryTool', () => {
   const mockAbortSignal = new AbortController().signal;
@@ -74,30 +74,30 @@ describe('MemoryTool', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    setGeminiMdFilename(DEFAULT_CONTEXT_FILENAME);
+    setJiminyMdFilename(DEFAULT_CONTEXT_FILENAME);
   });
 
-  describe('setGeminiMdFilename', () => {
-    it('should update currentGeminiMdFilename when a valid new name is provided', () => {
+  describe('setJiminyMdFilename', () => {
+    it('should update currentJiminyMdFilename when a valid new name is provided', () => {
       const newName = 'CUSTOM_CONTEXT.md';
-      setGeminiMdFilename(newName);
-      expect(getCurrentGeminiMdFilename()).toBe(newName);
+      setJiminyMdFilename(newName);
+      expect(getCurrentJiminyMdFilename()).toBe(newName);
     });
 
-    it('should not update currentGeminiMdFilename if the new name is empty or whitespace', () => {
-      const initialName = getCurrentGeminiMdFilename();
-      setGeminiMdFilename('  ');
-      expect(getCurrentGeminiMdFilename()).toBe(initialName);
+    it('should not update currentJiminyMdFilename if the new name is empty or whitespace', () => {
+      const initialName = getCurrentJiminyMdFilename();
+      setJiminyMdFilename('  ');
+      expect(getCurrentJiminyMdFilename()).toBe(initialName);
 
-      setGeminiMdFilename('');
-      expect(getCurrentGeminiMdFilename()).toBe(initialName);
+      setJiminyMdFilename('');
+      expect(getCurrentJiminyMdFilename()).toBe(initialName);
     });
 
     it('should handle an array of filenames', () => {
       const newNames = ['CUSTOM_CONTEXT.md', 'ANOTHER_CONTEXT.md'];
-      setGeminiMdFilename(newNames);
-      expect(getCurrentGeminiMdFilename()).toBe('CUSTOM_CONTEXT.md');
-      expect(getAllGeminiMdFilenames()).toEqual(newNames);
+      setJiminyMdFilename(newNames);
+      expect(getCurrentJiminyMdFilename()).toBe('CUSTOM_CONTEXT.md');
+      expect(getAllJiminyMdFilenames()).toEqual(newNames);
     });
   });
 
@@ -140,7 +140,7 @@ describe('MemoryTool', () => {
       const expectedFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
       const expectedContent = `${MEMORY_SECTION_HEADER}\n- the sky is blue\n`;
 
@@ -266,10 +266,10 @@ describe('MemoryTool', () => {
         );
         expect(result.fileName).toContain('GEMINI.md');
         expect(result.fileDiff).toContain('Index: GEMINI.md');
-        expect(result.fileDiff).toContain('+## Gemini Added Memories');
+        expect(result.fileDiff).toContain('+## Jiminy Added Memories');
         expect(result.fileDiff).toContain('+- Test fact');
         expect(result.originalContent).toBe('');
-        expect(result.newContent).toContain('## Gemini Added Memories');
+        expect(result.newContent).toContain('## Jiminy Added Memories');
         expect(result.newContent).toContain('- Test fact');
       }
     });
@@ -279,7 +279,7 @@ describe('MemoryTool', () => {
       const memoryFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -297,7 +297,7 @@ describe('MemoryTool', () => {
       const memoryFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -323,7 +323,7 @@ describe('MemoryTool', () => {
       const memoryFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -347,7 +347,7 @@ describe('MemoryTool', () => {
     it('should handle existing memory file with content', async () => {
       const params = { fact: 'New fact' };
       const existingContent =
-        'Some existing content.\n\n## Gemini Added Memories\n- Old fact\n';
+        'Some existing content.\n\n## Jiminy Added Memories\n- Old fact\n';
 
       vi.mocked(fs.readFile).mockResolvedValue(existingContent);
 

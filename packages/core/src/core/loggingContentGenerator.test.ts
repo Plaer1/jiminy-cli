@@ -44,7 +44,7 @@ import { UserTierId } from '../code_assist/types.js';
 import { ApiRequestEvent, LlmRole } from '../telemetry/types.js';
 import { FatalAuthenticationError } from '../utils/errors.js';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_PROMPT_NAME,
   GEN_AI_REQUEST_MODEL,
   GEN_AI_SYSTEM_INSTRUCTIONS,
@@ -88,7 +88,7 @@ describe('LoggingContentGenerator', () => {
     it('should log request and response on success', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
         config: {
           systemInstruction: { parts: [{ text: 'system instructions' }] },
           tools: [{ functionDeclarations: [{ name: 'myTool' }] }],
@@ -142,9 +142,9 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
           attributes: expect.objectContaining({
-            [GEN_AI_REQUEST_MODEL]: 'gemini-pro',
+            [GEN_AI_REQUEST_MODEL]: 'jiminy-pro',
             [GEN_AI_PROMPT_NAME]: userPromptId,
             [GEN_AI_SYSTEM_INSTRUCTIONS]: JSON.stringify(
               req.config.systemInstruction,
@@ -173,7 +173,7 @@ describe('LoggingContentGenerator', () => {
     it('should log error on failure', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
         config: {
           systemInstruction: {
             parts: [{ text: 'stream system instructions' }],
@@ -206,9 +206,9 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
           attributes: expect.objectContaining({
-            [GEN_AI_REQUEST_MODEL]: 'gemini-pro',
+            [GEN_AI_REQUEST_MODEL]: 'jiminy-pro',
             [GEN_AI_PROMPT_NAME]: userPromptId,
             [GEN_AI_SYSTEM_INSTRUCTIONS]: JSON.stringify(
               req.config.systemInstruction,
@@ -246,7 +246,7 @@ describe('LoggingContentGenerator', () => {
 
     describe('Gaxios error parsing', () => {
       it('should parse raw ASCII buffer strings in Gaxios errors', async () => {
-        const req = { contents: [], model: 'gemini-pro' };
+        const req = { contents: [], model: 'jiminy-pro' };
 
         // Simulate a Gaxios error with comma-separated ASCII codes
         const asciiData = '72,101,108,108,111'; // "Hello"
@@ -270,7 +270,7 @@ describe('LoggingContentGenerator', () => {
       });
 
       it('should leave data alone if it is not a comma-separated string', async () => {
-        const req = { contents: [], model: 'gemini-pro' };
+        const req = { contents: [], model: 'jiminy-pro' };
 
         const normalData = 'Normal error message';
         const gaxiosError = Object.assign(new Error('Gaxios Error'), {
@@ -293,7 +293,7 @@ describe('LoggingContentGenerator', () => {
       });
 
       it('should leave data alone if parsing fails', async () => {
-        const req = { contents: [], model: 'gemini-pro' };
+        const req = { contents: [], model: 'jiminy-pro' };
 
         const invalidAscii = '72,invalid,101';
         const gaxiosError = Object.assign(new Error('Gaxios Error'), {
@@ -319,7 +319,7 @@ describe('LoggingContentGenerator', () => {
     it('should NOT log error on AbortError (user cancellation)', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       };
       const userPromptId = 'prompt-123';
       const abortError = new Error('Aborted');
@@ -342,7 +342,7 @@ describe('LoggingContentGenerator', () => {
     it('should log request and response on success', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
         config: {
           systemInstruction: {
             parts: [{ text: 'stream system instructions' }],
@@ -406,10 +406,10 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
 
           attributes: expect.objectContaining({
-            [GEN_AI_REQUEST_MODEL]: 'gemini-pro',
+            [GEN_AI_REQUEST_MODEL]: 'jiminy-pro',
             [GEN_AI_PROMPT_NAME]: userPromptId,
             [GEN_AI_SYSTEM_INSTRUCTIONS]: JSON.stringify(
               req.config.systemInstruction,
@@ -446,7 +446,7 @@ describe('LoggingContentGenerator', () => {
     it('should log error on failure', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       };
       const userPromptId = 'prompt-123';
       const error = new Error('test error');
@@ -486,7 +486,7 @@ describe('LoggingContentGenerator', () => {
     it('should NOT log error on AbortError during connection phase', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       };
       const userPromptId = 'prompt-123';
       const abortError = new Error('Aborted');
@@ -507,7 +507,7 @@ describe('LoggingContentGenerator', () => {
     it('should NOT log error on AbortError during stream iteration', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       };
       const userPromptId = 'prompt-123';
       const abortError = new Error('Aborted');
@@ -547,7 +547,7 @@ describe('LoggingContentGenerator', () => {
     it('should set latest API request in config for main agent requests', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       };
       // Main agent prompt IDs end with exactly 8 hashes and a turn counter
       const mainAgentPromptId = 'session-uuid########1';
@@ -572,7 +572,7 @@ describe('LoggingContentGenerator', () => {
     it('should NOT set latest API request in config for sub-agent requests', async () => {
       const req = {
         contents: [{ role: 'user', parts: [{ text: 'hello' }] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       };
       // Sub-agent prompt IDs contain fewer hashes, typically separating the agent name and ID
       const subAgentPromptId = 'codebase_investigator#12345';
@@ -603,7 +603,7 @@ describe('LoggingContentGenerator', () => {
 
   describe('countTokens', () => {
     it('should call the wrapped countTokens method', async () => {
-      const req = { contents: [], model: 'gemini-pro' };
+      const req = { contents: [], model: 'jiminy-pro' };
       const response = { totalTokens: 10 };
       vi.mocked(wrapped.countTokens).mockResolvedValue(response);
 
@@ -618,7 +618,7 @@ describe('LoggingContentGenerator', () => {
     it('should call the wrapped embedContent method', async () => {
       const req = {
         contents: [{ role: 'user', parts: [] }],
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
         config: {
           mimeType: 'text/plain',
         },
@@ -633,7 +633,7 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
           attributes: expect.objectContaining({
             [GEN_AI_REQUEST_MODEL]: req.model,
           }),

@@ -22,9 +22,9 @@ import {
   logRewind,
   RewindEvent,
   type ChatRecordingService,
-  type GeminiClient,
+  type JiminyClient,
   convertSessionToClientHistory,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 /**
  * Helper function to handle the core logic of rewinding a conversation.
@@ -39,7 +39,7 @@ import {
  */
 async function rewindConversation(
   context: CommandContext,
-  client: GeminiClient,
+  client: JiminyClient,
   recordingService: ChatRecordingService,
   messageId: string,
   newText: string,
@@ -103,7 +103,7 @@ export const rewindCommand: SlashCommand = {
         content: 'Config not found',
       };
 
-    const client = agentContext.geminiClient;
+    const client = agentContext.jiminyClient;
     if (!client)
       return {
         type: 'message',

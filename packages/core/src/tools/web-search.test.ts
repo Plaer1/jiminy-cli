@@ -15,24 +15,24 @@ import {
 } from 'vitest';
 import { WebSearchTool, type WebSearchToolParams } from './web-search.js';
 import type { Config } from '../config/config.js';
-import { GeminiClient } from '../core/client.js';
+import { JiminyClient } from '../core/client.js';
 import { ToolErrorType } from './tool-error.js';
 import { createMockMessageBus } from '../test-utils/mock-message-bus.js';
 
-// Mock GeminiClient and Config constructor
+// Mock JiminyClient and Config constructor
 vi.mock('../core/client.js');
 vi.mock('../config/config.js');
 
 describe('WebSearchTool', () => {
   const abortSignal = new AbortController().signal;
-  let mockGeminiClient: GeminiClient;
+  let mockJiminyClient: JiminyClient;
   let tool: WebSearchTool;
 
   beforeEach(() => {
     const mockConfigInstance = {
-      getGeminiClient: () => mockGeminiClient,
-      get geminiClient() {
-        return mockGeminiClient;
+      getJiminyClient: () => mockJiminyClient,
+      get jiminyClient() {
+        return mockJiminyClient;
       },
       getProxy: () => undefined,
       generationConfigService: {
@@ -48,7 +48,7 @@ describe('WebSearchTool', () => {
     (
       mockConfigInstance as unknown as { config: Config; promptId: string }
     ).promptId = 'test-prompt-id';
-    mockGeminiClient = new GeminiClient(mockConfigInstance);
+    mockJiminyClient = new JiminyClient(mockConfigInstance);
     tool = new WebSearchTool(mockConfigInstance, createMockMessageBus());
   });
 
@@ -92,7 +92,7 @@ describe('WebSearchTool', () => {
   describe('execute', () => {
     it('should return search results for a successful query', async () => {
       const params: WebSearchToolParams = { query: 'successful query' };
-      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
+      (mockJiminyClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
@@ -117,7 +117,7 @@ describe('WebSearchTool', () => {
 
     it('should handle no search results found', async () => {
       const params: WebSearchToolParams = { query: 'no results query' };
-      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
+      (mockJiminyClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
@@ -140,7 +140,7 @@ describe('WebSearchTool', () => {
     it('should return a WEB_SEARCH_FAILED error on failure', async () => {
       const params: WebSearchToolParams = { query: 'error query' };
       const testError = new Error('API Failure');
-      (mockGeminiClient.generateContent as Mock).mockRejectedValue(testError);
+      (mockJiminyClient.generateContent as Mock).mockRejectedValue(testError);
 
       const invocation = tool.build(params);
       const result = await invocation.execute(abortSignal);
@@ -153,7 +153,7 @@ describe('WebSearchTool', () => {
 
     it('should correctly format results with sources and citations', async () => {
       const params: WebSearchToolParams = { query: 'grounding query' };
-      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
+      (mockJiminyClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
@@ -200,12 +200,12 @@ Sources:
 
     it('should insert markers at correct byte positions for multibyte text', async () => {
       const params: WebSearchToolParams = { query: 'multibyte query' };
-      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
+      (mockJiminyClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
               role: 'model',
-              parts: [{ text: 'こんにちは! Gemini CLI✨️' }],
+              parts: [{ text: 'こんにちは! Jiminy CLI✨️' }],
             },
             groundingMetadata: {
               groundingChunks: [
@@ -217,14 +217,14 @@ Sources:
                 },
                 {
                   web: {
-                    title: 'google-gemini/gemini-cli',
-                    uri: 'https://github.com/google-gemini/gemini-cli',
+                    title: 'google-jiminy/jiminy-cli',
+                    uri: 'https://github.com/google-jiminy/jiminy-cli',
                   },
                 },
                 {
                   web: {
-                    title: 'Gemini CLI: your open-source AI agent',
-                    uri: 'https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/',
+                    title: 'Jiminy CLI: your open-source AI agent',
+                    uri: 'https://blog.google/technology/developers/introducing-jiminy-cli-open-source-ai-agent/',
                   },
                 },
               ],
@@ -239,7 +239,7 @@ Sources:
                 },
                 {
                   segment: {
-                    // Byte range of "Gemini CLI✨️" (utf-8 encoded)
+                    // Byte range of "Jiminy CLI✨️" (utf-8 encoded)
                     startIndex: 17,
                     endIndex: 33,
                   },
@@ -256,12 +256,12 @@ Sources:
 
       const expectedLlmContent = `Web search results for "multibyte query":
 
-こんにちは![1] Gemini CLI✨️[2][3]
+こんにちは![1] Jiminy CLI✨️[2][3]
 
 Sources:
 [1] Japanese Greeting (https://example.test/japanese-greeting)
-[2] google-gemini/gemini-cli (https://github.com/google-gemini/gemini-cli)
-[3] Gemini CLI: your open-source AI agent (https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/)`;
+[2] google-jiminy/jiminy-cli (https://github.com/google-jiminy/jiminy-cli)
+[3] Jiminy CLI: your open-source AI agent (https://blog.google/technology/developers/introducing-jiminy-cli-open-source-ai-agent/)`;
 
       expect(result.llmContent).toBe(expectedLlmContent);
       expect(result.returnDisplay).toBe(

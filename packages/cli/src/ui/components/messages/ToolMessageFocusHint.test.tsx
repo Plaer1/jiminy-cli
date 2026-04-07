@@ -18,10 +18,10 @@ import {
   type Config,
   type ToolResultDisplay,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => null,
+vi.mock('../JiminyRespondingSpinner.js', () => ({
+  JiminyRespondingSpinner: () => null,
 }));
 
 vi.mock('./ToolResultDisplay.js', () => ({

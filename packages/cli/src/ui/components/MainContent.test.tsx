@@ -6,7 +6,7 @@
 
 import { renderWithProviders } from '../../test-utils/render.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { makeFakeConfig, CoreToolCallStatus } from '@google/gemini-cli-core';
+import { makeFakeConfig, CoreToolCallStatus } from '@google/jiminy-cli-core';
 import { waitFor } from '../../test-utils/async.js';
 import { MainContent } from './MainContent.js';
 import { getToolGroupBorderAppearance } from '../utils/borderStyles.js';
@@ -322,7 +322,7 @@ describe('MainContent', () => {
   const defaultMockUiState = {
     history: [
       { id: 1, type: 'user', text: 'Hello' },
-      { id: 2, type: 'gemini', text: 'Hi there' },
+      { id: 2, type: 'jiminy', text: 'Hi there' },
     ],
     pendingHistoryItems: [],
     mainAreaWidth: 80,
@@ -470,8 +470,8 @@ describe('MainContent', () => {
     const uiState = {
       ...defaultMockUiState,
       history: [
-        { id: 1, type: 'gemini', text: 'Gemini message 1\n'.repeat(10) },
-        { id: 2, type: 'gemini', text: 'Gemini message 2\n'.repeat(10) },
+        { id: 1, type: 'jiminy', text: 'Jiminy message 1\n'.repeat(10) },
+        { id: 2, type: 'jiminy', text: 'Jiminy message 2\n'.repeat(10) },
       ],
       constrainHeight: true,
       staticAreaMaxItemHeight: 5,
@@ -488,13 +488,13 @@ describe('MainContent', () => {
     unmount();
   });
 
-  it('renders mixed history items (user + gemini) with single line padding between them', async () => {
+  it('renders mixed history items (user + jiminy) with single line padding between them', async () => {
     vi.mocked(useAlternateBuffer).mockReturnValue(true);
     const uiState = {
       ...defaultMockUiState,
       history: [
         { id: 1, type: 'user', text: 'User message' },
-        { id: 2, type: 'gemini', text: 'Gemini response\n'.repeat(10) },
+        { id: 2, type: 'jiminy', text: 'Jiminy response\n'.repeat(10) },
       ],
       constrainHeight: true,
       staticAreaMaxItemHeight: 5,
@@ -618,7 +618,7 @@ describe('MainContent', () => {
 
   it('renders a ToolConfirmationQueue without an extra line when preceded by hidden tools', async () => {
     const { ApprovalMode, WRITE_FILE_DISPLAY_NAME } = await import(
-      '@google/gemini-cli-core'
+      '@google/jiminy-cli-core'
     );
     const hiddenToolCalls = [
       {
@@ -688,7 +688,7 @@ describe('MainContent', () => {
 
   it('renders a spurious line when a tool group has only hidden tools and borderBottom true', async () => {
     const { ApprovalMode, WRITE_FILE_DISPLAY_NAME } = await import(
-      '@google/gemini-cli-core'
+      '@google/jiminy-cli-core'
     );
     const uiState = {
       ...defaultMockUiState,

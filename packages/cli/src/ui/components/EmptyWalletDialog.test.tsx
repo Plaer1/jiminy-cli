@@ -32,8 +32,8 @@ describe('EmptyWalletDialog', () => {
     it('should match snapshot with fallback available', async () => {
       const { lastFrame, unmount } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
-          fallbackModel="gemini-3-flash-preview"
+          failedModel="jiminy-2.5-pro"
+          fallbackModel="jiminy-3-flash-preview"
           resetTime="2:00 PM"
           onChoice={mockOnChoice}
         />,
@@ -46,7 +46,7 @@ describe('EmptyWalletDialog', () => {
     it('should match snapshot without fallback', async () => {
       const { lastFrame, unmount } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
         />,
       );
@@ -58,13 +58,13 @@ describe('EmptyWalletDialog', () => {
     it('should display the model name and usage limit message', async () => {
       const { lastFrame, unmount } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
         />,
       );
 
       const output = lastFrame() ?? '';
-      expect(output).toContain('gemini-2.5-pro');
+      expect(output).toContain('jiminy-2.5-pro');
       expect(output).toContain('Usage limit reached');
       unmount();
     });
@@ -72,7 +72,7 @@ describe('EmptyWalletDialog', () => {
     it('should display purchase prompt and credits update notice', async () => {
       const { lastFrame, unmount } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
         />,
       );
@@ -88,7 +88,7 @@ describe('EmptyWalletDialog', () => {
     it('should display reset time when provided', async () => {
       const { lastFrame, unmount } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           resetTime="3:45 PM"
           onChoice={mockOnChoice}
         />,
@@ -103,7 +103,7 @@ describe('EmptyWalletDialog', () => {
     it('should not display reset time when not provided', async () => {
       const { lastFrame, unmount } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
         />,
       );
@@ -116,7 +116,7 @@ describe('EmptyWalletDialog', () => {
     it('should display slash command hints', async () => {
       const { lastFrame, unmount } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
         />,
       );
@@ -134,7 +134,7 @@ describe('EmptyWalletDialog', () => {
       // get_credits is the first item, so just press Enter
       const { unmount, stdin } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
           onGetCredits={mockOnGetCredits}
         />,
@@ -152,7 +152,7 @@ describe('EmptyWalletDialog', () => {
     it('should call onChoice without onGetCredits when onGetCredits is not provided', async () => {
       const { unmount, stdin } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
         />,
       );
@@ -170,8 +170,8 @@ describe('EmptyWalletDialog', () => {
       // use_fallback is the second item: Down + Enter
       const { unmount, stdin } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
-          fallbackModel="gemini-3-flash-preview"
+          failedModel="jiminy-2.5-pro"
+          fallbackModel="jiminy-3-flash-preview"
           onChoice={mockOnChoice}
         />,
       );
@@ -190,7 +190,7 @@ describe('EmptyWalletDialog', () => {
       // stop is the second item: Down + Enter
       const { unmount, stdin } = await renderWithProviders(
         <EmptyWalletDialog
-          failedModel="gemini-2.5-pro"
+          failedModel="jiminy-2.5-pro"
           onChoice={mockOnChoice}
         />,
       );

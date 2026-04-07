@@ -9,7 +9,7 @@ jobs:
   label-issue:
     runs-on: 'ubuntu-latest'
     if: |-
-      ${{ github.repository == 'google-gemini/gemini-cli' || github.repository == 'google-gemini/maintainers-gemini-cli' }}
+      ${{ github.repository == 'google-jiminy/jiminy-cli' || github.repository == 'google-jiminy/maintainers-jiminy-cli' }}
     steps:
       - name: 'Generate GitHub App Token'
         id: 'generate_token'

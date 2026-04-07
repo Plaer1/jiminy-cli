@@ -9,7 +9,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import { loadSettings, USER_SETTINGS_PATH } from './settings.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 
 const mocks = vi.hoisted(() => {
   const suffix = Math.random().toString(36).slice(2);
@@ -23,43 +23,43 @@ vi.mock('node:os', async (importOriginal) => {
   const path = await import('node:path');
   return {
     ...actual,
-    homedir: () => path.join(actual.tmpdir(), `gemini-home-${mocks.suffix}`),
+    homedir: () => path.join(actual.tmpdir(), `jiminy-home-${mocks.suffix}`),
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   const path = await import('node:path');
   const os = await import('node:os');
   return {
     ...actual,
-    GEMINI_DIR: '.gemini',
+    GEMINI_DIR: '.jiminy',
     debugLogger: {
       error: vi.fn(),
     },
     getErrorMessage: (error: unknown) => String(error),
-    homedir: () => path.join(os.tmpdir(), `gemini-home-${mocks.suffix}`),
+    homedir: () => path.join(os.tmpdir(), `jiminy-home-${mocks.suffix}`),
   };
 });
 
 describe('loadSettings', () => {
-  const mockHomeDir = path.join(os.tmpdir(), `gemini-home-${mocks.suffix}`);
+  const mockHomeDir = path.join(os.tmpdir(), `jiminy-home-${mocks.suffix}`);
   const mockWorkspaceDir = path.join(
     os.tmpdir(),
-    `gemini-workspace-${mocks.suffix}`,
+    `jiminy-workspace-${mocks.suffix}`,
   );
-  const mockGeminiHomeDir = path.join(mockHomeDir, '.gemini');
-  const mockGeminiWorkspaceDir = path.join(mockWorkspaceDir, '.gemini');
+  const mockJiminyHomeDir = path.join(mockHomeDir, '.jiminy');
+  const mockJiminyWorkspaceDir = path.join(mockWorkspaceDir, '.jiminy');
 
   beforeEach(() => {
     vi.clearAllMocks();
     // Create the directories using the real fs
-    if (!fs.existsSync(mockGeminiHomeDir)) {
-      fs.mkdirSync(mockGeminiHomeDir, { recursive: true });
+    if (!fs.existsSync(mockJiminyHomeDir)) {
+      fs.mkdirSync(mockJiminyHomeDir, { recursive: true });
     }
-    if (!fs.existsSync(mockGeminiWorkspaceDir)) {
-      fs.mkdirSync(mockGeminiWorkspaceDir, { recursive: true });
+    if (!fs.existsSync(mockJiminyWorkspaceDir)) {
+      fs.mkdirSync(mockJiminyWorkspaceDir, { recursive: true });
     }
 
     // Clean up settings files before each test
@@ -67,7 +67,7 @@ describe('loadSettings', () => {
       fs.rmSync(USER_SETTINGS_PATH);
     }
     const workspaceSettingsPath = path.join(
-      mockGeminiWorkspaceDir,
+      mockJiminyWorkspaceDir,
       'settings.json',
     );
     if (fs.existsSync(workspaceSettingsPath)) {
@@ -141,7 +141,7 @@ describe('loadSettings', () => {
       },
     };
     const workspaceSettingsPath = path.join(
-      mockGeminiWorkspaceDir,
+      mockJiminyWorkspaceDir,
       'settings.json',
     );
     fs.writeFileSync(workspaceSettingsPath, JSON.stringify(workspaceSettings));

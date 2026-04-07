@@ -20,7 +20,7 @@ import {
   homedir,
   type AdminControlsSettings,
   createCache,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import stripJsonComments from 'strip-json-comments';
 import { DefaultLight } from '../ui/themes/builtin/light/default-light.js';
 import { DefaultDark } from '../ui/themes/builtin/dark/default-dark.js';
@@ -100,11 +100,11 @@ export function getSystemSettingsPath(): string {
     return process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH'];
   }
   if (platform() === 'darwin') {
-    return '/Library/Application Support/GeminiCli/settings.json';
+    return '/Library/Application Support/JiminyCli/settings.json';
   } else if (platform() === 'win32') {
-    return 'C:\\ProgramData\\gemini-cli\\settings.json';
+    return 'C:\\ProgramData\\jiminy-cli\\settings.json';
   } else {
-    return '/etc/gemini-cli/settings.json';
+    return '/etc/jiminy-cli/settings.json';
   }
 }
 
@@ -497,10 +497,10 @@ export class LoadedSettings {
 function findEnvFile(startDir: string): string | null {
   let currentDir = path.resolve(startDir);
   while (true) {
-    // prefer gemini-specific .env under GEMINI_DIR
-    const geminiEnvPath = path.join(currentDir, GEMINI_DIR, '.env');
-    if (fs.existsSync(geminiEnvPath)) {
-      return geminiEnvPath;
+    // prefer jiminy-specific .env under GEMINI_DIR
+    const jiminyEnvPath = path.join(currentDir, GEMINI_DIR, '.env');
+    if (fs.existsSync(jiminyEnvPath)) {
+      return jiminyEnvPath;
     }
     const envPath = path.join(currentDir, '.env');
     if (fs.existsSync(envPath)) {
@@ -508,10 +508,10 @@ function findEnvFile(startDir: string): string | null {
     }
     const parentDir = path.dirname(currentDir);
     if (parentDir === currentDir || !parentDir) {
-      // check .env under home as fallback, again preferring gemini-specific .env
-      const homeGeminiEnvPath = path.join(homedir(), GEMINI_DIR, '.env');
-      if (fs.existsSync(homeGeminiEnvPath)) {
-        return homeGeminiEnvPath;
+      // check .env under home as fallback, again preferring jiminy-specific .env
+      const homeJiminyEnvPath = path.join(homedir(), GEMINI_DIR, '.env');
+      if (fs.existsSync(homeJiminyEnvPath)) {
+        return homeJiminyEnvPath;
       }
       const homeEnvPath = path.join(homedir(), '.env');
       if (fs.existsSync(homeEnvPath)) {

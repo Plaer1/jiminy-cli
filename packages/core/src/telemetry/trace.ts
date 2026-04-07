@@ -13,7 +13,7 @@ import {
 } from '@opentelemetry/api';
 import { safeJsonStringify } from '../utils/safeJsonStringify.js';
 import {
-  type GeminiCliOperation,
+  type JiminyCliOperation,
   GEN_AI_AGENT_DESCRIPTION,
   GEN_AI_AGENT_NAME,
   GEN_AI_CONVERSATION_ID,
@@ -27,7 +27,7 @@ import { sessionId } from '../utils/session.js';
 
 import { truncateString } from '../utils/textUtils.js';
 
-const TRACER_NAME = 'gemini-cli';
+const TRACER_NAME = 'jiminy-cli';
 const TRACER_VERSION = 'v1';
 
 export function truncateForTelemetry(
@@ -96,7 +96,7 @@ export interface SpanMetadata {
  * @returns The result of the function.
  */
 export async function runInDevTraceSpan<R>(
-  opts: SpanOptions & { operation: GeminiCliOperation; logPrompts?: boolean },
+  opts: SpanOptions & { operation: JiminyCliOperation; logPrompts?: boolean },
   fn: ({ metadata }: { metadata: SpanMetadata }) => Promise<R>,
 ): Promise<R> {
   const { operation, logPrompts, ...restOfSpanOpts } = opts;

@@ -42,15 +42,15 @@ describe('AgentRegistry Acknowledgement', () => {
   let registry: AgentRegistry;
   let config: Config;
   let tempDir: string;
-  let originalGeminiCliHome: string | undefined;
+  let originalJiminyCliHome: string | undefined;
   let ackService: AcknowledgedAgentsService;
 
   beforeEach(async () => {
     // Create a unique temp directory for each test
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'gemini-cli-test-'));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'jiminy-cli-test-'));
 
     // Override GEMINI_CLI_HOME to point to the temp directory
-    originalGeminiCliHome = process.env['GEMINI_CLI_HOME'];
+    originalJiminyCliHome = process.env['GEMINI_CLI_HOME'];
     process.env['GEMINI_CLI_HOME'] = tempDir;
 
     ackService = new AcknowledgedAgentsService();
@@ -70,7 +70,7 @@ describe('AgentRegistry Acknowledgement', () => {
     // We cannot easily spy on storage.getProjectAgentsDir if it's a property/getter unless we cast to any or it's a method
     // Assuming it's a method on Storage class
     vi.spyOn(config.storage, 'getProjectAgentsDir').mockReturnValue(
-      '/project/.gemini/agents',
+      '/project/.jiminy/agents',
     );
     vi.spyOn(config, 'isAgentsEnabled').mockReturnValue(true);
 
@@ -78,7 +78,7 @@ describe('AgentRegistry Acknowledgement', () => {
 
     vi.mocked(tomlLoader.loadAgentsFromDirectory).mockImplementation(
       async (dir) => {
-        if (dir === '/project/.gemini/agents') {
+        if (dir === '/project/.jiminy/agents') {
           return {
             agents: [MOCK_AGENT_WITH_HASH],
             errors: [],
@@ -93,8 +93,8 @@ describe('AgentRegistry Acknowledgement', () => {
     vi.restoreAllMocks();
 
     // Restore environment variable
-    if (originalGeminiCliHome) {
-      process.env['GEMINI_CLI_HOME'] = originalGeminiCliHome;
+    if (originalJiminyCliHome) {
+      process.env['GEMINI_CLI_HOME'] = originalJiminyCliHome;
     } else {
       delete process.env['GEMINI_CLI_HOME'];
     }
@@ -118,7 +118,7 @@ describe('AgentRegistry Acknowledgement', () => {
 
     vi.mocked(tomlLoader.loadAgentsFromDirectory).mockImplementation(
       async (dir) => {
-        if (dir === '/project/.gemini/agents') {
+        if (dir === '/project/.jiminy/agents') {
           return {
             agents: [MOCK_AGENT_WITH_HASH],
             errors: [],
@@ -141,7 +141,7 @@ describe('AgentRegistry Acknowledgement', () => {
     const agentNoHash = { ...MOCK_AGENT_WITH_HASH, metadata: undefined };
     vi.mocked(tomlLoader.loadAgentsFromDirectory).mockImplementation(
       async (dir) => {
-        if (dir === '/project/.gemini/agents') {
+        if (dir === '/project/.jiminy/agents') {
           return {
             agents: [agentNoHash],
             errors: [],

@@ -48,13 +48,13 @@ export class LocalLiteRtLmClient {
     reminder?: string,
     abortSignal?: AbortSignal,
   ): Promise<object> {
-    const geminiContents = contents.map((c) => ({
+    const jiminyContents = contents.map((c) => ({
       role: c.role,
       parts: c.parts ? c.parts.map((p) => ({ text: p.text })) : [],
     }));
 
     if (reminder) {
-      const lastContent = geminiContents.at(-1);
+      const lastContent = jiminyContents.at(-1);
       if (lastContent?.role === 'user' && lastContent.parts?.[0]?.text) {
         lastContent.parts[0].text += `\n\n${reminder}`;
       }
@@ -63,7 +63,7 @@ export class LocalLiteRtLmClient {
     try {
       const result = await this.client.models.generateContent({
         model: this.model,
-        contents: geminiContents,
+        contents: jiminyContents,
         config: {
           responseMimeType: 'application/json',
           systemInstruction: systemInstruction

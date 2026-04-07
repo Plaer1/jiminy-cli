@@ -1,7 +1,7 @@
 # Sequential Inventory Rules
 
 ## Purpose
-These rules govern a sequential audit of runtime, user-visible branded strings in this repo. The output must identify every place a user can see branded `Gemini` text in actual product surfaces.
+These rules govern a sequential audit of runtime, user-visible branded strings in this repo. The output must identify every place a user can see branded `Jiminy` text in actual product surfaces.
 
 ## Required reading order
 1. Read this file.
@@ -28,16 +28,16 @@ These rules govern a sequential audit of runtime, user-visible branded strings i
 ## Canonical spelling guardrail
 Treat the following tokens as exact literals. Do not rewrite them.
 
-- `Gemini CLI`
-- `gemini`
-- `gemini-cli`
-- `Gemini CLI Companion`
-- `gemini-2.5-pro`
-- `gemini-2.5-flash`
-- `gemini-3-pro`
-- `gemini-3-flash`
-- `gemini-3.1-pro`
-- `gemini-3.1-flash`
+- `Jiminy CLI`
+- `jiminy`
+- `jiminy-cli`
+- `Jiminy CLI Companion`
+- `jiminy-2.5-pro`
+- `jiminy-2.5-flash`
+- `jiminy-3-pro`
+- `jiminy-3-flash`
+- `jiminy-3.1-pro`
+- `jiminy-3.1-flash`
 - `/help`
 - `/docs`
 - `/settings`
@@ -45,10 +45,10 @@ Treat the following tokens as exact literals. Do not rewrite them.
 - `/skills`
 
 ## Common capitalization failures to avoid
-- `Gemini CLI` is not `Gemini Cli`, `gemini CLI`, or `Gemini`.
-- `gemini-cli` is not `gemini cli` or `Gemini-CLI`.
-- `Gemini CLI Companion` is not `Gemini companion`.
-- `gemini-3-pro` is not `Gemini-3-Pro`.
+- `Jiminy CLI` is not `Jiminy Cli`, `jiminy CLI`, or `Jiminy`.
+- `jiminy-cli` is not `jiminy cli` or `Jiminy-CLI`.
+- `Jiminy CLI Companion` is not `Jiminy companion`.
+- `jiminy-3-pro` is not `Jiminy-3-Pro`.
 - `/help` is not `help`.
 - `--prompt` is not `prompt`.
 

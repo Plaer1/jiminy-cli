@@ -21,13 +21,13 @@ import {
   ROOT_SCHEDULER_ID,
   CoreToolCallStatus,
   type WaitingToolCall,
-} from '@google/gemini-cli-core';
-import { createMockMessageBus } from '@google/gemini-cli-core/src/test-utils/mock-message-bus.js';
+} from '@google/jiminy-cli-core';
+import { createMockMessageBus } from '@google/jiminy-cli-core/src/test-utils/mock-message-bus.js';
 
 // Mock Core Scheduler
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     Scheduler: vi.fn().mockImplementation(() => ({
@@ -130,11 +130,11 @@ describe('useToolScheduler', () => {
       request: { callId: 'call-1', name: 'test_tool' },
       status: CoreToolCallStatus.Executing,
       liveOutput: 'Loading...',
-      responseSubmittedToGemini: false,
+      responseSubmittedToJiminy: false,
     });
   });
 
-  it('preserves responseSubmittedToGemini flag across updates', async () => {
+  it('preserves responseSubmittedToJiminy flag across updates', async () => {
     const { result } = await renderHook(() =>
       useToolScheduler(
         vi.fn().mockResolvedValue(undefined),
@@ -178,7 +178,7 @@ describe('useToolScheduler', () => {
       markAsSubmitted(['call-1']);
     });
 
-    expect(result.current[0][0].responseSubmittedToGemini).toBe(true);
+    expect(result.current[0][0].responseSubmittedToJiminy).toBe(true);
 
     // 3. Receive another update (should preserve the true flag)
     act(() => {
@@ -189,7 +189,7 @@ describe('useToolScheduler', () => {
       } as ToolCallsUpdateMessage);
     });
 
-    expect(result.current[0][0].responseSubmittedToGemini).toBe(true);
+    expect(result.current[0][0].responseSubmittedToJiminy).toBe(true);
   });
 
   it('updates lastToolOutputTime when tools are executing', async () => {
@@ -276,7 +276,7 @@ describe('useToolScheduler', () => {
     };
 
     // Mock the specific return value for this test
-    const { Scheduler } = await import('@google/gemini-cli-core');
+    const { Scheduler } = await import('@google/jiminy-cli-core');
     vi.mocked(Scheduler).mockImplementation(
       () =>
         ({
@@ -376,14 +376,14 @@ describe('useToolScheduler', () => {
     act(() => {
       const [, , , setToolCalls] = result.current;
       setToolCalls((prev) =>
-        prev.map((t) => ({ ...t, responseSubmittedToGemini: true })),
+        prev.map((t) => ({ ...t, responseSubmittedToJiminy: true })),
       );
     });
 
     // 3. Verify that tools are still present and maintain their scheduler IDs
     const [toolCalls2] = result.current;
     expect(toolCalls2).toHaveLength(2);
-    expect(toolCalls2.every((t) => t.responseSubmittedToGemini)).toBe(true);
+    expect(toolCalls2.every((t) => t.responseSubmittedToJiminy)).toBe(true);
   });
 
   it('ignores TOOL_CALLS_UPDATE from non-root schedulers when no tools await approval', async () => {

@@ -176,8 +176,8 @@ of the individual executions passed.
 Googlers can schedule a manual run against their branch by clicking the link
 above.
 
-Tests should score at least 66% with key models including Gemini 3.1 pro, Jiminy
-3.0 pro, and Gemini 3 flash prior to check in and they must pass 100% of the
+Tests should score at least 66% with key models including Jiminy 3.1 pro, Jiminy
+3.0 pro, and Jiminy 3 flash prior to check in and they must pass 100% of the
 time before they are promoted.
 
 ## Test promotion process

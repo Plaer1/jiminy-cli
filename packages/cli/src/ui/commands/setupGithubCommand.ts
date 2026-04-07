@@ -23,27 +23,27 @@ import {
   type SlashCommandActionReturn,
 } from './types.js';
 import { getUrlOpenCommand } from '../../ui/utils/commandUtils.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 
 export const GITHUB_WORKFLOW_PATHS = [
-  'gemini-dispatch/gemini-dispatch.yml',
-  'gemini-assistant/gemini-invoke.yml',
-  'gemini-assistant/gemini-plan-execute.yml',
-  'issue-triage/gemini-triage.yml',
-  'issue-triage/gemini-scheduled-triage.yml',
-  'pr-review/gemini-review.yml',
+  'jiminy-dispatch/jiminy-dispatch.yml',
+  'jiminy-assistant/jiminy-invoke.yml',
+  'jiminy-assistant/jiminy-plan-execute.yml',
+  'issue-triage/jiminy-triage.yml',
+  'issue-triage/jiminy-scheduled-triage.yml',
+  'pr-review/jiminy-review.yml',
 ];
 
 export const GITHUB_COMMANDS_PATHS = [
-  'gemini-assistant/gemini-invoke.toml',
-  'gemini-assistant/gemini-plan-execute.toml',
-  'issue-triage/gemini-scheduled-triage.toml',
-  'issue-triage/gemini-triage.toml',
-  'pr-review/gemini-review.toml',
+  'jiminy-assistant/jiminy-invoke.toml',
+  'jiminy-assistant/jiminy-plan-execute.toml',
+  'issue-triage/jiminy-scheduled-triage.toml',
+  'issue-triage/jiminy-triage.toml',
+  'pr-review/jiminy-review.toml',
 ];
 
 const REPO_DOWNLOAD_URL =
-  'https://raw.githubusercontent.com/google-github-actions/run-gemini-cli';
+  'https://raw.githubusercontent.com/google-github-actions/run-jiminy-cli';
 const SOURCE_DIR = 'examples/workflows';
 // Generate OS-specific commands to open the GitHub pages needed for setup.
 function getOpenUrlsCommands(readmeUrl: string): string[] {
@@ -67,7 +67,7 @@ function getOpenUrlsCommands(readmeUrl: string): string[] {
 
 // Add Jiminy CLI specific entries to .gitignore file
 export async function updateGitignore(gitRepoRoot: string): Promise<void> {
-  const gitignoreEntries = ['.gemini/', 'gha-creds-*.json'];
+  const gitignoreEntries = ['.jiminy/', 'gha-creds-*.json'];
 
   const gitignorePath = path.join(gitRepoRoot, '.gitignore');
   try {
@@ -232,7 +232,7 @@ export const setupGithubCommand: SlashCommand = {
     // Get the latest release tag from GitHub
     const proxy = context?.services?.agentContext?.config.getProxy();
     const releaseTag = await getLatestGitHubRelease(proxy);
-    const readmeUrl = `https://github.com/google-github-actions/run-gemini-cli/blob/${releaseTag}/README.md#quick-start`;
+    const readmeUrl = `https://github.com/google-github-actions/run-jiminy-cli/blob/${releaseTag}/README.md#quick-start`;
 
     // Create workflows directory
     const workflowsDir = path.join(gitRepoRoot, '.github', 'workflows');

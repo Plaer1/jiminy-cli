@@ -233,14 +233,14 @@ a "surface" tag in the parenthetical metadata.
 
 | Environment                         | User-Agent Prefix            | Surface Tag |
 | :---------------------------------- | :--------------------------- | :---------- |
-| **Jiminy Code Assist (Agent Mode)** | `GeminiCLI-a2a-server`       | `vscode`    |
-| **Zed (via ACP)**                   | `GeminiCLI-acp-zed`          | `zed`       |
-| **XCode (via ACP)**                 | `GeminiCLI-acp-xcode`        | `xcode`     |
-| **IntelliJ IDEA (via ACP)**         | `GeminiCLI-acp-intellijidea` | `jetbrains` |
-| **Standard Terminal**               | `GeminiCLI`                  | `terminal`  |
+| **Jiminy Code Assist (Agent Mode)** | `JiminyCLI-a2a-server`       | `vscode`    |
+| **Zed (via ACP)**                   | `JiminyCLI-acp-zed`          | `zed`       |
+| **XCode (via ACP)**                 | `JiminyCLI-acp-xcode`        | `xcode`     |
+| **IntelliJ IDEA (via ACP)**         | `JiminyCLI-acp-intellijidea` | `jetbrains` |
+| **Standard Terminal**               | `JiminyCLI`                  | `terminal`  |
 
 **Example User-Agent:**
-`GeminiCLI-a2a-server/0.34.0/gemini-pro (linux; x64; vscode)`
+`JiminyCLI-a2a-server/0.34.0/jiminy-pro (linux; x64; vscode)`
 
 ### Custom identification
 
@@ -261,7 +261,7 @@ $env:GEMINI_CLI_SURFACE="my-custom-tool"
 ```
 
 When set, the value appears at the end of the `User-Agent` parenthetical:
-`GeminiCLI/0.34.0/gemini-pro (linux; x64; my-custom-tool)`
+`JiminyCLI/0.34.0/jiminy-pro (linux; x64; my-custom-tool)`
 
 ## Logs, metrics, and traces
 
@@ -280,7 +280,7 @@ across several categories.
 
 Session logs capture startup configuration and prompt submissions.
 
-##### `gemini_cli.config`
+##### `jiminy_cli.config`
 
 Emitted at startup with the CLI configuration.
 
@@ -316,7 +316,7 @@ Emitted at startup with the CLI configuration.
 
 </details>
 
-##### `gemini_cli.user_prompt`
+##### `jiminy_cli.user_prompt`
 
 Emitted when you submit a prompt.
 
@@ -377,7 +377,7 @@ Logs when you execute a plan and switch from plan mode to active execution.
 
 Tool logs capture executions, truncation, and edit behavior.
 
-##### `gemini_cli.tool_call`
+##### `jiminy_cli.tool_call`
 
 Emitted for each tool (function) call.
 
@@ -408,7 +408,7 @@ Emitted for each tool (function) call.
 
 </details>
 
-##### `gemini_cli.tool_output_truncated`
+##### `jiminy_cli.tool_output_truncated`
 
 Logs when tool output is truncated.
 
@@ -424,7 +424,7 @@ Logs when tool output is truncated.
 
 </details>
 
-##### `gemini_cli.edit_strategy`
+##### `jiminy_cli.edit_strategy`
 
 Records the chosen edit strategy.
 
@@ -435,7 +435,7 @@ Records the chosen edit strategy.
 
 </details>
 
-##### `gemini_cli.edit_correction`
+##### `jiminy_cli.edit_correction`
 
 Records the result of an edit correction.
 
@@ -475,7 +475,7 @@ Provides detailed GenAI operation data aligned with OpenTelemetry conventions.
 
 File logs track operations performed by tools.
 
-##### `gemini_cli.file_operation`
+##### `jiminy_cli.file_operation`
 
 Emitted for each file creation, read, or update.
 
@@ -495,7 +495,7 @@ Emitted for each file creation, read, or update.
 
 API logs capture requests, responses, and errors from Jiminy API.
 
-##### `gemini_cli.api_request`
+##### `jiminy_cli.api_request`
 
 Request sent to Jiminy API.
 
@@ -509,7 +509,7 @@ Request sent to Jiminy API.
 
 </details>
 
-##### `gemini_cli.api_response`
+##### `jiminy_cli.api_response`
 
 Response received from Jiminy API.
 
@@ -532,7 +532,7 @@ Response received from Jiminy API.
 
 </details>
 
-##### `gemini_cli.api_error`
+##### `jiminy_cli.api_error`
 
 Logs when an API request fails.
 
@@ -550,7 +550,7 @@ Logs when an API request fails.
 
 </details>
 
-##### `gemini_cli.malformed_json_response`
+##### `jiminy_cli.malformed_json_response`
 
 Logs when a JSON response cannot be parsed.
 
@@ -565,7 +565,7 @@ Logs when a JSON response cannot be parsed.
 
 These logs track how Jiminy CLI selects and routes requests to models.
 
-##### `gemini_cli.slash_command`
+##### `jiminy_cli.slash_command`
 
 Logs slash command execution.
 
@@ -578,7 +578,7 @@ Logs slash command execution.
 
 </details>
 
-##### `gemini_cli.slash_command.model`
+##### `jiminy_cli.slash_command.model`
 
 Logs model selection via slash command.
 
@@ -589,7 +589,7 @@ Logs model selection via slash command.
 
 </details>
 
-##### `gemini_cli.model_routing`
+##### `jiminy_cli.model_routing`
 
 Records model router decisions and reasoning.
 
@@ -610,7 +610,7 @@ Records model router decisions and reasoning.
 
 These logs track chat context compression and streaming chunk errors.
 
-##### `gemini_cli.chat_compression`
+##### `jiminy_cli.chat_compression`
 
 Logs chat context compression events.
 
@@ -622,7 +622,7 @@ Logs chat context compression events.
 
 </details>
 
-##### `gemini_cli.chat.invalid_chunk`
+##### `jiminy_cli.chat.invalid_chunk`
 
 Logs invalid chunks received in a stream.
 
@@ -633,7 +633,7 @@ Logs invalid chunks received in a stream.
 
 </details>
 
-##### `gemini_cli.chat.content_retry`
+##### `jiminy_cli.chat.content_retry`
 
 Logs retries due to content errors.
 
@@ -647,7 +647,7 @@ Logs retries due to content errors.
 
 </details>
 
-##### `gemini_cli.chat.content_retry_failure`
+##### `jiminy_cli.chat.content_retry_failure`
 
 Logs when all content retries fail.
 
@@ -661,7 +661,7 @@ Logs when all content retries fail.
 
 </details>
 
-##### `gemini_cli.conversation_finished`
+##### `jiminy_cli.conversation_finished`
 
 Logs when a conversation session ends.
 
@@ -677,7 +677,7 @@ Logs when a conversation session ends.
 
 Resilience logs record fallback mechanisms and recovery attempts.
 
-##### `gemini_cli.flash_fallback`
+##### `jiminy_cli.flash_fallback`
 
 Logs switch to a flash model fallback.
 
@@ -688,7 +688,7 @@ Logs switch to a flash model fallback.
 
 </details>
 
-##### `gemini_cli.ripgrep_fallback`
+##### `jiminy_cli.ripgrep_fallback`
 
 Logs fallback to standard grep.
 
@@ -699,7 +699,7 @@ Logs fallback to standard grep.
 
 </details>
 
-##### `gemini_cli.web_fetch_fallback_attempt`
+##### `jiminy_cli.web_fetch_fallback_attempt`
 
 Logs web-fetch fallback attempts.
 
@@ -710,7 +710,7 @@ Logs web-fetch fallback attempts.
 
 </details>
 
-##### `gemini_cli.agent.recovery_attempt`
+##### `jiminy_cli.agent.recovery_attempt`
 
 Logs attempts to recover from agent errors.
 
@@ -728,7 +728,7 @@ Logs attempts to recover from agent errors.
 
 Extension logs track lifecycle events and settings changes.
 
-##### `gemini_cli.extension_install`
+##### `jiminy_cli.extension_install`
 
 Logs when you install an extension.
 
@@ -742,7 +742,7 @@ Logs when you install an extension.
 
 </details>
 
-##### `gemini_cli.extension_uninstall`
+##### `jiminy_cli.extension_uninstall`
 
 Logs when you uninstall an extension.
 
@@ -754,7 +754,7 @@ Logs when you uninstall an extension.
 
 </details>
 
-##### `gemini_cli.extension_enable`
+##### `jiminy_cli.extension_enable`
 
 Logs when you enable an extension.
 
@@ -766,7 +766,7 @@ Logs when you enable an extension.
 
 </details>
 
-##### `gemini_cli.extension_disable`
+##### `jiminy_cli.extension_disable`
 
 Logs when you disable an extension.
 
@@ -782,7 +782,7 @@ Logs when you disable an extension.
 
 Agent logs track the lifecycle of agent executions.
 
-##### `gemini_cli.agent.start`
+##### `jiminy_cli.agent.start`
 
 Logs when an agent run begins.
 
@@ -794,7 +794,7 @@ Logs when an agent run begins.
 
 </details>
 
-##### `gemini_cli.agent.finish`
+##### `jiminy_cli.agent.finish`
 
 Logs when an agent run completes.
 
@@ -813,7 +813,7 @@ Logs when an agent run completes.
 
 IDE logs capture connectivity events for the IDE companion.
 
-##### `gemini_cli.ide_connection`
+##### `jiminy_cli.ide_connection`
 
 Logs IDE companion connections.
 
@@ -842,7 +842,7 @@ Logs terminal control sequence overflows.
 
 #### Miscellaneous
 
-##### `gemini_cli.rewind`
+##### `jiminy_cli.rewind`
 
 Logs when the conversation state is rewound.
 
@@ -853,7 +853,7 @@ Logs when the conversation state is rewound.
 
 </details>
 
-##### `gemini_cli.conseca.verdict`
+##### `jiminy_cli.conseca.verdict`
 
 Logs security verdicts from ConSeca.
 
@@ -867,7 +867,7 @@ Logs security verdicts from ConSeca.
 
 </details>
 
-##### `gemini_cli.hook_call`
+##### `jiminy_cli.hook_call`
 
 Logs execution of lifecycle hooks.
 
@@ -881,7 +881,7 @@ Logs execution of lifecycle hooks.
 
 </details>
 
-##### `gemini_cli.tool_output_masking`
+##### `jiminy_cli.tool_output_masking`
 
 Logs when tool output is masked for privacy.
 
@@ -895,7 +895,7 @@ Logs when tool output is masked for privacy.
 
 </details>
 
-##### `gemini_cli.keychain.availability`
+##### `jiminy_cli.keychain.availability`
 
 Logs keychain availability checks.
 
@@ -904,7 +904,7 @@ Logs keychain availability checks.
 
 - `available` (boolean)
 
-##### `gemini_cli.startup_stats`
+##### `jiminy_cli.startup_stats`
 
 Logs detailed startup performance statistics.
 
@@ -930,7 +930,7 @@ Jiminy CLI exports several custom metrics.
 
 ##### Sessions
 
-##### `gemini_cli.session.count`
+##### `jiminy_cli.session.count`
 
 Incremented once per CLI startup.
 
@@ -938,10 +938,10 @@ Incremented once per CLI startup.
 
 Tracks onboarding flow from authentication to the user
 
-- `gemini_cli.onboarding.start` (Counter, Int): Incremented when the
+- `jiminy_cli.onboarding.start` (Counter, Int): Incremented when the
   authentication flow begins.
 
-- `gemini_cli.onboarding.success` (Counter, Int): Incremented when the user
+- `jiminy_cli.onboarding.success` (Counter, Int): Incremented when the user
 onboarding flow completes successfully.
 <details>
 <summary>Attributes (Success)</summary>
@@ -950,7 +950,7 @@ onboarding flow completes successfully.
 
 ##### Tools
 
-##### `gemini_cli.tool.call.count`
+##### `jiminy_cli.tool.call.count`
 
 Counts tool calls.
 
@@ -964,7 +964,7 @@ Counts tool calls.
 
 </details>
 
-##### `gemini_cli.tool.call.latency`
+##### `jiminy_cli.tool.call.latency`
 
 Measures tool call latency (in ms).
 
@@ -977,7 +977,7 @@ Measures tool call latency (in ms).
 
 ##### API
 
-##### `gemini_cli.api.request.count`
+##### `jiminy_cli.api.request.count`
 
 Counts all API requests.
 
@@ -990,7 +990,7 @@ Counts all API requests.
 
 </details>
 
-##### `gemini_cli.api.request.latency`
+##### `jiminy_cli.api.request.latency`
 
 Measures API request latency (in ms).
 
@@ -1003,7 +1003,7 @@ Measures API request latency (in ms).
 
 ##### Token usage
 
-##### `gemini_cli.token.usage`
+##### `jiminy_cli.token.usage`
 
 Counts input, output, thought, cache, and tool tokens.
 
@@ -1017,7 +1017,7 @@ Counts input, output, thought, cache, and tool tokens.
 
 ##### Files
 
-##### `gemini_cli.file.operation.count`
+##### `jiminy_cli.file.operation.count`
 
 Counts file operations.
 
@@ -1032,7 +1032,7 @@ Counts file operations.
 
 </details>
 
-##### `gemini_cli.lines.changed`
+##### `jiminy_cli.lines.changed`
 
 Counts added or removed lines.
 
@@ -1046,7 +1046,7 @@ Counts added or removed lines.
 
 ##### Chat and streaming
 
-##### `gemini_cli.chat_compression`
+##### `jiminy_cli.chat_compression`
 
 Counts compression operations.
 
@@ -1058,21 +1058,21 @@ Counts compression operations.
 
 </details>
 
-##### `gemini_cli.chat.invalid_chunk.count`
+##### `jiminy_cli.chat.invalid_chunk.count`
 
 Counts invalid stream chunks.
 
-##### `gemini_cli.chat.content_retry.count`
+##### `jiminy_cli.chat.content_retry.count`
 
 Counts content error retries.
 
-##### `gemini_cli.chat.content_retry_failure.count`
+##### `jiminy_cli.chat.content_retry_failure.count`
 
 Counts requests where all retries failed.
 
 ##### Model routing
 
-##### `gemini_cli.slash_command.model.call_count`
+##### `jiminy_cli.slash_command.model.call_count`
 
 Counts model selections.
 
@@ -1083,7 +1083,7 @@ Counts model selections.
 
 </details>
 
-##### `gemini_cli.model_routing.latency`
+##### `jiminy_cli.model_routing.latency`
 
 Measures routing decision latency.
 
@@ -1096,7 +1096,7 @@ Measures routing decision latency.
 
 </details>
 
-##### `gemini_cli.model_routing.failure.count`
+##### `jiminy_cli.model_routing.failure.count`
 
 Counts routing failures.
 
@@ -1111,7 +1111,7 @@ Counts routing failures.
 
 ##### Agent runs
 
-##### `gemini_cli.agent.run.count`
+##### `jiminy_cli.agent.run.count`
 
 Counts agent runs.
 
@@ -1123,7 +1123,7 @@ Counts agent runs.
 
 </details>
 
-##### `gemini_cli.agent.duration`
+##### `jiminy_cli.agent.duration`
 
 Measures agent run duration.
 
@@ -1134,7 +1134,7 @@ Measures agent run duration.
 
 </details>
 
-##### `gemini_cli.agent.turns`
+##### `jiminy_cli.agent.turns`
 
 Counts turns per agent run.
 
@@ -1147,7 +1147,7 @@ Counts turns per agent run.
 
 ##### Approval mode
 
-##### `gemini_cli.plan.execution.count`
+##### `jiminy_cli.plan.execution.count`
 
 Counts plan executions.
 
@@ -1160,7 +1160,7 @@ Counts plan executions.
 
 ##### UI
 
-##### `gemini_cli.ui.flicker.count`
+##### `jiminy_cli.ui.flicker.count`
 
 Counts terminal flicker events.
 
@@ -1168,7 +1168,7 @@ Counts terminal flicker events.
 
 Jiminy CLI provides detailed performance metrics for advanced monitoring.
 
-##### `gemini_cli.startup.duration`
+##### `jiminy_cli.startup.duration`
 
 Measures startup time by phase.
 
@@ -1180,7 +1180,7 @@ Measures startup time by phase.
 
 </details>
 
-##### `gemini_cli.memory.usage`
+##### `jiminy_cli.memory.usage`
 
 Measures heap and RSS memory.
 
@@ -1192,7 +1192,7 @@ Measures heap and RSS memory.
 
 </details>
 
-##### `gemini_cli.cpu.usage`
+##### `jiminy_cli.cpu.usage`
 
 Measures CPU usage percentage.
 
@@ -1203,11 +1203,11 @@ Measures CPU usage percentage.
 
 </details>
 
-##### `gemini_cli.tool.queue.depth`
+##### `jiminy_cli.tool.queue.depth`
 
 Measures tool execution queue depth.
 
-##### `gemini_cli.tool.execution.breakdown`
+##### `jiminy_cli.tool.execution.breakdown`
 
 Breaks down tool time by phase.
 

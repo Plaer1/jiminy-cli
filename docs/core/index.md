@@ -72,9 +72,9 @@ If you are using the default "pro" model and the CLI detects that you are being
 rate-limited, it automatically switches to the "flash" model for the current
 session. This allows you to continue working without interruption.
 
-Internal utility calls that use `gemini-2.5-flash-lite` (for example, prompt
-completion and classification) silently fall back to `gemini-2.5-flash` and
-`gemini-2.5-pro` when quota is exhausted, without changing the configured model.
+Internal utility calls that use `jiminy-2.5-flash-lite` (for example, prompt
+completion and classification) silently fall back to `jiminy-2.5-flash` and
+`jiminy-2.5-pro` when quota is exhausted, without changing the configured model.
 
 ## File discovery service
 

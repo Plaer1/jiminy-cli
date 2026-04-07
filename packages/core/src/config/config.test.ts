@@ -19,7 +19,7 @@ import {
   type ConfigParameters,
   type SandboxConfig,
 } from './config.js';
-import { createMockSandboxConfig } from '@google/gemini-cli-test-utils';
+import { createMockSandboxConfig } from '@google/jiminy-cli-test-utils';
 import { DEFAULT_MAX_ATTEMPTS } from '../utils/retry.js';
 import { ExperimentFlags } from '../code_assist/experiments/flagNames.js';
 import { debugLogger } from '../utils/debugLogger.js';
@@ -32,7 +32,7 @@ import {
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
-import { setGeminiMdFilename as mockSetGeminiMdFilename } from '../tools/memoryTool.js';
+import { setJiminyMdFilename as mockSetJiminyMdFilename } from '../tools/memoryTool.js';
 import {
   DEFAULT_TELEMETRY_TARGET,
   DEFAULT_OTLP_ENDPOINT,
@@ -45,7 +45,7 @@ import {
   type ContentGeneratorConfig,
   type ContentGenerator,
 } from '../core/contentGenerator.js';
-import { GeminiClient } from '../core/client.js';
+import { JiminyClient } from '../core/client.js';
 import { GitService } from '../services/gitService.js';
 import { ShellTool } from '../tools/shell.js';
 import { ReadFileTool } from '../tools/read-file.js';
@@ -124,16 +124,16 @@ vi.mock('../tools/web-fetch');
 vi.mock('../tools/read-many-files');
 vi.mock('../tools/memoryTool', () => ({
   MemoryTool: vi.fn(),
-  setGeminiMdFilename: vi.fn(),
-  getCurrentGeminiMdFilename: vi.fn(() => 'GEMINI.md'), // Mock the original filename
+  setJiminyMdFilename: vi.fn(),
+  getCurrentJiminyMdFilename: vi.fn(() => 'GEMINI.md'), // Mock the original filename
   DEFAULT_CONTEXT_FILENAME: 'GEMINI.md',
-  GEMINI_DIR: '.gemini',
+  GEMINI_DIR: '.jiminy',
 }));
 
 vi.mock('../core/contentGenerator.js');
 
 vi.mock('../core/client.js', () => ({
-  GeminiClient: vi.fn().mockImplementation(() => ({
+  JiminyClient: vi.fn().mockImplementation(() => ({
     initialize: vi.fn().mockResolvedValue(undefined),
     stripThoughtsFromHistory: vi.fn(),
     isInitialized: vi.fn().mockReturnValue(false),
@@ -255,14 +255,14 @@ describe('Server Config (config.ts)', () => {
   const MODEL = DEFAULT_GEMINI_MODEL;
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
   const QUESTION = 'test question';
   const USER_MEMORY = 'Test User Memory';
   const TELEMETRY_SETTINGS = { enabled: false };
-  const EMBEDDING_MODEL = 'gemini-embedding';
+  const EMBEDDING_MODEL = 'jiminy-embedding';
   const SESSION_ID = 'test-session-id';
   const baseParams: ConfigParameters = {
     cwd: '/tmp',
@@ -614,7 +614,7 @@ describe('Server Config (config.ts)', () => {
       );
       // Verify that contentGeneratorConfig is updated
       expect(config.getContentGeneratorConfig()).toEqual(mockContentConfig);
-      expect(GeminiClient).toHaveBeenCalledWith(config);
+      expect(JiminyClient).toHaveBeenCalledWith(config);
     });
 
     it('should reset model availability status', async () => {
@@ -650,7 +650,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.jiminyClient.stripThoughtsFromHistory,
       ).toHaveBeenCalledWith();
     });
 
@@ -670,7 +670,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.jiminyClient.stripThoughtsFromHistory,
       ).toHaveBeenCalledWith();
     });
 
@@ -690,7 +690,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.jiminyClient.stripThoughtsFromHistory,
       ).not.toHaveBeenCalledWith();
     });
 
@@ -751,19 +751,19 @@ describe('Server Config (config.ts)', () => {
     expect(config.getUserMemory()).toBe('');
   });
 
-  it('Config constructor should call setGeminiMdFilename with contextFileName if provided', () => {
+  it('Config constructor should call setJiminyMdFilename with contextFileName if provided', () => {
     const contextFileName = 'CUSTOM_AGENTS.md';
     const paramsWithContextFile: ConfigParameters = {
       ...baseParams,
       contextFileName,
     };
     new Config(paramsWithContextFile);
-    expect(mockSetGeminiMdFilename).toHaveBeenCalledWith(contextFileName);
+    expect(mockSetJiminyMdFilename).toHaveBeenCalledWith(contextFileName);
   });
 
-  it('Config constructor should not call setGeminiMdFilename if contextFileName is not provided', () => {
+  it('Config constructor should not call setJiminyMdFilename if contextFileName is not provided', () => {
     new Config(baseParams); // baseParams does not have contextFileName
-    expect(mockSetGeminiMdFilename).not.toHaveBeenCalled();
+    expect(mockSetJiminyMdFilename).not.toHaveBeenCalled();
   });
 
   it('should set default file filtering settings when not provided', () => {
@@ -889,7 +889,7 @@ describe('Server Config (config.ts)', () => {
       ...baseParams,
       fileFiltering: {
         respectGitIgnore: false,
-        respectGeminiIgnore: false,
+        respectJiminyIgnore: false,
         customIgnoreFilePaths: ['.myignore'],
       },
     };
@@ -901,7 +901,7 @@ describe('Server Config (config.ts)', () => {
       path.resolve(TARGET_DIR),
       {
         respectGitIgnore: false,
-        respectGeminiIgnore: false,
+        respectJiminyIgnore: false,
         customIgnoreFilePaths: ['.myignore'],
       },
     );
@@ -1136,7 +1136,7 @@ describe('Server Config (config.ts)', () => {
     it('should disable useWriteTodos for preview models', () => {
       const params: ConfigParameters = {
         ...baseParams,
-        model: 'gemini-3-pro-preview',
+        model: 'jiminy-3-pro-preview',
       };
       const config = new Config(params);
       expect(config.getUseWriteTodos()).toBe(false);
@@ -1145,7 +1145,7 @@ describe('Server Config (config.ts)', () => {
     it('should NOT disable useWriteTodos for non-preview models', () => {
       const params: ConfigParameters = {
         ...baseParams,
-        model: 'gemini-2.5-pro',
+        model: 'jiminy-2.5-pro',
       };
       const config = new Config(params);
       expect(config.getUseWriteTodos()).toBe(true);
@@ -1553,14 +1553,14 @@ describe('GemmaModelRouterSettings', () => {
   const MODEL = DEFAULT_GEMINI_MODEL;
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
   const QUESTION = 'test question';
   const USER_MEMORY = 'Test User Memory';
   const TELEMETRY_SETTINGS = { enabled: false };
-  const EMBEDDING_MODEL = 'gemini-embedding';
+  const EMBEDDING_MODEL = 'jiminy-embedding';
   const SESSION_ID = 'test-session-id';
   const baseParams: ConfigParameters = {
     cwd: '/tmp',
@@ -1930,17 +1930,17 @@ describe('isYoloModeDisabled', () => {
 });
 
 describe('BaseLlmClient Lifecycle', () => {
-  const MODEL = 'gemini-pro';
+  const MODEL = 'jiminy-pro';
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
   const QUESTION = 'test question';
   const USER_MEMORY = 'Test User Memory';
   const TELEMETRY_SETTINGS = { enabled: false };
-  const EMBEDDING_MODEL = 'gemini-embedding';
+  const EMBEDDING_MODEL = 'jiminy-embedding';
   const SESSION_ID = 'test-session-id';
   const baseParams: ConfigParameters = {
     cwd: '/tmp',
@@ -1966,7 +1966,7 @@ describe('BaseLlmClient Lifecycle', () => {
   it('should successfully initialize BaseLlmClient after refreshAuth is called', async () => {
     const config = new Config(baseParams);
     const authType = AuthType.USE_GEMINI;
-    const mockContentConfig = { model: 'gemini-flash', apiKey: 'test-key' };
+    const mockContentConfig = { model: 'jiminy-flash', apiKey: 'test-key' };
 
     vi.mocked(createContentGeneratorConfig).mockResolvedValue(
       mockContentConfig,
@@ -1985,17 +1985,17 @@ describe('BaseLlmClient Lifecycle', () => {
 });
 
 describe('Generation Config Merging (HACK)', () => {
-  const MODEL = 'gemini-pro';
+  const MODEL = 'jiminy-pro';
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
   const QUESTION = 'test question';
   const USER_MEMORY = 'Test User Memory';
   const TELEMETRY_SETTINGS = { enabled: false };
-  const EMBEDDING_MODEL = 'gemini-embedding';
+  const EMBEDDING_MODEL = 'jiminy-embedding';
   const SESSION_ID = 'test-session-id';
   const baseParams: ConfigParameters = {
     cwd: '/tmp',
@@ -2112,7 +2112,7 @@ describe('Config getHooks', () => {
     targetDir: '/path/to/target',
     debugMode: false,
     sessionId: 'test-session-id',
-    model: 'gemini-pro',
+    model: 'jiminy-pro',
     usageStatisticsEnabled: false,
   };
 
@@ -2195,7 +2195,7 @@ describe('Config getHooks', () => {
       const service = config.getModelAvailabilityService();
       const spy = vi.spyOn(service, 'reset');
 
-      const proModel = 'gemini-2.5-pro';
+      const proModel = 'jiminy-2.5-pro';
       config.setModel(proModel);
 
       expect(config.getModel()).toBe(proModel);
@@ -2291,17 +2291,17 @@ describe('Config getHooks', () => {
 });
 
 describe('LocalLiteRtLmClient Lifecycle', () => {
-  const MODEL = 'gemini-pro';
+  const MODEL = 'jiminy-pro';
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
   const QUESTION = 'test question';
   const USER_MEMORY = 'Test User Memory';
   const TELEMETRY_SETTINGS = { enabled: false };
-  const EMBEDDING_MODEL = 'gemini-embedding';
+  const EMBEDDING_MODEL = 'jiminy-embedding';
   const SESSION_ID = 'test-session-id';
   const baseParams: ConfigParameters = {
     cwd: '/tmp',
@@ -2361,7 +2361,7 @@ describe('Config getExperiments', () => {
     targetDir: '/path/to/target',
     debugMode: false,
     sessionId: 'test-session-id',
-    model: 'gemini-pro',
+    model: 'jiminy-pro',
     usageStatisticsEnabled: false,
   };
 
@@ -2406,7 +2406,7 @@ describe('Config setExperiments logging', () => {
     targetDir: '/path/to/target',
     debugMode: false,
     sessionId: 'test-session-id',
-    model: 'gemini-pro',
+    model: 'jiminy-pro',
     usageStatisticsEnabled: false,
   };
 
@@ -2606,15 +2606,15 @@ describe('Config Quota & Preview Model Access', () => {
     targetDir: '/tmp',
     debugMode: false,
     sessionId: 'test-session',
-    model: 'gemini-pro',
+    model: 'jiminy-pro',
     usageStatisticsEnabled: false,
-    embeddingModel: 'gemini-embedding',
+    embeddingModel: 'jiminy-embedding',
     sandbox: {
       enabled: true,
       allowedPaths: [],
       networkAccess: false,
       command: 'docker',
-      image: 'gemini-cli-sandbox',
+      image: 'jiminy-cli-sandbox',
     },
   };
 
@@ -2635,7 +2635,7 @@ describe('Config Quota & Preview Model Access', () => {
       mockCodeAssistServer.retrieveUserQuota.mockResolvedValue({
         buckets: [
           {
-            modelId: 'gemini-3-pro-preview',
+            modelId: 'jiminy-3-pro-preview',
             remainingAmount: '100',
             remainingFraction: 1.0,
           },
@@ -2646,11 +2646,11 @@ describe('Config Quota & Preview Model Access', () => {
       expect(config.getHasAccessToPreviewModel()).toBe(true);
     });
 
-    it('should update hasAccessToPreviewModel to true if quota includes Gemini 3.1 preview model', async () => {
+    it('should update hasAccessToPreviewModel to true if quota includes Jiminy 3.1 preview model', async () => {
       mockCodeAssistServer.retrieveUserQuota.mockResolvedValue({
         buckets: [
           {
-            modelId: 'gemini-3.1-pro-preview',
+            modelId: 'jiminy-3.1-pro-preview',
             remainingAmount: '100',
             remainingFraction: 1.0,
           },
@@ -2680,19 +2680,19 @@ describe('Config Quota & Preview Model Access', () => {
       mockCodeAssistServer.retrieveUserQuota.mockResolvedValue({
         buckets: [
           {
-            modelId: 'gemini-2.5-pro',
+            modelId: 'jiminy-2.5-pro',
             remainingAmount: '10',
             remainingFraction: 0.2,
           },
           {
-            modelId: 'gemini-2.5-flash',
+            modelId: 'jiminy-2.5-flash',
             remainingAmount: '80',
             remainingFraction: 0.8,
           },
         ],
       });
 
-      config.setModel('auto-gemini-2.5');
+      config.setModel('auto-jiminy-2.5');
       await config.refreshUserQuota();
 
       const pooled = (
@@ -2716,14 +2716,14 @@ describe('Config Quota & Preview Model Access', () => {
       mockCodeAssistServer.retrieveUserQuota.mockResolvedValue({
         buckets: [
           {
-            modelId: 'gemini-2.5-pro',
+            modelId: 'jiminy-2.5-pro',
             remainingAmount: '10',
             remainingFraction: 0.2,
           },
         ],
       });
 
-      config.setModel('gemini-2.5-pro');
+      config.setModel('jiminy-2.5-pro');
       await config.refreshUserQuota();
 
       expect(
@@ -2965,8 +2965,8 @@ describe('Config JIT Initialization', () => {
     expect(sessionMemory).toContain('</loaded_context>');
 
     // Verify state update (delegated to ContextManager)
-    expect(config.getGeminiMdFileCount()).toBe(1);
-    expect(config.getGeminiMdFilePaths()).toEqual(['/path/to/GEMINI.md']);
+    expect(config.getJiminyMdFileCount()).toBe(1);
+    expect(config.getJiminyMdFilePaths()).toEqual(['/path/to/GEMINI.md']);
   });
 
   it('should NOT initialize ContextManager when experimentalJitContext is disabled', async () => {

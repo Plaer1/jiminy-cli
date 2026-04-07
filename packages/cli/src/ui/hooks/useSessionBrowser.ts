@@ -15,7 +15,7 @@ import {
   type Config,
   type ConversationRecord,
   type ResumedSessionData,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   convertSessionToHistoryFormats,
   type SessionInfo,
@@ -105,7 +105,7 @@ export const useSessionBrowser = (
         // (without the ".json" extension), not the full session UUID.
         try {
           const chatRecordingService = config
-            .getGeminiClient()
+            .getJiminyClient()
             ?.getChatRecordingService();
           if (chatRecordingService) {
             chatRecordingService.deleteSession(session.file);

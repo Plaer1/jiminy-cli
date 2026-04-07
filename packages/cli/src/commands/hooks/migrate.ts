@@ -7,7 +7,7 @@
 import type { CommandModule } from 'yargs';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { debugLogger, getErrorMessage } from '@google/gemini-cli-core';
+import { debugLogger, getErrorMessage } from '@google/jiminy-cli-core';
 import { loadSettings, SettingScope } from '../../config/settings.js';
 import { exitCli } from '../utils.js';
 import stripJsonComments from 'strip-json-comments';
@@ -51,11 +51,11 @@ function transformMatcher(matcher: string | undefined): string | undefined {
   if (!matcher) return matcher;
 
   let transformed = matcher;
-  for (const [claudeName, geminiName] of Object.entries(TOOL_NAME_MAPPING)) {
+  for (const [claudeName, jiminyName] of Object.entries(TOOL_NAME_MAPPING)) {
     // Replace exact matches and matches within regex alternations
     transformed = transformed.replace(
       new RegExp(`\\b${claudeName}\\b`, 'g'),
-      geminiName,
+      jiminyName,
     );
   }
 
@@ -112,7 +112,7 @@ function migrateClaudeHooks(claudeConfig: unknown): Record<string, unknown> {
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   const config = claudeConfig as Record<string, unknown>;
-  const geminiHooks: Record<string, unknown> = {};
+  const jiminyHooks: Record<string, unknown> = {};
 
   // Check if there's a hooks section
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
@@ -123,7 +123,7 @@ function migrateClaudeHooks(claudeConfig: unknown): Record<string, unknown> {
 
   for (const [eventName, eventConfig] of Object.entries(hooksSection)) {
     // Map event name
-    const geminiEventName = EVENT_MAPPING[eventName] || eventName;
+    const jiminyEventName = EVENT_MAPPING[eventName] || eventName;
 
     if (!Array.isArray(eventConfig)) {
       continue;
@@ -161,10 +161,10 @@ function migrateClaudeHooks(claudeConfig: unknown): Record<string, unknown> {
       return migratedDef;
     });
 
-    geminiHooks[geminiEventName] = migratedDefinitions;
+    jiminyHooks[jiminyEventName] = migratedDefinitions;
   }
 
-  return geminiHooks;
+  return jiminyHooks;
 }
 
 /**
@@ -249,9 +249,9 @@ export async function handleMigrateFromClaude() {
   try {
     settings.setValue(SettingScope.Workspace, 'hooks', mergedHooks);
 
-    debugLogger.log('✓ Hooks successfully migrated to .gemini/settings.json');
+    debugLogger.log('✓ Hooks successfully migrated to .jiminy/settings.json');
     debugLogger.log(
-      '\nMigration complete! Please review the migrated hooks in .gemini/settings.json',
+      '\nMigration complete! Please review the migrated hooks in .jiminy/settings.json',
     );
   } catch (error) {
     debugLogger.error(`Error saving migrated hooks: ${getErrorMessage(error)}`);

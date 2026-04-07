@@ -22,7 +22,7 @@ import * as coreToolHookTriggers from '../core/coreToolHookTriggers.js';
 import { ShellToolInvocation } from '../tools/shell.js';
 import { createMockMessageBus } from '../test-utils/mock-message-bus.js';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_TOOL_CALL_ID,
   GEN_AI_TOOL_DESCRIPTION,
   GEN_AI_TOOL_NAME,
@@ -128,7 +128,7 @@ describe('ToolExecutor', () => {
 
     expect(runInDevTraceSpan).toHaveBeenCalledWith(
       expect.objectContaining({
-        operation: GeminiCliOperation.ToolCall,
+        operation: JiminyCliOperation.ToolCall,
         attributes: expect.objectContaining({
           [GEN_AI_TOOL_NAME]: 'testTool',
           [GEN_AI_TOOL_CALL_ID]: 'call-1',
@@ -191,7 +191,7 @@ describe('ToolExecutor', () => {
 
     expect(runInDevTraceSpan).toHaveBeenCalledWith(
       expect.objectContaining({
-        operation: GeminiCliOperation.ToolCall,
+        operation: JiminyCliOperation.ToolCall,
         attributes: expect.objectContaining({
           [GEN_AI_TOOL_NAME]: 'failTool',
           [GEN_AI_TOOL_CALL_ID]: 'call-2',

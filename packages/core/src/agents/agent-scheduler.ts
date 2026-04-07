@@ -71,7 +71,7 @@ export async function scheduleAgentTools(
     promptRegistry: promptRegistry ?? config.getPromptRegistry(),
     resourceRegistry: resourceRegistry ?? config.getResourceRegistry(),
     messageBus: toolRegistry.messageBus,
-    geminiClient: config.geminiClient,
+    jiminyClient: config.jiminyClient,
     sandboxManager: config.sandboxManager,
   };
 

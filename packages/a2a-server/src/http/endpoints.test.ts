@@ -16,7 +16,7 @@ import type { AddressInfo } from 'node:net';
 import { createApp, updateCoderAgentCardUrl } from './app.js';
 import type { TaskMetadata } from '../types.js';
 import { createMockConfig } from '../utils/testing_utils.js';
-import { debugLogger, type Config } from '@google/gemini-cli-core';
+import { debugLogger, type Config } from '@google/jiminy-cli-core';
 
 // Mock the logger to avoid polluting test output
 // Comment out to help debug
@@ -33,9 +33,9 @@ vi.mock('../agent/task.js', () => {
     config = {
       getContentGeneratorConfig: vi
         .fn()
-        .mockReturnValue({ model: 'gemini-pro' }),
+        .mockReturnValue({ model: 'jiminy-pro' }),
     };
-    geminiClient = {
+    jiminyClient = {
       initialize: vi.fn().mockResolvedValue(undefined),
     };
     constructor(id: string, contextId: string) {
@@ -51,7 +51,7 @@ vi.mock('../agent/task.js', () => {
       id: this.id,
       contextId: this.contextId,
       taskState: this.taskState,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
       mcpServers: [],
       availableTools: [],
     }));
@@ -89,7 +89,7 @@ describe('Agent Server Endpoints', () => {
   beforeAll(async () => {
     // Create a unique temporary directory for the workspace to avoid conflicts
     testWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-agent-test-'),
+      path.join(os.tmpdir(), 'jiminy-agent-test-'),
     );
     app = await createApp();
     await new Promise<void>((resolve) => {
@@ -156,7 +156,7 @@ describe('Agent Server Endpoints', () => {
     const response = await request(app).get('/.well-known/agent-card.json');
     const port = (server.address() as AddressInfo).port;
     expect(response.status).toBe(200);
-    expect(response.body.name).toBe('Gemini SDLC Agent');
+    expect(response.body.name).toBe('Jiminy SDLC Agent');
     expect(response.body.url).toBe(`http://localhost:${port}/`);
   });
 });

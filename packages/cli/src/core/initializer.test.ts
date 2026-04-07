@@ -11,14 +11,14 @@ import {
   logIdeConnection,
   logCliConfiguration,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { performInitialAuth } from './auth.js';
 import { validateTheme } from './theme.js';
 import { type LoadedSettings } from '../config/settings.js';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     IdeClient: {
@@ -43,7 +43,7 @@ describe('initializer', () => {
   let mockConfig: {
     getToolRegistry: ReturnType<typeof vi.fn>;
     getIdeMode: ReturnType<typeof vi.fn>;
-    getGeminiMdFileCount: ReturnType<typeof vi.fn>;
+    getJiminyMdFileCount: ReturnType<typeof vi.fn>;
   };
   let mockSettings: LoadedSettings;
   let mockIdeClient: {
@@ -55,7 +55,7 @@ describe('initializer', () => {
     mockConfig = {
       getToolRegistry: vi.fn(),
       getIdeMode: vi.fn().mockReturnValue(false),
-      getGeminiMdFileCount: vi.fn().mockReturnValue(5),
+      getJiminyMdFileCount: vi.fn().mockReturnValue(5),
     };
     mockSettings = {
       merged: {
@@ -90,7 +90,7 @@ describe('initializer', () => {
       accountSuspensionInfo: null,
       themeError: null,
       shouldOpenAuthDialog: false,
-      geminiMdFileCount: 5,
+      jiminyMdFileCount: 5,
     });
     expect(performInitialAuth).toHaveBeenCalledWith(mockConfig, 'oauth');
     expect(validateTheme).toHaveBeenCalledWith(mockSettings);
@@ -113,7 +113,7 @@ describe('initializer', () => {
       accountSuspensionInfo: null,
       themeError: null,
       shouldOpenAuthDialog: false,
-      geminiMdFileCount: 5,
+      jiminyMdFileCount: 5,
     });
     expect(IdeClient.getInstance).toHaveBeenCalled();
     expect(mockIdeClient.connect).toHaveBeenCalled();

@@ -23,7 +23,7 @@ import {
   AuthType,
   PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL,
   isProModel,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useKeypress } from '../hooks/useKeypress.js';
 import { theme } from '../semantic-colors.js';
 import { DescriptiveRadioButtonSelect } from './shared/DescriptiveRadioButtonSelect.js';
@@ -61,12 +61,12 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
   const preferredModel = config?.getModel() || DEFAULT_GEMINI_MODEL_AUTO;
 
   const shouldShowPreviewModels = config?.getHasAccessToPreviewModel();
-  const useGemini31 = config?.getGemini31LaunchedSync?.() ?? false;
-  const useGemini31FlashLite =
-    config?.getGemini31FlashLiteLaunchedSync?.() ?? false;
+  const useJiminy31 = config?.getJiminy31LaunchedSync?.() ?? false;
+  const useJiminy31FlashLite =
+    config?.getJiminy31FlashLiteLaunchedSync?.() ?? false;
   const selectedAuthType = settings.merged.security.auth.selectedType;
   const useCustomToolModel =
-    useGemini31 && selectedAuthType === AuthType.USE_GEMINI;
+    useJiminy31 && selectedAuthType === AuthType.USE_GEMINI;
 
   const manualModelSelected = useMemo(() => {
     if (
@@ -136,10 +136,10 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
           value: id,
           title: m.displayName ?? getDisplayString(id, config ?? undefined),
           description:
-            id === 'auto-gemini-3' && useGemini31
+            id === 'auto-jiminy-3' && useJiminy31
               ? (m.dialogDescription ?? '').replace(
-                  'gemini-3-pro',
-                  'gemini-3.1-pro',
+                  'jiminy-3-pro',
+                  'jiminy-3.1-pro',
                 )
               : (m.dialogDescription ?? ''),
           key: id,
@@ -162,7 +162,7 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
         value: DEFAULT_GEMINI_MODEL_AUTO,
         title: getDisplayString(DEFAULT_GEMINI_MODEL_AUTO),
         description:
-          'Let Jiminy CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
+          'Let Jiminy CLI decide the best model for the task: jiminy-2.5-pro, jiminy-2.5-flash',
         key: DEFAULT_GEMINI_MODEL_AUTO,
       },
       {
@@ -179,14 +179,14 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
       list.unshift({
         value: PREVIEW_GEMINI_MODEL_AUTO,
         title: getDisplayString(PREVIEW_GEMINI_MODEL_AUTO),
-        description: useGemini31
-          ? 'Let Jiminy CLI decide the best model for the task: gemini-3.1-pro, gemini-3-flash'
-          : 'Let Jiminy CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
+        description: useJiminy31
+          ? 'Let Jiminy CLI decide the best model for the task: jiminy-3.1-pro, jiminy-3-flash'
+          : 'Let Jiminy CLI decide the best model for the task: jiminy-3-pro, jiminy-3-flash',
         key: PREVIEW_GEMINI_MODEL_AUTO,
       });
     }
     return list;
-  }, [config, shouldShowPreviewModels, manualModelSelected, useGemini31]);
+  }, [config, shouldShowPreviewModels, manualModelSelected, useJiminy31]);
 
   const manualOptions = useMemo(() => {
     // --- DYNAMIC PATH ---
@@ -207,10 +207,10 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
           if (!hasAccessToProModel && m.tier === 'pro') return false;
 
           // Flag Guard: Versioned models only show if their flag is active.
-          if (id === PREVIEW_GEMINI_3_1_MODEL && !useGemini31) return false;
+          if (id === PREVIEW_GEMINI_3_1_MODEL && !useJiminy31) return false;
           if (
             id === PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL &&
-            !useGemini31FlashLite
+            !useJiminy31FlashLite
           )
             return false;
 
@@ -218,14 +218,14 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
         })
         .map(([id, m]) => {
           const resolvedId = config.modelConfigService.resolveModelId(id, {
-            useGemini3_1: useGemini31,
-            useGemini3_1FlashLite: useGemini31FlashLite,
+            useJiminy3_1: useJiminy31,
+            useJiminy3_1FlashLite: useJiminy31FlashLite,
             useCustomTools: useCustomToolModel,
           });
           // Title ID is the resolved ID without custom tools flag
           const titleId = config.modelConfigService.resolveModelId(id, {
-            useGemini3_1: useGemini31,
-            useGemini3_1FlashLite: useGemini31FlashLite,
+            useJiminy3_1: useJiminy31,
+            useJiminy3_1FlashLite: useJiminy31FlashLite,
           });
           return {
             value: resolvedId,
@@ -237,7 +237,7 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
 
       // Deduplicate: only show one entry per unique resolved model value.
       // This is needed because 3 pro and 3.1 pro models can resolve to the same
-      // value, depending on the useGemini31 flag.
+      // value, depending on the useJiminy31 flag.
       const seen = new Set<string>();
       return list.filter((option) => {
         if (seen.has(option.value)) return false;
@@ -266,7 +266,7 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
     ];
 
     if (shouldShowPreviewModels) {
-      const previewProModel = useGemini31
+      const previewProModel = useJiminy31
         ? PREVIEW_GEMINI_3_1_MODEL
         : PREVIEW_GEMINI_MODEL;
 
@@ -287,7 +287,7 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
         },
       ];
 
-      if (useGemini31FlashLite) {
+      if (useJiminy31FlashLite) {
         previewOptions.push({
           value: PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL,
           title: getDisplayString(PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL),
@@ -306,8 +306,8 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
     return list;
   }, [
     shouldShowPreviewModels,
-    useGemini31,
-    useGemini31FlashLite,
+    useJiminy31,
+    useJiminy31FlashLite,
     useCustomToolModel,
     hasAccessToProModel,
     config,

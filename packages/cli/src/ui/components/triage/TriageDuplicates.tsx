@@ -12,7 +12,7 @@ import {
   spawnAsync,
   LlmRole,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useKeypress } from '../../hooks/useKeypress.js';
 import { Command } from '../../key/keyMatchers.js';
 import { useKeyMatchers } from '../../hooks/useKeyMatchers.js';
@@ -42,7 +42,7 @@ interface RankedCandidateInfo {
   reason: string;
 }
 
-interface GeminiRecommendation {
+interface JiminyRecommendation {
   recommendation: 'duplicate' | 'canonical' | 'not-duplicate' | 'skip';
   canonical_issue_number?: number;
   reason?: string;
@@ -53,7 +53,7 @@ interface GeminiRecommendation {
 interface AnalysisResult {
   candidates: Candidate[];
   canonicalIssue?: Candidate;
-  recommendation: GeminiRecommendation;
+  recommendation: JiminyRecommendation;
 }
 
 interface ProcessedIssue {
@@ -257,7 +257,7 @@ Return a JSON object with:
 `;
       const response = await client.generateJson({
         modelConfigKey: {
-          model: 'gemini-3-pro-preview',
+          model: 'jiminy-3-pro-preview',
         },
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         schema: {
@@ -289,7 +289,7 @@ Return a JSON object with:
       });
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-      const rec = response as unknown as GeminiRecommendation;
+      const rec = response as unknown as JiminyRecommendation;
 
       let canonical: Candidate | undefined;
       if (rec.canonical_issue_number) {

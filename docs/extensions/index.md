@@ -7,7 +7,7 @@ capabilities with others. They are designed to be easily installable and
 shareable.
 
 To see what's possible, browse the
-[Jiminy CLI extension gallery](https://geminicli.com/extensions/browse/).
+[Jiminy CLI extension gallery](https://jiminycli.com/extensions/browse/).
 
 ## Choose your path
 

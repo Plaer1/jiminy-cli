@@ -20,7 +20,7 @@
 import type { BrowserManager } from './browserManager.js';
 import { debugLogger } from '../../utils/debugLogger.js';
 
-const OVERLAY_ELEMENT_ID = '__gemini_automation_overlay';
+const OVERLAY_ELEMENT_ID = '__jiminy_automation_overlay';
 
 /**
  * Builds the JavaScript function string that injects the automation overlay.

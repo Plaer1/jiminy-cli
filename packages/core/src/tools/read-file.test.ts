@@ -58,7 +58,7 @@ describe('ReadFileTool', () => {
       getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       storage: {
         getProjectTempDir: () => path.join(tempRootDir, '.temp'),
@@ -459,7 +459,7 @@ describe('ReadFileTool', () => {
       expect(result.returnDisplay).toBe('');
     });
 
-    describe('with .geminiignore', () => {
+    describe('with .jiminyignore', () => {
       beforeEach(async () => {
         await fsp.writeFile(
           path.join(tempRootDir, GEMINI_IGNORE_FILE_NAME),
@@ -472,7 +472,7 @@ describe('ReadFileTool', () => {
           getWorkspaceContext: () => new WorkspaceContext(tempRootDir),
           getFileFilteringOptions: () => ({
             respectGitIgnore: true,
-            respectGeminiIgnore: true,
+            respectJiminyIgnore: true,
           }),
           storage: {
             getProjectTempDir: () => path.join(tempRootDir, '.temp'),
@@ -502,7 +502,7 @@ describe('ReadFileTool', () => {
         tool = new ReadFileTool(mockConfigInstance, createMockMessageBus());
       });
 
-      it('should throw error if path is ignored by a .geminiignore pattern', async () => {
+      it('should throw error if path is ignored by a .jiminyignore pattern', async () => {
         const ignoredFilePath = path.join(tempRootDir, 'foo.bar');
         await fsp.writeFile(ignoredFilePath, 'content', 'utf-8');
         const params: ReadFileToolParams = {
@@ -534,7 +534,7 @@ describe('ReadFileTool', () => {
         expect(typeof invocation).not.toBe('string');
       });
 
-      it('should allow reading ignored files if respectGeminiIgnore is false', async () => {
+      it('should allow reading ignored files if respectJiminyIgnore is false', async () => {
         const ignoredFilePath = path.join(tempRootDir, 'foo.bar');
         await fsp.writeFile(ignoredFilePath, 'content', 'utf-8');
 
@@ -545,7 +545,7 @@ describe('ReadFileTool', () => {
           getWorkspaceContext: () => new WorkspaceContext(tempRootDir),
           getFileFilteringOptions: () => ({
             respectGitIgnore: true,
-            respectGeminiIgnore: false,
+            respectJiminyIgnore: false,
           }),
           storage: {
             getProjectTempDir: () => path.join(tempRootDir, '.temp'),
@@ -599,14 +599,14 @@ describe('ReadFileTool', () => {
     });
 
     it('should return the schema from the resolver when modelId is provided', () => {
-      const modelId = 'gemini-2.0-flash';
+      const modelId = 'jiminy-2.0-flash';
       const schema = tool.getSchema(modelId);
       expect(schema.name).toBe(ReadFileTool.Name);
       expect(schema.description).toMatchSnapshot();
     });
 
-    it('should return the Gemini 3 schema when a Gemini 3 modelId is provided', () => {
-      const modelId = 'gemini-3-pro-preview';
+    it('should return the Jiminy 3 schema when a Jiminy 3 modelId is provided', () => {
+      const modelId = 'jiminy-3-pro-preview';
       const schema = tool.getSchema(modelId);
       expect(schema.name).toBe(ReadFileTool.Name);
       expect(schema.description).toMatchSnapshot();

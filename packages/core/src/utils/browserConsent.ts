@@ -12,7 +12,7 @@ import * as path from 'node:path';
 /** Sentinel file written after the user acknowledges the browser privacy notice. */
 const BROWSER_CONSENT_FLAG_FILE = 'browser-consent-acknowledged.txt';
 
-/** Default browser profile directory name within ~/.gemini/ */
+/** Default browser profile directory name within ~/.jiminy/ */
 const BROWSER_PROFILE_DIR = 'cli-browser-profile';
 
 /**
@@ -28,7 +28,7 @@ const BROWSER_PROFILE_DIR = 'cli-browser-profile';
  */
 export async function getBrowserConsentIfNeeded(): Promise<boolean> {
   const consentFilePath = path.join(
-    Storage.getGlobalGeminiDir(),
+    Storage.getGlobalJiminyDir(),
     BROWSER_PROFILE_DIR,
     BROWSER_CONSENT_FLAG_FILE,
   );

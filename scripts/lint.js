@@ -22,7 +22,7 @@ const SHELLCHECK_VERSION = '0.11.0';
 const YAMLLINT_VERSION = '1.35.1';
 
 const TEMP_DIR =
-  process.env.GEMINI_LINT_TEMP_DIR || join(tmpdir(), 'gemini-cli-linters');
+  process.env.GEMINI_LINT_TEMP_DIR || join(tmpdir(), 'jiminy-cli-linters');
 
 function getPlatformArch() {
   const platform = process.platform;
@@ -244,15 +244,15 @@ export function runPrettier() {
 
 export function runSensitiveKeywordLinter() {
   console.log('\nRunning sensitive keyword linter...');
-  const SENSITIVE_PATTERN = /gemini-\d+(\.\d+)?/g;
+  const SENSITIVE_PATTERN = /jiminy-\d+(\.\d+)?/g;
   const ALLOWED_KEYWORDS = new Set([
-    'gemini-3.1',
-    'gemini-3',
-    'gemini-3.0',
-    'gemini-2.5',
-    'gemini-2.0',
-    'gemini-1.5',
-    'gemini-1.0',
+    'jiminy-3.1',
+    'jiminy-3',
+    'jiminy-3.0',
+    'jiminy-2.5',
+    'jiminy-2.0',
+    'jiminy-1.5',
+    'jiminy-1.0',
   ]);
 
   function getChangedFiles() {

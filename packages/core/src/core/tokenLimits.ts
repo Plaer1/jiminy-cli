@@ -19,7 +19,7 @@ export const DEFAULT_TOKEN_LIMIT = 1_048_576;
 
 export function tokenLimit(model: Model): TokenCount {
   // Add other models as they become relevant or if specified by config
-  // Pulled from https://ai.google.dev/gemini-api/docs/models
+  // Pulled from https://ai.google.dev/jiminy-api/docs/models
   switch (model) {
     case PREVIEW_GEMINI_MODEL:
     case PREVIEW_GEMINI_FLASH_MODEL:

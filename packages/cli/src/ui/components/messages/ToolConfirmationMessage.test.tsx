@@ -11,7 +11,7 @@ import {
   type ToolCallConfirmationDetails,
   type Config,
   ToolConfirmationOutcome,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { renderWithProviders } from '../../../test-utils/render.js';
 import { createMockSettings } from '../../../test-utils/settings.js';
 import { useToolActions } from '../../contexts/ToolActionsContext.js';
@@ -71,9 +71,9 @@ describe('ToolConfirmationMessage', () => {
       type: 'info',
       title: 'Confirm Web Fetch',
       prompt:
-        'fetch https://github.com/google/gemini-react/blob/main/README.md',
+        'fetch https://github.com/google/jiminy-react/blob/main/README.md',
       urls: [
-        'https://raw.githubusercontent.com/google/gemini-react/main/README.md',
+        'https://raw.githubusercontent.com/google/jiminy-react/main/README.md',
       ],
     };
 

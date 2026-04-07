@@ -670,7 +670,7 @@ describe('HookRunner', () => {
       const mockBeforeModelInput = {
         ...mockInput,
         llm_request: {
-          model: 'gemini-1.5-pro',
+          model: 'jiminy-1.5-pro',
           messages: [{ role: 'user', content: 'Hello' }],
         },
       };
@@ -719,7 +719,7 @@ describe('HookRunner', () => {
       const secondHookInput = JSON.parse(
         vi.mocked(mockSpawn.stdin.write).mock.calls[1][0],
       );
-      expect(secondHookInput.llm_request.model).toBe('gemini-1.5-pro');
+      expect(secondHookInput.llm_request.model).toBe('jiminy-1.5-pro');
       expect(secondHookInput.llm_request.temperature).toBe(0.7);
     });
 

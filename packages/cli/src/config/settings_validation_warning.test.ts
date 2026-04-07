@@ -21,19 +21,19 @@ const mockIsWorkspaceTrusted = vi.hoisted(() =>
   vi.fn().mockReturnValue({ isTrusted: true, source: 'file' }),
 );
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: mockCoreEvents,
     homedir: () => '/mock/home/user',
     Storage: class extends actual.Storage {
       static override getGlobalSettingsPath = () =>
-        '/mock/home/user/.gemini/settings.json';
+        '/mock/home/user/.jiminy/settings.json';
       override getWorkspaceSettingsPath = () =>
-        '/mock/workspace/.gemini/settings.json';
-      static override getGlobalGeminiDir = () => '/mock/home/user/.gemini';
+        '/mock/workspace/.jiminy/settings.json';
+      static override getGlobalJiminyDir = () => '/mock/home/user/.jiminy';
     },
   };
 });

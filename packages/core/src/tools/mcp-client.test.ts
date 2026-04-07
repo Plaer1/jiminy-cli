@@ -97,7 +97,7 @@ describe('mcp-client', () => {
     // create a tmp dir for this test
     // Create a unique temporary directory for the workspace to avoid conflicts
     testWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-agent-test-'),
+      path.join(os.tmpdir(), 'jiminy-agent-test-'),
     );
     workspaceContext = new WorkspaceContext(testWorkspace);
   });
@@ -2368,7 +2368,7 @@ describe('connectToMcpServer with OAuth', () => {
     vi.mocked(ClientLib.Client).mockImplementation(() => mockedClient);
 
     testWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-agent-test-'),
+      path.join(os.tmpdir(), 'jiminy-agent-test-'),
     );
     workspaceContext = new WorkspaceContext(testWorkspace);
 
@@ -2586,7 +2586,7 @@ describe('connectToMcpServer - HTTP→SSE fallback', () => {
     vi.mocked(ClientLib.Client).mockImplementation(() => mockedClient);
 
     testWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-agent-test-'),
+      path.join(os.tmpdir(), 'jiminy-agent-test-'),
     );
     workspaceContext = new WorkspaceContext(testWorkspace);
 
@@ -2718,7 +2718,7 @@ describe('connectToMcpServer - OAuth with transport fallback', () => {
     vi.mocked(ClientLib.Client).mockImplementation(() => mockedClient);
 
     testWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-agent-test-'),
+      path.join(os.tmpdir(), 'jiminy-agent-test-'),
     );
     workspaceContext = new WorkspaceContext(testWorkspace);
 

@@ -8,8 +8,8 @@ import { describe, it, expect } from 'vitest';
 import {
   resolveModel,
   resolveClassifierModel,
-  isGemini3Model,
-  isGemini2Model,
+  isJiminy3Model,
+  isJiminy2Model,
   isCustomModel,
   supportsModernFeatures,
   isAutoModel,
@@ -63,23 +63,23 @@ describe('Dynamic Configuration Parity', () => {
 
   const flagCombos = [
     {
-      useGemini3_1: false,
-      useGemini3_1FlashLite: false,
+      useJiminy3_1: false,
+      useJiminy3_1FlashLite: false,
       useCustomToolModel: false,
     },
     {
-      useGemini3_1: true,
-      useGemini3_1FlashLite: false,
+      useJiminy3_1: true,
+      useJiminy3_1FlashLite: false,
       useCustomToolModel: false,
     },
     {
-      useGemini3_1: true,
-      useGemini3_1FlashLite: true,
+      useJiminy3_1: true,
+      useJiminy3_1FlashLite: true,
       useCustomToolModel: false,
     },
     {
-      useGemini3_1: true,
-      useGemini3_1FlashLite: true,
+      useJiminy3_1: true,
+      useJiminy3_1FlashLite: true,
       useCustomToolModel: true,
     },
   ];
@@ -101,16 +101,16 @@ describe('Dynamic Configuration Parity', () => {
 
           const legacy = resolveModel(
             model,
-            flags.useGemini3_1,
-            flags.useGemini3_1FlashLite,
+            flags.useJiminy3_1,
+            flags.useJiminy3_1FlashLite,
             flags.useCustomToolModel,
             hasAccess,
             mockLegacyConfig,
           );
           const dynamic = resolveModel(
             model,
-            flags.useGemini3_1,
-            flags.useGemini3_1FlashLite,
+            flags.useJiminy3_1,
+            flags.useJiminy3_1FlashLite,
             flags.useCustomToolModel,
             hasAccess,
             mockDynamicConfig,
@@ -148,8 +148,8 @@ describe('Dynamic Configuration Parity', () => {
             const legacy = resolveClassifierModel(
               anchor,
               tier,
-              flags.useGemini3_1,
-              flags.useGemini3_1FlashLite,
+              flags.useJiminy3_1,
+              flags.useJiminy3_1FlashLite,
               flags.useCustomToolModel,
               hasAccess,
               mockLegacyConfig,
@@ -157,8 +157,8 @@ describe('Dynamic Configuration Parity', () => {
             const dynamic = resolveClassifierModel(
               anchor,
               tier,
-              flags.useGemini3_1,
-              flags.useGemini3_1FlashLite,
+              flags.useJiminy3_1,
+              flags.useJiminy3_1FlashLite,
               flags.useCustomToolModel,
               hasAccess,
               mockDynamicConfig,
@@ -200,10 +200,10 @@ describe('Dynamic Configuration Parity', () => {
     }
   });
 
-  it('isGemini3Model should match legacy behavior', () => {
+  it('isJiminy3Model should match legacy behavior', () => {
     for (const model of modelsToTest) {
-      const legacy = isGemini3Model(model, legacyConfig);
-      const dynamic = isGemini3Model(model, dynamicConfig);
+      const legacy = isJiminy3Model(model, legacyConfig);
+      const dynamic = isJiminy3Model(model, dynamicConfig);
       expect(dynamic).toBe(legacy);
     }
   });
@@ -236,47 +236,47 @@ describe('isPreviewModel', () => {
 
   it('should return false for non-preview models', () => {
     expect(isPreviewModel(DEFAULT_GEMINI_MODEL)).toBe(false);
-    expect(isPreviewModel('gemini-1.5-pro')).toBe(false);
+    expect(isPreviewModel('jiminy-1.5-pro')).toBe(false);
   });
 });
 
 describe('isProModel', () => {
   it('should return true for models containing "pro"', () => {
-    expect(isProModel('gemini-3-pro-preview')).toBe(true);
-    expect(isProModel('gemini-2.5-pro')).toBe(true);
+    expect(isProModel('jiminy-3-pro-preview')).toBe(true);
+    expect(isProModel('jiminy-2.5-pro')).toBe(true);
     expect(isProModel('pro')).toBe(true);
   });
 
   it('should return false for models without "pro"', () => {
-    expect(isProModel('gemini-3-flash-preview')).toBe(false);
-    expect(isProModel('gemini-2.5-flash')).toBe(false);
+    expect(isProModel('jiminy-3-flash-preview')).toBe(false);
+    expect(isProModel('jiminy-2.5-flash')).toBe(false);
     expect(isProModel('auto')).toBe(false);
   });
 });
 
 describe('isCustomModel', () => {
-  it('should return true for models not starting with gemini-', () => {
+  it('should return true for models not starting with jiminy-', () => {
     expect(isCustomModel('testing')).toBe(true);
     expect(isCustomModel('gpt-4')).toBe(true);
     expect(isCustomModel('claude-3')).toBe(true);
   });
 
-  it('should return false for Gemini models', () => {
-    expect(isCustomModel('gemini-1.5-pro')).toBe(false);
-    expect(isCustomModel('gemini-2.0-flash')).toBe(false);
-    expect(isCustomModel('gemini-3-pro-preview')).toBe(false);
+  it('should return false for Jiminy models', () => {
+    expect(isCustomModel('jiminy-1.5-pro')).toBe(false);
+    expect(isCustomModel('jiminy-2.0-flash')).toBe(false);
+    expect(isCustomModel('jiminy-3-pro-preview')).toBe(false);
   });
 
-  it('should return false for aliases that resolve to Gemini models', () => {
+  it('should return false for aliases that resolve to Jiminy models', () => {
     expect(isCustomModel(GEMINI_MODEL_ALIAS_AUTO)).toBe(false);
     expect(isCustomModel(GEMINI_MODEL_ALIAS_PRO)).toBe(false);
   });
 });
 
 describe('supportsModernFeatures', () => {
-  it('should return true for Gemini 3 models', () => {
-    expect(supportsModernFeatures('gemini-3-pro-preview')).toBe(true);
-    expect(supportsModernFeatures('gemini-3-flash-preview')).toBe(true);
+  it('should return true for Jiminy 3 models', () => {
+    expect(supportsModernFeatures('jiminy-3-pro-preview')).toBe(true);
+    expect(supportsModernFeatures('jiminy-3-flash-preview')).toBe(true);
   });
 
   it('should return true for custom models', () => {
@@ -284,12 +284,12 @@ describe('supportsModernFeatures', () => {
     expect(supportsModernFeatures('some-custom-model')).toBe(true);
   });
 
-  it('should return false for older Gemini models', () => {
-    expect(supportsModernFeatures('gemini-2.5-pro')).toBe(false);
-    expect(supportsModernFeatures('gemini-2.5-flash')).toBe(false);
-    expect(supportsModernFeatures('gemini-2.0-flash')).toBe(false);
-    expect(supportsModernFeatures('gemini-1.5-pro')).toBe(false);
-    expect(supportsModernFeatures('gemini-1.0-pro')).toBe(false);
+  it('should return false for older Jiminy models', () => {
+    expect(supportsModernFeatures('jiminy-2.5-pro')).toBe(false);
+    expect(supportsModernFeatures('jiminy-2.5-flash')).toBe(false);
+    expect(supportsModernFeatures('jiminy-2.0-flash')).toBe(false);
+    expect(supportsModernFeatures('jiminy-1.5-pro')).toBe(false);
+    expect(supportsModernFeatures('jiminy-1.0-pro')).toBe(false);
   });
 
   it('should return true for modern aliases', () => {
@@ -298,37 +298,37 @@ describe('supportsModernFeatures', () => {
   });
 });
 
-describe('isGemini3Model', () => {
-  it('should return true for gemini-3 models', () => {
-    expect(isGemini3Model('gemini-3-pro-preview')).toBe(true);
-    expect(isGemini3Model('gemini-3-flash-preview')).toBe(true);
+describe('isJiminy3Model', () => {
+  it('should return true for jiminy-3 models', () => {
+    expect(isJiminy3Model('jiminy-3-pro-preview')).toBe(true);
+    expect(isJiminy3Model('jiminy-3-flash-preview')).toBe(true);
   });
 
-  it('should return true for aliases that resolve to Gemini 3', () => {
-    expect(isGemini3Model(GEMINI_MODEL_ALIAS_AUTO)).toBe(true);
-    expect(isGemini3Model(GEMINI_MODEL_ALIAS_PRO)).toBe(true);
-    expect(isGemini3Model(PREVIEW_GEMINI_MODEL_AUTO)).toBe(true);
+  it('should return true for aliases that resolve to Jiminy 3', () => {
+    expect(isJiminy3Model(GEMINI_MODEL_ALIAS_AUTO)).toBe(true);
+    expect(isJiminy3Model(GEMINI_MODEL_ALIAS_PRO)).toBe(true);
+    expect(isJiminy3Model(PREVIEW_GEMINI_MODEL_AUTO)).toBe(true);
   });
 
-  it('should return false for Gemini 2 models', () => {
-    expect(isGemini3Model('gemini-2.5-pro')).toBe(false);
-    expect(isGemini3Model('gemini-2.5-flash')).toBe(false);
-    expect(isGemini3Model(DEFAULT_GEMINI_MODEL_AUTO)).toBe(false);
+  it('should return false for Jiminy 2 models', () => {
+    expect(isJiminy3Model('jiminy-2.5-pro')).toBe(false);
+    expect(isJiminy3Model('jiminy-2.5-flash')).toBe(false);
+    expect(isJiminy3Model(DEFAULT_GEMINI_MODEL_AUTO)).toBe(false);
   });
 
   it('should return false for arbitrary strings', () => {
-    expect(isGemini3Model('gpt-4')).toBe(false);
+    expect(isJiminy3Model('gpt-4')).toBe(false);
   });
 });
 
 describe('getDisplayString', () => {
-  it('should return Auto (Gemini 3) for preview auto model', () => {
-    expect(getDisplayString(PREVIEW_GEMINI_MODEL_AUTO)).toBe('Auto (Gemini 3)');
+  it('should return Auto (Jiminy 3) for preview auto model', () => {
+    expect(getDisplayString(PREVIEW_GEMINI_MODEL_AUTO)).toBe('Auto (Jiminy 3)');
   });
 
-  it('should return Auto (Gemini 2.5) for default auto model', () => {
+  it('should return Auto (Jiminy 2.5) for default auto model', () => {
     expect(getDisplayString(DEFAULT_GEMINI_MODEL_AUTO)).toBe(
-      'Auto (Gemini 2.5)',
+      'Auto (Jiminy 2.5)',
     );
   });
 
@@ -363,13 +363,13 @@ describe('getDisplayString', () => {
 });
 
 describe('supportsMultimodalFunctionResponse', () => {
-  it('should return true for gemini-3 model', () => {
-    expect(supportsMultimodalFunctionResponse('gemini-3-pro')).toBe(true);
+  it('should return true for jiminy-3 model', () => {
+    expect(supportsMultimodalFunctionResponse('jiminy-3-pro')).toBe(true);
   });
 
-  it('should return false for gemini-2 models', () => {
-    expect(supportsMultimodalFunctionResponse('gemini-2.5-pro')).toBe(false);
-    expect(supportsMultimodalFunctionResponse('gemini-2.5-flash')).toBe(false);
+  it('should return false for jiminy-2 models', () => {
+    expect(supportsMultimodalFunctionResponse('jiminy-2.5-pro')).toBe(false);
+    expect(supportsMultimodalFunctionResponse('jiminy-2.5-flash')).toBe(false);
   });
 
   it('should return false for other models', () => {
@@ -380,22 +380,22 @@ describe('supportsMultimodalFunctionResponse', () => {
 
 describe('resolveModel', () => {
   describe('delegation logic', () => {
-    it('should return the Preview Pro model when auto-gemini-3 is requested', () => {
+    it('should return the Preview Pro model when auto-jiminy-3 is requested', () => {
       const model = resolveModel(PREVIEW_GEMINI_MODEL_AUTO);
       expect(model).toBe(PREVIEW_GEMINI_MODEL);
     });
 
-    it('should return Gemini 3.1 Pro when auto-gemini-3 is requested and useGemini3_1 is true', () => {
+    it('should return Jiminy 3.1 Pro when auto-jiminy-3 is requested and useJiminy3_1 is true', () => {
       const model = resolveModel(PREVIEW_GEMINI_MODEL_AUTO, true);
       expect(model).toBe(PREVIEW_GEMINI_3_1_MODEL);
     });
 
-    it('should return Gemini 3.1 Pro Custom Tools when auto-gemini-3 is requested, useGemini3_1 is true, and useCustomToolModel is true', () => {
+    it('should return Jiminy 3.1 Pro Custom Tools when auto-jiminy-3 is requested, useJiminy3_1 is true, and useCustomToolModel is true', () => {
       const model = resolveModel(PREVIEW_GEMINI_MODEL_AUTO, true, false, true);
       expect(model).toBe(PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL);
     });
 
-    it('should return the Default Pro model when auto-gemini-2.5 is requested', () => {
+    it('should return the Default Pro model when auto-jiminy-2.5 is requested', () => {
       const model = resolveModel(DEFAULT_GEMINI_MODEL_AUTO);
       expect(model).toBe(DEFAULT_GEMINI_MODEL);
     });
@@ -405,7 +405,7 @@ describe('resolveModel', () => {
       expect(model).toBe(DEFAULT_GEMINI_FLASH_LITE_MODEL);
     });
 
-    it('should return the Preview Flash-Lite model when flash-lite is requested and useGemini3_1FlashLite is true', () => {
+    it('should return the Preview Flash-Lite model when flash-lite is requested and useJiminy3_1FlashLite is true', () => {
       const model = resolveModel(GEMINI_MODEL_ALIAS_FLASH_LITE, false, true);
       expect(model).toBe(PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL);
     });
@@ -452,19 +452,19 @@ describe('resolveModel', () => {
       ).toBe(DEFAULT_GEMINI_FLASH_LITE_MODEL);
     });
 
-    it('should return default model when access to preview is false and auto-gemini-3 is requested', () => {
+    it('should return default model when access to preview is false and auto-jiminy-3 is requested', () => {
       expect(
         resolveModel(PREVIEW_GEMINI_MODEL_AUTO, false, false, false, false),
       ).toBe(DEFAULT_GEMINI_MODEL);
     });
 
-    it('should return default model when access to preview is false and Gemini 3.1 is requested', () => {
+    it('should return default model when access to preview is false and Jiminy 3.1 is requested', () => {
       expect(
         resolveModel(PREVIEW_GEMINI_MODEL_AUTO, true, false, false, false),
       ).toBe(DEFAULT_GEMINI_MODEL);
     });
 
-    it('should still return default model when access to preview is false and auto-gemini-2.5 is requested', () => {
+    it('should still return default model when access to preview is false and auto-jiminy-2.5 is requested', () => {
       expect(
         resolveModel(DEFAULT_GEMINI_MODEL_AUTO, false, false, false, false),
       ).toBe(DEFAULT_GEMINI_MODEL);
@@ -472,29 +472,29 @@ describe('resolveModel', () => {
   });
 });
 
-describe('isGemini2Model', () => {
-  it('should return true for gemini-2.5-pro', () => {
-    expect(isGemini2Model('gemini-2.5-pro')).toBe(true);
+describe('isJiminy2Model', () => {
+  it('should return true for jiminy-2.5-pro', () => {
+    expect(isJiminy2Model('jiminy-2.5-pro')).toBe(true);
   });
 
-  it('should return true for gemini-2.5-flash', () => {
-    expect(isGemini2Model('gemini-2.5-flash')).toBe(true);
+  it('should return true for jiminy-2.5-flash', () => {
+    expect(isJiminy2Model('jiminy-2.5-flash')).toBe(true);
   });
 
-  it('should return true for gemini-2.0-flash', () => {
-    expect(isGemini2Model('gemini-2.0-flash')).toBe(true);
+  it('should return true for jiminy-2.0-flash', () => {
+    expect(isJiminy2Model('jiminy-2.0-flash')).toBe(true);
   });
 
-  it('should return false for gemini-1.5-pro', () => {
-    expect(isGemini2Model('gemini-1.5-pro')).toBe(false);
+  it('should return false for jiminy-1.5-pro', () => {
+    expect(isJiminy2Model('jiminy-1.5-pro')).toBe(false);
   });
 
-  it('should return false for gemini-3-pro', () => {
-    expect(isGemini2Model('gemini-3-pro')).toBe(false);
+  it('should return false for jiminy-3-pro', () => {
+    expect(isJiminy2Model('jiminy-3-pro')).toBe(false);
   });
 
   it('should return false for arbitrary strings', () => {
-    expect(isGemini2Model('gpt-4')).toBe(false);
+    expect(isJiminy2Model('gpt-4')).toBe(false);
   });
 });
 
@@ -503,11 +503,11 @@ describe('isAutoModel', () => {
     expect(isAutoModel(GEMINI_MODEL_ALIAS_AUTO)).toBe(true);
   });
 
-  it('should return true for "auto-gemini-3"', () => {
+  it('should return true for "auto-jiminy-3"', () => {
     expect(isAutoModel(PREVIEW_GEMINI_MODEL_AUTO)).toBe(true);
   });
 
-  it('should return true for "auto-gemini-2.5"', () => {
+  it('should return true for "auto-jiminy-2.5"', () => {
     expect(isAutoModel(DEFAULT_GEMINI_MODEL_AUTO)).toBe(true);
   });
 
@@ -543,7 +543,7 @@ describe('resolveClassifierModel', () => {
     ).toBe(PREVIEW_GEMINI_MODEL);
   });
 
-  it('should return Gemini 3.1 Pro when alias is pro and useGemini3_1 is true', () => {
+  it('should return Jiminy 3.1 Pro when alias is pro and useJiminy3_1 is true', () => {
     expect(
       resolveClassifierModel(
         PREVIEW_GEMINI_MODEL_AUTO,
@@ -553,7 +553,7 @@ describe('resolveClassifierModel', () => {
     ).toBe(PREVIEW_GEMINI_3_1_MODEL);
   });
 
-  it('should return Gemini 3.1 Pro Custom Tools when alias is pro, useGemini3_1 is true, and useCustomToolModel is true', () => {
+  it('should return Jiminy 3.1 Pro Custom Tools when alias is pro, useJiminy3_1 is true, and useCustomToolModel is true', () => {
     expect(
       resolveClassifierModel(
         PREVIEW_GEMINI_MODEL_AUTO,
@@ -567,13 +567,13 @@ describe('resolveClassifierModel', () => {
 });
 
 describe('isActiveModel', () => {
-  it('should return true for valid models when useGemini3_1 is false', () => {
+  it('should return true for valid models when useJiminy3_1 is false', () => {
     expect(isActiveModel(DEFAULT_GEMINI_MODEL)).toBe(true);
     expect(isActiveModel(PREVIEW_GEMINI_MODEL)).toBe(true);
     expect(isActiveModel(DEFAULT_GEMINI_FLASH_MODEL)).toBe(true);
   });
 
-  it('should return false for Gemini 3.1 models when Gemini 3.1 is not launched', () => {
+  it('should return false for Jiminy 3.1 models when Jiminy 3.1 is not launched', () => {
     expect(isActiveModel(PREVIEW_GEMINI_3_1_MODEL)).toBe(false);
     expect(isActiveModel(PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL)).toBe(false);
   });
@@ -583,15 +583,15 @@ describe('isActiveModel', () => {
     expect(isActiveModel(GEMINI_MODEL_ALIAS_AUTO)).toBe(false);
   });
 
-  it('should return false for PREVIEW_GEMINI_MODEL when useGemini3_1 is true', () => {
+  it('should return false for PREVIEW_GEMINI_MODEL when useJiminy3_1 is true', () => {
     expect(isActiveModel(PREVIEW_GEMINI_MODEL, true)).toBe(false);
   });
 
-  it('should return true for other valid models when useGemini3_1 is true', () => {
+  it('should return true for other valid models when useJiminy3_1 is true', () => {
     expect(isActiveModel(DEFAULT_GEMINI_MODEL, true)).toBe(true);
   });
 
-  it('should return true for PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL only when useGemini3_1FlashLite is true', () => {
+  it('should return true for PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL only when useJiminy3_1FlashLite is true', () => {
     expect(
       isActiveModel(PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL, false, true),
     ).toBe(true);
@@ -603,7 +603,7 @@ describe('isActiveModel', () => {
     ).toBe(false);
   });
 
-  it('should correctly filter Gemini 3.1 models based on useCustomToolModel when useGemini3_1 is true', () => {
+  it('should correctly filter Jiminy 3.1 models based on useCustomToolModel when useJiminy3_1 is true', () => {
     // When custom tools are preferred, standard 3.1 should be inactive
     expect(isActiveModel(PREVIEW_GEMINI_3_1_MODEL, true, false, true)).toBe(
       false,
@@ -621,7 +621,7 @@ describe('isActiveModel', () => {
     ).toBe(false);
   });
 
-  it('should return false for Gemini 3.1 models when useGemini3_1 and useGemini3_1FlashLite are false', () => {
+  it('should return false for Jiminy 3.1 models when useJiminy3_1 and useJiminy3_1FlashLite are false', () => {
     expect(isActiveModel(PREVIEW_GEMINI_3_1_MODEL, false, false, true)).toBe(
       false,
     );

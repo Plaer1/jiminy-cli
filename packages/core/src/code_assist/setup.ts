@@ -8,7 +8,7 @@ import {
   UserTierId,
   IneligibleTierReasonCode,
   type ClientMetadata,
-  type GeminiUserTier,
+  type JiminyUserTier,
   type IneligibleTier,
   type LoadCodeAssistResponse,
   type OnboardUserRequest,
@@ -30,7 +30,7 @@ import {
 export class ProjectIdRequiredError extends Error {
   constructor() {
     super(
-      'This account requires setting the GOOGLE_CLOUD_PROJECT or GOOGLE_CLOUD_PROJECT_ID env var. See https://goo.gle/gemini-cli-auth-docs#workspace-gca',
+      'This account requires setting the GOOGLE_CLOUD_PROJECT or GOOGLE_CLOUD_PROJECT_ID env var. See https://goo.gle/jiminy-cli-auth-docs#workspace-gca',
     );
   }
 }
@@ -59,7 +59,7 @@ export interface UserData {
   projectId: string;
   userTier: UserTierId;
   userTierName?: string;
-  paidTier?: GeminiUserTier;
+  paidTier?: JiminyUserTier;
   hasOnboardedPreviously?: boolean;
 }
 
@@ -292,7 +292,7 @@ function throwIneligibleOrProjectIdError(res: LoadCodeAssistResponse): never {
   throw new ProjectIdRequiredError();
 }
 
-function getOnboardTier(res: LoadCodeAssistResponse): GeminiUserTier {
+function getOnboardTier(res: LoadCodeAssistResponse): JiminyUserTier {
   for (const tier of res.allowedTiers || []) {
     if (tier.isDefault) {
       return tier;

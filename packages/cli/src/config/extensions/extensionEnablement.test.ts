@@ -17,8 +17,8 @@ vi.mock('./storage.js');
 import {
   coreEvents,
   GEMINI_DIR,
-  type GeminiCLIExtension,
-} from '@google/gemini-cli-core';
+  type JiminyCLIExtension,
+} from '@google/jiminy-cli-core';
 
 vi.mock('node:os', () => ({
   homedir: vi.fn().mockReturnValue('/virtual-home'),
@@ -29,7 +29,7 @@ const inMemoryFs: { [key: string]: string } = {};
 
 // Helper to create a temporary directory for testing
 function createTestDir() {
-  const dirPath = `/virtual-tmp/gemini-test-${Math.random().toString(36).substring(2, 15)}`;
+  const dirPath = `/virtual-tmp/jiminy-test-${Math.random().toString(36).substring(2, 15)}`;
   inMemoryFs[dirPath] = ''; // Simulate directory existence
   return {
     path: dirPath,
@@ -317,16 +317,16 @@ describe('ExtensionEnablementManager', () => {
 
   it('should correctly prioritize more specific enable rules', () => {
     manager.disable('ext-test', true, '/Users/chrstn');
-    manager.enable('ext-test', true, '/Users/chrstn/gemini-cli');
+    manager.enable('ext-test', true, '/Users/chrstn/jiminy-cli');
 
-    expect(manager.isEnabled('ext-test', '/Users/chrstn/gemini-cli')).toBe(
+    expect(manager.isEnabled('ext-test', '/Users/chrstn/jiminy-cli')).toBe(
       true,
     );
   });
 
   it('should not disable subdirectories if includeSubdirs is false', () => {
     manager.disable('ext-test', false, '/Users/chrstn');
-    expect(manager.isEnabled('ext-test', '/Users/chrstn/gemini-cli')).toBe(
+    expect(manager.isEnabled('ext-test', '/Users/chrstn/jiminy-cli')).toBe(
       true,
     );
   });
@@ -389,7 +389,7 @@ describe('ExtensionEnablementManager', () => {
       const extensions = [
         { name: 'ext-one' },
         { name: 'ext-two' },
-      ] as GeminiCLIExtension[];
+      ] as JiminyCLIExtension[];
       manager.validateExtensionOverrides(extensions);
       expect(coreEventsEmitSpy).not.toHaveBeenCalled();
     });
@@ -403,7 +403,7 @@ describe('ExtensionEnablementManager', () => {
       const extensions = [
         { name: 'ext-one' },
         { name: 'ext-two' },
-      ] as GeminiCLIExtension[];
+      ] as JiminyCLIExtension[];
       manager.validateExtensionOverrides(extensions);
       expect(coreEventsEmitSpy).toHaveBeenCalledTimes(2);
       expect(coreEventsEmitSpy).toHaveBeenCalledWith(

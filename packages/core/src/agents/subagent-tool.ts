@@ -23,7 +23,7 @@ import { SchemaValidator } from '../utils/schemaValidator.js';
 import { formatUserHintsForModel } from '../utils/fastAckHelper.js';
 import { runInDevTraceSpan } from '../telemetry/trace.js';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_AGENT_DESCRIPTION,
   GEN_AI_AGENT_NAME,
 } from '../telemetry/constants.js';
@@ -180,7 +180,7 @@ class SubAgentInvocation extends BaseToolInvocation<AgentInputs, ToolResult> {
 
     return runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.AgentCall,
+        operation: JiminyCliOperation.AgentCall,
         logPrompts: this.context.config.getTelemetryLogPromptsEnabled(),
         attributes: {
           [GEN_AI_AGENT_NAME]: this.definition.name,

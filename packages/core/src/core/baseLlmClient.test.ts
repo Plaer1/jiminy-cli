@@ -324,7 +324,7 @@ describe('BaseLlmClient', () => {
 
     it('should use the resolved model name when logging malformed JSON telemetry', async () => {
       const aliasModel = 'fast-alias';
-      const resolvedModel = 'gemini-1.5-flash';
+      const resolvedModel = 'jiminy-1.5-flash';
 
       // Override the mock for this specific test to simulate resolution
       (
@@ -660,7 +660,7 @@ describe('BaseLlmClient', () => {
     });
 
     it('should mark model as healthy on success', async () => {
-      const successfulModel = 'gemini-pro';
+      const successfulModel = 'jiminy-pro';
       mockConfig.getActiveModel.mockReturnValue(successfulModel);
       vi.mocked(mockAvailabilityService.selectFirstAvailable).mockReturnValue({
         selectedModel: successfulModel,
@@ -682,8 +682,8 @@ describe('BaseLlmClient', () => {
     });
 
     it('marks the final attempted model healthy after a retry with availability enabled', async () => {
-      const firstModel = 'gemini-pro';
-      const fallbackModel = 'gemini-flash';
+      const firstModel = 'jiminy-pro';
+      const fallbackModel = 'jiminy-flash';
       let activeModel = firstModel;
       mockConfig.getActiveModel.mockImplementation(() => activeModel);
       mockConfig.setActiveModel.mockImplementation((m) => {
@@ -736,7 +736,7 @@ describe('BaseLlmClient', () => {
     });
 
     it('should consume sticky attempt if selection has attempts', async () => {
-      const stickyModel = 'gemini-pro-sticky';
+      const stickyModel = 'jiminy-pro-sticky';
       vi.mocked(mockAvailabilityService.selectFirstAvailable).mockReturnValue({
         selectedModel: stickyModel,
         attempts: 1,
@@ -770,7 +770,7 @@ describe('BaseLlmClient', () => {
     });
 
     it('should mark healthy and honor availability selection when using generateJson', async () => {
-      const availableModel = 'gemini-json-pro';
+      const availableModel = 'jiminy-json-pro';
       mockConfig.getActiveModel.mockReturnValue(availableModel);
       vi.mocked(mockAvailabilityService.selectFirstAvailable).mockReturnValue({
         selectedModel: availableModel,
@@ -808,8 +808,8 @@ describe('BaseLlmClient', () => {
     });
 
     it('should refresh configuration when model changes mid-retry', async () => {
-      const firstModel = 'gemini-pro';
-      const fallbackModel = 'gemini-flash';
+      const firstModel = 'jiminy-pro';
+      const fallbackModel = 'jiminy-flash';
 
       // Provide distinct configs per model
       const getResolvedConfigMock = vi.mocked(

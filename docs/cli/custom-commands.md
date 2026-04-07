@@ -234,7 +234,7 @@ operate on specific files.
   multimodal input. Other binary files are handled gracefully and skipped.
 - **Directory listing**: `@{path/to/dir}` is traversed and each file present
   within the directory and all subdirectories is inserted into the prompt. This
-  respects `.gitignore` and `.geminiignore` if enabled.
+  respects `.gitignore` and `.jiminyignore` if enabled.
 - **Workspace-aware**: The command searches for the path in the current
   directory and any other workspace directories. Absolute paths are allowed if
   they are within the workspace.

@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { GeminiCliAgent } from './agent.js';
+import { JiminyCliAgent } from './agent.js';
 import * as path from 'node:path';
 import { z } from 'zod';
 import { tool, ModelVisibleError } from './tool.js';
@@ -20,15 +20,15 @@ const RECORD_MODE = process.env['RECORD_NEW_RESPONSES'] === 'true';
 const getGoldenPath = (name: string) =>
   path.resolve(__dirname, '../test-data', `${name}.json`);
 
-describe('GeminiCliAgent Tool Integration', () => {
+describe('JiminyCliAgent Tool Integration', () => {
   it('handles tool execution success', async () => {
     const goldenFile = getGoldenPath('tool-success');
 
-    const agent = new GeminiCliAgent({
+    const agent = new JiminyCliAgent({
       instructions: 'You are a helpful assistant.',
       // If recording, use real model + record path.
       // If testing, use auto model + fake path.
-      model: RECORD_MODE ? 'gemini-2.0-flash' : undefined,
+      model: RECORD_MODE ? 'jiminy-2.0-flash' : undefined,
       recordResponses: RECORD_MODE ? goldenFile : undefined,
       fakeResponses: RECORD_MODE ? undefined : goldenFile,
       tools: [
@@ -62,9 +62,9 @@ describe('GeminiCliAgent Tool Integration', () => {
   it('handles ModelVisibleError correctly', async () => {
     const goldenFile = getGoldenPath('tool-error-recovery');
 
-    const agent = new GeminiCliAgent({
+    const agent = new JiminyCliAgent({
       instructions: 'You are a helpful assistant.',
-      model: RECORD_MODE ? 'gemini-2.0-flash' : undefined,
+      model: RECORD_MODE ? 'jiminy-2.0-flash' : undefined,
       recordResponses: RECORD_MODE ? goldenFile : undefined,
       fakeResponses: RECORD_MODE ? undefined : goldenFile,
       tools: [
@@ -108,9 +108,9 @@ describe('GeminiCliAgent Tool Integration', () => {
   it('handles sendErrorsToModel: true correctly', async () => {
     const goldenFile = getGoldenPath('tool-catchall-error');
 
-    const agent = new GeminiCliAgent({
+    const agent = new JiminyCliAgent({
       instructions: 'You are a helpful assistant.',
-      model: RECORD_MODE ? 'gemini-2.0-flash' : undefined,
+      model: RECORD_MODE ? 'jiminy-2.0-flash' : undefined,
       recordResponses: RECORD_MODE ? goldenFile : undefined,
       fakeResponses: RECORD_MODE ? undefined : goldenFile,
       tools: [

@@ -11,7 +11,7 @@ binary files.
 
 ## List your extension in the gallery
 
-The [Jiminy CLI extension gallery](https://geminicli.com/extensions/browse/)
+The [Jiminy CLI extension gallery](https://jiminycli.com/extensions/browse/)
 automatically indexes public extensions to help users discover your work. You
 don't need to submit an issue or email us to list your extension.
 

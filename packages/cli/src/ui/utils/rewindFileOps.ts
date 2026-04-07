@@ -7,7 +7,7 @@
 import type {
   ConversationRecord,
   MessageRecord,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import fs from 'node:fs/promises';
 import * as Diff from 'diff';
 import {
@@ -15,7 +15,7 @@ import {
   debugLogger,
   getFileDiffFromResultDisplay,
   computeModelAddedAndRemovedLines,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 export interface FileChangeDetail {
   fileName: string;
@@ -55,7 +55,7 @@ export function calculateTurnStats(
     const msg = conversation.messages[i];
     if (msg.type === 'user') break; // Stop at next user message
 
-    if (msg.type === 'gemini' && msg.toolCalls) {
+    if (msg.type === 'jiminy' && msg.toolCalls) {
       for (const toolCall of msg.toolCalls) {
         const fileDiff = getFileDiffFromResultDisplay(toolCall.resultDisplay);
         if (fileDiff) {
@@ -106,7 +106,7 @@ export function calculateRewindImpact(
     const msg = conversation.messages[i];
     // Do NOT break on user message - we want total impact
 
-    if (msg.type === 'gemini' && msg.toolCalls) {
+    if (msg.type === 'jiminy' && msg.toolCalls) {
       for (const toolCall of msg.toolCalls) {
         const fileDiff = getFileDiffFromResultDisplay(toolCall.resultDisplay);
         if (fileDiff) {
@@ -162,7 +162,7 @@ export async function revertFileChanges(
   // Iterate backwards from the end to the message being rewound (exclusive of the messageId itself)
   for (let i = conversation.messages.length - 1; i > messageIndex; i--) {
     const msg = conversation.messages[i];
-    if (msg.type === 'gemini' && msg.toolCalls) {
+    if (msg.type === 'jiminy' && msg.toolCalls) {
       for (let j = msg.toolCalls.length - 1; j >= 0; j--) {
         const toolCall = msg.toolCalls[j];
         const fileDiff = getFileDiffFromResultDisplay(toolCall.resultDisplay);

@@ -9,11 +9,11 @@ import { aboutCommand } from './aboutCommand.js';
 import { type CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import { MessageType } from '../types.js';
-import { IdeClient, getVersion } from '@google/gemini-cli-core';
+import { IdeClient, getVersion } from '@google/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     IdeClient: {
@@ -106,7 +106,7 @@ describe('aboutCommand', () => {
   });
 
   it('should show the correct sandbox environment variable', async () => {
-    process.env['SANDBOX'] = 'gemini-sandbox';
+    process.env['SANDBOX'] = 'jiminy-sandbox';
     if (!aboutCommand.action) {
       throw new Error('The about command must have an action.');
     }
@@ -115,7 +115,7 @@ describe('aboutCommand', () => {
 
     expect(mockContext.ui.addItem).toHaveBeenCalledWith(
       expect.objectContaining({
-        sandboxEnv: 'gemini-sandbox',
+        sandboxEnv: 'jiminy-sandbox',
       }),
     );
   });

@@ -158,7 +158,7 @@ describe('generateContentResponseUtilities', () => {
       ]);
     });
 
-    it('should handle llmContent with fileData for Gemini 3 model (should be siblings)', () => {
+    it('should handle llmContent with fileData for Jiminy 3 model (should be siblings)', () => {
       const llmContent: Part = {
         fileData: { mimeType: 'application/pdf', fileUri: 'gs://...' },
       };
@@ -180,7 +180,7 @@ describe('generateContentResponseUtilities', () => {
       ]);
     });
 
-    it('should handle llmContent with inlineData for Gemini 3 model (should be nested)', () => {
+    it('should handle llmContent with inlineData for Jiminy 3 model (should be nested)', () => {
       const llmContent: Part = {
         inlineData: { mimeType: 'image/png', data: 'base64...' },
       };
@@ -202,7 +202,7 @@ describe('generateContentResponseUtilities', () => {
       ]);
     });
 
-    it('should handle llmContent with fileData for non-Gemini 3 models', () => {
+    it('should handle llmContent with fileData for non-Jiminy 3 models', () => {
       const llmContent: Part = {
         fileData: { mimeType: 'application/pdf', fileUri: 'gs://...' },
       };

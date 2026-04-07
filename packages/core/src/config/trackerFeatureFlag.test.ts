@@ -15,7 +15,7 @@ describe('Config Tracker Feature Flag', () => {
     sessionId: 'test-session',
     targetDir: os.tmpdir(),
     cwd: os.tmpdir(),
-    model: 'gemini-1.5-pro',
+    model: 'jiminy-1.5-pro',
     debugMode: false,
   };
 

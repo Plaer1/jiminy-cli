@@ -10,7 +10,7 @@ import * as fs from 'node:fs/promises';
 import {
   getProjectRootForWorktree,
   createWorktree,
-  isGeminiWorktree,
+  isJiminyWorktree,
   hasWorktreeChanges,
   cleanupWorktree,
   getWorktreePath,
@@ -33,7 +33,7 @@ describe('worktree utilities', () => {
   const worktreeName = 'test-feature';
   const expectedPath = path.join(
     projectRoot,
-    '.gemini',
+    '.jiminy',
     'worktrees',
     worktreeName,
   );
@@ -65,7 +65,7 @@ describe('worktree utilities', () => {
       } as never);
 
       const result = await getProjectRootForWorktree(
-        '/mock/project/.gemini/worktrees/my-feature',
+        '/mock/project/.jiminy/worktrees/my-feature',
       );
       expect(result).toBe('/mock/project');
     });
@@ -107,19 +107,19 @@ describe('worktree utilities', () => {
     });
   });
 
-  describe('isGeminiWorktree', () => {
-    it('should return true for a valid gemini worktree path', () => {
-      expect(isGeminiWorktree(expectedPath, projectRoot)).toBe(true);
+  describe('isJiminyWorktree', () => {
+    it('should return true for a valid jiminy worktree path', () => {
+      expect(isJiminyWorktree(expectedPath, projectRoot)).toBe(true);
       expect(
-        isGeminiWorktree(path.join(expectedPath, 'src'), projectRoot),
+        isJiminyWorktree(path.join(expectedPath, 'src'), projectRoot),
       ).toBe(true);
     });
 
-    it('should return false for a path outside gemini worktrees', () => {
-      expect(isGeminiWorktree(path.join(projectRoot, 'src'), projectRoot)).toBe(
+    it('should return false for a path outside jiminy worktrees', () => {
+      expect(isJiminyWorktree(path.join(projectRoot, 'src'), projectRoot)).toBe(
         false,
       );
-      expect(isGeminiWorktree('/some/other/path', projectRoot)).toBe(false);
+      expect(isJiminyWorktree('/some/other/path', projectRoot)).toBe(false);
     });
   });
 
@@ -267,7 +267,7 @@ describe('WorktreeService', () => {
   describe('maybeCleanup', () => {
     const info = {
       name: 'feature-x',
-      path: '/mock/project/.gemini/worktrees/feature-x',
+      path: '/mock/project/.jiminy/worktrees/feature-x',
       baseSha: 'base-sha',
     };
 

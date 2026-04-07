@@ -32,12 +32,12 @@ const MemoryManagerSchema = z.object({
  * and organizing memories in the global GEMINI.md file.
  *
  * Users can override this agent by placing a custom save_memory.md
- * in ~/.gemini/agents/ or .gemini/agents/.
+ * in ~/.jiminy/agents/ or .jiminy/agents/.
  */
 export const MemoryManagerAgent = (
   config: Config,
 ): LocalAgentDefinition<typeof MemoryManagerSchema> => {
-  const globalGeminiDir = Storage.getGlobalGeminiDir();
+  const globalJiminyDir = Storage.getGlobalJiminyDir();
 
   const getInitialContext = (): string => {
     const memory = config.getUserMemory();
@@ -57,8 +57,8 @@ You are a memory management agent maintaining user memories in GEMINI.md files.
 
 # Memory Hierarchy
 
-## Global (${globalGeminiDir})
-- \`${globalGeminiDir}/GEMINI.md\` — Cross-project user preferences, key personal info,
+## Global (${globalJiminyDir})
+- \`${globalJiminyDir}/GEMINI.md\` — Cross-project user preferences, key personal info,
   and habits that apply everywhere.
 
 ## Project (./)

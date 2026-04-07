@@ -1,13 +1,13 @@
 #!/bin/bash
 # scripts/batch_triage.sh
 # Usage: ./scripts/batch_triage.sh [repository]
-# Example: ./scripts/batch_triage.sh google-gemini/maintainers-gemini-cli
+# Example: ./scripts/batch_triage.sh google-jiminy/maintainers-jiminy-cli
 
 set -e
 set -o pipefail
 
-REPO="${1:-google-gemini/gemini-cli}"
-WORKFLOW="gemini-automated-issue-triage.yml"
+REPO="${1:-google-jiminy/jiminy-cli}"
+WORKFLOW="jiminy-automated-issue-triage.yml"
 
 echo "🔍 Searching for open issues in '${REPO}' that need triage (missing 'area/' label)..."
 

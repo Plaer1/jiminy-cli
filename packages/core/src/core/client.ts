@@ -12,7 +12,7 @@ import {
   type Tool,
   type GenerateContentResponse,
 } from '@google/genai';
-import { partListUnionToString } from './geminiRequest.js';
+import { partListUnionToString } from './jiminyRequest.js';
 import {
   getDirectoryContextString,
   getInitialChatHistory,
@@ -20,8 +20,8 @@ import {
 import {
   CompressionStatus,
   Turn,
-  GeminiEventType,
-  type ServerGeminiStreamEvent,
+  JiminyEventType,
+  type ServerJiminyStreamEvent,
   type ChatCompressionInfo,
 } from './turn.js';
 import type { Config } from '../config/config.js';
@@ -29,7 +29,7 @@ import { type AgentLoopContext } from '../config/agent-loop-context.js';
 import { getCoreSystemPrompt } from './prompts.js';
 import { checkNextSpeaker } from '../utils/nextSpeakerChecker.js';
 import { reportError } from '../utils/errorReporting.js';
-import { GeminiChat } from './geminiChat.js';
+import { JiminyChat } from './jiminyChat.js';
 import {
   retryWithBackoff,
   type RetryAvailabilityContext,
@@ -73,7 +73,7 @@ import {
 import {
   getDisplayString,
   resolveModel,
-  isGemini2Model,
+  isJiminy2Model,
 } from '../config/models.js';
 import { partToString } from '../utils/partUtils.js';
 import { coreEvents, CoreEvent } from '../utils/events.js';
@@ -82,18 +82,18 @@ const MAX_TURNS = 100;
 
 type BeforeAgentHookReturn =
   | {
-      type: GeminiEventType.AgentExecutionStopped;
+      type: JiminyEventType.AgentExecutionStopped;
       value: { reason: string; systemMessage?: string };
     }
   | {
-      type: GeminiEventType.AgentExecutionBlocked;
+      type: JiminyEventType.AgentExecutionBlocked;
       value: { reason: string; systemMessage?: string };
     }
   | { additionalContext: string | undefined }
   | undefined;
 
-export class GeminiClient {
-  private chat?: GeminiChat;
+export class JiminyClient {
+  private chat?: JiminyChat;
   private sessionTurnCount = 0;
 
   private readonly loopDetector: LoopDetectionService;
@@ -176,7 +176,7 @@ export class GeminiClient {
 
     if (hookOutput?.shouldStopExecution()) {
       return {
-        type: GeminiEventType.AgentExecutionStopped,
+        type: JiminyEventType.AgentExecutionStopped,
         value: {
           reason: hookOutput.getEffectiveReason(),
           systemMessage: hookOutput.systemMessage,
@@ -186,7 +186,7 @@ export class GeminiClient {
 
     if (hookOutput?.isBlockingDecision()) {
       return {
-        type: GeminiEventType.AgentExecutionBlocked,
+        type: JiminyEventType.AgentExecutionBlocked,
         value: {
           reason: hookOutput.getEffectiveReason(),
           systemMessage: hookOutput.systemMessage,
@@ -258,7 +258,7 @@ export class GeminiClient {
     this.getChat().addHistory(content);
   }
 
-  getChat(): GeminiChat {
+  getChat(): JiminyChat {
     if (!this.chat) {
       throw new Error('Chat not initialized');
     }
@@ -358,7 +358,7 @@ export class GeminiClient {
   async startChat(
     extraHistory?: Content[],
     resumedSessionData?: ResumedSessionData,
-  ): Promise<GeminiChat> {
+  ): Promise<JiminyChat> {
     this.forceFullIdeContext = true;
     this.hasFailedCompressionAttempt = false;
     this.lastUsedModelId = undefined;
@@ -372,7 +372,7 @@ export class GeminiClient {
     try {
       const systemMemory = this.config.getSystemInstructionMemory();
       const systemInstruction = getCoreSystemPrompt(this.config, systemMemory);
-      return new GeminiChat(
+      return new JiminyChat(
         this.config,
         systemInstruction,
         tools,
@@ -574,8 +574,8 @@ export class GeminiClient {
     // including any permanent fallbacks (config.setModel) or manual overrides.
     return resolveModel(
       this.config.getActiveModel(),
-      this.config.getGemini31LaunchedSync?.() ?? false,
-      this.config.getGemini31FlashLiteLaunchedSync?.() ?? false,
+      this.config.getJiminy31LaunchedSync?.() ?? false,
+      this.config.getJiminy31FlashLiteLaunchedSync?.() ?? false,
       false,
       this.config.getHasAccessToPreviewModel?.() ?? true,
       this.config,
@@ -589,7 +589,7 @@ export class GeminiClient {
     boundedTurns: number,
     isInvalidStreamRetry: boolean,
     displayContent?: PartListUnion,
-  ): AsyncGenerator<ServerGeminiStreamEvent, Turn> {
+  ): AsyncGenerator<ServerJiminyStreamEvent, Turn> {
     // Re-initialize turn (it was empty before if in loop, or new instance)
     let turn = new Turn(this.getChat(), prompt_id);
 
@@ -598,7 +598,7 @@ export class GeminiClient {
       this.config.getMaxSessionTurns() > 0 &&
       this.sessionTurnCount > this.config.getMaxSessionTurns()
     ) {
-      yield { type: GeminiEventType.MaxSessionTurns };
+      yield { type: JiminyEventType.MaxSessionTurns };
       return turn;
     }
 
@@ -612,7 +612,7 @@ export class GeminiClient {
     const compressed = await this.tryCompressChat(prompt_id, false);
 
     if (compressed.compressionStatus === CompressionStatus.COMPRESSED) {
-      yield { type: GeminiEventType.ChatCompressed, value: compressed };
+      yield { type: JiminyEventType.ChatCompressed, value: compressed };
     }
 
     const remainingTokenCount =
@@ -630,7 +630,7 @@ export class GeminiClient {
 
     if (estimatedRequestTokenCount > remainingTokenCount) {
       yield {
-        type: GeminiEventType.ContextWindowWillOverflow,
+        type: JiminyEventType.ContextWindowWillOverflow,
         value: { estimatedRequestTokenCount, remainingTokenCount },
       };
       return turn;
@@ -671,11 +671,11 @@ export class GeminiClient {
 
     const loopResult = await this.loopDetector.turnStarted(signal);
     if (loopResult.count > 1) {
-      yield { type: GeminiEventType.LoopDetected };
+      yield { type: JiminyEventType.LoopDetected };
       return turn;
     } else if (loopResult.count === 1) {
       if (boundedTurns <= 1) {
-        yield { type: GeminiEventType.MaxSessionTurns };
+        yield { type: JiminyEventType.MaxSessionTurns };
         return turn;
       }
       return yield* this._recoverFromLoop(
@@ -719,7 +719,7 @@ export class GeminiClient {
     modelToUse = finalModel;
 
     if (!signal.aborted && !this.currentSequenceModel) {
-      yield { type: GeminiEventType.ModelInfo, value: modelToUse };
+      yield { type: JiminyEventType.ModelInfo, value: modelToUse };
     }
     this.currentSequenceModel = modelToUse;
 
@@ -740,12 +740,12 @@ export class GeminiClient {
     for await (const event of resultStream) {
       const loopResult = this.loopDetector.addAndCheck(event);
       if (loopResult.count > 1) {
-        yield { type: GeminiEventType.LoopDetected };
+        yield { type: JiminyEventType.LoopDetected };
         loopDetectedAbort = true;
         break;
       } else if (loopResult.count === 1) {
         if (boundedTurns <= 1) {
-          yield { type: GeminiEventType.MaxSessionTurns };
+          yield { type: JiminyEventType.MaxSessionTurns };
           loopDetectedAbort = true;
           break;
         }
@@ -756,10 +756,10 @@ export class GeminiClient {
 
       this.updateTelemetryTokenCount();
 
-      if (event.type === GeminiEventType.InvalidStream) {
+      if (event.type === JiminyEventType.InvalidStream) {
         isInvalidStream = true;
       }
-      if (event.type === GeminiEventType.Error) {
+      if (event.type === JiminyEventType.Error) {
         isError = true;
       }
     }
@@ -802,7 +802,7 @@ export class GeminiClient {
     if (isInvalidStream) {
       if (
         this.config.getContinueOnFailedApiCall() &&
-        isGemini2Model(modelToUse)
+        isJiminy2Model(modelToUse)
       ) {
         if (isInvalidStreamRetry) {
           logContentRetryFailure(
@@ -873,7 +873,7 @@ export class GeminiClient {
     isInvalidStreamRetry: boolean = false,
     displayContent?: PartListUnion,
     stopHookActive: boolean = false,
-  ): AsyncGenerator<ServerGeminiStreamEvent, Turn> {
+  ): AsyncGenerator<ServerJiminyStreamEvent, Turn> {
     if (!isInvalidStreamRetry) {
       this.config.resetTurn();
     }
@@ -893,7 +893,7 @@ export class GeminiClient {
       if (hookResult) {
         if (
           'type' in hookResult &&
-          hookResult.type === GeminiEventType.AgentExecutionStopped
+          hookResult.type === JiminyEventType.AgentExecutionStopped
         ) {
           // Add user message to history before returning so it's kept in the transcript
           this.getChat().addHistory(createUserContent(request));
@@ -901,7 +901,7 @@ export class GeminiClient {
           return new Turn(this.getChat(), prompt_id);
         } else if (
           'type' in hookResult &&
-          hookResult.type === GeminiEventType.AgentExecutionBlocked
+          hookResult.type === JiminyEventType.AgentExecutionBlocked
         ) {
           yield hookResult;
           return new Turn(this.getChat(), prompt_id);
@@ -947,7 +947,7 @@ export class GeminiClient {
         if (afterAgentOutput?.shouldStopExecution()) {
           const contextCleared = afterAgentOutput.shouldClearContext();
           yield {
-            type: GeminiEventType.AgentExecutionStopped,
+            type: JiminyEventType.AgentExecutionStopped,
             value: {
               reason: afterAgentOutput.getEffectiveReason(),
               systemMessage: afterAgentOutput.systemMessage,
@@ -965,7 +965,7 @@ export class GeminiClient {
           const continueReason = afterAgentOutput.getEffectiveReason();
           const contextCleared = afterAgentOutput.shouldClearContext();
           yield {
-            type: GeminiEventType.AgentExecutionBlocked,
+            type: JiminyEventType.AgentExecutionBlocked,
             value: {
               reason: continueReason,
               systemMessage: afterAgentOutput.systemMessage,
@@ -998,7 +998,7 @@ export class GeminiClient {
       }
     } catch (error) {
       if (signal?.aborted || isAbortError(error)) {
-        yield { type: GeminiEventType.UserCancelled };
+        yield { type: JiminyEventType.UserCancelled };
         return turn;
       }
       throw error;
@@ -1239,7 +1239,7 @@ export class GeminiClient {
     isInvalidStreamRetry: boolean,
     displayContent?: PartListUnion,
     controllerToAbort?: AbortController,
-  ): AsyncGenerator<ServerGeminiStreamEvent, Turn> {
+  ): AsyncGenerator<ServerJiminyStreamEvent, Turn> {
     controllerToAbort?.abort();
 
     // Clear the detection flag so the recursive turn can proceed, but the count remains 1.

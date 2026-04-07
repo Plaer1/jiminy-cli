@@ -22,7 +22,7 @@ describe('WindowsSandboxManager', () => {
 
   beforeEach(() => {
     vi.spyOn(os, 'platform').mockReturnValue('win32');
-    testCwd = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-cli-test-'));
+    testCwd = fs.mkdtempSync(path.join(os.tmpdir(), 'jiminy-cli-test-'));
     manager = new WindowsSandboxManager({ workspace: testCwd });
   });
 
@@ -31,7 +31,7 @@ describe('WindowsSandboxManager', () => {
     fs.rmSync(testCwd, { recursive: true, force: true });
   });
 
-  it('should prepare a GeminiSandbox.exe command', async () => {
+  it('should prepare a JiminySandbox.exe command', async () => {
     const req: SandboxRequest = {
       command: 'whoami',
       args: ['/groups'],
@@ -44,7 +44,7 @@ describe('WindowsSandboxManager', () => {
 
     const result = await manager.prepareCommand(req);
 
-    expect(result.program).toContain('GeminiSandbox.exe');
+    expect(result.program).toContain('JiminySandbox.exe');
     expect(result.args).toEqual(['0', testCwd, 'whoami', '/groups']);
   });
 
@@ -97,13 +97,13 @@ describe('WindowsSandboxManager', () => {
     await manager.prepareCommand(req);
 
     expect(fs.existsSync(path.join(testCwd, '.gitignore'))).toBe(true);
-    expect(fs.existsSync(path.join(testCwd, '.geminiignore'))).toBe(true);
+    expect(fs.existsSync(path.join(testCwd, '.jiminyignore'))).toBe(true);
     expect(fs.existsSync(path.join(testCwd, '.git'))).toBe(true);
     expect(fs.lstatSync(path.join(testCwd, '.git')).isDirectory()).toBe(true);
   });
 
   it('should grant Low Integrity access to the workspace and allowed paths', async () => {
-    const allowedPath = path.join(os.tmpdir(), 'gemini-cli-test-allowed');
+    const allowedPath = path.join(os.tmpdir(), 'jiminy-cli-test-allowed');
     if (!fs.existsSync(allowedPath)) {
       fs.mkdirSync(allowedPath);
     }

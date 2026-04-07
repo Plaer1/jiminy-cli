@@ -222,7 +222,7 @@ describe('mcpToolWrapper', () => {
         1,
         'evaluate_script',
         expect.objectContaining({
-          function: expect.stringContaining('__gemini_input_blocker'),
+          function: expect.stringContaining('__jiminy_input_blocker'),
         }),
       );
 
@@ -239,7 +239,7 @@ describe('mcpToolWrapper', () => {
         3,
         'evaluate_script',
         expect.objectContaining({
-          function: expect.stringContaining('__gemini_input_blocker'),
+          function: expect.stringContaining('__jiminy_input_blocker'),
         }),
       );
     });

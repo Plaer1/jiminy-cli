@@ -11,7 +11,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { env } from 'node:process';
 import { setTimeout as sleep } from 'node:timers/promises';
-import { DEFAULT_GEMINI_MODEL, GEMINI_DIR } from '@google/gemini-cli-core';
+import { DEFAULT_GEMINI_MODEL, GEMINI_DIR } from '@google/jiminy-cli-core';
 export { GEMINI_DIR };
 import * as pty from '@lydell/node-pty';
 import stripAnsi from 'strip-ansi';
@@ -19,7 +19,7 @@ import * as os from 'node:os';
 import type { TestMcpConfig } from './test-mcp-server.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BUNDLE_PATH = join(__dirname, '..', '..', '..', 'bundle/gemini.js');
+const BUNDLE_PATH = join(__dirname, '..', '..', '..', 'bundle/jiminy.js');
 
 // Get timeout based on environment
 export function getDefaultTimeout() {
@@ -361,7 +361,7 @@ export class TestRig {
     this.testName = testName;
     const sanitizedName = sanitizeTestName(testName);
     const testFileDir =
-      env['INTEGRATION_TEST_FILE_DIR'] || join(os.tmpdir(), 'gemini-cli-tests');
+      env['INTEGRATION_TEST_FILE_DIR'] || join(os.tmpdir(), 'jiminy-cli-tests');
     this.testDir = join(testFileDir, sanitizedName);
     this.homeDir = join(testFileDir, sanitizedName + '-home');
 
@@ -420,11 +420,11 @@ export class TestRig {
   }
 
   private _createSettingsFile(overrideSettings?: Record<string, unknown>) {
-    const projectGeminiDir = join(this.testDir!, GEMINI_DIR);
-    mkdirSync(projectGeminiDir, { recursive: true });
+    const projectJiminyDir = join(this.testDir!, GEMINI_DIR);
+    mkdirSync(projectJiminyDir, { recursive: true });
 
-    const userGeminiDir = join(this.homeDir!, GEMINI_DIR);
-    mkdirSync(userGeminiDir, { recursive: true });
+    const userJiminyDir = join(this.homeDir!, GEMINI_DIR);
+    mkdirSync(userJiminyDir, { recursive: true });
 
     // In sandbox mode, use an absolute path for telemetry inside the container
     // The container mounts the test directory at the same path as the host
@@ -445,7 +445,7 @@ export class TestRig {
         },
         security: {
           auth: {
-            selectedType: 'gemini-api-key',
+            selectedType: 'jiminy-api-key',
           },
           folderTrust: {
             enabled: false,
@@ -469,19 +469,19 @@ export class TestRig {
       overrideSettings ?? {},
     );
     writeFileSync(
-      join(projectGeminiDir, 'settings.json'),
+      join(projectJiminyDir, 'settings.json'),
       JSON.stringify(settings, null, 2),
     );
     writeFileSync(
-      join(userGeminiDir, 'settings.json'),
+      join(userJiminyDir, 'settings.json'),
       JSON.stringify(settings, null, 2),
     );
   }
 
   private _createStateFile(overrideState?: Record<string, unknown>) {
     if (!this.homeDir) throw new Error('TestRig homeDir is not initialized');
-    const userGeminiDir = join(this.homeDir, GEMINI_DIR);
-    mkdirSync(userGeminiDir, { recursive: true });
+    const userJiminyDir = join(this.homeDir, GEMINI_DIR);
+    mkdirSync(userJiminyDir, { recursive: true });
 
     const state = deepMerge(
       {
@@ -491,7 +491,7 @@ export class TestRig {
     );
 
     writeFileSync(
-      join(userGeminiDir, 'state.json'),
+      join(userJiminyDir, 'state.json'),
       JSON.stringify(state, null, 2),
     );
   }
@@ -513,9 +513,9 @@ export class TestRig {
   }
 
   /**
-   * The command and args to use to invoke Gemini CLI. Allows us to switch
-   * between using the bundled gemini.js (the default) and using the installed
-   * 'gemini' (used to verify npm bundles).
+   * The command and args to use to invoke Jiminy CLI. Allows us to switch
+   * between using the bundled jiminy.js (the default) and using the installed
+   * 'jiminy' (used to verify npm bundles).
    */
   private _getCommandAndArgs(extraInitialArgs: string[] = []): {
     command: string;
@@ -524,14 +524,14 @@ export class TestRig {
     const binaryPath = env['INTEGRATION_TEST_GEMINI_BINARY_PATH'];
     const isNpmReleaseTest =
       env['INTEGRATION_TEST_USE_INSTALLED_GEMINI'] === 'true';
-    const geminiCommand = os.platform() === 'win32' ? 'gemini.cmd' : 'gemini';
+    const jiminyCommand = os.platform() === 'win32' ? 'jiminy.cmd' : 'jiminy';
     let command = 'node';
     let initialArgs = [BUNDLE_PATH, ...extraInitialArgs];
     if (binaryPath) {
       command = binaryPath;
       initialArgs = extraInitialArgs;
     } else if (isNpmReleaseTest) {
-      command = geminiCommand;
+      command = jiminyCommand;
       initialArgs = extraInitialArgs;
     }
     if (this.fakeResponsesPath) {
@@ -1072,7 +1072,7 @@ export class TestRig {
         return logs.some(
           (logData) =>
             logData.attributes &&
-            logData.attributes['event.name'] === `gemini_cli.${eventName}`,
+            logData.attributes['event.name'] === `jiminy_cli.${eventName}`,
         );
       },
       timeout,
@@ -1272,7 +1272,7 @@ export class TestRig {
                 }
               } else if (
                 obj.attributes &&
-                obj.attributes['event.name'] === 'gemini_cli.tool_call'
+                obj.attributes['event.name'] === 'jiminy_cli.tool_call'
               ) {
                 logs.push({
                   timestamp: obj.attributes['event.timestamp'],
@@ -1382,7 +1382,7 @@ export class TestRig {
       // Look for tool call logs
       if (
         logData.attributes &&
-        logData.attributes['event.name'] === 'gemini_cli.tool_call'
+        logData.attributes['event.name'] === 'jiminy_cli.tool_call'
       ) {
         const toolName = logData.attributes.function_name!;
         logs.push({
@@ -1407,7 +1407,7 @@ export class TestRig {
     const apiRequests = logs.filter(
       (logData) =>
         logData.attributes &&
-        logData.attributes['event.name'] === `gemini_cli.api_request`,
+        logData.attributes['event.name'] === `jiminy_cli.api_request`,
     );
     return apiRequests;
   }
@@ -1417,7 +1417,7 @@ export class TestRig {
     const apiRequests = logs.filter(
       (logData) =>
         logData.attributes &&
-        logData.attributes['event.name'] === `gemini_cli.api_request`,
+        logData.attributes['event.name'] === `jiminy_cli.api_request`,
     );
     return apiRequests.pop() || null;
   }
@@ -1425,9 +1425,9 @@ export class TestRig {
   async waitForMetric(metricName: string, timeout?: number) {
     await this.waitForTelemetryReady();
 
-    const fullName = metricName.startsWith('gemini_cli.')
+    const fullName = metricName.startsWith('jiminy_cli.')
       ? metricName
-      : `gemini_cli.${metricName}`;
+      : `jiminy_cli.${metricName}`;
 
     return poll(
       () => {
@@ -1456,7 +1456,7 @@ export class TestRig {
       if (logData.scopeMetrics) {
         for (const scopeMetric of logData.scopeMetrics) {
           for (const metric of scopeMetric.metrics) {
-            if (metric.descriptor.name === `gemini_cli.${metricName}`) {
+            if (metric.descriptor.name === `jiminy_cli.${metricName}`) {
               return metric;
             }
           }
@@ -1537,7 +1537,7 @@ export class TestRig {
       // Look for tool call logs
       if (
         logData.attributes &&
-        logData.attributes['event.name'] === 'gemini_cli.hook_call'
+        logData.attributes['event.name'] === 'jiminy_cli.hook_call'
       ) {
         logs.push({
           hookCall: {

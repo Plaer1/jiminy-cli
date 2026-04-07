@@ -13,20 +13,20 @@ import {
   type Mocked,
   type Mock,
 } from 'vitest';
-import { GeminiAgent } from './acpClient.js';
+import { JiminyAgent } from './acpClient.js';
 import * as acp from '@agentclientprotocol/sdk';
 import {
   ApprovalMode,
   AuthType,
   type Config,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { loadCliConfig, type CliArgs } from '../config/config.js';
 import {
   SessionSelector,
   convertSessionToHistoryFormats,
 } from '../utils/sessionUtils.js';
-import { convertSessionToClientHistory } from '@google/gemini-cli-core';
+import { convertSessionToClientHistory } from '@google/jiminy-cli-core';
 import type { LoadedSettings } from '../config/settings.js';
 
 vi.mock('../config/config.js', () => ({
@@ -43,9 +43,9 @@ vi.mock('../utils/sessionUtils.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     CoreToolCallStatus: {
@@ -70,12 +70,12 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   };
 });
 
-describe('GeminiAgent Session Resume', () => {
+describe('JiminyAgent Session Resume', () => {
   let mockConfig: Mocked<Config>;
   let mockSettings: Mocked<LoadedSettings>;
   let mockArgv: CliArgs;
   let mockConnection: Mocked<acp.AgentSideConnection>;
-  let agent: GeminiAgent;
+  let agent: JiminyAgent;
 
   beforeEach(() => {
     mockConfig = {
@@ -83,7 +83,7 @@ describe('GeminiAgent Session Resume', () => {
       initialize: vi.fn().mockResolvedValue(undefined),
       getFileSystemService: vi.fn(),
       setFileSystemService: vi.fn(),
-      getGeminiClient: vi.fn().mockReturnValue({
+      getJiminyClient: vi.fn().mockReturnValue({
         initialize: vi.fn().mockResolvedValue(undefined),
         resumeChat: vi.fn().mockResolvedValue(undefined),
         getChat: vi.fn().mockReturnValue({}),
@@ -93,9 +93,9 @@ describe('GeminiAgent Session Resume', () => {
       },
       getApprovalMode: vi.fn().mockReturnValue('default'),
       isPlanEnabled: vi.fn().mockReturnValue(true),
-      getModel: vi.fn().mockReturnValue('gemini-pro'),
+      getModel: vi.fn().mockReturnValue('jiminy-pro'),
       getHasAccessToPreviewModel: vi.fn().mockReturnValue(false),
-      getGemini31LaunchedSync: vi.fn().mockReturnValue(false),
+      getJiminy31LaunchedSync: vi.fn().mockReturnValue(false),
       getCheckpointingEnabled: vi.fn().mockReturnValue(false),
       get config() {
         return this;
@@ -115,7 +115,7 @@ describe('GeminiAgent Session Resume', () => {
 
     (loadCliConfig as Mock).mockResolvedValue(mockConfig);
 
-    agent = new GeminiAgent(mockConfig, mockSettings, mockArgv, mockConnection);
+    agent = new JiminyAgent(mockConfig, mockSettings, mockArgv, mockConnection);
   });
 
   it('should advertise loadSession capability', async () => {
@@ -132,7 +132,7 @@ describe('GeminiAgent Session Resume', () => {
       messages: [
         { type: 'user', content: [{ text: 'Hello' }] },
         {
-          type: 'gemini',
+          type: 'jiminy',
           content: [{ text: 'Hi there' }],
           thoughts: [{ subject: 'Thinking', description: 'about greeting' }],
           toolCalls: [
@@ -146,7 +146,7 @@ describe('GeminiAgent Session Resume', () => {
           ],
         },
         {
-          type: 'gemini',
+          type: 'jiminy',
           content: [{ text: 'Trying a write' }],
           toolCalls: [
             {
@@ -218,12 +218,12 @@ describe('GeminiAgent Session Resume', () => {
       },
       models: {
         availableModels: expect.any(Array) as unknown,
-        currentModelId: 'gemini-pro',
+        currentModelId: 'jiminy-pro',
       },
     });
 
     // Verify resumeChat received the correct arguments
-    expect(mockConfig.getGeminiClient().resumeChat).toHaveBeenCalledWith(
+    expect(mockConfig.getJiminyClient().resumeChat).toHaveBeenCalledWith(
       mockClientHistory,
       expect.objectContaining({
         conversation: sessionData,

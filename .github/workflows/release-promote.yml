@@ -194,7 +194,7 @@ jobs:
         if: "${{github.event.inputs.force_skip_tests != 'true'}}"
         uses: './.github/actions/run-tests'
         with:
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           working-directory: './release'
 
   publish-preview:
@@ -243,7 +243,7 @@ jobs:
           dry-run: '${{ github.event.inputs.dry_run }}'
           previous-tag: '${{ needs.calculate-versions.outputs.PREVIOUS_PREVIEW_TAG }}'
           working-directory: './release'
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           force-skip-tests: '${{ github.event.inputs.force_skip_tests }}'
           npm-registry-publish-url: '${{ vars.NPM_REGISTRY_PUBLISH_URL }}'
           npm-registry-url: '${{ vars.NPM_REGISTRY_URL }}'
@@ -310,7 +310,7 @@ jobs:
           dry-run: '${{ github.event.inputs.dry_run }}'
           previous-tag: '${{ needs.calculate-versions.outputs.PREVIOUS_STABLE_TAG }}'
           working-directory: './release'
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           force-skip-tests: '${{ github.event.inputs.force_skip_tests }}'
           npm-registry-publish-url: '${{ vars.NPM_REGISTRY_PUBLISH_URL }}'
           npm-registry-url: '${{ vars.NPM_REGISTRY_URL }}'
@@ -357,8 +357,8 @@ jobs:
 
       - name: 'Configure Git User'
         run: |-
-          git config user.name "gemini-cli-robot"
-          git config user.email "gemini-cli-robot@google.com"
+          git config user.name "jiminy-cli-robot"
+          git config user.email "jiminy-cli-robot@google.com"
 
       - name: 'Create and switch to a new branch'
         id: 'release_branch'

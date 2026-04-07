@@ -8,7 +8,7 @@ import {
   listExtensions,
   type Config,
   getErrorMessage,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { SettingScope } from '../../config/settings.js';
 import {
   ExtensionManager,
@@ -68,7 +68,7 @@ export class ExploreExtensionsCommand implements Command {
     _context: CommandContext,
     _: string[],
   ): Promise<CommandExecutionResponse> {
-    const extensionsUrl = 'https://geminicli.com/extensions/';
+    const extensionsUrl = 'https://jiminycli.com/extensions/';
     return {
       name: this.name,
       data: `View or install available extensions at ${extensionsUrl}`,

@@ -51,7 +51,7 @@ describe('LinuxSandboxManager', () => {
       'bpf_path="$1"; shift; exec bwrap "$@" 9< "$bpf_path"',
     );
     expect(result.args[2]).toBe('_');
-    expect(result.args[3]).toMatch(/gemini-cli-seccomp-.*\.bpf$/);
+    expect(result.args[3]).toMatch(/jiminy-cli-seccomp-.*\.bpf$/);
     return result.args.slice(4);
   };
 
@@ -83,8 +83,8 @@ describe('LinuxSandboxManager', () => {
       `${workspace}/.gitignore`,
       `${workspace}/.gitignore`,
       '--ro-bind',
-      `${workspace}/.geminiignore`,
-      `${workspace}/.geminiignore`,
+      `${workspace}/.jiminyignore`,
+      `${workspace}/.jiminyignore`,
       '--ro-bind',
       `${workspace}/.git`,
       `${workspace}/.git`,
@@ -119,8 +119,8 @@ describe('LinuxSandboxManager', () => {
       `${workspace}/.gitignore`,
       `${workspace}/.gitignore`,
       '--ro-bind',
-      `${workspace}/.geminiignore`,
-      `${workspace}/.geminiignore`,
+      `${workspace}/.jiminyignore`,
+      `${workspace}/.jiminyignore`,
       '--ro-bind',
       `${workspace}/.git`,
       `${workspace}/.git`,
@@ -198,8 +198,8 @@ describe('LinuxSandboxManager', () => {
       `${workspace}/.gitignore`,
       `${workspace}/.gitignore`,
       '--ro-bind',
-      `${workspace}/.geminiignore`,
-      `${workspace}/.geminiignore`,
+      `${workspace}/.jiminyignore`,
+      `${workspace}/.jiminyignore`,
       '--ro-bind',
       `${workspace}/.git`,
       `${workspace}/.git`,

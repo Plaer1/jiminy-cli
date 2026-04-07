@@ -8,8 +8,8 @@ import {
   debugLogger,
   checkExhaustive,
   getErrorMessage,
-  type GeminiCLIExtension,
-} from '@google/gemini-cli-core';
+  type JiminyCLIExtension,
+} from '@google/jiminy-cli-core';
 import {
   ExtensionUpdateState,
   extensionUpdatesReducer,
@@ -126,7 +126,7 @@ export const useExtensionUpdates = (
       });
     }
 
-    function shouldDoUpdate(extension: GeminiCLIExtension): boolean {
+    function shouldDoUpdate(extension: JiminyCLIExtension): boolean {
       if (scheduledUpdate) {
         if (scheduledUpdate.all) {
           return true;

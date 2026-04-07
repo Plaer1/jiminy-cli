@@ -21,14 +21,14 @@ import {
   Config,
   ApprovalMode,
   type Config as ActualConfigType,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useKeypress, type Key } from './useKeypress.js';
 import { MessageType } from '../types.js';
 
 vi.mock('./useKeypress.js');
 
-vi.mock('@google/gemini-cli-core', async () => {
-  const actualServerModule = await vi.importActual('@google/gemini-cli-core');
+vi.mock('@google/jiminy-cli-core', async () => {
+  const actualServerModule = await vi.importActual('@google/jiminy-cli-core');
   return {
     ...actualServerModule,
     Config: vi.fn(),
@@ -55,7 +55,7 @@ interface MockConfigInstanceShape {
 
   getUserAgent: Mock<() => string>;
   getUserMemory: Mock<() => string>;
-  getGeminiMdFileCount: Mock<() => number>;
+  getJiminyMdFileCount: Mock<() => number>;
   getToolRegistry: Mock<() => { discoverTools: Mock<() => void> }>;
   getRemoteAdminSettings: Mock<
     () => { strictModeDisabled?: boolean; mcpEnabled?: boolean } | undefined
@@ -111,7 +111,7 @@ describe('useApprovalModeIndicator', () => {
           () => string
         >,
         getUserMemory: vi.fn().mockReturnValue('') as Mock<() => string>,
-        getGeminiMdFileCount: vi.fn().mockReturnValue(0) as Mock<() => number>,
+        getJiminyMdFileCount: vi.fn().mockReturnValue(0) as Mock<() => number>,
         getToolRegistry: vi
           .fn()
           .mockReturnValue({ discoverTools: vi.fn() }) as Mock<

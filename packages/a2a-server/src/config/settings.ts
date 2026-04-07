@@ -14,7 +14,7 @@ import {
   getErrorMessage,
   type TelemetrySettings,
   homedir,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import stripJsonComments from 'strip-json-comments';
 
 export const USER_SETTINGS_DIR = path.join(homedir(), GEMINI_DIR);
@@ -44,7 +44,7 @@ export interface Settings {
   // Git-aware file filtering settings
   fileFiltering?: {
     respectGitIgnore?: boolean;
-    respectGeminiIgnore?: boolean;
+    respectJiminyIgnore?: boolean;
     enableRecursiveFileSearch?: boolean;
     customIgnoreFilePaths?: string[];
   };
@@ -66,7 +66,7 @@ export interface CheckpointingSettings {
  * Loads settings from user and workspace directories.
  * Project settings override user settings.
  *
- * How is it different to gemini-cli/cli: Returns already merged settings rather
+ * How is it different to jiminy-cli/cli: Returns already merged settings rather
  * than `LoadedSettings` (unnecessary since we are not modifying users
  * settings.json).
  */

@@ -33,7 +33,7 @@ vi.mock('../utils/paths.js', async (importOriginal) => {
 describe('Config Path Validation', () => {
   let config: Config;
   const targetDir = '/mock/workspace';
-  const globalGeminiDir = path.join(os.homedir(), '.gemini');
+  const globalJiminyDir = path.join(os.homedir(), '.jiminy');
 
   beforeEach(() => {
     config = new Config({
@@ -45,19 +45,19 @@ describe('Config Path Validation', () => {
     });
   });
 
-  it('should allow access to ~/.gemini if it is added to the workspace', () => {
-    const geminiMdPath = path.join(globalGeminiDir, 'GEMINI.md');
+  it('should allow access to ~/.jiminy if it is added to the workspace', () => {
+    const jiminyMdPath = path.join(globalJiminyDir, 'GEMINI.md');
 
     // Before adding, it should be denied
-    expect(config.isPathAllowed(geminiMdPath)).toBe(false);
+    expect(config.isPathAllowed(jiminyMdPath)).toBe(false);
 
     // Add to workspace
-    config.getWorkspaceContext().addDirectory(globalGeminiDir);
+    config.getWorkspaceContext().addDirectory(globalJiminyDir);
 
     // Now it should be allowed
-    expect(config.isPathAllowed(geminiMdPath)).toBe(true);
-    expect(config.validatePathAccess(geminiMdPath, 'read')).toBeNull();
-    expect(config.validatePathAccess(geminiMdPath, 'write')).toBeNull();
+    expect(config.isPathAllowed(jiminyMdPath)).toBe(true);
+    expect(config.validatePathAccess(jiminyMdPath, 'read')).toBeNull();
+    expect(config.validatePathAccess(jiminyMdPath, 'write')).toBeNull();
   });
 
   it('should still allow project workspace paths', () => {

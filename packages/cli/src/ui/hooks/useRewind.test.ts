@@ -11,7 +11,7 @@ import { useRewind } from './useRewind.js';
 import type {
   ConversationRecord,
   MessageRecord,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type { FileChangeStats } from '../utils/rewindFileOps.js';
 import * as rewindFileOps from '../utils/rewindFileOps.js';
 
@@ -31,7 +31,7 @@ describe('useRewindLogic', () => {
 
   const mockModelMessage: MessageRecord = {
     id: 'msg-2',
-    type: 'gemini',
+    type: 'jiminy',
     content: 'Hi there',
     timestamp: new Date(1001).toISOString(),
   };

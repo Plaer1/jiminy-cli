@@ -14,7 +14,7 @@ import {
   ApprovalMode,
   DEFAULT_GEMINI_MODEL,
   DEFAULT_TRUNCATE_TOOL_OUTPUT_THRESHOLD,
-  GeminiClient,
+  JiminyClient,
   HookSystem,
   type MessageBus,
   PolicyDecision,
@@ -24,8 +24,8 @@ import {
   NoopSandboxManager,
   type ToolRegistry,
   type SandboxManager,
-} from '@google/gemini-cli-core';
-import { createMockMessageBus } from '@google/gemini-cli-core/src/test-utils/mock-message-bus.js';
+} from '@google/jiminy-cli-core';
+import { createMockMessageBus } from '@google/jiminy-cli-core/src/test-utils/mock-message-bus.js';
 import { expect, vi } from 'vitest';
 
 export function createMockConfig(
@@ -50,11 +50,11 @@ export function createMockConfig(
         (this as unknown as Config).getMessageBus?.() as unknown as MessageBus
       );
     },
-    get geminiClient() {
+    get jiminyClient() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const config = this as unknown as Config;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-      return config.getGeminiClient?.() as unknown as GeminiClient;
+      return config.getJiminyClient?.() as unknown as JiminyClient;
     },
     getToolRegistry: vi.fn().mockReturnValue({
       getTool: vi.fn(),
@@ -80,8 +80,8 @@ export function createMockConfig(
       DEFAULT_TRUNCATE_TOOL_OUTPUT_THRESHOLD,
     getActiveModel: vi.fn().mockReturnValue(DEFAULT_GEMINI_MODEL),
     getDebugMode: vi.fn().mockReturnValue(false),
-    getContentGeneratorConfig: vi.fn().mockReturnValue({ model: 'gemini-pro' }),
-    getModel: vi.fn().mockReturnValue('gemini-pro'),
+    getContentGeneratorConfig: vi.fn().mockReturnValue({ model: 'jiminy-pro' }),
+    getModel: vi.fn().mockReturnValue('jiminy-pro'),
     getUsageStatisticsEnabled: vi.fn().mockReturnValue(false),
     setFallbackModelHandler: vi.fn(),
     initialize: vi.fn().mockResolvedValue(undefined),
@@ -121,9 +121,9 @@ export function createMockConfig(
     .fn()
     .mockReturnValue(new HookSystem(mockConfig));
 
-  mockConfig.getGeminiClient = vi
+  mockConfig.getJiminyClient = vi
     .fn()
-    .mockReturnValue(new GeminiClient(mockConfig));
+    .mockReturnValue(new JiminyClient(mockConfig));
 
   mockConfig.getPolicyEngine = vi.fn().mockReturnValue({
     check: async () => {

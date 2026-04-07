@@ -36,36 +36,36 @@ describe('billingEvents', () => {
   describe('OverageMenuShownEvent', () => {
     it('should construct with correct properties', () => {
       const event = new OverageMenuShownEvent(
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
         500,
         'ask',
       );
       expect(event['event.name']).toBe('overage_menu_shown');
-      expect(event.model).toBe('gemini-3-pro-preview');
+      expect(event.model).toBe('jiminy-3-pro-preview');
       expect(event.credit_balance).toBe(500);
       expect(event.overage_strategy).toBe('ask');
     });
 
     it('should produce correct OpenTelemetry attributes', () => {
       const event = new OverageMenuShownEvent(
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
         500,
         'ask',
       );
       const attrs = event.toOpenTelemetryAttributes(fakeConfig);
       expect(attrs['event.name']).toBe(EVENT_OVERAGE_MENU_SHOWN);
-      expect(attrs['model']).toBe('gemini-3-pro-preview');
+      expect(attrs['model']).toBe('jiminy-3-pro-preview');
       expect(attrs['credit_balance']).toBe(500);
       expect(attrs['overage_strategy']).toBe('ask');
     });
 
     it('should produce a human-readable log body', () => {
       const event = new OverageMenuShownEvent(
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
         500,
         'ask',
       );
-      expect(event.toLogBody()).toContain('gemini-3-pro-preview');
+      expect(event.toLogBody()).toContain('jiminy-3-pro-preview');
       expect(event.toLogBody()).toContain('500');
     });
   });
@@ -73,7 +73,7 @@ describe('billingEvents', () => {
   describe('OverageOptionSelectedEvent', () => {
     it('should construct with correct properties', () => {
       const event = new OverageOptionSelectedEvent(
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
         'use_credits',
         100,
       );
@@ -84,7 +84,7 @@ describe('billingEvents', () => {
 
     it('should produce correct OpenTelemetry attributes', () => {
       const event = new OverageOptionSelectedEvent(
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
         'use_fallback',
         200,
       );
@@ -95,32 +95,32 @@ describe('billingEvents', () => {
 
     it('should produce a human-readable log body', () => {
       const event = new OverageOptionSelectedEvent(
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
         'manage',
         100,
       );
       expect(event.toLogBody()).toContain('manage');
-      expect(event.toLogBody()).toContain('gemini-3-pro-preview');
+      expect(event.toLogBody()).toContain('jiminy-3-pro-preview');
     });
   });
 
   describe('EmptyWalletMenuShownEvent', () => {
     it('should construct with correct properties', () => {
-      const event = new EmptyWalletMenuShownEvent('gemini-3-pro-preview');
+      const event = new EmptyWalletMenuShownEvent('jiminy-3-pro-preview');
       expect(event['event.name']).toBe('empty_wallet_menu_shown');
-      expect(event.model).toBe('gemini-3-pro-preview');
+      expect(event.model).toBe('jiminy-3-pro-preview');
     });
 
     it('should produce correct OpenTelemetry attributes', () => {
-      const event = new EmptyWalletMenuShownEvent('gemini-3-pro-preview');
+      const event = new EmptyWalletMenuShownEvent('jiminy-3-pro-preview');
       const attrs = event.toOpenTelemetryAttributes(fakeConfig);
       expect(attrs['event.name']).toBe(EVENT_EMPTY_WALLET_MENU_SHOWN);
-      expect(attrs['model']).toBe('gemini-3-pro-preview');
+      expect(attrs['model']).toBe('jiminy-3-pro-preview');
     });
 
     it('should produce a human-readable log body', () => {
-      const event = new EmptyWalletMenuShownEvent('gemini-3-pro-preview');
-      expect(event.toLogBody()).toContain('gemini-3-pro-preview');
+      const event = new EmptyWalletMenuShownEvent('jiminy-3-pro-preview');
+      expect(event.toLogBody()).toContain('jiminy-3-pro-preview');
     });
   });
 
@@ -128,17 +128,17 @@ describe('billingEvents', () => {
     it('should construct with correct properties', () => {
       const event = new CreditPurchaseClickEvent(
         'empty_wallet_menu',
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
       );
       expect(event['event.name']).toBe('credit_purchase_click');
       expect(event.source).toBe('empty_wallet_menu');
-      expect(event.model).toBe('gemini-3-pro-preview');
+      expect(event.model).toBe('jiminy-3-pro-preview');
     });
 
     it('should produce correct OpenTelemetry attributes', () => {
       const event = new CreditPurchaseClickEvent(
         'overage_menu',
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
       );
       const attrs = event.toOpenTelemetryAttributes(fakeConfig);
       expect(attrs['event.name']).toBe(EVENT_CREDIT_PURCHASE_CLICK);
@@ -148,23 +148,23 @@ describe('billingEvents', () => {
     it('should produce a human-readable log body', () => {
       const event = new CreditPurchaseClickEvent(
         'manage',
-        'gemini-3-pro-preview',
+        'jiminy-3-pro-preview',
       );
       expect(event.toLogBody()).toContain('manage');
-      expect(event.toLogBody()).toContain('gemini-3-pro-preview');
+      expect(event.toLogBody()).toContain('jiminy-3-pro-preview');
     });
   });
 
   describe('CreditsUsedEvent', () => {
     it('should construct with correct properties', () => {
-      const event = new CreditsUsedEvent('gemini-3-pro-preview', 10, 490);
+      const event = new CreditsUsedEvent('jiminy-3-pro-preview', 10, 490);
       expect(event['event.name']).toBe('credits_used');
       expect(event.credits_consumed).toBe(10);
       expect(event.credits_remaining).toBe(490);
     });
 
     it('should produce correct OpenTelemetry attributes', () => {
-      const event = new CreditsUsedEvent('gemini-3-pro-preview', 10, 490);
+      const event = new CreditsUsedEvent('jiminy-3-pro-preview', 10, 490);
       const attrs = event.toOpenTelemetryAttributes(fakeConfig);
       expect(attrs['event.name']).toBe(EVENT_CREDITS_USED);
       expect(attrs['credits_consumed']).toBe(10);
@@ -172,11 +172,11 @@ describe('billingEvents', () => {
     });
 
     it('should produce a human-readable log body', () => {
-      const event = new CreditsUsedEvent('gemini-3-pro-preview', 10, 490);
+      const event = new CreditsUsedEvent('jiminy-3-pro-preview', 10, 490);
       const body = event.toLogBody();
       expect(body).toContain('10');
       expect(body).toContain('490');
-      expect(body).toContain('gemini-3-pro-preview');
+      expect(body).toContain('jiminy-3-pro-preview');
     });
   });
 

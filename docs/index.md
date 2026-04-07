@@ -19,11 +19,11 @@ Jump in to Jiminy CLI.
   on your system.
 - **[Authentication](./get-started/authentication.md):** Setup instructions for
   personal and enterprise accounts.
-- **[Examples](./get-started/examples.md):** Practical examples of Gemini CLI in
+- **[Examples](./get-started/examples.md):** Practical examples of Jiminy CLI in
   action.
 - **[CLI cheatsheet](./cli/cli-reference.md):** A quick reference for common
   commands and options.
-- **[Gemini 3 on Jiminy CLI](./get-started/gemini-3.md):** Learn about Gemini 3
+- **[Jiminy 3 on Jiminy CLI](./get-started/jiminy-3.md):** Learn about Jiminy 3
   support in Jiminy CLI.
 
 ## Use Jiminy CLI
@@ -83,7 +83,7 @@ Settings and customization options for Jiminy CLI.
 - **[Custom commands](./cli/custom-commands.md):** Personalized shortcuts.
 - **[Enterprise configuration](./cli/enterprise.md):** Professional environment
   controls.
-- **[Ignore files (.geminiignore)](./cli/jiminy-ignore.md):** Exclusion pattern
+- **[Ignore files (.jiminyignore)](./cli/jiminy-ignore.md):** Exclusion pattern
   reference.
 - **[Model configuration](./cli/generation-settings.md):** Fine-tune generation
   parameters like temperature and thinking budget.

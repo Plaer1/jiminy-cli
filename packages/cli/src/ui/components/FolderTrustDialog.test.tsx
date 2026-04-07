@@ -6,7 +6,7 @@
 
 import { renderWithProviders } from '../../test-utils/render.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { makeFakeConfig, ExitCodes } from '@google/gemini-cli-core';
+import { makeFakeConfig, ExitCodes } from '@google/jiminy-cli-core';
 import { waitFor } from '../../test-utils/async.js';
 import { act } from 'react';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
@@ -54,7 +54,7 @@ describe('FolderTrustDialog', () => {
 
     expect(lastFrame()).toContain('Do you trust the files in this folder?');
     expect(lastFrame()).toContain(
-      'Trusting a folder allows Gemini CLI to load its local configurations',
+      'Trusting a folder allows Jiminy CLI to load its local configurations',
     );
     unmount();
   });
@@ -243,7 +243,7 @@ describe('FolderTrustDialog', () => {
       <FolderTrustDialog onSelect={vi.fn()} isRestarting={true} />,
     );
 
-    expect(lastFrame()).toContain('Gemini CLI is restarting');
+    expect(lastFrame()).toContain('Jiminy CLI is restarting');
     unmount();
   });
 

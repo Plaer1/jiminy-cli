@@ -83,7 +83,7 @@ import {
   GEMINI_DIR,
   Storage,
   type MCPServerConfig,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { updateSettingsFilePreservingFormat } from '../utils/commentJson.js';
 import {
   getSettingsSchema,
@@ -129,9 +129,9 @@ const mockCoreEvents = vi.hoisted(() => ({
   emitSettingsChanged: vi.fn(),
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   const os = await import('node:os');
   const pathMod = await import('node:path');
   const fsMod = await import('node:fs');
@@ -150,7 +150,7 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   // Create a smarter mock for isWorkspaceHomeDir
   vi.spyOn(actual.Storage.prototype, 'isWorkspaceHomeDir').mockImplementation(
     function (this: Storage) {
-      const target = testResolve(pathMod.dirname(this.getGeminiDir()));
+      const target = testResolve(pathMod.dirname(this.getJiminyDir()));
       // Pick up the mocked home directory specifically from the 'os' mock
       const home = testResolve(os.homedir());
       return actual.normalizePath(target) === actual.normalizePath(home);
@@ -1909,7 +1909,7 @@ describe('Settings Loading and Merging', () => {
     }) {
       delete process.env['GEMINI_API_KEY']; // reset
       delete process.env['TESTTEST']; // reset
-      const geminiEnvPath = path.resolve(
+      const jiminyEnvPath = path.resolve(
         path.join(MOCK_WORKSPACE_DIR, GEMINI_DIR, '.env'),
       );
 
@@ -1919,7 +1919,7 @@ describe('Settings Loading and Merging', () => {
       });
       (mockFsExistsSync as Mock).mockImplementation((p: fs.PathLike) => {
         const normalizedP = path.resolve(p.toString());
-        return [path.resolve(USER_SETTINGS_PATH), geminiEnvPath].includes(
+        return [path.resolve(USER_SETTINGS_PATH), jiminyEnvPath].includes(
           normalizedP,
         );
       });
@@ -1941,7 +1941,7 @@ describe('Settings Loading and Merging', () => {
           const normalizedP = path.resolve(p.toString());
           if (normalizedP === path.resolve(USER_SETTINGS_PATH))
             return JSON.stringify(userSettingsContent);
-          if (normalizedP === geminiEnvPath)
+          if (normalizedP === jiminyEnvPath)
             return 'TESTTEST=1234\nGEMINI_API_KEY=test-key';
           return '{}';
         },
@@ -2504,7 +2504,7 @@ describe('Settings Loading and Merging', () => {
             maxNumTurns: 15,
             maxTimeMinutes: 5,
             thinkingBudget: 16384,
-            model: 'gemini-1.5-pro',
+            model: 'jiminy-1.5-pro',
           },
           cliHelpAgentSettings: {
             enabled: false,
@@ -2532,7 +2532,7 @@ describe('Settings Loading and Merging', () => {
             maxTimeMinutes: 5,
           },
           modelConfig: {
-            model: 'gemini-1.5-pro',
+            model: 'jiminy-1.5-pro',
             generateContentConfig: {
               thinkingConfig: {
                 thinkingBudget: 16384,
@@ -2910,7 +2910,7 @@ describe('Settings Loading and Merging', () => {
 
     describe('sandbox detection', () => {
       it('should detect sandbox when -s is a real flag', () => {
-        process.argv = ['node', 'gemini', '-s', 'some prompt'];
+        process.argv = ['node', 'jiminy', '-s', 'some prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -2931,7 +2931,7 @@ describe('Settings Loading and Merging', () => {
       });
 
       it('should detect sandbox when --sandbox is a real flag', () => {
-        process.argv = ['node', 'gemini', '--sandbox', 'prompt'];
+        process.argv = ['node', 'jiminy', '--sandbox', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -2948,7 +2948,7 @@ describe('Settings Loading and Merging', () => {
       });
 
       it('should ignore sandbox flags if they appear after --', () => {
-        process.argv = ['node', 'gemini', '--', '-s', 'some prompt'];
+        process.argv = ['node', 'jiminy', '--', '-s', 'some prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -2967,7 +2967,7 @@ describe('Settings Loading and Merging', () => {
       });
 
       it('should NOT be tricked by positional arguments that look like flags', () => {
-        process.argv = ['node', 'gemini', 'my -s prompt'];
+        process.argv = ['node', 'jiminy', 'my -s prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -2988,7 +2988,7 @@ describe('Settings Loading and Merging', () => {
 
     describe('env var sanitization', () => {
       it('should strictly enforce whitelist in untrusted/sandboxed mode', () => {
-        process.argv = ['node', 'gemini', '-s', 'prompt'];
+        process.argv = ['node', 'jiminy', '-s', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -3013,7 +3013,7 @@ GOOGLE_API_KEY=another-secret
       });
 
       it('should sanitize shell injection characters in whitelisted env vars in untrusted mode', () => {
-        process.argv = ['node', 'gemini', '--sandbox', 'prompt'];
+        process.argv = ['node', 'jiminy', '--sandbox', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -3037,7 +3037,7 @@ GOOGLE_API_KEY=another-secret
       });
 
       it('should allow . and / in whitelisted env vars but sanitize other characters in untrusted mode', () => {
-        process.argv = ['node', 'gemini', '--sandbox', 'prompt'];
+        process.argv = ['node', 'jiminy', '--sandbox', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -3062,7 +3062,7 @@ GOOGLE_API_KEY=another-secret
       });
 
       it('should NOT sanitize variables from trusted sources', () => {
-        process.argv = ['node', 'gemini', 'prompt'];
+        process.argv = ['node', 'jiminy', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: true,
           source: 'file',
@@ -3081,7 +3081,7 @@ GOOGLE_API_KEY=another-secret
       });
 
       it('should load environment variables normally when workspace is TRUSTED even if "sandboxed"', () => {
-        process.argv = ['node', 'gemini', '-s', 'prompt'];
+        process.argv = ['node', 'jiminy', '-s', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: true,
           source: 'file',
@@ -3114,7 +3114,7 @@ MALICIOUS_VAR=allowed-because-trusted
     describe('Cloud Shell security', () => {
       it('should handle Cloud Shell special defaults securely when untrusted', () => {
         process.env['CLOUD_SHELL'] = 'true';
-        process.argv = ['node', 'gemini', '-s', 'prompt'];
+        process.argv = ['node', 'jiminy', '-s', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',
@@ -3133,7 +3133,7 @@ MALICIOUS_VAR=allowed-because-trusted
 
       it('should sanitize GOOGLE_CLOUD_PROJECT in Cloud Shell when loaded from .env in untrusted mode', () => {
         process.env['CLOUD_SHELL'] = 'true';
-        process.argv = ['node', 'gemini', '-s', 'prompt'];
+        process.argv = ['node', 'jiminy', '-s', 'prompt'];
         vi.mocked(isWorkspaceTrusted).mockReturnValue({
           isTrusted: false,
           source: 'file',

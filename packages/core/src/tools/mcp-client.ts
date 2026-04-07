@@ -40,7 +40,7 @@ import {
   AuthProviderType,
   type Config,
   type MCPServerConfig,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
 } from '../config/config.js';
 import { GoogleCredentialProvider } from '../mcp/google-auth-provider.js';
 import { ServiceAccountImpersonationProvider } from '../mcp/sa-impersonation-provider.js';
@@ -1783,7 +1783,7 @@ export async function connectToMcpServer(
 ): Promise<Client> {
   const mcpClient = new Client(
     {
-      name: 'gemini-cli-mcp-client',
+      name: 'jiminy-cli-mcp-client',
       version: clientVersion,
     },
     {
@@ -2245,7 +2245,7 @@ export async function createTransport(
   if (mcpServerConfig.command) {
     if (!cliConfig.isTrustedFolder()) {
       throw new Error(
-        `MCP server '${mcpServerName}' uses stdio transport but current folder is not trusted. Use 'gemini trust' to enable it.`,
+        `MCP server '${mcpServerName}' uses stdio transport but current folder is not trusted. Use 'jiminy trust' to enable it.`,
       );
     }
     const extensionEnv = getExtensionEnvironment(mcpServerConfig.extension);
@@ -2330,7 +2330,7 @@ interface NamedTool {
 }
 
 function getExtensionEnvironment(
-  extension?: GeminiCLIExtension,
+  extension?: JiminyCLIExtension,
 ): Record<string, string> {
   const env: Record<string, string> = {};
   if (extension?.resolvedSettings) {

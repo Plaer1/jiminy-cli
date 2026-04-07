@@ -19,7 +19,7 @@ import yargs from 'yargs';
 import { createExtension } from '../../test-utils/createExtension.js';
 import path from 'node:path';
 import * as os from 'node:os';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 
 vi.mock('../utils.js', () => ({
   exitCli: vi.fn(),
@@ -126,7 +126,7 @@ describe('handleValidate', () => {
     });
     expect(debugLoggerErrorSpy).toHaveBeenCalledWith(
       expect.stringContaining(
-        'The following context files referenced in gemini-extension.json are missing: contextFile.md',
+        'The following context files referenced in jiminy-extension.json are missing: contextFile.md',
       ),
     );
     expect(processSpy).toHaveBeenCalledWith(1);

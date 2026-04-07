@@ -18,7 +18,7 @@ import {
   decodeTagName,
   type MessageActionReturn,
   INITIAL_HISTORY_LENGTH,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import path from 'node:path';
 import type {
   HistoryItemWithoutId,
@@ -27,7 +27,7 @@ import type {
 } from '../types.js';
 import { MessageType } from '../types.js';
 import { exportHistoryToFile } from '../utils/historyExportUtils.js';
-import { convertToRestPayload } from '@google/gemini-cli-core';
+import { convertToRestPayload } from '@google/jiminy-cli-core';
 
 const CHECKPOINT_MENU_GROUP = 'checkpoints';
 
@@ -36,19 +36,19 @@ const getSavedChatTags = async (
   mtSortDesc: boolean,
 ): Promise<ChatDetail[]> => {
   const cfg = context.services.agentContext?.config;
-  const geminiDir = cfg?.storage?.getProjectTempDir();
-  if (!geminiDir) {
+  const jiminyDir = cfg?.storage?.getProjectTempDir();
+  if (!jiminyDir) {
     return [];
   }
   try {
     const file_head = 'checkpoint-';
     const file_tail = '.json';
-    const files = await fsPromises.readdir(geminiDir);
+    const files = await fsPromises.readdir(jiminyDir);
     const chatDetails: ChatDetail[] = [];
 
     for (const file of files) {
       if (file.startsWith(file_head) && file.endsWith(file_tail)) {
-        const filePath = path.join(geminiDir, file);
+        const filePath = path.join(jiminyDir, file);
         const stats = await fsPromises.stat(filePath);
         const tagName = file.slice(file_head.length, -file_tail.length);
         chatDetails.push({
@@ -126,7 +126,7 @@ const saveCommand: SlashCommand = {
       }
     }
 
-    const chat = context.services.agentContext?.geminiClient?.getChat();
+    const chat = context.services.agentContext?.jiminyClient?.getChat();
     if (!chat) {
       return {
         type: 'message',
@@ -287,7 +287,7 @@ const shareCommand: SlashCommand = {
   action: async (context, args): Promise<MessageActionReturn> => {
     let filePathArg = args.trim();
     if (!filePathArg) {
-      filePathArg = `gemini-conversation-${Date.now()}.json`;
+      filePathArg = `jiminy-conversation-${Date.now()}.json`;
     }
 
     const filePath = path.resolve(filePathArg);
@@ -300,7 +300,7 @@ const shareCommand: SlashCommand = {
       };
     }
 
-    const chat = context.services.agentContext?.geminiClient?.getChat();
+    const chat = context.services.agentContext?.jiminyClient?.getChat();
     if (!chat) {
       return {
         type: 'message',

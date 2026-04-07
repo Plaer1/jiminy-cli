@@ -177,7 +177,7 @@ jobs:
         if: "${{github.event.inputs.force_skip_tests != 'true'}}"
         uses: './.github/actions/run-tests'
         with:
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           working-directory: './release'
 
       - name: 'Publish Release'
@@ -193,7 +193,7 @@ jobs:
           github-release-token: '${{ secrets.GEMINI_CLI_ROBOT_GITHUB_PAT }}'
           dry-run: '${{ github.event.inputs.dry_run }}'
           previous-tag: '${{ steps.patch_version.outputs.PREVIOUS_TAG }}'
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           npm-registry-publish-url: '${{ vars.NPM_REGISTRY_PUBLISH_URL }}'
           npm-registry-url: '${{ vars.NPM_REGISTRY_URL }}'
           npm-registry-scope: '${{ vars.NPM_REGISTRY_SCOPE }}'

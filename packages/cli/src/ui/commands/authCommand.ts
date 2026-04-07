@@ -10,7 +10,7 @@ import type {
   LogoutActionReturn,
 } from './types.js';
 import { CommandKind } from './types.js';
-import { clearCachedCredentialFile } from '@google/gemini-cli-core';
+import { clearCachedCredentialFile } from '@google/jiminy-cli-core';
 import { SettingScope } from '../../config/settings.js';
 
 const authLoginCommand: SlashCommand = {
@@ -39,7 +39,7 @@ const authLogoutCommand: SlashCommand = {
       undefined,
     );
     // Strip thoughts from history instead of clearing completely
-    context.services.agentContext?.geminiClient.stripThoughtsFromHistory();
+    context.services.agentContext?.jiminyClient.stripThoughtsFromHistory();
     // Return logout action to signal explicit state change
     return {
       type: 'logout',

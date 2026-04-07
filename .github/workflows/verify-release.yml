@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'The expected Gemini binary version that should be released (e.g., 0.5.0-preview-2).'
+        description: 'The expected Jiminy binary version that should be released (e.g., 0.5.0-preview-2).'
         required: true
         type: 'string'
       npm-tag:
@@ -28,7 +28,7 @@ on:
 
 jobs:
   verify-release:
-    if: "github.repository == 'google-gemini/gemini-cli'"
+    if: "github.repository == 'google-jiminy/jiminy-cli'"
     environment: "${{ github.event.inputs.environment || 'prod' }}"
     strategy:
       fail-fast: false
@@ -50,7 +50,7 @@ jobs:
           npm-package: '${{vars.CLI_PACKAGE_NAME}}@${{github.event.inputs.npm-tag}}'
           expected-version: '${{github.event.inputs.version}}'
           working-directory: '.'
-          gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
+          jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
           npm-registry-url: '${{ vars.NPM_REGISTRY_URL }}'
           github-token: '${{ secrets.GITHUB_TOKEN }}'
           npm-registry-scope: '${{ vars.NPM_REGISTRY_SCOPE }}'

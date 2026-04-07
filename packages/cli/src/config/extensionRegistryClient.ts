@@ -9,7 +9,7 @@ import {
   fetchWithTimeout,
   resolveToRealPath,
   isPrivateIp,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { AsyncFzf } from 'fzf';
 
 export interface RegistryExtension {
@@ -35,7 +35,7 @@ export interface RegistryExtension {
 
 export class ExtensionRegistryClient {
   static readonly DEFAULT_REGISTRY_URL =
-    'https://geminicli.com/extensions.json';
+    'https://jiminycli.com/extensions.json';
   private static readonly FETCH_TIMEOUT_MS = 10000; // 10 seconds
 
   private static fetchPromise: Promise<RegistryExtension[]> | null = null;

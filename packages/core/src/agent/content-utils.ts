@@ -12,7 +12,7 @@ import type { ContentPart } from './types.js';
  * Handles text, thought, inlineData, fileData parts and serializes unknown
  * part types to text to avoid silent data loss.
  */
-export function geminiPartsToContentParts(parts: Part[]): ContentPart[] {
+export function jiminyPartsToContentParts(parts: Part[]): ContentPart[] {
   const result: ContentPart[] = [];
   for (const part of parts) {
     if ('text' in part && part.text !== undefined) {
@@ -58,7 +58,7 @@ export function geminiPartsToContentParts(parts: Part[]): ContentPart[] {
 /**
  * Converts framework-agnostic ContentPart objects to Jiminy API Part objects.
  */
-export function contentPartsToGeminiParts(content: ContentPart[]): Part[] {
+export function contentPartsToJiminyParts(content: ContentPart[]): Part[] {
   const result: Part[] = [];
   for (const part of content) {
     switch (part.type) {

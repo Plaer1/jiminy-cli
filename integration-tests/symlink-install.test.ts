@@ -16,12 +16,12 @@ import {
   unlinkSync,
 } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { GEMINI_DIR } from '@google/gemini-cli-core';
+import { GEMINI_DIR } from '@google/jiminy-cli-core';
 import * as pty from '@lydell/node-pty';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BUNDLE_PATH = join(__dirname, '..', 'bundle/gemini.js');
+const BUNDLE_PATH = join(__dirname, '..', 'bundle/jiminy.js');
 
 const extension = `{
   "name": "test-symlink-extension",
@@ -58,7 +58,7 @@ describe.skipIf(skipFlaky)(
 
       const realExtPath = join(rig.testDir!, 'real-extension');
       mkdirSync(realExtPath);
-      writeFileSync(join(realExtPath, 'gemini-extension.json'), extension);
+      writeFileSync(join(realExtPath, 'jiminy-extension.json'), extension);
 
       const maliciousExtPath = join(
         os.tmpdir(),
@@ -66,7 +66,7 @@ describe.skipIf(skipFlaky)(
       );
       mkdirSync(maliciousExtPath);
       writeFileSync(
-        join(maliciousExtPath, 'gemini-extension.json'),
+        join(maliciousExtPath, 'jiminy-extension.json'),
         otherExtension,
       );
 

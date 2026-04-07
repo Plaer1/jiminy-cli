@@ -13,16 +13,16 @@ import {
   openBrowserSecurely,
   shouldLaunchBrowser,
   UPGRADE_URL_PAGE,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     openBrowserSecurely: vi.fn(),
     shouldLaunchBrowser: vi.fn().mockReturnValue(true),
-    UPGRADE_URL_PAGE: 'https://goo.gle/set-up-gemini-code-assist',
+    UPGRADE_URL_PAGE: 'https://goo.gle/set-up-jiminy-code-assist',
   };
 });
 
@@ -48,7 +48,7 @@ describe('upgradeCommand', () => {
   it('should have the correct name and description', () => {
     expect(upgradeCommand.name).toBe('upgrade');
     expect(upgradeCommand.description).toBe(
-      'Upgrade your Gemini Code Assist tier for higher limits',
+      'Upgrade your Jiminy Code Assist tier for higher limits',
     );
   });
 

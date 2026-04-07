@@ -139,7 +139,7 @@
     <rect x="171" y="612" width="72" height="17" fill="#001a00" />
     <text x="324" y="614" fill="#ffffff" textLength="36" lengthAdjust="spacingAndGlyphs">main</text>
     <text x="459" y="614" fill="#00cd00" textLength="54" lengthAdjust="spacingAndGlyphs">docker</text>
-    <text x="594" y="614" fill="#ffffff" textLength="126" lengthAdjust="spacingAndGlyphs">gemini-2.5-pro</text>
+    <text x="594" y="614" fill="#ffffff" textLength="126" lengthAdjust="spacingAndGlyphs">jiminy-2.5-pro</text>
     <text x="801" y="614" fill="#ffffff" textLength="27" lengthAdjust="spacingAndGlyphs">97%</text>
     <text x="864" y="614" fill="#333333" textLength="9" lengthAdjust="spacingAndGlyphs">│</text>
     <text x="891" y="614" fill="#333333" textLength="9" lengthAdjust="spacingAndGlyphs">│</text>

@@ -39,7 +39,7 @@ export const AlternateBufferQuittingDisplay = () => {
         <HistoryItemDisplay
           terminalWidth={uiState.mainAreaWidth}
           availableTerminalHeight={undefined}
-          availableTerminalHeightGemini={MAX_GEMINI_MESSAGE_LINES}
+          availableTerminalHeightJiminy={MAX_GEMINI_MESSAGE_LINES}
           key={h.id}
           item={h}
           isPending={false}

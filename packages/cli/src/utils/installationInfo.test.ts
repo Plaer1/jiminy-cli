@@ -13,11 +13,11 @@ import {
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as childProcess from 'node:child_process';
-import { isGitRepository, debugLogger } from '@google/gemini-cli-core';
+import { isGitRepository, debugLogger } from '@google/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     isGitRepository: vi.fn(),
@@ -111,7 +111,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect running via npx', () => {
-    const npxPath = `/Users/test/.npm/_npx/12345/bin/gemini`;
+    const npxPath = `/Users/test/.npm/_npx/12345/bin/jiminy`;
     process.argv[1] = npxPath;
     mockedRealPathSync.mockReturnValue(npxPath);
 
@@ -123,7 +123,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect running via pnpx', () => {
-    const pnpxPath = `/Users/test/.pnpm/_pnpx/12345/bin/gemini`;
+    const pnpxPath = `/Users/test/.pnpm/_pnpx/12345/bin/jiminy`;
     process.argv[1] = pnpxPath;
     mockedRealPathSync.mockReturnValue(pnpxPath);
 
@@ -135,7 +135,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect running via bunx', () => {
-    const bunxPath = `/Users/test/.bun/install/cache/12345/bin/gemini`;
+    const bunxPath = `/Users/test/.bun/install/cache/12345/bin/jiminy`;
     process.argv[1] = bunxPath;
     mockedRealPathSync.mockReturnValue(bunxPath);
     mockedExecSync.mockImplementation(() => {
@@ -189,7 +189,7 @@ describe('getInstallationInfo', () => {
     Object.defineProperty(process, 'platform', {
       value: 'darwin',
     });
-    const cliPath = '/usr/local/bin/gemini';
+    const cliPath = '/usr/local/bin/jiminy';
     process.argv[1] = cliPath;
     mockedRealPathSync.mockReturnValue(cliPath);
     mockedExecSync.mockImplementation(() => {
@@ -208,7 +208,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global pnpm installation', () => {
-    const pnpmPath = `/Users/test/.pnpm/global/5/node_modules/.pnpm/some-hash/node_modules/@google/gemini-cli/dist/index.js`;
+    const pnpmPath = `/Users/test/.pnpm/global/5/node_modules/.pnpm/some-hash/node_modules/@google/jiminy-cli/dist/index.js`;
     process.argv[1] = pnpmPath;
     mockedRealPathSync.mockReturnValue(pnpmPath);
     mockedExecSync.mockImplementation(() => {
@@ -232,7 +232,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global yarn installation', () => {
-    const yarnPath = `/Users/test/.yarn/global/node_modules/@google/gemini-cli/dist/index.js`;
+    const yarnPath = `/Users/test/.yarn/global/node_modules/@google/jiminy-cli/dist/index.js`;
     process.argv[1] = yarnPath;
     mockedRealPathSync.mockReturnValue(yarnPath);
     mockedExecSync.mockImplementation(() => {
@@ -256,7 +256,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global bun installation', () => {
-    const bunPath = `/Users/test/.bun/install/global/node_modules/@google/gemini-cli/dist/index.js`;
+    const bunPath = `/Users/test/.bun/install/global/node_modules/@google/jiminy-cli/dist/index.js`;
     process.argv[1] = bunPath;
     mockedRealPathSync.mockReturnValue(bunPath);
     mockedExecSync.mockImplementation(() => {
@@ -280,7 +280,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect local installation and identify yarn from lockfile', () => {
-    const localPath = `${projectRoot}/node_modules/.bin/gemini`;
+    const localPath = `${projectRoot}/node_modules/.bin/jiminy`;
     process.argv[1] = localPath;
     mockedRealPathSync.mockReturnValue(localPath);
     mockedExecSync.mockImplementation(() => {
@@ -298,7 +298,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect local installation and identify pnpm from lockfile', () => {
-    const localPath = `${projectRoot}/node_modules/.bin/gemini`;
+    const localPath = `${projectRoot}/node_modules/.bin/jiminy`;
     process.argv[1] = localPath;
     mockedRealPathSync.mockReturnValue(localPath);
     mockedExecSync.mockImplementation(() => {
@@ -315,7 +315,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect local installation and identify bun from lockfile', () => {
-    const localPath = `${projectRoot}/node_modules/.bin/gemini`;
+    const localPath = `${projectRoot}/node_modules/.bin/jiminy`;
     process.argv[1] = localPath;
     mockedRealPathSync.mockReturnValue(localPath);
     mockedExecSync.mockImplementation(() => {
@@ -332,7 +332,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should default to local npm installation if no lockfile is found', () => {
-    const localPath = `${projectRoot}/node_modules/.bin/gemini`;
+    const localPath = `${projectRoot}/node_modules/.bin/jiminy`;
     process.argv[1] = localPath;
     mockedRealPathSync.mockReturnValue(localPath);
     mockedExecSync.mockImplementation(() => {
@@ -347,7 +347,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should default to global npm installation for unrecognized paths', () => {
-    const globalPath = `/usr/local/bin/gemini`;
+    const globalPath = `/usr/local/bin/jiminy`;
     process.argv[1] = globalPath;
     mockedRealPathSync.mockReturnValue(globalPath);
     mockedExecSync.mockImplementation(() => {
@@ -370,19 +370,19 @@ describe('getInstallationInfo', () => {
     );
   });
 
-  it('should NOT detect Homebrew if gemini-cli is installed in brew but running from npm location', () => {
+  it('should NOT detect Homebrew if jiminy-cli is installed in brew but running from npm location', () => {
     Object.defineProperty(process, 'platform', {
       value: 'darwin',
     });
     // Path looks like standard global NPM
     const cliPath =
-      '/usr/local/lib/node_modules/@google/gemini-cli/dist/index.js';
+      '/usr/local/lib/node_modules/@google/jiminy-cli/dist/index.js';
     process.argv[1] = cliPath;
 
     // Setup mocks
     mockedExecSync.mockImplementation((cmd) => {
       if (typeof cmd === 'string' && cmd.includes('brew list')) {
-        return Buffer.from('gemini-cli\n');
+        return Buffer.from('jiminy-cli\n');
       }
       // Future proofing for the fix:
       if (typeof cmd === 'string' && cmd.includes('brew --prefix jiminy-cli')) {

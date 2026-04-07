@@ -14,7 +14,7 @@ import {
   type CommandContext,
 } from './types.js';
 import type { ReactElement } from 'react';
-import { coreEvents } from '@google/gemini-cli-core';
+import { coreEvents } from '@google/jiminy-cli-core';
 
 // Mock dependencies
 const mockRewindTo = vi.fn();
@@ -32,9 +32,9 @@ const mockSetInput = vi.fn();
 const mockRevertFileChanges = vi.fn();
 const mockGetProjectRoot = vi.fn().mockReturnValue('/mock/root');
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: {
@@ -55,7 +55,7 @@ vi.mock('../hooks/useSessionBrowser.js', () => ({
   convertSessionToHistoryFormats: vi.fn().mockReturnValue({
     uiHistory: [
       { type: 'user', text: 'old user' },
-      { type: 'gemini', text: 'old gemini' },
+      { type: 'jiminy', text: 'old jiminy' },
     ],
     clientHistory: [{ role: 'user', parts: [{ text: 'old user' }] }],
   }),
@@ -99,7 +99,7 @@ describe('rewindCommand', () => {
     mockContext = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: {
+          jiminyClient: {
             getChatRecordingService: mockGetChatRecordingService,
             setHistory: mockSetHistory,
             sendMessageStream: mockSendMessageStream,
@@ -147,7 +147,7 @@ describe('rewindCommand', () => {
       expect(mockLoadHistory).toHaveBeenCalledWith(
         [
           expect.objectContaining({ text: 'old user', id: 1 }),
-          expect.objectContaining({ text: 'old gemini', id: 2 }),
+          expect.objectContaining({ text: 'old jiminy', id: 2 }),
         ],
         'New Prompt',
       );
@@ -297,7 +297,7 @@ describe('rewindCommand', () => {
     const context = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: undefined,
+          jiminyClient: undefined,
           get config() {
             return this;
           },
@@ -318,7 +318,7 @@ describe('rewindCommand', () => {
     const context = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: { getChatRecordingService: () => undefined },
+          jiminyClient: { getChatRecordingService: () => undefined },
           get config() {
             return this;
           },
@@ -349,7 +349,7 @@ describe('rewindCommand', () => {
 
   it('should return info if no user interactions found', () => {
     mockGetConversation.mockReturnValue({
-      messages: [{ id: 'msg-1', type: 'gemini', content: 'hello' }],
+      messages: [{ id: 'msg-1', type: 'jiminy', content: 'hello' }],
       sessionId: 'test-session',
     });
 

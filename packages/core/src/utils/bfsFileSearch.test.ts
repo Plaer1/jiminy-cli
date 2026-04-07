@@ -131,7 +131,7 @@ describe('bfsFileSearch', () => {
         fileService,
         fileFilteringOptions: {
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           customIgnoreFilePaths: [],
         },
       });
@@ -139,7 +139,7 @@ describe('bfsFileSearch', () => {
       expect(result).toEqual([targetFilePath]);
     });
 
-    it('should ignore geminiignored files', async () => {
+    it('should ignore jiminyignored files', async () => {
       await createTestFile('node_modules/', 'project', GEMINI_IGNORE_FILE_NAME);
       await createTestFile('content', 'project', 'node_modules', 'target.txt');
       const targetFilePath = await createTestFile(
@@ -155,7 +155,7 @@ describe('bfsFileSearch', () => {
         fileService,
         fileFilteringOptions: {
           respectGitIgnore: false,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           customIgnoreFilePaths: [],
         },
       });
@@ -185,7 +185,7 @@ describe('bfsFileSearch', () => {
         fileService,
         fileFilteringOptions: {
           respectGitIgnore: false,
-          respectGeminiIgnore: false,
+          respectJiminyIgnore: false,
           customIgnoreFilePaths: [],
         },
       });
@@ -319,7 +319,7 @@ describe('bfsFileSearchSync', () => {
       fileService,
       fileFilteringOptions: {
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
         customIgnoreFilePaths: [],
       },
     });

@@ -2,19 +2,19 @@
 .env
 .env~
 
-# gemini-cli settings
-# We want to keep the .gemini in the root of the repo and ignore any .gemini
-# in subdirectories. In our root .gemini we want to allow for version control
+# jiminy-cli settings
+# We want to keep the .jiminy in the root of the repo and ignore any .jiminy
+# in subdirectories. In our root .jiminy we want to allow for version control
 # for subcommands.
-**/.gemini/
-!/.gemini/
-.gemini/*
-!.gemini/config.yaml
-!.gemini/commands/
-!.gemini/skills/
-!.gemini/settings.json
+**/.jiminy/
+!/.jiminy/
+.jiminy/*
+!.jiminy/config.yaml
+!.jiminy/commands/
+!.jiminy/skills/
+!.jiminy/settings.json
 
-# Note: .gemini-clipboard/ is NOT in gitignore so Gemini can access pasted images
+# Note: .jiminy-clipboard/ is NOT in gitignore so Jiminy can access pasted images
 
 # Dependency directory
 node_modules
@@ -56,10 +56,10 @@ gha-creds-*.json
 
 # Log files
 patch_output.log
-gemini-debug.log
+jiminy-debug.log
 
 .genkit
-.gemini-clipboard/
+.jiminy-clipboard/
 .eslintcache
 evals/logs/
 

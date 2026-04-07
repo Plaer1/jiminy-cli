@@ -7,7 +7,7 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import type { PartListUnion, PartUnion } from '@google/genai';
-import type { AnyToolInvocation, Config } from '@google/gemini-cli-core';
+import type { AnyToolInvocation, Config } from '@google/jiminy-cli-core';
 import {
   debugLogger,
   getErrorMessage,
@@ -19,7 +19,7 @@ import {
   REFERENCE_CONTENT_START,
   REFERENCE_CONTENT_END,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { Buffer } from 'node:buffer';
 import type {
   HistoryItemToolGroup,
@@ -210,7 +210,7 @@ interface ResolvedFile {
 
 interface IgnoredFile {
   path: string;
-  reason: 'git' | 'gemini' | 'both';
+  reason: 'git' | 'jiminy' | 'both';
 }
 
 /**
@@ -242,25 +242,25 @@ async function resolveFilePaths(
       respectFileIgnore.respectGitIgnore &&
       fileDiscovery.shouldIgnoreFile(pathName, {
         respectGitIgnore: true,
-        respectGeminiIgnore: false,
+        respectJiminyIgnore: false,
       });
-    const geminiIgnored =
-      respectFileIgnore.respectGeminiIgnore &&
+    const jiminyIgnored =
+      respectFileIgnore.respectJiminyIgnore &&
       fileDiscovery.shouldIgnoreFile(pathName, {
         respectGitIgnore: false,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       });
 
-    if (gitIgnored || geminiIgnored) {
+    if (gitIgnored || jiminyIgnored) {
       const reason =
-        gitIgnored && geminiIgnored ? 'both' : gitIgnored ? 'git' : 'gemini';
+        gitIgnored && jiminyIgnored ? 'both' : gitIgnored ? 'git' : 'jiminy';
       ignoredFiles.push({ path: pathName, reason });
       const reasonText =
         reason === 'both'
-          ? 'ignored by both git and gemini'
+          ? 'ignored by both git and jiminy'
           : reason === 'git'
             ? 'git-ignored'
-            : 'gemini-ignored';
+            : 'jiminy-ignored';
       onDebugMessage(`Path ${pathName} is ${reasonText} and will be skipped.`);
       continue;
     }
@@ -526,7 +526,7 @@ async function readLocalFiles(
     include: pathSpecsToRead,
     file_filtering_options: {
       respect_git_ignore: respectFileIgnore.respectGitIgnore,
-      respect_gemini_ignore: respectFileIgnore.respectGeminiIgnore,
+      respect_jiminy_ignore: respectFileIgnore.respectJiminyIgnore,
     },
   };
 
@@ -625,7 +625,7 @@ function reportIgnoredFiles(
 
   const ignoredByReason: Record<string, string[]> = {
     git: [],
-    gemini: [],
+    jiminy: [],
     both: [],
   };
 
@@ -637,8 +637,8 @@ function reportIgnoredFiles(
   if (ignoredByReason['git'].length) {
     messages.push(`Git-ignored: ${ignoredByReason['git'].join(', ')}`);
   }
-  if (ignoredByReason['gemini'].length) {
-    messages.push(`Jiminy-ignored: ${ignoredByReason['gemini'].join(', ')}`);
+  if (ignoredByReason['jiminy'].length) {
+    messages.push(`Jiminy-ignored: ${ignoredByReason['jiminy'].join(', ')}`);
   }
   if (ignoredByReason['both'].length) {
     messages.push(`Ignored by both: ${ignoredByReason['both'].join(', ')}`);

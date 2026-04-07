@@ -8,7 +8,7 @@ import { access, cp, mkdir, readdir, writeFile } from 'node:fs/promises';
 import { join, dirname, basename } from 'node:path';
 import type { CommandModule } from 'yargs';
 import { fileURLToPath } from 'node:url';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 import { exitCli } from '../utils.js';
 
 interface NewArgs {
@@ -63,7 +63,7 @@ async function handleNew(args: NewArgs) {
       version: '1.0.0',
     };
     await writeFile(
-      join(args.path, 'gemini-extension.json'),
+      join(args.path, 'jiminy-extension.json'),
       JSON.stringify(manifest, null, 2),
     );
     debugLogger.log(`Successfully created new extension at ${args.path}.`);

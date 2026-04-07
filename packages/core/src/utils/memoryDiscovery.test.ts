@@ -17,7 +17,7 @@ import {
   refreshServerHierarchicalMemory,
 } from './memoryDiscovery.js';
 import {
-  setGeminiMdFilename,
+  setJiminyMdFilename,
   DEFAULT_CONTEXT_FILENAME,
 } from '../tools/memoryTool.js';
 import { flattenMemory, type HierarchicalMemory } from '../config/memory.js';
@@ -35,7 +35,7 @@ function flattenResult(result: {
     filePaths: result.filePaths.map((p) => normalizePath(p)),
   };
 }
-import { Config, type GeminiCLIExtension } from '../config/config.js';
+import { Config, type JiminyCLIExtension } from '../config/config.js';
 import { Storage } from '../config/storage.js';
 import { SimpleExtensionLoader } from './extensionLoader.js';
 import { CoreEvent, coreEvents } from './events.js';
@@ -103,7 +103,7 @@ describe('memoryDiscovery', () => {
   afterEach(async () => {
     vi.unstubAllEnvs();
     // Some tests set this to a different value.
-    setGeminiMdFilename(DEFAULT_CONTEXT_FILENAME);
+    setJiminyMdFilename(DEFAULT_CONTEXT_FILENAME);
     // Clean up the temporary directory to prevent resource leaks.
     // Use maxRetries option for robust cleanup without race conditions
     await fsPromises.rm(testRootDir, {
@@ -225,7 +225,7 @@ default context content
 
   it('should load only the global custom context file if present and filename is changed', async () => {
     const customFilename = 'CUSTOM_AGENTS.md';
-    setGeminiMdFilename(customFilename);
+    setJiminyMdFilename(customFilename);
 
     const customContextFile = await createTestFile(
       path.join(homedir, GEMINI_DIR, customFilename),
@@ -254,7 +254,7 @@ custom context content
 
   it('should load context files by upward traversal with custom filename', async () => {
     const customFilename = 'PROJECT_CONTEXT.md';
-    setGeminiMdFilename(customFilename);
+    setJiminyMdFilename(customFilename);
 
     const projectContextFile = await createTestFile(
       path.join(projectRoot, customFilename),
@@ -291,7 +291,7 @@ cwd context content
 
   it('should load context files by downward traversal with custom filename', async () => {
     const customFilename = 'LOCAL_CONTEXT.md';
-    setGeminiMdFilename(customFilename);
+    setJiminyMdFilename(customFilename);
 
     const subdirCustomFile = await createTestFile(
       path.join(cwd, 'subdir', customFilename),
@@ -327,11 +327,11 @@ Subdir custom memory
   });
 
   it('should load ORIGINAL_GEMINI_MD_FILENAME files by upward traversal from CWD to project root', async () => {
-    const projectRootGeminiFile = await createTestFile(
+    const projectRootJiminyFile = await createTestFile(
       path.join(projectRoot, DEFAULT_CONTEXT_FILENAME),
       'Project root memory',
     );
-    const srcGeminiFile = await createTestFile(
+    const srcJiminyFile = await createTestFile(
       path.join(cwd, DEFAULT_CONTEXT_FILENAME),
       'Src directory memory',
     );
@@ -348,24 +348,24 @@ Subdir custom memory
 
     expect(result).toEqual({
       memoryContent: `--- Project ---
---- Context from: ${projectRootGeminiFile} ---
+--- Context from: ${projectRootJiminyFile} ---
 Project root memory
---- End of Context from: ${projectRootGeminiFile} ---
+--- End of Context from: ${projectRootJiminyFile} ---
 
---- Context from: ${srcGeminiFile} ---
+--- Context from: ${srcJiminyFile} ---
 Src directory memory
---- End of Context from: ${srcGeminiFile} ---`,
+--- End of Context from: ${srcJiminyFile} ---`,
       fileCount: 2,
-      filePaths: [projectRootGeminiFile, srcGeminiFile],
+      filePaths: [projectRootJiminyFile, srcJiminyFile],
     });
   });
 
   it('should load ORIGINAL_GEMINI_MD_FILENAME files by downward traversal from CWD', async () => {
-    const subDirGeminiFile = await createTestFile(
+    const subDirJiminyFile = await createTestFile(
       path.join(cwd, 'subdir', DEFAULT_CONTEXT_FILENAME),
       'Subdir memory',
     );
-    const cwdGeminiFile = await createTestFile(
+    const cwdJiminyFile = await createTestFile(
       path.join(cwd, DEFAULT_CONTEXT_FILENAME),
       'CWD memory',
     );
@@ -382,15 +382,15 @@ Src directory memory
 
     expect(result).toEqual({
       memoryContent: `--- Project ---
---- Context from: ${cwdGeminiFile} ---
+--- Context from: ${cwdJiminyFile} ---
 CWD memory
---- End of Context from: ${cwdGeminiFile} ---
+--- End of Context from: ${cwdJiminyFile} ---
 
---- Context from: ${subDirGeminiFile} ---
+--- Context from: ${subDirJiminyFile} ---
 Subdir memory
---- End of Context from: ${subDirGeminiFile} ---`,
+--- End of Context from: ${subDirJiminyFile} ---`,
       fileCount: 2,
-      filePaths: [cwdGeminiFile, subDirGeminiFile],
+      filePaths: [cwdJiminyFile, subDirJiminyFile],
     });
   });
 
@@ -399,19 +399,19 @@ Subdir memory
       path.join(homedir, GEMINI_DIR, DEFAULT_CONTEXT_FILENAME),
       'default context content',
     );
-    const rootGeminiFile = await createTestFile(
+    const rootJiminyFile = await createTestFile(
       path.join(testRootDir, DEFAULT_CONTEXT_FILENAME),
       'Project parent memory',
     );
-    const projectRootGeminiFile = await createTestFile(
+    const projectRootJiminyFile = await createTestFile(
       path.join(projectRoot, DEFAULT_CONTEXT_FILENAME),
       'Project root memory',
     );
-    const cwdGeminiFile = await createTestFile(
+    const cwdJiminyFile = await createTestFile(
       path.join(cwd, DEFAULT_CONTEXT_FILENAME),
       'CWD memory',
     );
-    const subDirGeminiFile = await createTestFile(
+    const subDirJiminyFile = await createTestFile(
       path.join(cwd, 'sub', DEFAULT_CONTEXT_FILENAME),
       'Subdir memory',
     );
@@ -433,28 +433,28 @@ default context content
 --- End of Context from: ${defaultContextFile} ---
 
 --- Project ---
---- Context from: ${rootGeminiFile} ---
+--- Context from: ${rootJiminyFile} ---
 Project parent memory
---- End of Context from: ${rootGeminiFile} ---
+--- End of Context from: ${rootJiminyFile} ---
 
---- Context from: ${projectRootGeminiFile} ---
+--- Context from: ${projectRootJiminyFile} ---
 Project root memory
---- End of Context from: ${projectRootGeminiFile} ---
+--- End of Context from: ${projectRootJiminyFile} ---
 
---- Context from: ${cwdGeminiFile} ---
+--- Context from: ${cwdJiminyFile} ---
 CWD memory
---- End of Context from: ${cwdGeminiFile} ---
+--- End of Context from: ${cwdJiminyFile} ---
 
---- Context from: ${subDirGeminiFile} ---
+--- Context from: ${subDirJiminyFile} ---
 Subdir memory
---- End of Context from: ${subDirGeminiFile} ---`,
+--- End of Context from: ${subDirJiminyFile} ---`,
       fileCount: 5,
       filePaths: [
         defaultContextFile,
-        rootGeminiFile,
-        projectRootGeminiFile,
-        cwdGeminiFile,
-        subDirGeminiFile,
+        rootJiminyFile,
+        projectRootJiminyFile,
+        cwdJiminyFile,
+        subDirJiminyFile,
       ],
     });
   });
@@ -467,7 +467,7 @@ Subdir memory
       path.join(cwd, 'node_modules', DEFAULT_CONTEXT_FILENAME),
       'Ignored memory',
     );
-    const regularSubDirGeminiFile = await createTestFile(
+    const regularSubDirJiminyFile = await createTestFile(
       path.join(cwd, 'my_code', DEFAULT_CONTEXT_FILENAME),
       'My code memory',
     );
@@ -482,7 +482,7 @@ Subdir memory
         'tree',
         {
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           customIgnoreFilePaths: [],
         },
         200, // maxDirs parameter
@@ -491,11 +491,11 @@ Subdir memory
 
     expect(result).toEqual({
       memoryContent: `--- Project ---
---- Context from: ${regularSubDirGeminiFile} ---
+--- Context from: ${regularSubDirJiminyFile} ---
 My code memory
---- End of Context from: ${regularSubDirGeminiFile} ---`,
+--- End of Context from: ${regularSubDirJiminyFile} ---`,
       fileCount: 1,
-      filePaths: [regularSubDirGeminiFile],
+      filePaths: [regularSubDirJiminyFile],
     });
   });
 
@@ -516,7 +516,7 @@ My code memory
       'tree', // importFormat
       {
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
         customIgnoreFilePaths: [],
       },
       1, // maxDirs
@@ -557,7 +557,7 @@ My code memory
           {
             contextFiles: [extensionFilePath],
             isActive: true,
-          } as GeminiCLIExtension,
+          } as JiminyCLIExtension,
         ]),
         DEFAULT_FOLDER_TRUST,
       ),
@@ -712,7 +712,7 @@ included directory memory
         {
           isActive: true,
           contextFiles: [extFile],
-        } as GeminiCLIExtension,
+        } as JiminyCLIExtension,
       ]);
 
       const result = getExtensionMemoryPaths(loader);
@@ -730,7 +730,7 @@ included directory memory
         {
           isActive: false,
           contextFiles: [extFile],
-        } as GeminiCLIExtension,
+        } as JiminyCLIExtension,
       ]);
 
       const result = getExtensionMemoryPaths(loader);
@@ -840,7 +840,7 @@ included directory memory
 
     it('should keep multiple memory files from the same directory adjacent and in order', async () => {
       // Configure multiple memory filenames
-      setGeminiMdFilename(['PRIMARY.md', 'SECONDARY.md']);
+      setJiminyMdFilename(['PRIMARY.md', 'SECONDARY.md']);
 
       const dir = await createEmptyDir(
         path.join(testRootDir, 'multi_file_dir'),
@@ -869,15 +869,15 @@ included directory memory
 
   describe('case-insensitive filesystem deduplication', () => {
     it('should deduplicate files that point to the same inode (same physical file)', async () => {
-      const geminiFile = await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+      const jiminyFile = await createTestFile(
+        path.join(projectRoot, 'jiminy.md'),
         'Project root memory',
       );
 
       // create hard link to simulate case-insensitive filesystem behavior
-      const geminiFileLink = path.join(projectRoot, 'GEMINI.md');
+      const jiminyFileLink = path.join(projectRoot, 'GEMINI.md');
       try {
-        await fsPromises.link(geminiFile, geminiFileLink);
+        await fsPromises.link(jiminyFile, jiminyFileLink);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
@@ -891,12 +891,12 @@ included directory memory
         throw error;
       }
 
-      const stats1 = await fsPromises.lstat(geminiFile);
-      const stats2 = await fsPromises.lstat(geminiFileLink);
+      const stats1 = await fsPromises.lstat(jiminyFile);
+      const stats2 = await fsPromises.lstat(jiminyFileLink);
       expect(stats1.ino).toBe(stats2.ino);
       expect(stats1.dev).toBe(stats2.dev);
 
-      setGeminiMdFilename(['GEMINI.md', 'gemini.md']);
+      setJiminyMdFilename(['GEMINI.md', 'jiminy.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -915,27 +915,27 @@ included directory memory
       expect(contentMatches).toHaveLength(1);
 
       try {
-        await fsPromises.unlink(geminiFileLink);
+        await fsPromises.unlink(jiminyFileLink);
       } catch {
         // ignore cleanup errors
       }
     });
 
     it('should handle case where files have different inodes (different files)', async () => {
-      const geminiFileLower = await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+      const jiminyFileLower = await createTestFile(
+        path.join(projectRoot, 'jiminy.md'),
         'Lowercase file content',
       );
-      const geminiFileUpper = await createTestFile(
+      const jiminyFileUpper = await createTestFile(
         path.join(projectRoot, 'GEMINI.md'),
         'Uppercase file content',
       );
 
-      const stats1 = await fsPromises.lstat(geminiFileLower);
-      const stats2 = await fsPromises.lstat(geminiFileUpper);
+      const stats1 = await fsPromises.lstat(jiminyFileLower);
+      const stats2 = await fsPromises.lstat(jiminyFileUpper);
 
       if (stats1.ino !== stats2.ino || stats1.dev !== stats2.dev) {
-        setGeminiMdFilename(['GEMINI.md', 'gemini.md']);
+        setJiminyMdFilename(['GEMINI.md', 'jiminy.md']);
 
         const result = flattenResult(
           await loadServerHierarchicalMemory(
@@ -956,11 +956,11 @@ included directory memory
 
     it("should handle files that cannot be stat'd (missing files)", async () => {
       await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+        path.join(projectRoot, 'jiminy.md'),
         'Valid file content',
       );
 
-      setGeminiMdFilename(['gemini.md', 'missing.md']);
+      setJiminyMdFilename(['jiminy.md', 'missing.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -977,17 +977,17 @@ included directory memory
     });
 
     it('should deduplicate multiple paths pointing to same file (3+ duplicates)', async () => {
-      const geminiFile = await createTestFile(
-        path.join(projectRoot, 'gemini.md'),
+      const jiminyFile = await createTestFile(
+        path.join(projectRoot, 'jiminy.md'),
         'Project root memory',
       );
 
       const link1 = path.join(projectRoot, 'GEMINI.md');
-      const link2 = path.join(projectRoot, 'Gemini.md');
+      const link2 = path.join(projectRoot, 'Jiminy.md');
 
       try {
-        await fsPromises.link(geminiFile, link1);
-        await fsPromises.link(geminiFile, link2);
+        await fsPromises.link(jiminyFile, link1);
+        await fsPromises.link(jiminyFile, link2);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
@@ -1001,13 +1001,13 @@ included directory memory
         throw error;
       }
 
-      const stats1 = await fsPromises.lstat(geminiFile);
+      const stats1 = await fsPromises.lstat(jiminyFile);
       const stats2 = await fsPromises.lstat(link1);
       const stats3 = await fsPromises.lstat(link2);
       expect(stats1.ino).toBe(stats2.ino);
       expect(stats1.ino).toBe(stats3.ino);
 
-      setGeminiMdFilename(['gemini.md', 'GEMINI.md', 'Gemini.md']);
+      setJiminyMdFilename(['jiminy.md', 'GEMINI.md', 'Jiminy.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -1115,14 +1115,14 @@ included directory memory
       const subDir = await createEmptyDir(path.join(rootDir, 'subdir'));
       const targetFile = path.join(subDir, 'target.txt');
 
-      const geminiFile = await createTestFile(
-        path.join(subDir, 'gemini.md'),
+      const jiminyFile = await createTestFile(
+        path.join(subDir, 'jiminy.md'),
         'JIT memory content',
       );
 
-      const geminiFileLink = path.join(subDir, 'GEMINI.md');
+      const jiminyFileLink = path.join(subDir, 'GEMINI.md');
       try {
-        await fsPromises.link(geminiFile, geminiFileLink);
+        await fsPromises.link(jiminyFile, jiminyFileLink);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
@@ -1136,11 +1136,11 @@ included directory memory
         throw error;
       }
 
-      const stats1 = await fsPromises.lstat(geminiFile);
-      const stats2 = await fsPromises.lstat(geminiFileLink);
+      const stats1 = await fsPromises.lstat(jiminyFile);
+      const stats2 = await fsPromises.lstat(jiminyFileLink);
       expect(stats1.ino).toBe(stats2.ino);
 
-      setGeminiMdFilename(['gemini.md', 'GEMINI.md']);
+      setJiminyMdFilename(['jiminy.md', 'GEMINI.md']);
 
       const result = await loadJitSubdirectoryMemory(
         targetFile,
@@ -1155,7 +1155,7 @@ included directory memory
       expect(contentMatches).toHaveLength(1);
 
       try {
-        await fsPromises.unlink(geminiFileLink);
+        await fsPromises.unlink(jiminyFileLink);
       } catch {
         // ignore cleanup errors
       }
@@ -1314,14 +1314,14 @@ included directory memory
     coreEvents.on(CoreEvent.MemoryChanged, mockEventListener);
     const refreshResult = await refreshServerHierarchicalMemory(config);
     expect(refreshResult.fileCount).equals(1);
-    expect(config.getGeminiMdFileCount()).equals(refreshResult.fileCount);
+    expect(config.getJiminyMdFileCount()).equals(refreshResult.fileCount);
     const flattenedMemory = flattenMemory(refreshResult.memoryContent);
     expect(flattenedMemory).toContain('Really cool custom context!');
     expect(config.getUserMemory()).toStrictEqual(refreshResult.memoryContent);
     expect(refreshResult.filePaths[0]).toContain(
       normMarker(path.join(extensionPath, 'CustomContext.md')),
     );
-    expect(config.getGeminiMdFilePaths()).equals(refreshResult.filePaths);
+    expect(config.getJiminyMdFilePaths()).equals(refreshResult.filePaths);
     expect(mockEventListener).toHaveBeenCalledExactlyOnceWith({
       fileCount: refreshResult.fileCount,
     });
@@ -1342,8 +1342,8 @@ included directory memory
       getFileFilteringOptions: vi.fn().mockReturnValue(undefined),
       getDiscoveryMaxDirs: vi.fn().mockReturnValue(200),
       setUserMemory: vi.fn(),
-      setGeminiMdFileCount: vi.fn(),
-      setGeminiMdFilePaths: vi.fn(),
+      setJiminyMdFileCount: vi.fn(),
+      setJiminyMdFilePaths: vi.fn(),
       getMcpClientManager: vi.fn().mockReturnValue({
         getMcpInstructions: vi
           .fn()

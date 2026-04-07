@@ -36,7 +36,7 @@ import {
   shouldShowEmptyWalletMenu,
   logBillingEvent,
   G1_CREDIT_TYPE,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useQuotaAndFallback } from './useQuotaAndFallback.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType } from '../types.js';
@@ -44,9 +44,9 @@ import { MessageType } from '../types.js';
 // Use a type alias for SpyInstance as it's not directly exported
 type SpyInstance = ReturnType<typeof vi.spyOn>;
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     getG1CreditBalance: vi.fn(),
@@ -152,7 +152,7 @@ describe('useQuotaAndFallback', () => {
       );
 
       act(() => {
-        void handler('gemini-pro', 'gemini-flash', error);
+        void handler('jiminy-pro', 'jiminy-flash', error);
       });
 
       expect(result.current.proQuotaRequest).not.toBeNull();
@@ -178,8 +178,8 @@ describe('useQuotaAndFallback', () => {
       const handler = setFallbackHandlerSpy.mock
         .calls[0][0] as FallbackModelHandler;
       const intent = await handler(
-        'gemini-pro',
-        'gemini-flash',
+        'jiminy-pro',
+        'jiminy-flash',
         new RetryableQuotaError('retryable quota', mockGoogleApiError, 5),
       );
 
@@ -208,8 +208,8 @@ describe('useQuotaAndFallback', () => {
       let promise: Promise<FallbackIntent | null>;
       act(() => {
         promise = handler(
-          'gemini-pro',
-          'gemini-flash',
+          'jiminy-pro',
+          'jiminy-flash',
           new TerminalQuotaError('pro quota', mockGoogleApiError),
         );
       });
@@ -246,13 +246,13 @@ describe('useQuotaAndFallback', () => {
           1000 * 60 * 5,
         ); // 5 minutes
         act(() => {
-          promise = handler('gemini-pro', 'gemini-flash', error);
+          promise = handler('jiminy-pro', 'jiminy-flash', error);
         });
 
         // The hook should now have a pending request for the UI to handle
         const request = result.current.proQuotaRequest;
         expect(request).not.toBeNull();
-        expect(request?.failedModel).toBe('gemini-pro');
+        expect(request?.failedModel).toBe('jiminy-pro');
         expect(request?.isTerminalQuotaError).toBe(true);
 
         const message = request!.message;
@@ -301,15 +301,15 @@ describe('useQuotaAndFallback', () => {
           1000 * 60 * 5,
         );
         act(() => {
-          promise = handler('gemini-flash', 'gemini-pro', error);
+          promise = handler('jiminy-flash', 'jiminy-pro', error);
         });
 
         const request = result.current.proQuotaRequest;
         expect(request).not.toBeNull();
-        expect(request?.failedModel).toBe('gemini-flash');
+        expect(request?.failedModel).toBe('jiminy-flash');
 
         const message = request!.message;
-        expect(message).toContain('Usage limit reached for gemini-flash.');
+        expect(message).toContain('Usage limit reached for jiminy-flash.');
         expect(message).not.toContain('all Pro models');
 
         act(() => {
@@ -338,7 +338,7 @@ describe('useQuotaAndFallback', () => {
         let promise: Promise<FallbackIntent | null>;
         const error = new TerminalQuotaError('no delay', mockGoogleApiError);
         act(() => {
-          promise = handler('gemini-pro', 'gemini-flash', error);
+          promise = handler('jiminy-pro', 'jiminy-flash', error);
         });
 
         const request = result.current.proQuotaRequest;
@@ -372,8 +372,8 @@ describe('useQuotaAndFallback', () => {
         let promise1: Promise<FallbackIntent | null>;
         act(() => {
           promise1 = handler(
-            'gemini-pro',
-            'gemini-flash',
+            'jiminy-pro',
+            'jiminy-flash',
             new TerminalQuotaError('pro quota 1', mockGoogleApiError),
           );
         });
@@ -384,8 +384,8 @@ describe('useQuotaAndFallback', () => {
         let result2: FallbackIntent | null;
         await act(async () => {
           result2 = await handler(
-            'gemini-pro',
-            'gemini-flash',
+            'jiminy-pro',
+            'jiminy-flash',
             new TerminalQuotaError('pro quota 2', mockGoogleApiError),
           );
         });
@@ -498,19 +498,19 @@ describe('useQuotaAndFallback', () => {
         const error = new ModelNotFoundError('model not found', 404);
 
         act(() => {
-          promise = handler('gemini-3-pro-preview', 'gemini-2.5-pro', error);
+          promise = handler('jiminy-3-pro-preview', 'jiminy-2.5-pro', error);
         });
 
         // The hook should now have a pending request for the UI to handle
         const request = result.current.proQuotaRequest;
         expect(request).not.toBeNull();
-        expect(request?.failedModel).toBe('gemini-3-pro-preview');
+        expect(request?.failedModel).toBe('jiminy-3-pro-preview');
         expect(request?.isTerminalQuotaError).toBe(false);
         expect(request?.isModelNotFoundError).toBe(true);
 
         const message = request!.message;
         expect(message).toBe(
-          `It seems like you don't have access to gemini-3-pro-preview.
+          `It seems like you don't have access to jiminy-3-pro-preview.
 Your admin might have disabled the access. Contact them to enable the Preview Release Channel.`,
         );
 
@@ -545,7 +545,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
         const error = new ModelNotFoundError('model not found', 404);
 
         act(() => {
-          promise = handler('invalid-model', 'gemini-2.5-pro', error);
+          promise = handler('invalid-model', 'jiminy-2.5-pro', error);
         });
 
         const request = result.current.proQuotaRequest;
@@ -615,7 +615,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
 
       const intentPromise = handler(
         PREVIEW_GEMINI_MODEL,
-        'gemini-flash',
+        'jiminy-flash',
         error,
       );
 
@@ -656,7 +656,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       act(() => {
         promise = handler(
           PREVIEW_GEMINI_MODEL,
-          'gemini-flash',
+          'jiminy-flash',
           new TerminalQuotaError('pro quota', mockGoogleApiError),
         );
       });
@@ -698,7 +698,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       act(() => {
         promise = handler(
           PREVIEW_GEMINI_MODEL,
-          'gemini-flash',
+          'jiminy-flash',
           new TerminalQuotaError('pro quota', mockGoogleApiError),
         );
       });
@@ -738,7 +738,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       act(() => {
         promise = handler(
           PREVIEW_GEMINI_MODEL,
-          'gemini-flash',
+          'jiminy-flash',
           new TerminalQuotaError('pro quota', mockGoogleApiError),
         );
       });
@@ -781,7 +781,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       act(() => {
         promise = handler(
           PREVIEW_GEMINI_MODEL,
-          'gemini-flash',
+          'jiminy-flash',
           new TerminalQuotaError('pro quota', mockGoogleApiError),
         );
       });
@@ -845,8 +845,8 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       let promise: Promise<FallbackIntent | null>;
       act(() => {
         promise = handler(
-          'gemini-pro',
-          'gemini-flash',
+          'jiminy-pro',
+          'jiminy-flash',
           new TerminalQuotaError('pro quota', mockGoogleApiError),
         );
       });
@@ -879,8 +879,8 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       let promise: Promise<FallbackIntent | null>;
       act(() => {
         promise = handler(
-          'gemini-pro',
-          'gemini-flash',
+          'jiminy-pro',
+          'jiminy-flash',
           new TerminalQuotaError('pro quota', mockGoogleApiError),
         );
       });
@@ -902,7 +902,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       const lastCall = (mockHistoryManager.addItem as Mock).mock.calls[0][0];
       expect(lastCall.type).toBe(MessageType.INFO);
       expect(lastCall.text).toContain(
-        'Switched to fallback model gemini-flash',
+        'Switched to fallback model jiminy-flash',
       );
     });
 
@@ -940,7 +940,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       const lastCall = (mockHistoryManager.addItem as Mock).mock.calls[0][0];
       expect(lastCall.type).toBe(MessageType.INFO);
       expect(lastCall.text).toContain(
-        `Switched to fallback model gemini-2.5-pro`,
+        `Switched to fallback model jiminy-2.5-pro`,
       );
     });
 
@@ -978,7 +978,7 @@ Your admin might have disabled the access. Contact them to enable the Preview Re
       const lastCall = (mockHistoryManager.addItem as Mock).mock.calls[0][0];
       expect(lastCall.type).toBe(MessageType.INFO);
       expect(lastCall.text).toContain(
-        `Switched to fallback model gemini-2.5-flash`,
+        `Switched to fallback model jiminy-2.5-flash`,
       );
     });
   });

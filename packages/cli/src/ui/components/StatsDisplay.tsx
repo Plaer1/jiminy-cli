@@ -33,7 +33,7 @@ import {
   getDisplayString,
   isAutoModel,
   AuthType,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useSettings } from '../contexts/SettingsContext.js';
 import { useConfig } from '../contexts/ConfigContext.js';
 import type { QuotaStats } from '../types.js';
@@ -91,8 +91,8 @@ const buildModelRows = (
   models: Record<string, ModelMetrics>,
   config: Config,
   quotas?: RetrieveUserQuotaResponse,
-  useGemini3_1 = false,
-  useGemini3_1FlashLite = false,
+  useJiminy3_1 = false,
+  useJiminy3_1FlashLite = false,
   useCustomToolModel = false,
 ) => {
   const getBaseModelName = (name: string) => name.replace('-001', '');
@@ -127,8 +127,8 @@ const buildModelRows = (
           b.modelId &&
           isActiveModel(
             b.modelId,
-            useGemini3_1,
-            useGemini3_1FlashLite,
+            useJiminy3_1,
+            useJiminy3_1FlashLite,
             useCustomToolModel,
           ) &&
           !usedModelNames.has(getDisplayString(b.modelId, config)),
@@ -157,8 +157,8 @@ const ModelUsageTable: React.FC<{
   pooledRemaining?: number;
   pooledLimit?: number;
   pooledResetTime?: string;
-  useGemini3_1?: boolean;
-  useGemini3_1FlashLite?: boolean;
+  useJiminy3_1?: boolean;
+  useJiminy3_1FlashLite?: boolean;
   useCustomToolModel?: boolean;
 }> = ({
   models,
@@ -170,8 +170,8 @@ const ModelUsageTable: React.FC<{
   pooledRemaining,
   pooledLimit,
   pooledResetTime,
-  useGemini3_1,
-  useGemini3_1FlashLite,
+  useJiminy3_1,
+  useJiminy3_1FlashLite,
   useCustomToolModel,
 }) => {
   const { stdout } = useStdout();
@@ -180,8 +180,8 @@ const ModelUsageTable: React.FC<{
     models,
     config,
     quotas,
-    useGemini3_1,
-    useGemini3_1FlashLite,
+    useJiminy3_1,
+    useJiminy3_1FlashLite,
     useCustomToolModel,
   );
 
@@ -549,11 +549,11 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
   const computed = computeSessionStats(metrics);
   const settings = useSettings();
   const config = useConfig();
-  const useGemini3_1 = config.getGemini31LaunchedSync?.() ?? false;
-  const useGemini3_1FlashLite =
-    config.getGemini31FlashLiteLaunchedSync?.() ?? false;
+  const useJiminy3_1 = config.getJiminy31LaunchedSync?.() ?? false;
+  const useJiminy3_1FlashLite =
+    config.getJiminy31FlashLiteLaunchedSync?.() ?? false;
   const useCustomToolModel =
-    useGemini3_1 &&
+    useJiminy3_1 &&
     config.getContentGeneratorConfig().authType === AuthType.USE_GEMINI;
   const pooledRemaining = quotaStats?.remaining;
   const pooledLimit = quotaStats?.limit;
@@ -707,8 +707,8 @@ export const StatsDisplay: React.FC<StatsDisplayProps> = ({
         pooledRemaining={pooledRemaining}
         pooledLimit={pooledLimit}
         pooledResetTime={pooledResetTime}
-        useGemini3_1={useGemini3_1}
-        useGemini3_1FlashLite={useGemini3_1FlashLite}
+        useJiminy3_1={useJiminy3_1}
+        useJiminy3_1FlashLite={useJiminy3_1FlashLite}
         useCustomToolModel={useCustomToolModel}
       />
       {renderFooter()}

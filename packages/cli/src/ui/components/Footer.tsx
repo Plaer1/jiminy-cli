@@ -12,7 +12,7 @@ import {
   tildeifyPath,
   getDisplayString,
   checkExhaustive,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { ConsoleSummaryDisplay } from './ConsoleSummaryDisplay.js';
 import process from 'node:process';
 import { MemoryUsageDisplay } from './MemoryUsageDisplay.js';
@@ -71,7 +71,7 @@ const SandboxIndicator: React.FC<SandboxIndicatorProps> = ({
   const sandbox = process.env['SANDBOX'];
   if (sandbox && sandbox !== 'sandbox-exec') {
     return (
-      <Text color="green">{sandbox.replace(/^gemini-(?:cli-)?/, '')}</Text>
+      <Text color="green">{sandbox.replace(/^jiminy-(?:cli-)?/, '')}</Text>
     );
   }
 
@@ -297,7 +297,7 @@ export const Footer: React.FC = () => {
         if (isTrustedFolder === false) str = 'untrusted';
         else if (sandbox === 'sandbox-exec')
           str = `macOS Seatbelt (${process.env['SEATBELT_PROFILE']})`;
-        else if (sandbox) str = sandbox.replace(/^gemini-(?:cli-)?/, '');
+        else if (sandbox) str = sandbox.replace(/^jiminy-(?:cli-)?/, '');
 
         addCol(
           id,

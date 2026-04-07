@@ -1,6 +1,6 @@
-# Gemini CLI SDK (`@google/gemini-cli-sdk`)
+# Jiminy CLI SDK (`@google/jiminy-cli-sdk`)
 
-Programmatic SDK for embedding Gemini CLI agent capabilities into other
+Programmatic SDK for embedding Jiminy CLI agent capabilities into other
 applications.
 
 ## Architecture
@@ -14,5 +14,5 @@ applications.
 
 ## Testing
 
-- Run tests: `npm test -w @google/gemini-cli-sdk`
+- Run tests: `npm test -w @google/jiminy-cli-sdk`
 - Integration tests use `*.integration.test.ts` naming convention.

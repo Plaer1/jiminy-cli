@@ -24,27 +24,27 @@ describe('policyCatalog', () => {
     expect(chain).toHaveLength(2);
   });
 
-  it('returns Gemini 3.1 chain when useGemini31 is true', () => {
+  it('returns Jiminy 3.1 chain when useJiminy31 is true', () => {
     const chain = getModelPolicyChain({
       previewEnabled: true,
-      useGemini31: true,
-      useGemini31FlashLite: false,
+      useJiminy31: true,
+      useJiminy31FlashLite: false,
     });
     expect(chain[0]?.model).toBe(PREVIEW_GEMINI_3_1_MODEL);
     expect(chain).toHaveLength(2);
-    expect(chain[1]?.model).toBe('gemini-3-flash-preview');
+    expect(chain[1]?.model).toBe('jiminy-3-flash-preview');
   });
 
-  it('returns Gemini 3.1 Custom Tools chain when useGemini31 and useCustomToolModel are true', () => {
+  it('returns Jiminy 3.1 Custom Tools chain when useJiminy31 and useCustomToolModel are true', () => {
     const chain = getModelPolicyChain({
       previewEnabled: true,
-      useGemini31: true,
-      useGemini31FlashLite: false,
+      useJiminy31: true,
+      useJiminy31FlashLite: false,
       useCustomToolModel: true,
     });
     expect(chain[0]?.model).toBe(PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL);
     expect(chain).toHaveLength(2);
-    expect(chain[1]?.model).toBe('gemini-3-flash-preview');
+    expect(chain[1]?.model).toBe('jiminy-3-flash-preview');
   });
 
   it('returns default chain when preview disabled', () => {

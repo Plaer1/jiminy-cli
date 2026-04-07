@@ -132,7 +132,7 @@ describe('SettingsSchema', () => {
       ).toBeDefined();
       expect(
         getSettingsSchema().context.properties.fileFiltering.properties
-          ?.respectGeminiIgnore,
+          ?.respectJiminyIgnore,
       ).toBeDefined();
       expect(
         getSettingsSchema().context.properties.fileFiltering.properties
@@ -470,7 +470,7 @@ describe('SettingsSchema', () => {
       expect(enabled.requiresRestart).toBe(true);
       expect(enabled.showInDialog).toBe(false);
       expect(enabled.description).toBe(
-        'Enable the Gemma Model Router (experimental). Requires a local endpoint serving Gemma via the Gemini API using LiteRT-LM shim.',
+        'Enable the Gemma Model Router (experimental). Requires a local endpoint serving Gemma via the Jiminy API using LiteRT-LM shim.',
       );
 
       const classifier = gemmaModelRouter.properties.classifier;

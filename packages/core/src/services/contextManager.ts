@@ -10,9 +10,9 @@ import {
   getGlobalMemoryPaths,
   getExtensionMemoryPaths,
   getEnvironmentMemoryPaths,
-  readGeminiMdFiles,
+  readJiminyMdFiles,
   categorizeAndConcatenate,
-  type GeminiFileContent,
+  type JiminyFileContent,
   deduplicatePathsByFileIdentity,
 } from '../utils/memoryDiscovery.js';
 import type { Config } from '../config/config.js';
@@ -73,7 +73,7 @@ export class ContextManager {
     const { paths: allPaths, identityMap: pathIdentityMap } =
       await deduplicatePathsByFileIdentity(allPathsStringDeduped);
 
-    const allContents = await readGeminiMdFiles(
+    const allContents = await readJiminyMdFiles(
       allPaths,
       this.config.getImportFormat(),
     );
@@ -96,7 +96,7 @@ export class ContextManager {
 
   private categorizeMemoryContents(
     paths: { global: string[]; extension: string[]; project: string[] },
-    contentsMap: Map<string, GeminiFileContent>,
+    contentsMap: Map<string, JiminyFileContent>,
   ) {
     const hierarchicalMemory = categorizeAndConcatenate(paths, contentsMap);
 

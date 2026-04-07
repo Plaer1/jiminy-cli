@@ -48,7 +48,7 @@ export interface PreambleOptions {
 
 export interface CoreMandatesOptions {
   interactive: boolean;
-  isGemini3: boolean;
+  isJiminy3: boolean;
   hasSkills: boolean;
   hasHierarchicalMemory: boolean;
 }
@@ -64,7 +64,7 @@ export interface PrimaryWorkflowsOptions {
 
 export interface OperationalGuidelinesOptions {
   interactive: boolean;
-  isGemini3: boolean;
+  isJiminy3: boolean;
   enableShellEfficiency: boolean;
   interactiveShellEnabled: boolean;
   memoryManagerEnabled: boolean;
@@ -177,7 +177,7 @@ export function renderCoreMandates(options?: CoreMandatesOptions): string {
 - **User Hints:** During execution, the user may provide real-time hints (marked as "User hint:" or "User hints:"). Treat these as high-priority but scope-preserving course corrections: apply the minimal plan change needed, keep unaffected user tasks active, and never cancel/skip tasks unless cancellation is explicit for those tasks. Hints may add new tasks, modify one or more tasks, cancel specific tasks, or provide extra context only. If scope is ambiguous, ask for clarification before dropping work.
 - ${mandateConfirm(options.interactive)}
 - **Explaining Changes:** After completing a code modification or file operation *do not* provide summaries unless asked.
-- **Do Not revert changes:** Do not revert changes to the codebase unless asked to do so by the user. Only revert changes made by you if they have resulted in an error or if the user has explicitly asked you to revert the changes.${mandateSkillGuidance(options.hasSkills)}${mandateExplainBeforeActing(options.isGemini3)}${mandateContinueWork(options.interactive)}
+- **Do Not revert changes:** Do not revert changes to the codebase unless asked to do so by the user. Only revert changes made by you if they have resulted in an error or if the user has explicitly asked you to revert the changes.${mandateSkillGuidance(options.hasSkills)}${mandateExplainBeforeActing(options.isJiminy3)}${mandateContinueWork(options.interactive)}
 `.trim();
 }
 
@@ -272,7 +272,7 @@ ${shellEfficiencyGuidelines(options.enableShellEfficiency)}
 ## Tone and Style (CLI Interaction)
 - **Concise & Direct:** Adopt a professional, direct, and concise tone suitable for a CLI environment.
 - **Minimal Output:** Aim for fewer than 3 lines of text output (excluding tool use/code generation) per response whenever practical. Focus strictly on the user's query.
-- **Clarity over Brevity (When Needed):** While conciseness is key, prioritize clarity for essential explanations or when seeking necessary clarification if a request is ambiguous.${toneAndStyleNoChitchat(options.isGemini3)}
+- **Clarity over Brevity (When Needed):** While conciseness is key, prioritize clarity for essential explanations or when seeking necessary clarification if a request is ambiguous.${toneAndStyleNoChitchat(options.isJiminy3)}
 - **Formatting:** Use GitHub-flavored Markdown. Responses will be rendered in monospace.
 - **Tools vs. Text:** Use tools for actions, text output *only* for communication. Do not add explanatory comments within tool calls or code blocks unless specifically part of the required code/command itself.
 - **Handling Inability:** If unable/unwilling to fulfill a request, state so briefly (1-2 sentences) without excessive justification. Offer alternatives if appropriate.
@@ -370,7 +370,7 @@ export function renderUserMemory(memory?: string | HierarchicalMemory): string {
 # Contextual Instructions (GEMINI.md)
 The following content is loaded from local and global configuration files.
 **Context Precedence:**
-- **Global (~/.gemini/):** foundational user preferences. Apply these broadly.
+- **Global (~/.jiminy/):** foundational user preferences. Apply these broadly.
 - **Extensions:** supplementary knowledge and capabilities.
 - **Workspace Root:** workspace-wide mandates. Supersedes global preferences.
 - **Sub-directories:** highly specific overrides. These rules supersede all others for files within their scope.
@@ -504,8 +504,8 @@ function mandateConflictResolution(hasHierarchicalMemory: boolean): string {
   return '\n- **Conflict Resolution:** Instructions are provided in hierarchical context tags: `<global_context>`, `<extension_context>`, and `<project_context>`. In case of contradictory instructions, follow this priority: `<project_context>` (highest) > `<extension_context>` > `<global_context>` (lowest).';
 }
 
-function mandateExplainBeforeActing(isGemini3: boolean): string {
-  if (!isGemini3) return '';
+function mandateExplainBeforeActing(isJiminy3: boolean): string {
+  if (!isJiminy3) return '';
   return `
 - **Explain Before Acting:** Never call tools in silence. You MUST provide a concise, one-sentence explanation of your intent or strategy immediately before executing tool calls. This is essential for transparency, especially when confirming a request or answering a question. Silence is only acceptable for repetitive, low-level discovery operations (e.g., sequential file reads) where narration would be noisy.`;
 }
@@ -627,8 +627,8 @@ IT IS CRITICAL TO FOLLOW THESE GUIDELINES TO AVOID EXCESSIVE TOKEN CONSUMPTION.
 - After the command runs, inspect the temp files (e.g. '<temp_dir>/out.log' and '<temp_dir>/err.log') ${inspectExample}. Remove the temp files when done.`;
 }
 
-function toneAndStyleNoChitchat(isGemini3: boolean): string {
-  return isGemini3
+function toneAndStyleNoChitchat(isJiminy3: boolean): string {
+  return isJiminy3
     ? `
 - **No Chitchat:** Avoid conversational filler, preambles ("Okay, I will now..."), or postambles ("I have finished the changes...") unless they serve to explain intent as required by the 'Explain Before Acting' mandate.`
     : `

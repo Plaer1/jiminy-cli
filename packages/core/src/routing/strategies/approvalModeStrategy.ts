@@ -48,8 +48,8 @@ export class ApprovalModeStrategy implements RoutingStrategy {
     const approvalMode = config.getApprovalMode();
     const approvedPlanPath = config.getApprovedPlanPath();
 
-    const [useGemini3_1, useCustomToolModel] = await Promise.all([
-      config.getGemini31Launched(),
+    const [useJiminy3_1, useCustomToolModel] = await Promise.all([
+      config.getJiminy31Launched(),
       config.getUseCustomToolModel(),
     ]);
 
@@ -58,7 +58,7 @@ export class ApprovalModeStrategy implements RoutingStrategy {
       const proModel = resolveClassifierModel(
         model,
         GEMINI_MODEL_ALIAS_PRO,
-        useGemini3_1,
+        useJiminy3_1,
         useCustomToolModel,
       );
       return {
@@ -74,7 +74,7 @@ export class ApprovalModeStrategy implements RoutingStrategy {
       const flashModel = resolveClassifierModel(
         model,
         GEMINI_MODEL_ALIAS_FLASH,
-        useGemini3_1,
+        useJiminy3_1,
         useCustomToolModel,
       );
       return {

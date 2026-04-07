@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// File for 'gemini mcp' command
+// File for 'jiminy mcp' command
 import type { CommandModule, Argv } from 'yargs';
 import { addCommand } from './mcp/add.js';
 import { removeCommand } from './mcp/remove.js';
 import { listCommand } from './mcp/list.js';
 import { enableCommand, disableCommand } from './mcp/enableDisable.js';
-import { initializeOutputListenersAndFlush } from '../gemini.js';
+import { initializeOutputListenersAndFlush } from '../jiminy.js';
 import { defer } from '../deferred.js';
 
 export const mcpCommand: CommandModule = {

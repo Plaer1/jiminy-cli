@@ -15,7 +15,7 @@ installation methods, and release types.
 - **Runtime:** Node.js 20.0.0+
 - **Shell:** Bash, Zsh, or PowerShell
 - **Location:**
-  [Jiminy Code Assist supported locations](https://developers.google.com/gemini-code-assist/resources/available-locations#americas)
+  [Jiminy Code Assist supported locations](https://developers.google.com/jiminy-code-assist/resources/available-locations#americas)
 - **Internet connection required**
 
 ## Install Jiminy CLI
@@ -54,8 +54,8 @@ sudo port install jiminy-cli
 
 ```bash
 # Create and activate a new environment
-conda create -y -n gemini_env -c conda-forge nodejs
-conda activate gemini_env
+conda create -y -n jiminy_env -c conda-forge nodejs
+conda activate jiminy_env
 
 # Install Jiminy CLI globally via npm (inside the environment)
 npm install -g @google/jiminy-cli
@@ -102,7 +102,7 @@ the default way that the CLI executes tools that might have side effects.
   to run the CLI.
   ```bash
   # Run the published sandbox image
-  docker run --rm -it us-docker.pkg.dev/gemini-code-dev/jiminy-cli/sandbox:0.1.1
+  docker run --rm -it us-docker.pkg.dev/jiminy-code-dev/jiminy-cli/sandbox:0.1.1
   ```
 - **Using the `--sandbox` flag:** If you have Jiminy CLI installed locally
   (using the standard installation described above), you can instruct it to run

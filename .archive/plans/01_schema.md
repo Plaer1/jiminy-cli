@@ -62,12 +62,12 @@ id: cli-help-top-level-usage-banner
 surface_family: cli_help
 surface_name: Top-level help usage banner
 trigger_commands:
-  - gemini --help
+  - jiminy --help
 trigger_context: Run the top-level CLI help in any terminal session.
 exact_text: |-
-  Usage: gemini [options] [command]
+  Usage: jiminy [options] [command]
 
-  Gemini CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.
+  Jiminy CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.
 source_path: packages/cli/src/config/config.ts
 source_line: 165
 reconstructed_from_source: false

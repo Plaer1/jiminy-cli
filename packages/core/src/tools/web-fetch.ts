@@ -442,7 +442,7 @@ class WebFetchToolInvocation extends BaseToolInvocation<
       .join('\n');
 
     try {
-      const geminiClient = this.context.geminiClient;
+      const jiminyClient = this.context.jiminyClient;
       const fallbackPrompt = `Follow the user's instructions below using the provided webpage content.
 
 <user_instructions>
@@ -455,7 +455,7 @@ I was unable to access the URL(s) directly using the primary fetch tool. Instead
 ${aggregatedContent}
 </content>
 `;
-      const result = await geminiClient.generateContent(
+      const result = await jiminyClient.generateContent(
         { model: 'web-fetch-fallback' },
         [{ role: 'user', parts: [{ text: fallbackPrompt }] }],
         signal,
@@ -767,7 +767,7 @@ Response: ${truncateString(rawResponseText, 10000, '\n\n... [Error response trun
     }
 
     try {
-      const geminiClient = this.context.geminiClient;
+      const jiminyClient = this.context.jiminyClient;
       const sanitizedPrompt = `Follow the user's instructions to process the authorized URLs.
 
 <user_instructions>
@@ -778,7 +778,7 @@ ${sanitizeXml(userPrompt)}
 ${toFetch.join('\n')}
 </authorized_urls>
 `;
-      const response = await geminiClient.generateContent(
+      const response = await jiminyClient.generateContent(
         { model: 'web-fetch' },
         [{ role: 'user', parts: [{ text: sanitizedPrompt }] }],
         signal,

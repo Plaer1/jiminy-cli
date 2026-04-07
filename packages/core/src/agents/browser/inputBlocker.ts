@@ -38,14 +38,14 @@ const INPUT_BLOCKER_FUNCTION = `() => {
   // If the blocker already exists, just ensure it's active and return.
   // This makes re-injection after potentially-navigating tools near-free
   // when the page didn't actually navigate (most clicks don't navigate).
-  var existing = document.getElementById('__gemini_input_blocker');
+  var existing = document.getElementById('__jiminy_input_blocker');
   if (existing) {
     existing.style.pointerEvents = 'auto';
     return;
   }
 
   const blocker = document.createElement('div');
-  blocker.id = '__gemini_input_blocker';
+  blocker.id = '__jiminy_input_blocker';
   blocker.setAttribute('aria-hidden', 'true');
   blocker.setAttribute('role', 'presentation');
   blocker.style.cssText = [
@@ -111,7 +111,7 @@ const INPUT_BLOCKER_FUNCTION = `() => {
     'display: inline-block',
     'flex-shrink: 0',
     'box-shadow: 0 0 6px rgba(239, 68, 68, 0.6)',
-    'animation: __gemini_pulse 2s ease-in-out infinite',
+    'animation: __jiminy_pulse 2s ease-in-out infinite',
   ].join('; ');
 
   // Labels
@@ -133,8 +133,8 @@ const INPUT_BLOCKER_FUNCTION = `() => {
 
   // Inject @keyframes for the pulse animation
   var styleEl = document.createElement('style');
-  styleEl.id = '__gemini_input_blocker_style';
-  styleEl.textContent = '@keyframes __gemini_pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }';
+  styleEl.id = '__jiminy_input_blocker_style';
+  styleEl.textContent = '@keyframes __jiminy_pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }';
   document.head.appendChild(styleEl);
 
   blocker.appendChild(pill);
@@ -154,11 +154,11 @@ const INPUT_BLOCKER_FUNCTION = `() => {
  * Used only during final cleanup.
  */
 const REMOVE_BLOCKER_FUNCTION = `() => {
-  var blocker = document.getElementById('__gemini_input_blocker');
+  var blocker = document.getElementById('__jiminy_input_blocker');
   if (blocker) {
     blocker.remove();
   }
-  var style = document.getElementById('__gemini_input_blocker_style');
+  var style = document.getElementById('__jiminy_input_blocker_style');
   if (style) {
     style.remove();
   }
@@ -173,7 +173,7 @@ const REMOVE_BLOCKER_FUNCTION = `() => {
  * The overlay DOM element stays in place — no visual change, no flickering.
  */
 const SUSPEND_BLOCKER_FUNCTION = `() => {
-  var blocker = document.getElementById('__gemini_input_blocker');
+  var blocker = document.getElementById('__jiminy_input_blocker');
   if (blocker) {
     blocker.style.pointerEvents = 'none';
   }
@@ -184,7 +184,7 @@ const SUSPEND_BLOCKER_FUNCTION = `() => {
  * to 'auto'.  User clicks are blocked again.
  */
 const RESUME_BLOCKER_FUNCTION = `() => {
-  var blocker = document.getElementById('__gemini_input_blocker');
+  var blocker = document.getElementById('__jiminy_input_blocker');
   if (blocker) {
     blocker.style.pointerEvents = 'auto';
   }

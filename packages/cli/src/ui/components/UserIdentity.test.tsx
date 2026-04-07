@@ -12,12 +12,12 @@ import {
   AuthType,
   UserAccountManager,
   type ContentGeneratorConfig,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 // Mock UserAccountManager to control cached account
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...original,
     UserAccountManager: vi.fn().mockImplementation(() => ({
@@ -35,7 +35,7 @@ describe('<UserIdentity />', () => {
     const mockConfig = makeFakeConfig();
     vi.spyOn(mockConfig, 'getContentGeneratorConfig').mockReturnValue({
       authType: AuthType.LOGIN_WITH_GOOGLE,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
     } as unknown as ContentGeneratorConfig);
     vi.spyOn(mockConfig, 'getUserTierName').mockReturnValue(undefined);
 
@@ -54,7 +54,7 @@ describe('<UserIdentity />', () => {
     const mockConfig = makeFakeConfig();
     vi.spyOn(mockConfig, 'getContentGeneratorConfig').mockReturnValue({
       authType: AuthType.LOGIN_WITH_GOOGLE,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
     } as unknown as ContentGeneratorConfig);
     vi.spyOn(mockConfig, 'getUserTierName').mockReturnValue(undefined);
 
@@ -80,7 +80,7 @@ describe('<UserIdentity />', () => {
     const mockConfig = makeFakeConfig();
     vi.spyOn(mockConfig, 'getContentGeneratorConfig').mockReturnValue({
       authType: AuthType.LOGIN_WITH_GOOGLE,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
     } as unknown as ContentGeneratorConfig);
     vi.spyOn(mockConfig, 'getUserTierName').mockReturnValue(undefined);
 
@@ -100,7 +100,7 @@ describe('<UserIdentity />', () => {
     const mockConfig = makeFakeConfig();
     vi.spyOn(mockConfig, 'getContentGeneratorConfig').mockReturnValue({
       authType: AuthType.LOGIN_WITH_GOOGLE,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
     } as unknown as ContentGeneratorConfig);
     vi.spyOn(mockConfig, 'getUserTierName').mockReturnValue('Premium Plan');
 
@@ -144,7 +144,7 @@ describe('<UserIdentity />', () => {
     const mockConfig = makeFakeConfig();
     vi.spyOn(mockConfig, 'getContentGeneratorConfig').mockReturnValue({
       authType: AuthType.USE_GEMINI,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
     } as unknown as ContentGeneratorConfig);
     vi.spyOn(mockConfig, 'getUserTierName').mockReturnValue(undefined);
 
@@ -163,7 +163,7 @@ describe('<UserIdentity />', () => {
     const mockConfig = makeFakeConfig();
     vi.spyOn(mockConfig, 'getContentGeneratorConfig').mockReturnValue({
       authType: AuthType.LOGIN_WITH_GOOGLE,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
     } as unknown as ContentGeneratorConfig);
     vi.spyOn(mockConfig, 'getUserTierName').mockReturnValue('Enterprise Tier');
 
@@ -181,7 +181,7 @@ describe('<UserIdentity />', () => {
     const mockConfig = makeFakeConfig();
     vi.spyOn(mockConfig, 'getContentGeneratorConfig').mockReturnValue({
       authType: AuthType.LOGIN_WITH_GOOGLE,
-      model: 'gemini-pro',
+      model: 'jiminy-pro',
     } as unknown as ContentGeneratorConfig);
     vi.spyOn(mockConfig, 'getUserTierName').mockReturnValue('Advanced Ultra');
 

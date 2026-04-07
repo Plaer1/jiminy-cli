@@ -18,7 +18,7 @@ describe('tokenCalculation', () => {
       countTokens: vi.fn(),
     } as unknown as ContentGenerator;
 
-    const model = 'gemini-pro';
+    const model = 'jiminy-pro';
 
     it('should use countTokens API for media requests (images/files)', async () => {
       vi.mocked(mockContentGenerator.countTokens).mockResolvedValue({
@@ -208,14 +208,14 @@ describe('tokenCalculation', () => {
       expect(tokens).toBeLessThan(1600);
     });
 
-    it('should handle Gemini 3 multimodal nested parts in functionResponse', () => {
+    it('should handle Jiminy 3 multimodal nested parts in functionResponse', () => {
       const parts: Part[] = [
         {
           functionResponse: {
             name: 'multimodal_tool',
             id: '456',
             response: { status: 'success' },
-            // Gemini 3 nested parts
+            // Jiminy 3 nested parts
             parts: [
               { inlineData: { mimeType: 'image/png', data: 'base64...' } },
               { text: 'Look at this image' },

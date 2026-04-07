@@ -29,12 +29,12 @@ Audit `plans/99_surface_inventory.md` for completeness, exactness, casing safety
 ## Casing and punctuation audit
 Perform a deliberate pass for these failure modes:
 
-- `Gemini CLI` rewritten as anything else
-- `gemini-cli` rewritten as anything else
-- `Gemini CLI Companion` rewritten as anything else
+- `Jiminy CLI` rewritten as anything else
+- `jiminy-cli` rewritten as anything else
+- `Jiminy CLI Companion` rewritten as anything else
 - model IDs title-cased or normalized
 - slash commands missing their leading `/`
-- command examples missing leading `gemini`
+- command examples missing leading `jiminy`
 - line breaks flattened in help banners
 - straight quotes changed to curly quotes or the reverse
 - hyphens removed from model IDs or command names
@@ -56,7 +56,7 @@ Perform a deliberate pass for these failure modes:
 - `Warnings and notifications`
   - warnings, notifications, update notices, startup and compatibility warnings
 - `Command-hint outputs`
-  - visible strings that tell the user to run `gemini ...`
+  - visible strings that tell the user to run `jiminy ...`
 - `Settings-visible branded text`
   - branded descriptions shown in settings UI
 

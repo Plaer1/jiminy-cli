@@ -25,7 +25,7 @@ import os from 'node:os';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import dotenv from 'dotenv';
-import { GEMINI_DIR } from '@google/gemini-cli-core';
+import { GEMINI_DIR } from '@google/jiminy-cli-core';
 
 const argv = yargs(hideBin(process.argv)).option('q', {
   alias: 'quiet',
@@ -35,27 +35,27 @@ const argv = yargs(hideBin(process.argv)).option('q', {
 
 const homedir = () => process.env['GEMINI_CLI_HOME'] || os.homedir();
 
-let geminiSandbox = process.env.GEMINI_SANDBOX;
+let jiminySandbox = process.env.GEMINI_SANDBOX;
 
-if (!geminiSandbox) {
+if (!jiminySandbox) {
   const userSettingsFile = join(homedir(), GEMINI_DIR, 'settings.json');
   if (existsSync(userSettingsFile)) {
     const settings = JSON.parse(
       stripJsonComments(readFileSync(userSettingsFile, 'utf-8')),
     );
     if (settings.sandbox) {
-      geminiSandbox = settings.sandbox;
+      jiminySandbox = settings.sandbox;
     }
   }
 }
 
-if (!geminiSandbox) {
+if (!jiminySandbox) {
   let currentDir = process.cwd();
   while (true) {
-    const geminiEnv = join(currentDir, GEMINI_DIR, '.env');
+    const jiminyEnv = join(currentDir, GEMINI_DIR, '.env');
     const regularEnv = join(currentDir, '.env');
-    if (existsSync(geminiEnv)) {
-      dotenv.config({ path: geminiEnv, quiet: true });
+    if (existsSync(jiminyEnv)) {
+      dotenv.config({ path: jiminyEnv, quiet: true });
       break;
     } else if (existsSync(regularEnv)) {
       dotenv.config({ path: regularEnv, quiet: true });
@@ -67,10 +67,10 @@ if (!geminiSandbox) {
     }
     currentDir = parentDir;
   }
-  geminiSandbox = process.env.GEMINI_SANDBOX;
+  jiminySandbox = process.env.GEMINI_SANDBOX;
 }
 
-geminiSandbox = (geminiSandbox || '').toLowerCase();
+jiminySandbox = (jiminySandbox || '').toLowerCase();
 
 const commandExists = (cmd) => {
   const checkCommand = os.platform() === 'win32' ? 'where' : 'command -v';
@@ -91,7 +91,7 @@ const commandExists = (cmd) => {
 };
 
 let command = '';
-if (['1', 'true'].includes(geminiSandbox)) {
+if (['1', 'true'].includes(jiminySandbox)) {
   if (commandExists('docker')) {
     command = 'docker';
   } else if (commandExists('podman')) {
@@ -102,12 +102,12 @@ if (['1', 'true'].includes(geminiSandbox)) {
     );
     process.exit(1);
   }
-} else if (geminiSandbox && !['0', 'false'].includes(geminiSandbox)) {
-  if (commandExists(geminiSandbox)) {
-    command = geminiSandbox;
+} else if (jiminySandbox && !['0', 'false'].includes(jiminySandbox)) {
+  if (commandExists(jiminySandbox)) {
+    command = jiminySandbox;
   } else {
     console.error(
-      `ERROR: missing sandbox command '${geminiSandbox}' (from GEMINI_SANDBOX)`,
+      `ERROR: missing sandbox command '${jiminySandbox}' (from GEMINI_SANDBOX)`,
     );
     process.exit(1);
   }

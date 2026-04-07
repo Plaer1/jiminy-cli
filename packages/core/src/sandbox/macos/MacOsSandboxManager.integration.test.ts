@@ -93,7 +93,7 @@ describe.skipIf(os.platform() !== 'darwin')(
     describe('File System Access', () => {
       it('should block file system access outside the workspace', async () => {
         const manager = new MacOsSandboxManager({ workspace: process.cwd() });
-        const blockedPath = '/Users/Shared/.gemini_test_sandbox_blocked';
+        const blockedPath = '/Users/Shared/.jiminy_test_sandbox_blocked';
 
         const command = await manager.prepareCommand({
           command: 'touch',
@@ -110,7 +110,7 @@ describe.skipIf(os.platform() !== 'darwin')(
       it('should grant file system access to explicitly allowed paths', async () => {
         // Create a unique temporary directory to prevent artifacts and test flakiness
         const allowedDir = fs.mkdtempSync(
-          path.join(os.tmpdir(), 'gemini-sandbox-test-'),
+          path.join(os.tmpdir(), 'jiminy-sandbox-test-'),
         );
 
         try {

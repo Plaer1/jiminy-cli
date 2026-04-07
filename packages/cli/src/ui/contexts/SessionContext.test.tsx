@@ -12,7 +12,7 @@ import {
   type SessionMetrics,
 } from './SessionContext.js';
 import { describe, it, expect, vi } from 'vitest';
-import { uiTelemetryService } from '@google/gemini-cli-core';
+import { uiTelemetryService } from '@google/jiminy-cli-core';
 
 class ErrorBoundary extends Component<
   { children: ReactNode; onError: (error: Error) => void },
@@ -86,7 +86,7 @@ describe('SessionStatsContext', () => {
 
     const newMetrics: SessionMetrics = {
       models: {
-        'gemini-pro': {
+        'jiminy-pro': {
           api: {
             totalRequests: 1,
             totalErrors: 0,
@@ -171,7 +171,7 @@ describe('SessionStatsContext', () => {
 
     const metrics: SessionMetrics = {
       models: {
-        'gemini-pro': {
+        'jiminy-pro': {
           api: { totalRequests: 1, totalErrors: 0, totalLatencyMs: 100 },
           tokens: {
             input: 10,
@@ -214,7 +214,7 @@ describe('SessionStatsContext', () => {
     const newMetrics = {
       ...metrics,
       models: {
-        'gemini-pro': {
+        'jiminy-pro': {
           api: { totalRequests: 2, totalErrors: 0, totalLatencyMs: 200 },
           tokens: {
             input: 20,

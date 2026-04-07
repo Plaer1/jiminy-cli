@@ -55,7 +55,7 @@ describe('ChatRecordingService', () => {
       storage: {
         getProjectTempDir: vi.fn().mockReturnValue(testTempDir),
       },
-      getModel: vi.fn().mockReturnValue('gemini-pro'),
+      getModel: vi.fn().mockReturnValue('jiminy-pro'),
       getDebugMode: vi.fn().mockReturnValue(false),
       getToolRegistry: vi.fn().mockReturnValue({
         getTool: vi.fn().mockReturnValue({
@@ -141,7 +141,7 @@ describe('ChatRecordingService', () => {
         type: 'user',
         content: 'Hello',
         displayContent: 'User Hello',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const sessionFile = chatRecordingService.getConversationFilePath()!;
@@ -159,7 +159,7 @@ describe('ChatRecordingService', () => {
       chatRecordingService.recordMessage({
         type: 'user',
         content: 'World',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const sessionFile = chatRecordingService.getConversationFilePath()!;
@@ -192,9 +192,9 @@ describe('ChatRecordingService', () => {
 
     it('should update the last message with token info', () => {
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'Response',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       chatRecordingService.recordMessageTokens({
@@ -208,10 +208,10 @@ describe('ChatRecordingService', () => {
       const conversation = JSON.parse(
         fs.readFileSync(sessionFile, 'utf8'),
       ) as ConversationRecord;
-      const geminiMsg = conversation.messages[0] as MessageRecord & {
-        type: 'gemini';
+      const jiminyMsg = conversation.messages[0] as MessageRecord & {
+        type: 'jiminy';
       };
-      expect(geminiMsg.tokens).toEqual({
+      expect(jiminyMsg.tokens).toEqual({
         input: 1,
         output: 2,
         total: 3,
@@ -223,9 +223,9 @@ describe('ChatRecordingService', () => {
 
     it('should queue token info if the last message already has tokens', () => {
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'Response',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       chatRecordingService.recordMessageTokens({
@@ -253,13 +253,13 @@ describe('ChatRecordingService', () => {
       });
     });
 
-    it('should not write to disk when queuing tokens (no last gemini message)', () => {
+    it('should not write to disk when queuing tokens (no last jiminy message)', () => {
       const writeFileSyncSpy = vi.spyOn(fs, 'writeFileSync');
 
       // Clear spy call count after initialize writes the initial file
       writeFileSyncSpy.mockClear();
 
-      // No gemini message recorded yet, so tokens should only be queued
+      // No jiminy message recorded yet, so tokens should only be queued
       chatRecordingService.recordMessageTokens({
         promptTokenCount: 5,
         candidatesTokenCount: 10,
@@ -285,9 +285,9 @@ describe('ChatRecordingService', () => {
 
     it('should not write to disk when queuing tokens (last message already has tokens)', () => {
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'Response',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       // First recordMessageTokens updates the message and writes to disk
@@ -315,9 +315,9 @@ describe('ChatRecordingService', () => {
 
     it('should use in-memory cache and not re-read from disk on subsequent operations', () => {
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'Response',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const readFileSyncSpy = vi.spyOn(fs, 'readFileSync');
@@ -332,9 +332,9 @@ describe('ChatRecordingService', () => {
       });
 
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'Another response',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       chatRecordingService.saveSummary('Test summary');
@@ -352,9 +352,9 @@ describe('ChatRecordingService', () => {
 
     it('should add new tool calls to the last message', () => {
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: '',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const toolCall: ToolCallRecord = {
@@ -364,24 +364,24 @@ describe('ChatRecordingService', () => {
         status: CoreToolCallStatus.AwaitingApproval,
         timestamp: new Date().toISOString(),
       };
-      chatRecordingService.recordToolCalls('gemini-pro', [toolCall]);
+      chatRecordingService.recordToolCalls('jiminy-pro', [toolCall]);
 
       const sessionFile = chatRecordingService.getConversationFilePath()!;
       const conversation = JSON.parse(
         fs.readFileSync(sessionFile, 'utf8'),
       ) as ConversationRecord;
-      const geminiMsg = conversation.messages[0] as MessageRecord & {
-        type: 'gemini';
+      const jiminyMsg = conversation.messages[0] as MessageRecord & {
+        type: 'jiminy';
       };
-      expect(geminiMsg.toolCalls).toHaveLength(1);
-      expect(geminiMsg.toolCalls![0].name).toBe('testTool');
+      expect(jiminyMsg.toolCalls).toHaveLength(1);
+      expect(jiminyMsg.toolCalls![0].name).toBe('testTool');
     });
 
     it('should preserve dynamic description and NOT overwrite with generic one', () => {
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: '',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const dynamicDescription = 'DYNAMIC DESCRIPTION (e.g. Read file foo.txt)';
@@ -394,24 +394,24 @@ describe('ChatRecordingService', () => {
         description: dynamicDescription,
       };
 
-      chatRecordingService.recordToolCalls('gemini-pro', [toolCall]);
+      chatRecordingService.recordToolCalls('jiminy-pro', [toolCall]);
 
       const sessionFile = chatRecordingService.getConversationFilePath()!;
       const conversation = JSON.parse(
         fs.readFileSync(sessionFile, 'utf8'),
       ) as ConversationRecord;
-      const geminiMsg = conversation.messages[0] as MessageRecord & {
-        type: 'gemini';
+      const jiminyMsg = conversation.messages[0] as MessageRecord & {
+        type: 'jiminy';
       };
 
-      expect(geminiMsg.toolCalls![0].description).toBe(dynamicDescription);
+      expect(jiminyMsg.toolCalls![0].description).toBe(dynamicDescription);
     });
 
-    it('should create a new message if the last message is not from gemini', () => {
+    it('should create a new message if the last message is not from jiminy', () => {
       chatRecordingService.recordMessage({
         type: 'user',
         content: 'call a tool',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const toolCall: ToolCallRecord = {
@@ -421,16 +421,16 @@ describe('ChatRecordingService', () => {
         status: CoreToolCallStatus.AwaitingApproval,
         timestamp: new Date().toISOString(),
       };
-      chatRecordingService.recordToolCalls('gemini-pro', [toolCall]);
+      chatRecordingService.recordToolCalls('jiminy-pro', [toolCall]);
 
       const sessionFile = chatRecordingService.getConversationFilePath()!;
       const conversation = JSON.parse(
         fs.readFileSync(sessionFile, 'utf8'),
       ) as ConversationRecord;
       expect(conversation.messages).toHaveLength(2);
-      expect(conversation.messages[1].type).toBe('gemini');
+      expect(conversation.messages[1].type).toBe('jiminy');
       expect(
-        (conversation.messages[1] as MessageRecord & { type: 'gemini' })
+        (conversation.messages[1] as MessageRecord & { type: 'jiminy' })
           .toolCalls,
       ).toHaveLength(1);
     });
@@ -619,7 +619,7 @@ describe('ChatRecordingService', () => {
         model: 'm',
       });
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'msg2',
         model: 'm',
       });
@@ -696,7 +696,7 @@ describe('ChatRecordingService', () => {
         chatRecordingService.recordMessage({
           type: 'user',
           content: 'Hello',
-          model: 'gemini-pro',
+          model: 'jiminy-pro',
         }),
       ).not.toThrow();
 
@@ -720,7 +720,7 @@ describe('ChatRecordingService', () => {
       chatRecordingService.recordMessage({
         type: 'user',
         content: 'First message',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       // Reset mock to track subsequent calls
@@ -730,7 +730,7 @@ describe('ChatRecordingService', () => {
       chatRecordingService.recordMessage({
         type: 'user',
         content: 'Second message',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       chatRecordingService.recordThought({
@@ -761,7 +761,7 @@ describe('ChatRecordingService', () => {
       chatRecordingService.recordMessage({
         type: 'user',
         content: 'Hello',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       // getConversation should return null when disabled
@@ -787,7 +787,7 @@ describe('ChatRecordingService', () => {
         chatRecordingService.recordMessage({
           type: 'user',
           content: 'Hello',
-          model: 'gemini-pro',
+          model: 'jiminy-pro',
         }),
       ).toThrow('Permission denied');
 
@@ -805,14 +805,14 @@ describe('ChatRecordingService', () => {
     it('should update tool results from API history (masking sync)', () => {
       // 1. Record an initial message and tool call
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'I will list the files.',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const callId = 'tool-call-123';
       const originalResult = [{ text: 'a'.repeat(1000) }];
-      chatRecordingService.recordToolCalls('gemini-pro', [
+      chatRecordingService.recordToolCalls('jiminy-pro', [
         {
           id: callId,
           name: 'list_files',
@@ -856,13 +856,13 @@ describe('ChatRecordingService', () => {
         fs.readFileSync(sessionFile, 'utf8'),
       ) as ConversationRecord;
 
-      const geminiMsg = conversation.messages[0];
-      if (geminiMsg.type !== 'gemini')
-        throw new Error('Expected gemini message');
-      expect(geminiMsg.toolCalls).toBeDefined();
-      expect(geminiMsg.toolCalls![0].id).toBe(callId);
+      const jiminyMsg = conversation.messages[0];
+      if (jiminyMsg.type !== 'jiminy')
+        throw new Error('Expected jiminy message');
+      expect(jiminyMsg.toolCalls).toBeDefined();
+      expect(jiminyMsg.toolCalls![0].id).toBe(callId);
       // The implementation stringifies the response object
-      const result = geminiMsg.toolCalls![0].result;
+      const result = jiminyMsg.toolCalls![0].result;
       if (!Array.isArray(result)) throw new Error('Expected array result');
       const firstPart = result[0] as Part;
       expect(firstPart.functionResponse).toBeDefined();
@@ -886,12 +886,12 @@ describe('ChatRecordingService', () => {
       ];
 
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: '',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
-      chatRecordingService.recordToolCalls('gemini-pro', [
+      chatRecordingService.recordToolCalls('jiminy-pro', [
         {
           id: callId,
           name: 'read_file',
@@ -927,7 +927,7 @@ describe('ChatRecordingService', () => {
       ) as ConversationRecord;
 
       const lastMsg = conversation.messages[0] as MessageRecord & {
-        type: 'gemini';
+        type: 'jiminy';
       };
       const result = lastMsg.toolCalls![0].result as Part[];
       expect(result).toHaveLength(2);
@@ -943,12 +943,12 @@ describe('ChatRecordingService', () => {
       const callId = 'prefix-part-call';
 
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: '',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
-      chatRecordingService.recordToolCalls('gemini-pro', [
+      chatRecordingService.recordToolCalls('jiminy-pro', [
         {
           id: callId,
           name: 'read_file',
@@ -983,7 +983,7 @@ describe('ChatRecordingService', () => {
       ) as ConversationRecord;
 
       const lastMsg = conversation.messages[0] as MessageRecord & {
-        type: 'gemini';
+        type: 'jiminy';
       };
       const result = lastMsg.toolCalls![0].result as Part[];
       expect(result).toHaveLength(2);
@@ -993,9 +993,9 @@ describe('ChatRecordingService', () => {
 
     it('should not write to disk when no tool calls match', () => {
       chatRecordingService.recordMessage({
-        type: 'gemini',
+        type: 'jiminy',
         content: 'Response with no tool calls',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       const writeFileSyncSpy = vi.spyOn(fs, 'writeFileSync');
@@ -1035,7 +1035,7 @@ describe('ChatRecordingService', () => {
       chatRecordingService.recordMessage({
         type: 'user',
         content: 'Hello after dir cleanup',
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
       });
 
       // mkdirSync should be called with the parent directory and recursive option

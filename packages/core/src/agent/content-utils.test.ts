@@ -6,18 +6,18 @@
 
 import { describe, expect, it } from 'vitest';
 import {
-  geminiPartsToContentParts,
-  contentPartsToGeminiParts,
+  jiminyPartsToContentParts,
+  contentPartsToJiminyParts,
   toolResultDisplayToContentParts,
   buildToolResponseData,
 } from './content-utils.js';
 import type { Part } from '@google/genai';
 import type { ContentPart } from './types.js';
 
-describe('geminiPartsToContentParts', () => {
+describe('jiminyPartsToContentParts', () => {
   it('converts text parts', () => {
     const parts: Part[] = [{ text: 'hello' }];
-    expect(geminiPartsToContentParts(parts)).toEqual([
+    expect(jiminyPartsToContentParts(parts)).toEqual([
       { type: 'text', text: 'hello' },
     ]);
   });
@@ -26,7 +26,7 @@ describe('geminiPartsToContentParts', () => {
     const parts: Part[] = [
       { text: 'thinking...', thought: true, thoughtSignature: 'sig123' },
     ];
-    expect(geminiPartsToContentParts(parts)).toEqual([
+    expect(jiminyPartsToContentParts(parts)).toEqual([
       {
         type: 'thought',
         thought: 'thinking...',
@@ -37,7 +37,7 @@ describe('geminiPartsToContentParts', () => {
 
   it('converts thought parts without signature', () => {
     const parts: Part[] = [{ text: 'thinking...', thought: true }];
-    expect(geminiPartsToContentParts(parts)).toEqual([
+    expect(jiminyPartsToContentParts(parts)).toEqual([
       { type: 'thought', thought: 'thinking...' },
     ]);
   });
@@ -46,7 +46,7 @@ describe('geminiPartsToContentParts', () => {
     const parts: Part[] = [
       { inlineData: { data: 'base64data', mimeType: 'image/png' } },
     ];
-    expect(geminiPartsToContentParts(parts)).toEqual([
+    expect(jiminyPartsToContentParts(parts)).toEqual([
       { type: 'media', data: 'base64data', mimeType: 'image/png' },
     ]);
   });
@@ -60,7 +60,7 @@ describe('geminiPartsToContentParts', () => {
         },
       },
     ];
-    expect(geminiPartsToContentParts(parts)).toEqual([
+    expect(jiminyPartsToContentParts(parts)).toEqual([
       {
         type: 'media',
         uri: 'gs://bucket/file.pdf',
@@ -73,7 +73,7 @@ describe('geminiPartsToContentParts', () => {
     const parts: Part[] = [
       { functionCall: { name: 'myFunc', args: { key: 'value' } } },
     ];
-    const result = geminiPartsToContentParts(parts);
+    const result = jiminyPartsToContentParts(parts);
     expect(result).toEqual([]);
   });
 
@@ -86,20 +86,20 @@ describe('geminiPartsToContentParts', () => {
         },
       },
     ];
-    const result = geminiPartsToContentParts(parts);
+    const result = jiminyPartsToContentParts(parts);
     expect(result).toEqual([]);
   });
 
   it('serializes unknown part types to text with _meta', () => {
     const parts: Part[] = [{ unknownField: 'data' } as Part];
-    const result = geminiPartsToContentParts(parts);
+    const result = jiminyPartsToContentParts(parts);
     expect(result).toHaveLength(1);
     expect(result[0]?.type).toBe('text');
     expect(result[0]?._meta).toEqual({ partType: 'unknown' });
   });
 
   it('handles empty array', () => {
-    expect(geminiPartsToContentParts([])).toEqual([]);
+    expect(jiminyPartsToContentParts([])).toEqual([]);
   });
 
   it('handles mixed parts', () => {
@@ -108,7 +108,7 @@ describe('geminiPartsToContentParts', () => {
       { inlineData: { data: 'img', mimeType: 'image/jpeg' } },
       { text: 'thought', thought: true },
     ];
-    const result = geminiPartsToContentParts(parts);
+    const result = jiminyPartsToContentParts(parts);
     expect(result).toHaveLength(3);
     expect(result[0]?.type).toBe('text');
     expect(result[1]?.type).toBe('media');
@@ -116,17 +116,17 @@ describe('geminiPartsToContentParts', () => {
   });
 });
 
-describe('contentPartsToGeminiParts', () => {
+describe('contentPartsToJiminyParts', () => {
   it('converts text ContentParts', () => {
     const content: ContentPart[] = [{ type: 'text', text: 'hello' }];
-    expect(contentPartsToGeminiParts(content)).toEqual([{ text: 'hello' }]);
+    expect(contentPartsToJiminyParts(content)).toEqual([{ text: 'hello' }]);
   });
 
   it('converts thought ContentParts', () => {
     const content: ContentPart[] = [
       { type: 'thought', thought: 'thinking...', thoughtSignature: 'sig' },
     ];
-    expect(contentPartsToGeminiParts(content)).toEqual([
+    expect(contentPartsToJiminyParts(content)).toEqual([
       { text: 'thinking...', thought: true, thoughtSignature: 'sig' },
     ]);
   });
@@ -135,7 +135,7 @@ describe('contentPartsToGeminiParts', () => {
     const content: ContentPart[] = [
       { type: 'thought', thought: 'thinking...' },
     ];
-    expect(contentPartsToGeminiParts(content)).toEqual([
+    expect(contentPartsToJiminyParts(content)).toEqual([
       { text: 'thinking...', thought: true },
     ]);
   });
@@ -144,7 +144,7 @@ describe('contentPartsToGeminiParts', () => {
     const content: ContentPart[] = [
       { type: 'media', data: 'base64', mimeType: 'image/png' },
     ];
-    expect(contentPartsToGeminiParts(content)).toEqual([
+    expect(contentPartsToJiminyParts(content)).toEqual([
       { inlineData: { data: 'base64', mimeType: 'image/png' } },
     ]);
   });
@@ -153,7 +153,7 @@ describe('contentPartsToGeminiParts', () => {
     const content: ContentPart[] = [
       { type: 'media', uri: 'gs://bucket/file', mimeType: 'application/pdf' },
     ];
-    expect(contentPartsToGeminiParts(content)).toEqual([
+    expect(contentPartsToJiminyParts(content)).toEqual([
       {
         fileData: { fileUri: 'gs://bucket/file', mimeType: 'application/pdf' },
       },
@@ -162,21 +162,21 @@ describe('contentPartsToGeminiParts', () => {
 
   it('converts reference ContentParts to text', () => {
     const content: ContentPart[] = [{ type: 'reference', text: '@file.ts' }];
-    expect(contentPartsToGeminiParts(content)).toEqual([{ text: '@file.ts' }]);
+    expect(contentPartsToJiminyParts(content)).toEqual([{ text: '@file.ts' }]);
   });
 
   it('handles empty array', () => {
-    expect(contentPartsToGeminiParts([])).toEqual([]);
+    expect(contentPartsToJiminyParts([])).toEqual([]);
   });
 
   it('skips media parts with no data or uri', () => {
     const content: ContentPart[] = [{ type: 'media', mimeType: 'image/png' }];
-    expect(contentPartsToGeminiParts(content)).toEqual([]);
+    expect(contentPartsToJiminyParts(content)).toEqual([]);
   });
 
   it('defaults mimeType for media with data but no mimeType', () => {
     const content: ContentPart[] = [{ type: 'media', data: 'base64data' }];
-    const result = contentPartsToGeminiParts(content);
+    const result = contentPartsToJiminyParts(content);
     expect(result).toEqual([
       {
         inlineData: {
@@ -192,7 +192,7 @@ describe('contentPartsToGeminiParts', () => {
     const content = [
       { type: 'custom_widget', payload: 123 },
     ] as unknown as ContentPart[];
-    const result = contentPartsToGeminiParts(content);
+    const result = contentPartsToJiminyParts(content);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
       text: JSON.stringify({ type: 'custom_widget', payload: 123 }),

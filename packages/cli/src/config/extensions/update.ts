@@ -14,9 +14,9 @@ import { checkForExtensionUpdate } from './github.js';
 import {
   debugLogger,
   getErrorMessage,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   IntegrityDataStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import * as fs from 'node:fs';
 import { copyExtension, type ExtensionManager } from '../extension-manager.js';
 import { ExtensionStorage } from './storage.js';
@@ -28,7 +28,7 @@ export interface ExtensionUpdateInfo {
 }
 
 export async function updateExtension(
-  extension: GeminiCLIExtension,
+  extension: JiminyCLIExtension,
   extensionManager: ExtensionManager,
   currentState: ExtensionUpdateState,
   dispatchExtensionStateUpdate: (action: ExtensionUpdateAction) => void,
@@ -104,7 +104,7 @@ export async function updateExtension(
     const previousExtensionConfig = await extensionManager.loadExtensionConfig(
       extension.path,
     );
-    let updatedExtension: GeminiCLIExtension;
+    let updatedExtension: JiminyCLIExtension;
     try {
       updatedExtension = await extensionManager.installOrUpdateExtension(
         installMetadata,
@@ -150,7 +150,7 @@ export async function updateExtension(
 }
 
 export async function updateAllUpdatableExtensions(
-  extensions: GeminiCLIExtension[],
+  extensions: JiminyCLIExtension[],
   extensionsState: Map<string, ExtensionUpdateStatus>,
   extensionManager: ExtensionManager,
   dispatch: (action: ExtensionUpdateAction) => void,
@@ -183,7 +183,7 @@ export interface ExtensionUpdateCheckResult {
 }
 
 export async function checkForAllExtensionUpdates(
-  extensions: GeminiCLIExtension[],
+  extensions: JiminyCLIExtension[],
   extensionManager: ExtensionManager,
   dispatch: (action: ExtensionUpdateAction) => void,
 ): Promise<void> {

@@ -9,7 +9,7 @@ import {
   SessionEndReason,
   SessionStartSource,
   flushTelemetry,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { CommandKind, type SlashCommand } from './types.js';
 import { MessageType } from '../types.js';
 import { randomUUID } from 'node:crypto';
@@ -20,7 +20,7 @@ export const clearCommand: SlashCommand = {
   kind: CommandKind.BUILT_IN,
   autoExecute: true,
   action: async (context, _args) => {
-    const geminiClient = context.services.agentContext?.geminiClient;
+    const jiminyClient = context.services.agentContext?.jiminyClient;
     const config = context.services.agentContext?.config;
 
     // Fire SessionEnd hook before clearing
@@ -34,18 +34,18 @@ export const clearCommand: SlashCommand = {
 
     // Start a new conversation recording with a new session ID
     // We MUST do this before calling resetChat() so the new ChatRecordingService
-    // initialized by GeminiChat picks up the new session ID.
+    // initialized by JiminyChat picks up the new session ID.
     let newSessionId: string | undefined;
     if (config) {
       newSessionId = randomUUID();
       config.setSessionId(newSessionId);
     }
 
-    if (geminiClient) {
+    if (jiminyClient) {
       context.ui.setDebugMessage('Clearing terminal and resetting chat.');
       // If resetChat fails, the exception will propagate and halt the command,
       // which is the correct behavior to signal a failure to the user.
-      await geminiClient.resetChat();
+      await jiminyClient.resetChat();
     } else {
       context.ui.setDebugMessage('Clearing terminal.');
     }

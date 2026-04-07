@@ -32,7 +32,7 @@ const renderWithWidth = async (
 
 describe('<ContextSummaryDisplay />', () => {
   const baseProps = {
-    geminiMdFileCount: 0,
+    jiminyMdFileCount: 0,
     contextFileNames: [],
     mcpServers: {},
     ideContext: {
@@ -46,7 +46,7 @@ describe('<ContextSummaryDisplay />', () => {
   it('should render on a single line on a wide screen', async () => {
     const props = {
       ...baseProps,
-      geminiMdFileCount: 1,
+      jiminyMdFileCount: 1,
       contextFileNames: ['GEMINI.md'],
       mcpServers: { 'test-server': { command: 'test' } },
       ideContext: {
@@ -63,7 +63,7 @@ describe('<ContextSummaryDisplay />', () => {
   it('should render on multiple lines on a narrow screen', async () => {
     const props = {
       ...baseProps,
-      geminiMdFileCount: 1,
+      jiminyMdFileCount: 1,
       contextFileNames: ['GEMINI.md'],
       mcpServers: { 'test-server': { command: 'test' } },
       ideContext: {
@@ -80,7 +80,7 @@ describe('<ContextSummaryDisplay />', () => {
   it('should not render empty parts', async () => {
     const props = {
       ...baseProps,
-      geminiMdFileCount: 0,
+      jiminyMdFileCount: 0,
       contextFileNames: [],
       mcpServers: {},
       skillCount: 0,

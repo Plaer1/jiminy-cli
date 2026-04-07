@@ -233,7 +233,7 @@ const assets = {
 };
 
 const manifest = {
-  main: 'gemini.mjs',
+  main: 'jiminy.mjs',
   mainHash: '',
   version: packageJson.version,
   files: [],
@@ -247,8 +247,8 @@ for (const jsFile of jsFiles) {
   const hash = sha256(content);
 
   // Node SEA requires the main entry point to be explicitly mapped
-  if (jsFile === 'gemini.js') {
-    assets['gemini.mjs'] = fsPath;
+  if (jsFile === 'jiminy.js') {
+    assets['jiminy.mjs'] = fsPath;
     manifest.mainHash = hash;
   } else {
     // Other chunks need to be mapped exactly as they are named so dynamic imports find them
@@ -385,9 +385,9 @@ if (existsSync(bundleDir)) {
 
 // Clean up source JS files from output (we only want embedded)
 const filesToRemove = [
-  'gemini.mjs',
-  'gemini.mjs.map',
-  'gemini-sea.cjs',
+  'jiminy.mjs',
+  'jiminy.mjs.map',
+  'jiminy-sea.cjs',
   'sea-launch.cjs',
   'manifest.json',
   'native_modules',

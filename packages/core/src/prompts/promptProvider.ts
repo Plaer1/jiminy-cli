@@ -29,7 +29,7 @@ import {
 } from '../tools/tool-names.js';
 import { resolveModel, supportsModernFeatures } from '../config/models.js';
 import { DiscoveredMCPTool } from '../tools/mcp-tool.js';
-import { getAllGeminiMdFilenames } from '../tools/memoryTool.js';
+import { getAllJiminyMdFilenames } from '../tools/memoryTool.js';
 import type { AgentLoopContext } from '../config/agent-loop-context.js';
 
 /**
@@ -61,15 +61,15 @@ export class PromptProvider {
 
     const desiredModel = resolveModel(
       context.config.getActiveModel(),
-      context.config.getGemini31LaunchedSync?.() ?? false,
-      context.config.getGemini31FlashLiteLaunchedSync?.() ?? false,
+      context.config.getJiminy31LaunchedSync?.() ?? false,
+      context.config.getJiminy31FlashLiteLaunchedSync?.() ?? false,
       false,
       context.config.getHasAccessToPreviewModel?.() ?? true,
       context.config,
     );
     const isModernModel = supportsModernFeatures(desiredModel);
     const activeSnippets = isModernModel ? snippets : legacySnippets;
-    const contextFilenames = getAllGeminiMdFilenames();
+    const contextFilenames = getAllJiminyMdFilenames();
 
     // --- Context Gathering ---
     let planModeToolsList = '';
@@ -247,8 +247,8 @@ export class PromptProvider {
   getCompressionPrompt(context: AgentLoopContext): string {
     const desiredModel = resolveModel(
       context.config.getActiveModel(),
-      context.config.getGemini31LaunchedSync?.() ?? false,
-      context.config.getGemini31FlashLiteLaunchedSync?.() ?? false,
+      context.config.getJiminy31LaunchedSync?.() ?? false,
+      context.config.getJiminy31FlashLiteLaunchedSync?.() ?? false,
       false,
       context.config.getHasAccessToPreviewModel?.() ?? true,
       context.config,

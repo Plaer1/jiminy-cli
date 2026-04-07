@@ -9,12 +9,12 @@ import type {
   IndividualToolCallDisplay,
 } from '../types.js';
 import { useCallback, useReducer, useRef, useEffect } from 'react';
-import type { AnsiOutput, Config, GeminiClient } from '@google/gemini-cli-core';
+import type { AnsiOutput, Config, JiminyClient } from '@google/jiminy-cli-core';
 import {
   isBinary,
   ShellExecutionService,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { type PartListUnion } from '@google/genai';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { SHELL_COMMAND_NAME } from '../constants.js';
@@ -35,8 +35,8 @@ export const OUTPUT_UPDATE_INTERVAL_MS = 1000;
 const RESTORE_VISIBILITY_DELAY_MS = 300;
 const MAX_OUTPUT_LENGTH = 10000;
 
-function addShellCommandToGeminiHistory(
-  geminiClient: GeminiClient,
+function addShellCommandToJiminyHistory(
+  jiminyClient: JiminyClient,
   rawQuery: string,
   resultText: string,
 ) {
@@ -46,7 +46,7 @@ function addShellCommandToGeminiHistory(
       : resultText;
 
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  geminiClient.addHistory({
+  jiminyClient.addHistory({
     role: 'user',
     parts: [
       {
@@ -76,7 +76,7 @@ export const useShellCommandProcessor = (
   onExec: (command: Promise<void>) => void,
   onDebugMessage: (message: string) => void,
   config: Config,
-  geminiClient: GeminiClient,
+  jiminyClient: JiminyClient,
   setShellInputFocused: (value: boolean) => void,
   terminalWidth?: number,
   terminalHeight?: number,
@@ -496,7 +496,7 @@ export const useShellCommandProcessor = (
             );
           }
 
-          addShellCommandToGeminiHistory(geminiClient, rawQuery, finalOutput);
+          addShellCommandToJiminyHistory(jiminyClient, rawQuery, finalOutput);
         } catch (err) {
           setPendingHistoryItem(null);
           const errorMessage = err instanceof Error ? err.message : String(err);
@@ -527,7 +527,7 @@ export const useShellCommandProcessor = (
       addItemToHistory,
       setPendingHistoryItem,
       onExec,
-      geminiClient,
+      jiminyClient,
       setShellInputFocused,
       terminalHeight,
       terminalWidth,

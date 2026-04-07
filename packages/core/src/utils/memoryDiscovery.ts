@@ -8,7 +8,7 @@ import * as fs from 'node:fs/promises';
 import * as fsSync from 'node:fs';
 import * as path from 'node:path';
 import { bfsFileSearch } from './bfsFileSearch.js';
-import { getAllGeminiMdFilenames } from '../tools/memoryTool.js';
+import { getAllJiminyMdFilenames } from '../tools/memoryTool.js';
 import type { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { processImports } from './memoryImportProcessor.js';
 import {
@@ -37,7 +37,7 @@ const logger = {
     debugLogger.error('[ERROR] [MemoryDiscovery]', ...args),
 };
 
-export interface GeminiFileContent {
+export interface JiminyFileContent {
   filePath: string;
   content: string | null;
 }
@@ -192,9 +192,9 @@ async function findProjectRoot(startDir: string): Promise<string | null> {
   }
 }
 
-async function getGeminiMdFilePathsInternal(
+async function getJiminyMdFilePathsInternal(
   currentWorkingDirectory: string,
-  includeDirectoriesToReadGemini: readonly string[],
+  includeDirectoriesToReadJiminy: readonly string[],
   userHomePath: string,
   fileService: FileDiscoveryService,
   folderTrust: boolean,
@@ -202,7 +202,7 @@ async function getGeminiMdFilePathsInternal(
   maxDirs: number,
 ): Promise<{ global: string[]; project: string[] }> {
   const dirs = new Set<string>([
-    ...includeDirectoriesToReadGemini,
+    ...includeDirectoriesToReadJiminy,
     currentWorkingDirectory,
   ]);
 
@@ -215,7 +215,7 @@ async function getGeminiMdFilePathsInternal(
   for (let i = 0; i < dirsArray.length; i += CONCURRENT_LIMIT) {
     const batch = dirsArray.slice(i, i + CONCURRENT_LIMIT);
     const batchPromises = batch.map((dir) =>
-      getGeminiMdFilePathsInternalForEachDir(
+      getJiminyMdFilePathsInternalForEachDir(
         dir,
         userHomePath,
         fileService,
@@ -246,7 +246,7 @@ async function getGeminiMdFilePathsInternal(
   };
 }
 
-async function getGeminiMdFilePathsInternalForEachDir(
+async function getJiminyMdFilePathsInternalForEachDir(
   dir: string,
   userHomePath: string,
   fileService: FileDiscoveryService,
@@ -256,13 +256,13 @@ async function getGeminiMdFilePathsInternalForEachDir(
 ): Promise<{ global: string[]; project: string[] }> {
   const globalPaths = new Set<string>();
   const projectPaths = new Set<string>();
-  const geminiMdFilenames = getAllGeminiMdFilenames();
+  const jiminyMdFilenames = getAllJiminyMdFilenames();
 
-  for (const geminiMdFilename of geminiMdFilenames) {
+  for (const jiminyMdFilename of jiminyMdFilenames) {
     const resolvedHome = normalizePath(userHomePath);
-    const globalGeminiDir = normalizePath(path.join(resolvedHome, GEMINI_DIR));
+    const globalJiminyDir = normalizePath(path.join(resolvedHome, GEMINI_DIR));
     const globalMemoryPath = normalizePath(
-      path.join(globalGeminiDir, geminiMdFilename),
+      path.join(globalJiminyDir, jiminyMdFilename),
     );
 
     // This part that finds the global file always runs.
@@ -271,7 +271,7 @@ async function getGeminiMdFilePathsInternalForEachDir(
       globalPaths.add(globalMemoryPath);
       debugLogger.debug(
         '[DEBUG] [MemoryDiscovery] Found readable global',
-        geminiMdFilename + ':',
+        jiminyMdFilename + ':',
         globalMemoryPath,
       );
     } catch {
@@ -284,7 +284,7 @@ async function getGeminiMdFilePathsInternalForEachDir(
       const resolvedCwd = normalizePath(dir);
       debugLogger.debug(
         '[DEBUG] [MemoryDiscovery] Searching for',
-        geminiMdFilename,
+        jiminyMdFilename,
         'starting from CWD:',
         resolvedCwd,
       );
@@ -305,12 +305,12 @@ async function getGeminiMdFilePathsInternalForEachDir(
         currentDir &&
         currentDir !== normalizePath(path.dirname(currentDir))
       ) {
-        if (currentDir === globalGeminiDir) {
+        if (currentDir === globalJiminyDir) {
           break;
         }
 
         const potentialPath = normalizePath(
-          path.join(currentDir, geminiMdFilename),
+          path.join(currentDir, jiminyMdFilename),
         );
         try {
           await fs.access(potentialPath, fsSync.constants.R_OK);
@@ -335,7 +335,7 @@ async function getGeminiMdFilePathsInternalForEachDir(
       };
 
       const downwardPaths = await bfsFileSearch(resolvedCwd, {
-        fileName: geminiMdFilename,
+        fileName: jiminyMdFilename,
         maxDirs,
         fileService,
         fileFilteringOptions: mergedOptions,
@@ -353,18 +353,18 @@ async function getGeminiMdFilePathsInternalForEachDir(
   };
 }
 
-export async function readGeminiMdFiles(
+export async function readJiminyMdFiles(
   filePaths: string[],
   importFormat: 'flat' | 'tree' = 'tree',
-): Promise<GeminiFileContent[]> {
+): Promise<JiminyFileContent[]> {
   // Process files in parallel with concurrency limit to prevent EMFILE errors
   const CONCURRENT_LIMIT = 20; // Higher limit for file reads as they're typically faster
-  const results: GeminiFileContent[] = [];
+  const results: JiminyFileContent[] = [];
 
   for (let i = 0; i < filePaths.length; i += CONCURRENT_LIMIT) {
     const batch = filePaths.slice(i, i + CONCURRENT_LIMIT);
     const batchPromises = batch.map(
-      async (filePath): Promise<GeminiFileContent> => {
+      async (filePath): Promise<JiminyFileContent> => {
         try {
           const content = await fs.readFile(filePath, 'utf-8');
 
@@ -391,7 +391,7 @@ export async function readGeminiMdFiles(
             const message =
               error instanceof Error ? error.message : String(error);
             logger.warn(
-              `Warning: Could not read ${getAllGeminiMdFilenames()} file at ${filePath}. Error: ${message}`,
+              `Warning: Could not read ${getAllJiminyMdFilenames()} file at ${filePath}. Error: ${message}`,
             );
           }
           debugLogger.debug(
@@ -423,7 +423,7 @@ export async function readGeminiMdFiles(
 }
 
 export function concatenateInstructions(
-  instructionContents: GeminiFileContent[],
+  instructionContents: JiminyFileContent[],
 ): string {
   return instructionContents
     .filter((item) => typeof item.content === 'string')
@@ -446,9 +446,9 @@ export interface MemoryLoadResult {
 
 export async function getGlobalMemoryPaths(): Promise<string[]> {
   const userHome = homedir();
-  const geminiMdFilenames = getAllGeminiMdFilenames();
+  const jiminyMdFilenames = getAllJiminyMdFilenames();
 
-  const accessChecks = geminiMdFilenames.map(async (filename) => {
+  const accessChecks = jiminyMdFilenames.map(async (filename) => {
     const globalPath = normalizePath(path.join(userHome, GEMINI_DIR, filename));
     try {
       await fs.access(globalPath, fsSync.constants.R_OK);
@@ -497,7 +497,7 @@ export async function getEnvironmentMemoryPaths(
         ? `git root: ${ceiling})`
         : `trusted root: ${ceiling} — no git root found)`,
     );
-    return findUpwardGeminiFiles(resolvedRoot, ceiling);
+    return findUpwardJiminyFiles(resolvedRoot, ceiling);
   });
 
   const pathArrays = await Promise.all(traversalPromises);
@@ -508,13 +508,13 @@ export async function getEnvironmentMemoryPaths(
 
 export function categorizeAndConcatenate(
   paths: { global: string[]; extension: string[]; project: string[] },
-  contentsMap: Map<string, GeminiFileContent>,
+  contentsMap: Map<string, JiminyFileContent>,
 ): HierarchicalMemory {
   const getConcatenated = (pList: string[]) =>
     concatenateInstructions(
       pList
         .map((p) => contentsMap.get(p))
-        .filter((c): c is GeminiFileContent => !!c),
+        .filter((c): c is JiminyFileContent => !!c),
     );
 
   return {
@@ -530,15 +530,15 @@ export function categorizeAndConcatenate(
  * Files are ordered by directory level (root to leaf), with all filename
  * variants grouped together per directory.
  */
-async function findUpwardGeminiFiles(
+async function findUpwardJiminyFiles(
   startDir: string,
   stopDir: string,
 ): Promise<string[]> {
   const upwardPaths: string[] = [];
   let currentDir = normalizePath(startDir);
   const resolvedStopDir = normalizePath(stopDir);
-  const geminiMdFilenames = getAllGeminiMdFilenames();
-  const globalGeminiDir = normalizePath(path.join(homedir(), GEMINI_DIR));
+  const jiminyMdFilenames = getAllJiminyMdFilenames();
+  const globalJiminyDir = normalizePath(path.join(homedir(), GEMINI_DIR));
 
   debugLogger.debug(
     '[DEBUG] [MemoryDiscovery] Starting upward search from',
@@ -548,12 +548,12 @@ async function findUpwardGeminiFiles(
   );
 
   while (true) {
-    if (currentDir === globalGeminiDir) {
+    if (currentDir === globalJiminyDir) {
       break;
     }
 
     // Parallelize checks for all filename variants in the current directory
-    const accessChecks = geminiMdFilenames.map(async (filename) => {
+    const accessChecks = jiminyMdFilenames.map(async (filename) => {
       const potentialPath = normalizePath(path.join(currentDir, filename));
       try {
         await fs.access(potentialPath, fsSync.constants.R_OK);
@@ -590,7 +590,7 @@ export interface LoadServerHierarchicalMemoryResponse {
  */
 export async function loadServerHierarchicalMemory(
   currentWorkingDirectory: string,
-  includeDirectoriesToReadGemini: readonly string[],
+  includeDirectoriesToReadJiminy: readonly string[],
   fileService: FileDiscoveryService,
   extensionLoader: ExtensionLoader,
   folderTrust: boolean,
@@ -621,9 +621,9 @@ export async function loadServerHierarchicalMemory(
 
   // 1. SCATTER: Gather all paths
   const [discoveryResult, extensionPaths] = await Promise.all([
-    getGeminiMdFilePathsInternal(
+    getJiminyMdFilePathsInternal(
       currentWorkingDirectory,
-      includeDirectoriesToReadGemini,
+      includeDirectoriesToReadJiminy,
       userHomePath,
       fileService,
       folderTrust,
@@ -669,7 +669,7 @@ export async function loadServerHierarchicalMemory(
   }
 
   // 2. GATHER: Read all files in parallel
-  const allContents = await readGeminiMdFiles(allFilePaths, importFormat);
+  const allContents = await readJiminyMdFiles(allFilePaths, importFormat);
   const contentsMap = new Map(allContents.map((c) => [c.filePath, c]));
 
   // 3. CATEGORIZE: Back into Global, Project, Extension
@@ -693,7 +693,7 @@ export async function loadServerHierarchicalMemory(
  * Loads the hierarchical memory and resets the state of `config` as needed such
  * that it reflects the new memory.
  *
- * Returns the result of the call to `loadHierarchicalGeminiMemory`.
+ * Returns the result of the call to `loadHierarchicalJiminyMemory`.
  */
 export async function refreshServerHierarchicalMemory(config: Config) {
   const result = await loadServerHierarchicalMemory(
@@ -717,8 +717,8 @@ export async function refreshServerHierarchicalMemory(config: Config) {
       .join('\n\n'),
   };
   config.setUserMemory(finalMemory);
-  config.setGeminiMdFileCount(result.fileCount);
-  config.setGeminiMdFilePaths(result.filePaths);
+  config.setJiminyMdFileCount(result.fileCount);
+  config.setJiminyMdFilePaths(result.filePaths);
   coreEvents.emit(CoreEvent.MemoryChanged, { fileCount: result.fileCount });
   return result;
 }
@@ -786,7 +786,7 @@ export async function loadJitSubdirectoryMemory(
   }
 
   // Traverse from the resolved directory up to the ceiling
-  const potentialPaths = await findUpwardGeminiFiles(startDir, resolvedCeiling);
+  const potentialPaths = await findUpwardJiminyFiles(startDir, resolvedCeiling);
 
   if (potentialPaths.length === 0) {
     return { files: [], fileIdentities: [] };
@@ -850,7 +850,7 @@ export async function loadJitSubdirectoryMemory(
     JSON.stringify(newPaths),
   );
 
-  const contents = await readGeminiMdFiles(newPaths, 'tree');
+  const contents = await readJiminyMdFiles(newPaths, 'tree');
 
   return {
     files: contents

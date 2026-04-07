@@ -7,7 +7,7 @@
 import {
   IdeDiffAcceptedNotificationSchema,
   IdeDiffRejectedNotificationSchema,
-} from '@google/gemini-cli-core/src/ide/types.js';
+} from '@google/jiminy-cli-core/src/ide/types.js';
 import { type JSONRPCNotification } from '@modelcontextprotocol/sdk/types.js';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
@@ -99,7 +99,7 @@ export class DiffManager {
     const diffTitle = `${path.basename(filePath)} ↔ Modified`;
     await vscode.commands.executeCommand(
       'setContext',
-      'gemini.diff.isVisible',
+      'jiminy.diff.isVisible',
       true,
     );
 
@@ -218,7 +218,7 @@ export class DiffManager {
     }
     await vscode.commands.executeCommand(
       'setContext',
-      'gemini.diff.isVisible',
+      'jiminy.diff.isVisible',
       isVisible,
     );
   }
@@ -231,7 +231,7 @@ export class DiffManager {
     const diffInfo = this.diffDocuments.get(rightDocUri.toString());
     await vscode.commands.executeCommand(
       'setContext',
-      'gemini.diff.isVisible',
+      'jiminy.diff.isVisible',
       false,
     );
 

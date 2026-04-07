@@ -12,7 +12,7 @@ import type { StructuredError } from '../core/turn.js';
 
 describe('parseAndFormatApiError', () => {
   const vertexMessage = 'request a quota increase through Vertex';
-  const geminiMessage = 'request a quota increase through AI Studio';
+  const jiminyMessage = 'request a quota increase through AI Studio';
 
   it('should format a valid API error JSON', () => {
     const errorMessage =
@@ -29,12 +29,12 @@ describe('parseAndFormatApiError', () => {
       errorMessage,
       undefined,
       undefined,
-      'gemini-2.5-pro',
+      'jiminy-2.5-pro',
       DEFAULT_GEMINI_FLASH_MODEL,
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(
-      'Possible quota limitations in place or slow response times detected. Switching to the gemini-2.5-flash model',
+      'Possible quota limitations in place or slow response times detected. Switching to the jiminy-2.5-flash model',
     );
   });
 
@@ -72,7 +72,7 @@ describe('parseAndFormatApiError', () => {
       error: {
         code: 429,
         message:
-          "Gemini 2.5 Pro Preview doesn't have a free quota tier. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.",
+          "Jiminy 2.5 Pro Preview doesn't have a free quota tier. For more information on this error, head to: https://ai.google.dev/jiminy-api/docs/rate-limits.",
         status: 'RESOURCE_EXHAUSTED',
       },
     });
@@ -86,8 +86,8 @@ describe('parseAndFormatApiError', () => {
     });
 
     const result = parseAndFormatApiError(errorMessage, AuthType.USE_GEMINI);
-    expect(result).toContain('Gemini 2.5 Pro Preview');
-    expect(result).toContain(geminiMessage);
+    expect(result).toContain('Jiminy 2.5 Pro Preview');
+    expect(result).toContain(jiminyMessage);
   });
 
   it('should format a StructuredError', () => {

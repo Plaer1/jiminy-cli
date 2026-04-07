@@ -1,6 +1,6 @@
-# Gemini CLI DevTools
+# Jiminy CLI DevTools
 
-Integrated Developer Tools for Gemini CLI, providing a Chrome DevTools-like
+Integrated Developer Tools for Jiminy CLI, providing a Chrome DevTools-like
 interface for Network and Console inspection. Launched automatically when the
 `general.devtools` setting is enabled.
 
@@ -28,7 +28,7 @@ No environment variables needed for normal use.
 ## Architecture
 
 ```
-gemini.tsx / nonInteractiveCli.ts
+jiminy.tsx / nonInteractiveCli.ts
          │  (dynamic import)
          ▼
   devtoolsService.ts          ← orchestration + DevTools lifecycle

@@ -96,11 +96,11 @@ runs:
       run: |
         rm -rf release-bundle-stage jiminy-cli-bundle.zip
         cp -R bundle release-bundle-stage
-        if [[ -f release-bundle-stage/gemini.js ]]; then
-          mv release-bundle-stage/gemini.js release-bundle-stage/jiminy.js
+        if [[ -f release-bundle-stage/jiminy.js ]]; then
+          mv release-bundle-stage/jiminy.js release-bundle-stage/jiminy.js
         fi
-        if [[ -f release-bundle-stage/gemini.js.map ]]; then
-          mv release-bundle-stage/gemini.js.map release-bundle-stage/jiminy.js.map
+        if [[ -f release-bundle-stage/jiminy.js.map ]]; then
+          mv release-bundle-stage/jiminy.js.map release-bundle-stage/jiminy.js.map
         fi
 
         if [[ ! -f release-bundle-stage/jiminy.js ]]; then

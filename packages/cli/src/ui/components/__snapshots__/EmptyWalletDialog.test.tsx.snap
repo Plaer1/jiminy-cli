@@ -3,7 +3,7 @@
 exports[`EmptyWalletDialog > rendering > should match snapshot with fallback available 1`] = `
 "╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                                                                                  │
-│ Usage limit reached for gemini-2.5-pro.                                                          │
+│ Usage limit reached for jiminy-2.5-pro.                                                          │
 │ Access resets at 2:00 PM.                                                                        │
 │ /stats model for usage details                                                                   │
 │ /model to switch models.                                                                         │
@@ -17,7 +17,7 @@ exports[`EmptyWalletDialog > rendering > should match snapshot with fallback ava
 │                                                                                                  │
 │                                                                                                  │
 │ ● 1. Get AI Credits - Open browser to purchase credits                                           │
-│   2. Switch to gemini-3-flash-preview                                                            │
+│   2. Switch to jiminy-3-flash-preview                                                            │
 │   3. Stop - Abort request                                                                        │
 │                                                                                                  │
 │                                                                                                  │
@@ -28,7 +28,7 @@ exports[`EmptyWalletDialog > rendering > should match snapshot with fallback ava
 exports[`EmptyWalletDialog > rendering > should match snapshot without fallback 1`] = `
 "╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                                                                                  │
-│ Usage limit reached for gemini-2.5-pro.                                                          │
+│ Usage limit reached for jiminy-2.5-pro.                                                          │
 │ /stats model for usage details                                                                   │
 │ /model to switch models.                                                                         │
 │ /auth to switch to API key.                                                                      │

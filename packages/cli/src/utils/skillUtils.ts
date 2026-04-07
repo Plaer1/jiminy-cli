@@ -10,7 +10,7 @@ import {
   Storage,
   loadSkillsFromDir,
   type SkillDefinition,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { cloneFromGit } from '../config/extensions/github.js';
 import extract from 'extract-zip';
 import * as fs from 'node:fs/promises';
@@ -101,7 +101,7 @@ export async function installSkill(
   try {
     if (isGitUrl) {
       tempDirToClean = await fs.mkdtemp(
-        path.join(os.tmpdir(), 'gemini-skill-'),
+        path.join(os.tmpdir(), 'jiminy-skill-'),
       );
       sourcePath = tempDirToClean;
 
@@ -116,7 +116,7 @@ export async function installSkill(
       );
     } else if (isSkillFile) {
       tempDirToClean = await fs.mkdtemp(
-        path.join(os.tmpdir(), 'gemini-skill-'),
+        path.join(os.tmpdir(), 'jiminy-skill-'),
       );
       sourcePath = tempDirToClean;
 

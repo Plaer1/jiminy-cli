@@ -24,7 +24,7 @@ import {
   DEFAULT_GEMINI_MODEL,
   PREVIEW_GEMINI_MODEL_AUTO,
   isAutoModel,
-  isGemini3Model,
+  isJiminy3Model,
   resolveModel,
 } from '../config/models.js';
 import type { ModelSelectionResult } from './modelAvailabilityService.js';
@@ -44,16 +44,16 @@ export function resolvePolicyChain(
   const configuredModel = config.getModel();
 
   let chain;
-  const useGemini31 = config.getGemini31LaunchedSync?.() ?? false;
-  const useGemini31FlashLite =
-    config.getGemini31FlashLiteLaunchedSync?.() ?? false;
+  const useJiminy31 = config.getJiminy31LaunchedSync?.() ?? false;
+  const useJiminy31FlashLite =
+    config.getJiminy31FlashLiteLaunchedSync?.() ?? false;
   const useCustomToolModel = config.getUseCustomToolModelSync?.() ?? false;
   const hasAccessToPreview = config.getHasAccessToPreviewModel?.() ?? true;
 
   const resolvedModel = resolveModel(
     modelFromConfig,
-    useGemini31,
-    useGemini31FlashLite,
+    useJiminy31,
+    useJiminy31FlashLite,
     useCustomToolModel,
     hasAccessToPreview,
     config,
@@ -66,15 +66,15 @@ export function resolvePolicyChain(
   // --- DYNAMIC PATH ---
   if (config.getExperimentalDynamicModelConfiguration?.() === true) {
     const context = {
-      useGemini3_1: useGemini31,
-      useGemini3_1FlashLite: useGemini31FlashLite,
+      useJiminy3_1: useJiminy31,
+      useJiminy3_1FlashLite: useJiminy31FlashLite,
       useCustomTools: useCustomToolModel,
     };
 
     if (resolvedModel === DEFAULT_GEMINI_FLASH_LITE_MODEL) {
       chain = config.modelConfigService.resolveChain('lite', context);
     } else if (
-      isGemini3Model(resolvedModel, config) ||
+      isJiminy3Model(resolvedModel, config) ||
       isAutoModel(preferredModel ?? '', config) ||
       isAutoModel(configuredModel, config)
     ) {
@@ -92,7 +92,7 @@ export function resolvePolicyChain(
       if (!chain) {
         const previewEnabled =
           hasAccessToPreview &&
-          (isGemini3Model(resolvedModel, config) ||
+          (isJiminy3Model(resolvedModel, config) ||
             preferredModel === PREVIEW_GEMINI_MODEL_AUTO ||
             configuredModel === PREVIEW_GEMINI_MODEL_AUTO);
         const chainKey = previewEnabled ? 'preview' : 'default';
@@ -111,20 +111,20 @@ export function resolvePolicyChain(
   if (resolvedModel === DEFAULT_GEMINI_FLASH_LITE_MODEL) {
     chain = getFlashLitePolicyChain();
   } else if (
-    isGemini3Model(resolvedModel, config) ||
+    isJiminy3Model(resolvedModel, config) ||
     isAutoPreferred ||
     isAutoConfigured
   ) {
     if (hasAccessToPreview) {
       const previewEnabled =
-        isGemini3Model(resolvedModel, config) ||
+        isJiminy3Model(resolvedModel, config) ||
         preferredModel === PREVIEW_GEMINI_MODEL_AUTO ||
         configuredModel === PREVIEW_GEMINI_MODEL_AUTO;
       chain = getModelPolicyChain({
         previewEnabled,
         userTier: config.getUserTier(),
-        useGemini31,
-        useGemini31FlashLite,
+        useJiminy31,
+        useJiminy31FlashLite,
         useCustomToolModel,
       });
     } else {
@@ -133,8 +133,8 @@ export function resolvePolicyChain(
       chain = getModelPolicyChain({
         previewEnabled: false,
         userTier: config.getUserTier(),
-        useGemini31,
-        useGemini31FlashLite,
+        useJiminy31,
+        useJiminy31FlashLite,
         useCustomToolModel,
       });
     }

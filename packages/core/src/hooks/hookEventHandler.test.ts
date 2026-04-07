@@ -64,11 +64,11 @@ describe('HookEventHandler', () => {
   beforeEach(() => {
     vi.resetAllMocks();
 
-    const mockGeminiClient = {
+    const mockJiminyClient = {
       getChatRecordingService: vi.fn().mockReturnValue({
         getConversationFilePath: vi
           .fn()
-          .mockReturnValue('/test/project/.gemini/tmp/chats/session.json'),
+          .mockReturnValue('/test/project/.jiminy/tmp/chats/session.json'),
       }),
     };
 
@@ -76,8 +76,8 @@ describe('HookEventHandler', () => {
       get config() {
         return this;
       },
-      geminiClient: mockGeminiClient,
-      getGeminiClient: vi.fn().mockReturnValue(mockGeminiClient),
+      jiminyClient: mockJiminyClient,
+      getJiminyClient: vi.fn().mockReturnValue(mockJiminyClient),
       getSessionId: vi.fn().mockReturnValue('test-session'),
       getWorkingDir: vi.fn().mockReturnValue('/test/project'),
     } as unknown as Config;
@@ -758,7 +758,7 @@ describe('HookEventHandler', () => {
       );
 
       const llmRequest = {
-        model: 'gemini-pro',
+        model: 'jiminy-pro',
         config: { temperature: 0.7 },
         contents: [{ role: 'user', parts: [{ text: 'Hello' }] }],
       };
@@ -770,7 +770,7 @@ describe('HookEventHandler', () => {
         HookEventName.BeforeModel,
         expect.objectContaining({
           llm_request: expect.objectContaining({
-            model: 'gemini-pro',
+            model: 'jiminy-pro',
             messages: expect.arrayContaining([
               expect.objectContaining({
                 role: 'user',
@@ -881,7 +881,7 @@ describe('HookEventHandler', () => {
         HookEventName.BeforeTool,
         expect.objectContaining({
           session_id: 'test-session',
-          transcript_path: '/test/project/.gemini/tmp/chats/session.json',
+          transcript_path: '/test/project/.jiminy/tmp/chats/session.json',
           cwd: '/test/project',
           hook_event_name: 'BeforeTool',
           timestamp: expect.any(String),

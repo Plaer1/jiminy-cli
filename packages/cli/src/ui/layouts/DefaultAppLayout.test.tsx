@@ -6,7 +6,11 @@
 
 import { render } from '../../test-utils/render.js';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { DefaultAppLayout } from './DefaultAppLayout.js';
+import {
+  DefaultAppLayout,
+  hasPersistedSudoApprovalRuleFromToml,
+} from './DefaultAppLayout.js';
+import { ApprovalMode } from '@google/jiminy-cli-core';
 import { StreamingState } from '../types.js';
 import { Text } from 'ink';
 import type { UIState } from '../contexts/UIStateContext.js';
@@ -49,11 +53,31 @@ vi.mock('../hooks/useAlternateBuffer.js', () => ({
   useAlternateBuffer: vi.fn(() => false),
 }));
 
+vi.mock('../hooks/useKeypress.js', () => ({
+  useKeypress: vi.fn(),
+}));
+
 vi.mock('../contexts/ConfigContext.js', () => ({
   useConfig: () => ({
     getAccessibility: vi.fn(() => ({
       enableLoadingPhrases: true,
     })),
+    getDisableAlwaysAllow: vi.fn(() => false),
+    isTrustedFolder: vi.fn(() => true),
+    sudoPasswordService: {
+      registerPasswordPrompter: vi.fn(),
+      setSkipForSession: vi.fn(),
+    },
+  }),
+}));
+
+vi.mock('../contexts/SettingsContext.js', () => ({
+  useSettings: () => ({
+    merged: {
+      security: {
+        enablePermanentToolApproval: true,
+      },
+    },
   }),
 }));
 
@@ -131,5 +155,46 @@ describe('<DefaultAppLayout />', () => {
     const { lastFrame, unmount } = await render(<DefaultAppLayout />);
     expect(lastFrame()).toMatchSnapshot();
     unmount();
+  });
+});
+
+describe('hasPersistedSudoApprovalRuleFromToml', () => {
+  it('matches persisted sudo approval rules for the current mode', () => {
+    expect(
+      hasPersistedSudoApprovalRuleFromToml(
+        `
+[[rule]]
+decision = "allow"
+priority = 950
+toolName = "run_shell_command"
+commandPrefix = "sudo"
+modes = ["yolo"]
+`,
+        ApprovalMode.YOLO,
+      ),
+    ).toBe(true);
+  });
+
+  it('ignores unrelated or mode-mismatched rules', () => {
+    expect(
+      hasPersistedSudoApprovalRuleFromToml(
+        `
+[[rule]]
+decision = "allow"
+priority = 950
+toolName = "run_shell_command"
+commandPrefix = "sudo"
+modes = ["default"]
+
+[[rule]]
+decision = "allow"
+priority = 950
+toolName = "run_shell_command"
+commandPrefix = "git"
+modes = ["yolo"]
+`,
+        ApprovalMode.YOLO,
+      ),
+    ).toBe(false);
   });
 });

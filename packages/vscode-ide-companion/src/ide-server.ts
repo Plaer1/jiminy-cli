@@ -9,7 +9,7 @@ import {
   CloseDiffRequestSchema,
   IdeContextNotificationSchema,
   OpenDiffRequestSchema,
-} from '@google/gemini-cli-core/src/ide/types.js';
+} from '@google/jiminy-cli-core/src/ide/types.js';
 import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
@@ -23,7 +23,7 @@ import { randomUUID } from 'node:crypto';
 import { type Server as HTTPServer } from 'node:http';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
-import { tmpdir } from '@google/gemini-cli-core';
+import { tmpdir } from '@google/jiminy-cli-core';
 import type { z } from 'zod';
 import type { DiffManager } from './diff-manager.js';
 import { OpenFilesManager } from './open-files-manager.js';
@@ -344,11 +344,11 @@ export class IDEServer {
           this.log(`IDE server listening on http://127.0.0.1:${this.port}`);
           let portFile: string | undefined;
           try {
-            const portDir = path.join(tmpdir(), 'gemini', 'ide');
+            const portDir = path.join(tmpdir(), 'jiminy', 'ide');
             await fs.mkdir(portDir, { recursive: true });
             portFile = path.join(
               portDir,
-              `gemini-ide-server-${process.ppid}-${this.port}.json`,
+              `jiminy-ide-server-${process.ppid}-${this.port}.json`,
             );
             this.portFile = portFile;
           } catch (err) {
@@ -437,7 +437,7 @@ const createMcpServer = (
 ) => {
   const server = new McpServer(
     {
-      name: 'gemini-cli-companion-mcp-server',
+      name: 'jiminy-cli-companion-mcp-server',
       version: '1.0.0',
     },
     { capabilities: { logging: {} } },

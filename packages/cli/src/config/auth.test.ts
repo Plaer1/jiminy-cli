@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AuthType } from '@google/gemini-cli-core';
+import { AuthType } from '@google/jiminy-cli-core';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { validateAuthMethod } from './auth.js';
 
@@ -52,7 +52,7 @@ describe('validateAuthMethod', () => {
       authType: AuthType.USE_GEMINI,
       envs: {},
       expected:
-        'When using Gemini API, you must specify the GEMINI_API_KEY environment variable.\n' +
+        'When using Jiminy API, you must specify the GEMINI_API_KEY environment variable.\n' +
         'Update your environment and try again (no reload needed if using .env)!',
     },
     {

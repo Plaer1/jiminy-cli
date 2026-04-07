@@ -12,7 +12,7 @@ import {
   spawnAsync,
   LlmRole,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useKeypress } from '../../hooks/useKeypress.js';
 import { Command } from '../../key/keyMatchers.js';
 import { TextInput } from '../shared/TextInput.js';
@@ -217,7 +217,7 @@ Return a JSON object with:
 - "suggested_comment": "polite closing comment"
 `;
       const response = await client.generateJson({
-        modelConfigKey: { model: 'gemini-3-flash-preview' },
+        modelConfigKey: { model: 'jiminy-3-flash-preview' },
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         schema: {
           type: 'object',

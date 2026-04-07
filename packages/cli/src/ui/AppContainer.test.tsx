@@ -31,7 +31,7 @@ import {
   AuthType,
   type AgentDefinition,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 // Mock coreEvents
 const mockCoreEvents = vi.hoisted(() => ({
@@ -60,9 +60,9 @@ const terminalNotificationsMocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: mockCoreEvents,
@@ -150,7 +150,7 @@ vi.mock('./hooks/useConsoleMessages.js');
 vi.mock('./hooks/useTerminalSize.js', () => ({
   useTerminalSize: vi.fn(() => ({ columns: 80, rows: 24 })),
 }));
-vi.mock('./hooks/useGeminiStream.js');
+vi.mock('./hooks/useJiminyStream.js');
 vi.mock('./hooks/vim.js');
 vi.mock('./hooks/useFocus.js');
 vi.mock('./hooks/useBracketedPaste.js');
@@ -213,7 +213,7 @@ import { useSettingsCommand } from './hooks/useSettingsCommand.js';
 import { useModelCommand } from './hooks/useModelCommand.js';
 import { useSlashCommandProcessor } from './hooks/slashCommandProcessor.js';
 import { useErrorCount } from './hooks/useConsoleMessages.js';
-import { useGeminiStream } from './hooks/useGeminiStream.js';
+import { useJiminyStream } from './hooks/useJiminyStream.js';
 import { useVim } from './hooks/vim.js';
 import { useFolderTrust } from './hooks/useFolderTrust.js';
 import { useIdeTrustListener } from './hooks/useIdeTrustListener.js';
@@ -237,7 +237,7 @@ import {
   writeToStdout,
   enableMouseEvents,
   disableMouseEvents,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { type ExtensionManager } from '../config/extension-manager.js';
 import {
   WARNING_PROMPT_DURATION_MS,
@@ -297,7 +297,7 @@ describe('AppContainer State Management', () => {
   const mockedUseModelCommand = useModelCommand as Mock;
   const mockedUseSlashCommandProcessor = useSlashCommandProcessor as Mock;
   const mockedUseConsoleMessages = useErrorCount as Mock;
-  const mockedUseGeminiStream = useGeminiStream as Mock;
+  const mockedUseJiminyStream = useJiminyStream as Mock;
   const mockedUseVim = useVim as Mock;
   const mockedUseFolderTrust = useFolderTrust as Mock;
   const mockedUseIdeTrustListener = useIdeTrustListener as Mock;
@@ -402,7 +402,7 @@ describe('AppContainer State Management', () => {
       handleNewMessage: vi.fn(),
       clearErrorCount: vi.fn(),
     });
-    mockedUseGeminiStream.mockReturnValue(DEFAULT_GEMINI_STREAM_MOCK);
+    mockedUseJiminyStream.mockReturnValue(DEFAULT_GEMINI_STREAM_MOCK);
     mockedUseVim.mockReturnValue({ handleInput: vi.fn() });
     mockedUseFolderTrust.mockReturnValue({
       isFolderTrustDialogOpen: false,
@@ -505,7 +505,7 @@ describe('AppContainer State Management', () => {
       themeError: null,
       authError: null,
       shouldOpenAuthDialog: false,
-      geminiMdFileCount: 0,
+      jiminyMdFileCount: 0,
     } as InitializationResult;
   });
 
@@ -570,7 +570,7 @@ describe('AppContainer State Management', () => {
         isFocused: false,
         hasReceivedFocusEvent: true,
       });
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         pendingHistoryItems: [
           {
@@ -614,7 +614,7 @@ describe('AppContainer State Management', () => {
         isFocused: true,
         hasReceivedFocusEvent: true,
       });
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         pendingHistoryItems: [
           {
@@ -653,7 +653,7 @@ describe('AppContainer State Management', () => {
         isFocused: true,
         hasReceivedFocusEvent: false,
       });
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         pendingHistoryItems: [
           {
@@ -691,7 +691,7 @@ describe('AppContainer State Management', () => {
         hasReceivedFocusEvent: true,
       });
       let currentStreamingState: 'idle' | 'responding' = 'responding';
-      mockedUseGeminiStream.mockImplementation(() => ({
+      mockedUseJiminyStream.mockImplementation(() => ({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: currentStreamingState,
       }));
@@ -708,7 +708,7 @@ describe('AppContainer State Management', () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'session_complete',
-          detail: 'Gemini CLI finished responding.',
+          detail: 'Jiminy CLI finished responding.',
         }),
       );
       expect(terminalNotificationsMocks.notifyViaTerminal).toHaveBeenCalled();
@@ -722,7 +722,7 @@ describe('AppContainer State Management', () => {
         hasReceivedFocusEvent: false,
       });
       let currentStreamingState: 'idle' | 'responding' = 'responding';
-      mockedUseGeminiStream.mockImplementation(() => ({
+      mockedUseJiminyStream.mockImplementation(() => ({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: currentStreamingState,
       }));
@@ -739,7 +739,7 @@ describe('AppContainer State Management', () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'session_complete',
-          detail: 'Gemini CLI finished responding.',
+          detail: 'Jiminy CLI finished responding.',
         }),
       );
 
@@ -756,7 +756,7 @@ describe('AppContainer State Management', () => {
         handleProQuotaChoice: vi.fn(),
       });
       let currentStreamingState: 'idle' | 'responding' = 'responding';
-      mockedUseGeminiStream.mockImplementation(() => ({
+      mockedUseJiminyStream.mockImplementation(() => ({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: currentStreamingState,
       }));
@@ -803,7 +803,7 @@ describe('AppContainer State Management', () => {
         },
       ];
 
-      mockedUseGeminiStream.mockImplementation(() => ({
+      mockedUseJiminyStream.mockImplementation(() => ({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         pendingHistoryItems,
       }));
@@ -1001,7 +1001,7 @@ describe('AppContainer State Management', () => {
             },
             {
               id: 'msg-2',
-              type: 'gemini' as const,
+              type: 'jiminy' as const,
               content: 'Hi there!',
               role: 'model' as const,
               parts: [{ text: 'Hi there!' }],
@@ -1045,7 +1045,7 @@ describe('AppContainer State Management', () => {
         recordToolCalls: vi.fn(),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: vi.fn(),
         getUserTier: vi.fn(),
@@ -1053,8 +1053,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1079,7 +1079,7 @@ describe('AppContainer State Management', () => {
         getCurrentConversation: vi.fn(),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: vi.fn(),
         getUserTier: vi.fn(),
@@ -1088,8 +1088,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
       vi.spyOn(configWithRecording, 'getSessionId').mockReturnValue(
         'test-session-123',
@@ -1105,8 +1105,8 @@ describe('AppContainer State Management', () => {
       );
 
       // Verify the recording service structure is correct
-      expect(configWithRecording.getGeminiClient).toBeDefined();
-      expect(mockGeminiClient.getChatRecordingService).toBeDefined();
+      expect(configWithRecording.getJiminyClient).toBeDefined();
+      expect(mockJiminyClient.getChatRecordingService).toBeDefined();
       expect(mockChatRecordingService.initialize).toBeDefined();
       expect(mockChatRecordingService.recordMessage).toBeDefined();
       unmount();
@@ -1124,15 +1124,15 @@ describe('AppContainer State Management', () => {
         getSessionId: vi.fn(() => 'test-session-123'),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         getChatRecordingService: vi.fn(() => mockChatRecordingService),
         getUserTier: vi.fn(),
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1155,7 +1155,7 @@ describe('AppContainer State Management', () => {
   describe('Session Resume Flow', () => {
     it('accepts resumed session data', async () => {
       const mockResumeChat = vi.fn();
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: mockResumeChat,
         getUserTier: vi.fn(),
@@ -1168,8 +1168,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithClient = makeFakeConfig();
-      vi.spyOn(configWithClient, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithClient, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const resumedData = {
@@ -1187,7 +1187,7 @@ describe('AppContainer State Management', () => {
             },
             {
               id: 'msg-2',
-              type: 'gemini' as const,
+              type: 'jiminy' as const,
               content: 'Previous answer',
               role: 'model' as const,
               parts: [{ text: 'Previous answer' }],
@@ -1210,14 +1210,14 @@ describe('AppContainer State Management', () => {
       );
 
       // Verify the resume functionality structure is in place
-      expect(mockGeminiClient.resumeChat).toBeDefined();
+      expect(mockJiminyClient.resumeChat).toBeDefined();
       expect(resumedData.conversation.messages).toHaveLength(2);
       unmount();
     });
 
     it('does not attempt resume when client is not initialized', async () => {
       const mockResumeChat = vi.fn();
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => false), // Not initialized
         resumeChat: mockResumeChat,
         getUserTier: vi.fn(),
@@ -1225,8 +1225,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithClient = makeFakeConfig();
-      vi.spyOn(configWithClient, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithClient, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const resumedData = {
@@ -1274,15 +1274,15 @@ describe('AppContainer State Management', () => {
         })),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         getChatRecordingService: vi.fn(() => mockChatRecordingService),
         getUserTier: vi.fn(),
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1314,8 +1314,8 @@ describe('AppContainer State Management', () => {
     it('passes a valid proQuotaRequest to UIStateContext when provided by the hook', async () => {
       // Arrange: Create a mock request object that a UI dialog would receive
       const mockRequest = {
-        failedModel: 'gemini-pro',
-        fallbackModel: 'gemini-flash',
+        failedModel: 'jiminy-pro',
+        fallbackModel: 'jiminy-flash',
         resolve: vi.fn(),
       };
       mockedUseQuotaAndFallback.mockReturnValue({
@@ -1374,7 +1374,7 @@ describe('AppContainer State Management', () => {
       });
 
       // Mock the streaming state as Active
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'responding',
         thought: { subject: 'Some thought' },
@@ -1409,7 +1409,7 @@ describe('AppContainer State Management', () => {
       });
 
       // Mock the streaming state
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'responding',
         thought: { subject: 'Some thought' },
@@ -1429,7 +1429,7 @@ describe('AppContainer State Management', () => {
 
       expect(titleWrites).toHaveLength(1);
       expect(titleWrites[0][0]).toBe(
-        `\x1b]0;${'Gemini CLI (workspace)'.padEnd(80, ' ')}\x07`,
+        `\x1b]0;${'Jiminy CLI (workspace)'.padEnd(80, ' ')}\x07`,
       );
       unmount();
     });
@@ -1470,7 +1470,7 @@ describe('AppContainer State Management', () => {
 
       // Mock the streaming state and thought
       const thoughtSubject = 'Processing request';
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'responding',
         thought: { subject: thoughtSubject },
@@ -1505,7 +1505,7 @@ describe('AppContainer State Management', () => {
       });
 
       // Mock the streaming state as Idle with no thought
-      mockedUseGeminiStream.mockReturnValue(DEFAULT_GEMINI_STREAM_MOCK);
+      mockedUseJiminyStream.mockReturnValue(DEFAULT_GEMINI_STREAM_MOCK);
 
       // Act: Render the container
       const { unmount } = await act(async () =>
@@ -1537,7 +1537,7 @@ describe('AppContainer State Management', () => {
 
       // Mock the streaming state and thought
       const thoughtSubject = 'Confirm tool execution';
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'waiting_for_confirmation',
         thought: { subject: thoughtSubject },
@@ -1591,7 +1591,7 @@ describe('AppContainer State Management', () => {
         });
 
         // Mock an active shell pty but not focused
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           streamingState: 'responding',
           thought: { subject: 'Executing shell command' },
@@ -1647,7 +1647,7 @@ describe('AppContainer State Management', () => {
         });
 
         // Mock an active shell pty with redirection active
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           streamingState: 'responding',
           thought: { subject: 'Executing shell command' },
@@ -1714,7 +1714,7 @@ describe('AppContainer State Management', () => {
         });
 
         // Mock an active shell pty with NO output since operation started (silent)
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           streamingState: 'responding',
           thought: { subject: 'Executing shell command' },
@@ -1762,7 +1762,7 @@ describe('AppContainer State Management', () => {
 
         // Mock an active shell pty but not focused
         let lastOutputTime = startTime + 1000;
-        mockedUseGeminiStream.mockImplementation(() => ({
+        mockedUseJiminyStream.mockImplementation(() => ({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           streamingState: 'responding',
           thought: { subject: 'Executing shell command' },
@@ -1787,7 +1787,7 @@ describe('AppContainer State Management', () => {
 
         // Update lastOutputTime to simulate new output
         lastOutputTime = startTime + 21000;
-        mockedUseGeminiStream.mockImplementation(() => ({
+        mockedUseJiminyStream.mockImplementation(() => ({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           streamingState: 'responding',
           thought: { subject: 'Executing shell command' },
@@ -1843,7 +1843,7 @@ describe('AppContainer State Management', () => {
 
       // Mock the streaming state and thought with a short subject
       const shortTitle = 'Short';
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'responding',
         thought: { subject: shortTitle },
@@ -1880,7 +1880,7 @@ describe('AppContainer State Management', () => {
 
       // Mock the streaming state and thought
       const title = 'Test Title';
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'responding',
         thought: { subject: title },
@@ -1914,10 +1914,10 @@ describe('AppContainer State Management', () => {
       });
 
       // Mock CLI_TITLE environment variable
-      vi.stubEnv('CLI_TITLE', 'Custom Gemini Title');
+      vi.stubEnv('CLI_TITLE', 'Custom Jiminy Title');
 
       // Mock the streaming state
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'responding',
       });
@@ -1936,7 +1936,7 @@ describe('AppContainer State Management', () => {
 
       expect(titleWrites).toHaveLength(1);
       expect(titleWrites[0][0]).toBe(
-        `\x1b]0;${'✦  Working… (Custom Gemini Title)'.padEnd(80, ' ')}\x07`,
+        `\x1b]0;${'✦  Working… (Custom Jiminy Title)'.padEnd(80, ' ')}\x07`,
       );
       unmount();
     });
@@ -2056,7 +2056,7 @@ describe('AppContainer State Management', () => {
 
       // Mock request cancellation
       mockCancelOngoingRequest = vi.fn();
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         cancelOngoingRequest: mockCancelOngoingRequest,
       });
@@ -2080,7 +2080,7 @@ describe('AppContainer State Management', () => {
 
     describe('CTRL+C', () => {
       it('should cancel ongoing request on first press', async () => {
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           streamingState: 'responding',
           cancelOngoingRequest: mockCancelOngoingRequest,
@@ -2195,7 +2195,7 @@ describe('AppContainer State Management', () => {
     describe('Focus Handling (Tab / Shift+Tab)', () => {
       beforeEach(() => {
         // Mock activePtyId to enable focus
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           activePtyId: 1,
         });
@@ -2225,7 +2225,7 @@ describe('AppContainer State Management', () => {
 
       it('should auto-unfocus when activePtyId becomes null', async () => {
         // Start with active pty and focused
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           activePtyId: 1,
         });
@@ -2242,7 +2242,7 @@ describe('AppContainer State Management', () => {
         expect(capturedUIState.embeddedShellFocused).toBe(true);
 
         // Now mock activePtyId becoming null
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           activePtyId: null,
         });
@@ -2258,7 +2258,7 @@ describe('AppContainer State Management', () => {
 
       it('should focus background shell on Tab when already visible (not toggle it off)', async () => {
         const mockToggleBackgroundShell = vi.fn();
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           activePtyId: null,
           isBackgroundShellVisible: true,
@@ -2286,7 +2286,7 @@ describe('AppContainer State Management', () => {
     describe('Background Shell Toggling (CTRL+B)', () => {
       it('should toggle background shell on Ctrl+B even if visible but not focused', async () => {
         const mockToggleBackgroundShell = vi.fn();
-        mockedUseGeminiStream.mockReturnValue({
+        mockedUseJiminyStream.mockReturnValue({
           ...DEFAULT_GEMINI_STREAM_MOCK,
           activePtyId: null,
           isBackgroundShellVisible: true,
@@ -2312,20 +2312,20 @@ describe('AppContainer State Management', () => {
 
       it('should show and focus background shell on Ctrl+B if hidden', async () => {
         const mockToggleBackgroundShell = vi.fn();
-        const geminiStreamMock = {
+        const jiminyStreamMock = {
           ...DEFAULT_GEMINI_STREAM_MOCK,
           activePtyId: null,
           isBackgroundShellVisible: false,
           backgroundShells: new Map([[123, { pid: 123, status: 'running' }]]),
           toggleBackgroundShell: mockToggleBackgroundShell,
         };
-        mockedUseGeminiStream.mockReturnValue(geminiStreamMock);
+        mockedUseJiminyStream.mockReturnValue(jiminyStreamMock);
 
         await setupKeypressTest();
 
         // Update the mock state when toggled to simulate real behavior
         mockToggleBackgroundShell.mockImplementation(() => {
-          geminiStreamMock.isBackgroundShellVisible = true;
+          jiminyStreamMock.isBackgroundShellVisible = true;
         });
 
         // Press Ctrl+B
@@ -2416,7 +2416,7 @@ describe('AppContainer State Management', () => {
       rerender();
       expect(capturedUIState.shortcutsHelpVisible).toBe(true);
 
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: 'responding',
       });
@@ -2956,9 +2956,9 @@ describe('AppContainer State Management', () => {
   describe('onCancelSubmit Behavior', () => {
     let mockSetText: Mock;
 
-    // Helper to extract arguments from the useGeminiStream hook call
+    // Helper to extract arguments from the useJiminyStream hook call
     // This isolates the positional argument dependency to a single location
-    const extractUseGeminiStreamArgs = (args: unknown[]) => ({
+    const extractUseJiminyStreamArgs = (args: unknown[]) => ({
       onCancelSubmit: args[13] as (shouldRestorePrompt?: boolean) => void,
     });
 
@@ -2973,8 +2973,8 @@ describe('AppContainer State Management', () => {
     it('preserves buffer when cancelling, even if empty (user is in control)', async () => {
       const { unmount } = await act(async () => renderAppContainer());
 
-      const { onCancelSubmit } = extractUseGeminiStreamArgs(
-        mockedUseGeminiStream.mock.lastCall!,
+      const { onCancelSubmit } = extractUseJiminyStreamArgs(
+        mockedUseJiminyStream.mock.lastCall!,
       );
 
       act(() => {
@@ -3004,8 +3004,8 @@ describe('AppContainer State Management', () => {
 
       const { unmount } = await act(async () => renderAppContainer());
 
-      const { onCancelSubmit } = extractUseGeminiStreamArgs(
-        mockedUseGeminiStream.mock.lastCall!,
+      const { onCancelSubmit } = extractUseJiminyStreamArgs(
+        mockedUseJiminyStream.mock.lastCall!,
       );
 
       act(() => {
@@ -3030,8 +3030,8 @@ describe('AppContainer State Management', () => {
       const { unmount } = await act(async () => renderAppContainer());
       expect(capturedUIState.userMessages).toContain('previous message');
 
-      const { onCancelSubmit } = extractUseGeminiStreamArgs(
-        mockedUseGeminiStream.mock.lastCall!,
+      const { onCancelSubmit } = extractUseJiminyStreamArgs(
+        mockedUseJiminyStream.mock.lastCall!,
       );
 
       await act(async () => {
@@ -3459,7 +3459,7 @@ describe('AppContainer State Management', () => {
           mockConfig.getWorkspaceContext(),
           'addReadOnlyPath',
         );
-        const { submitQuery } = mockedUseGeminiStream();
+        const { submitQuery } = mockedUseJiminyStream();
 
         const { unmount } = await act(async () => renderAppContainer());
 
@@ -3490,7 +3490,7 @@ describe('AppContainer State Management', () => {
   describe('Plan Mode Availability', () => {
     it('should allow plan mode when enabled and idle', async () => {
       vi.spyOn(mockConfig, 'isPlanEnabled').mockReturnValue(true);
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         pendingHistoryItems: [],
       });
@@ -3504,7 +3504,7 @@ describe('AppContainer State Management', () => {
 
     it('should NOT allow plan mode when disabled in config', async () => {
       vi.spyOn(mockConfig, 'isPlanEnabled').mockReturnValue(false);
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         pendingHistoryItems: [],
       });
@@ -3518,7 +3518,7 @@ describe('AppContainer State Management', () => {
 
     it('should NOT allow plan mode when streaming', async () => {
       vi.spyOn(mockConfig, 'isPlanEnabled').mockReturnValue(true);
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: StreamingState.Responding,
         pendingHistoryItems: [],
@@ -3533,7 +3533,7 @@ describe('AppContainer State Management', () => {
 
     it('should NOT allow plan mode when a tool is awaiting confirmation', async () => {
       vi.spyOn(mockConfig, 'isPlanEnabled').mockReturnValue(true);
-      mockedUseGeminiStream.mockReturnValue({
+      mockedUseJiminyStream.mockReturnValue({
         ...DEFAULT_GEMINI_STREAM_MOCK,
         streamingState: StreamingState.Idle,
         pendingHistoryItems: [

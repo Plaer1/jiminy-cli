@@ -26,7 +26,7 @@ describe('inputBlocker', () => {
       expect(mockBrowserManager.callTool).toHaveBeenCalledWith(
         'evaluate_script',
         {
-          function: expect.stringContaining('__gemini_input_blocker'),
+          function: expect.stringContaining('__jiminy_input_blocker'),
         },
       );
     });
@@ -57,7 +57,7 @@ describe('inputBlocker', () => {
 
       const call = vi.mocked(mockBrowserManager.callTool).mock.calls[0];
       const args = call[1] as { function: string };
-      expect(args.function).toContain('Gemini CLI is controlling this browser');
+      expect(args.function).toContain('Jiminy CLI is controlling this browser');
     });
 
     it('should set aria-hidden to prevent accessibility tree pollution', async () => {
@@ -86,7 +86,7 @@ describe('inputBlocker', () => {
       expect(mockBrowserManager.callTool).toHaveBeenCalledWith(
         'evaluate_script',
         {
-          function: expect.stringContaining('__gemini_input_blocker'),
+          function: expect.stringContaining('__jiminy_input_blocker'),
         },
       );
     });

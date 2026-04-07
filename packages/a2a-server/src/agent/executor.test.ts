@@ -68,7 +68,7 @@ vi.mock('./task.js', () => {
     setTaskStateAndPublishUpdate: vi.fn(),
     dispose: vi.fn(),
     getMetadata: vi.fn().mockResolvedValue({}),
-    geminiClient: {
+    jiminyClient: {
       initialize: vi.fn().mockResolvedValue(undefined),
     },
     toSDKTask: () => ({

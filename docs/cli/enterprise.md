@@ -151,7 +151,7 @@ This results in the following merged configuration:
 - **Location**:
   - **Linux**: `/etc/jiminy-cli/settings.json`
   - **Windows**: `C:\ProgramData\jiminy-cli\settings.json`
-  - **macOS**: `/Library/Application Support/GeminiCli/settings.json`
+  - **macOS**: `/Library/Application Support/JiminyCli/settings.json`
   - The path can be overridden using the `GEMINI_CLI_SYSTEM_SETTINGS_PATH`
     environment variable.
 - **Control**: This file should be managed by system administrators and

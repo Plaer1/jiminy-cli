@@ -20,7 +20,7 @@ import {
   applyAvailabilityTransition,
 } from '../availability/policyHelpers.js';
 
-export const UPGRADE_URL_PAGE = 'https://goo.gle/set-up-gemini-code-assist';
+export const UPGRADE_URL_PAGE = 'https://goo.gle/set-up-jiminy-code-assist';
 
 export async function handleFallback(
   config: Config,

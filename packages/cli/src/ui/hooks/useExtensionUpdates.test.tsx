@@ -14,7 +14,7 @@ import {
   GEMINI_DIR,
   loadAgentsFromDirectory,
   loadSkillsFromDir,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { render } from '../../test-utils/render.js';
 import { waitFor } from '../../test-utils/async.js';
 import { MessageType } from '../types.js';
@@ -37,9 +37,9 @@ vi.mock('os', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: () => os.homedir(),
@@ -69,11 +69,11 @@ describe('useExtensionUpdates', () => {
     });
     vi.mocked(loadSkillsFromDir).mockResolvedValue([]);
     tempHomeDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-cli-test-home-'),
+      path.join(os.tmpdir(), 'jiminy-cli-test-home-'),
     );
     vi.mocked(os.homedir).mockReturnValue(tempHomeDir);
     tempWorkspaceDir = fs.mkdtempSync(
-      path.join(tempHomeDir, 'gemini-cli-test-workspace-'),
+      path.join(tempHomeDir, 'jiminy-cli-test-workspace-'),
     );
     vi.spyOn(process, 'cwd').mockReturnValue(tempWorkspaceDir);
     userExtensionsDir = path.join(tempHomeDir, GEMINI_DIR, 'extensions');

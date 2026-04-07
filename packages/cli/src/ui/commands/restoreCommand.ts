@@ -14,7 +14,7 @@ import {
   getTruncatedCheckpointNames,
   performRestore,
   type ToolCallData,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   type CommandContext,
   type SlashCommand,
@@ -47,7 +47,7 @@ async function restoreAction(
     return {
       type: 'message',
       messageType: 'error',
-      content: 'Could not determine the .gemini directory path.',
+      content: 'Could not determine the .jiminy directory path.',
     };
   }
 
@@ -97,7 +97,7 @@ async function restoreAction(
 
     // We safely cast here because:
     // 1. ToolCallDataSchema strictly validates the existence of 'history' as an array and 'id'/'type' on each item.
-    // 2. We trust that files valid according to this schema (written by useGeminiStream) contain the full HistoryItem structure.
+    // 2. We trust that files valid according to this schema (written by useJiminyStream) contain the full HistoryItem structure.
     const toolCallData = parseResult.data as ToolCallData<
       HistoryItem[],
       Record<string, unknown>
@@ -117,7 +117,7 @@ async function restoreAction(
       } else if (action.type === 'load_history' && loadHistory) {
         loadHistory(action.history);
         if (action.clientHistory) {
-          agentContext!.geminiClient?.setHistory(action.clientHistory);
+          agentContext!.jiminyClient?.setHistory(action.clientHistory);
         }
       }
     }

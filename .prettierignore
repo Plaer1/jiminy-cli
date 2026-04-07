@@ -6,7 +6,7 @@
 .docker
 .DS_Store
 .env
-.gemini/
+.jiminy/
 .idea
 .integration-tests/
 *.iml
@@ -17,7 +17,7 @@ eslint.config.js
 **/generated
 gha-creds-*.json
 junit.xml
-.gemini-linters/
+.jiminy-linters/
 Thumbs.db
 .pytest_cache
 **/SKILL.md

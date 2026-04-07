@@ -19,7 +19,7 @@ describe('settings-validation', () => {
     it('should accept valid settings with correct model.name as string', () => {
       const validSettings = {
         model: {
-          name: 'gemini-2.0-flash-exp',
+          name: 'jiminy-2.0-flash-exp',
           maxSessionTurns: 10,
         },
         ui: {
@@ -324,7 +324,7 @@ describe('settings-validation', () => {
         expect(formatted).toContain('Expected: string, but received: object');
         expect(formatted).toContain('Please fix the configuration.');
         expect(formatted).toContain(
-          'https://geminicli.com/docs/reference/configuration/',
+          'https://jiminycli.com/docs/reference/configuration/',
         );
       }
     });
@@ -342,10 +342,10 @@ describe('settings-validation', () => {
       if (result.error) {
         const formatted = formatValidationError(
           result.error,
-          '~/.gemini/settings.json',
+          '~/.jiminy/settings.json',
         );
 
-        expect(formatted).toContain('~/.gemini/settings.json');
+        expect(formatted).toContain('~/.jiminy/settings.json');
         expect(formatted).toContain('model.summarizeToolOutput');
       }
     });
@@ -364,7 +364,7 @@ describe('settings-validation', () => {
         const formatted = formatValidationError(result.error, 'test.json');
 
         expect(formatted).toContain(
-          'https://geminicli.com/docs/reference/configuration/',
+          'https://jiminycli.com/docs/reference/configuration/',
         );
       }
     });

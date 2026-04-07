@@ -6,7 +6,7 @@
 
 import {
   type CompressionStatus,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   type MCPServerConfig,
   type ThoughtSummary,
   type SerializableConfirmationDetails,
@@ -19,7 +19,7 @@ import {
   type AnsiOutput,
   CoreToolCallStatus,
   checkExhaustive,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import type { PartListUnion } from '@google/genai';
 import { type ReactNode } from 'react';
 
@@ -52,7 +52,7 @@ export enum StreamingState {
 }
 
 // Copied from server/src/core/turn.ts for CLI usage
-export enum GeminiEventType {
+export enum JiminyEventType {
   Content = 'content',
   ToolCallRequest = 'tool_call_request',
   // Add other event types if the UI hook needs to handle them
@@ -149,7 +149,7 @@ export interface CompressionProps {
 export const emptyIcon = '  ';
 
 export interface HistoryItemBase {
-  text?: string; // Text content for user/gemini/info/error messages
+  text?: string; // Text content for user/jiminy/info/error messages
 }
 
 export type HistoryItemUser = HistoryItemBase & {
@@ -157,13 +157,13 @@ export type HistoryItemUser = HistoryItemBase & {
   text: string;
 };
 
-export type HistoryItemGemini = HistoryItemBase & {
-  type: 'gemini';
+export type HistoryItemJiminy = HistoryItemBase & {
+  type: 'jiminy';
   text: string;
 };
 
-export type HistoryItemGeminiContent = HistoryItemBase & {
-  type: 'gemini_content';
+export type HistoryItemJiminyContent = HistoryItemBase & {
+  type: 'jiminy_content';
   text: string;
 };
 
@@ -266,7 +266,7 @@ export type HistoryItemCompression = HistoryItemBase & {
 
 export type HistoryItemExtensionsList = HistoryItemBase & {
   type: 'extensions_list';
-  extensions: GeminiCLIExtension[];
+  extensions: JiminyCLIExtension[];
 };
 
 export interface ChatDetail {
@@ -372,8 +372,8 @@ export type HistoryItemMcpStatus = HistoryItemBase & {
 export type HistoryItemWithoutId =
   | HistoryItemUser
   | HistoryItemUserShell
-  | HistoryItemGemini
-  | HistoryItemGeminiContent
+  | HistoryItemJiminy
+  | HistoryItemJiminyContent
   | HistoryItemInfo
   | HistoryItemError
   | HistoryItemWarning
@@ -409,7 +409,7 @@ export enum MessageType {
   MODEL_STATS = 'model_stats',
   TOOL_STATS = 'tool_stats',
   QUIT = 'quit',
-  GEMINI = 'gemini',
+  GEMINI = 'jiminy',
   COMPRESSION = 'compression',
   EXTENSIONS_LIST = 'extensions_list',
   TOOLS_LIST = 'tools_list',
@@ -489,7 +489,7 @@ export interface SubmitPromptResult {
 }
 
 /**
- * Defines the result of the slash command processor for its consumer (useGeminiStream).
+ * Defines the result of the slash command processor for its consumer (useJiminyStream).
  */
 export type SlashCommandProcessorResult =
   | {

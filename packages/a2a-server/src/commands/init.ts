@@ -7,7 +7,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { CoderAgentEvent, type AgentSettings } from '../types.js';
-import { performInit } from '@google/gemini-cli-core';
+import { performInit } from '@google/jiminy-cli-core';
 import type {
   Command,
   CommandContext,
@@ -75,12 +75,12 @@ export class InitCommand implements Command {
   private async handleSubmitPromptResult(
     result: { content: unknown },
     context: CommandContext,
-    geminiMdPath: string,
+    jiminyMdPath: string,
     eventBus: ExecutionEventBus,
     taskId: string,
     contextId: string,
   ): Promise<CommandExecutionResponse> {
-    fs.writeFileSync(geminiMdPath, '', 'utf8');
+    fs.writeFileSync(jiminyMdPath, '', 'utf8');
 
     if (!context.agentExecutor) {
       throw new Error('Agent executor not found in context.');
@@ -120,7 +120,7 @@ export class InitCommand implements Command {
     await agentExecutor.execute(requestContext, eventBus);
     return {
       name: this.name,
-      data: geminiMdPath,
+      data: jiminyMdPath,
     };
   }
 
@@ -135,11 +135,11 @@ export class InitCommand implements Command {
       };
     }
 
-    const geminiMdPath = path.join(
+    const jiminyMdPath = path.join(
       process.env['CODER_AGENT_WORKSPACE_PATH']!,
       'GEMINI.md',
     );
-    const result = performInit(fs.existsSync(geminiMdPath));
+    const result = performInit(fs.existsSync(jiminyMdPath));
 
     const taskId = uuidv4();
     const contextId = uuidv4();
@@ -157,7 +157,7 @@ export class InitCommand implements Command {
         return this.handleSubmitPromptResult(
           result,
           context,
-          geminiMdPath,
+          jiminyMdPath,
           context.eventBus,
           taskId,
           contextId,

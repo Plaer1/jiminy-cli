@@ -20,7 +20,7 @@ import type {
   ExtensionsStoppingEvent,
   ToolCallConfirmationDetails,
   AgentDefinition,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   GitService,
   Logger,
@@ -35,7 +35,7 @@ import {
   removeMCPStatusChangeListener,
   MCPDiscoveryState,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { useSessionStats } from '../contexts/SessionContext.js';
 import type {
   Message,
@@ -540,7 +540,7 @@ export const useSlashCommandProcessor = (
                     }
                   }
                 case 'load_history': {
-                  config?.getGeminiClient()?.setHistory(result.clientHistory);
+                  config?.getJiminyClient()?.setHistory(result.clientHistory);
                   fullCommandContext.ui.clear();
                   result.history.forEach((item, index) => {
                     fullCommandContext.ui.addItem(item, index);

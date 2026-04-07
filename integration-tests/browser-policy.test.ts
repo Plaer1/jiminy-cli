@@ -79,11 +79,11 @@ describe.skipIf(!chromeAvailable)('browser-policy', () => {
     });
 
     // Manually trust the folder to avoid the dialog and enable option 3
-    const geminiDir = join(rig.homeDir!, '.gemini');
-    mkdirSync(geminiDir, { recursive: true });
+    const jiminyDir = join(rig.homeDir!, '.jiminy');
+    mkdirSync(jiminyDir, { recursive: true });
 
     // Write to trustedFolders.json
-    const trustedFoldersPath = join(geminiDir, 'trustedFolders.json');
+    const trustedFoldersPath = join(jiminyDir, 'trustedFolders.json');
     const trustedFolders = {
       [rig.testDir!]: 'TRUST_FOLDER',
     };
@@ -110,7 +110,7 @@ priority = 200
 
     // Update settings.json in both project and home directories to point to the policy file
     for (const baseDir of [rig.testDir!, rig.homeDir!]) {
-      const settingsPath = join(baseDir, '.gemini', 'settings.json');
+      const settingsPath = join(baseDir, '.jiminy', 'settings.json');
       if (existsSync(settingsPath)) {
         const settings = JSON.parse(readFileSync(settingsPath, 'utf-8'));
         settings.policyPaths = [policyFile];

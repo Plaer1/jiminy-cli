@@ -10,11 +10,11 @@ import { escapeAnsiCtrlCodes } from '../utils/textUtils.js';
 import type { HistoryItem } from '../types.js';
 import { UserMessage } from './messages/UserMessage.js';
 import { UserShellMessage } from './messages/UserShellMessage.js';
-import { GeminiMessage } from './messages/GeminiMessage.js';
+import { JiminyMessage } from './messages/JiminyMessage.js';
 import { InfoMessage } from './messages/InfoMessage.js';
 import { ErrorMessage } from './messages/ErrorMessage.js';
 import { ToolGroupMessage } from './messages/ToolGroupMessage.js';
-import { GeminiMessageContent } from './messages/GeminiMessageContent.js';
+import { JiminyMessageContent } from './messages/JiminyMessageContent.js';
 import { CompressionMessage } from './messages/CompressionMessage.js';
 import { WarningMessage } from './messages/WarningMessage.js';
 import { Box } from 'ink';
@@ -26,7 +26,7 @@ import { SessionSummaryDisplay } from './SessionSummaryDisplay.js';
 import { Help } from './Help.js';
 import type { SlashCommand } from '../commands/types.js';
 import { ExtensionsList } from './views/ExtensionsList.js';
-import { getMCPServerStatus } from '@google/gemini-cli-core';
+import { getMCPServerStatus } from '@google/jiminy-cli-core';
 import { ToolsList } from './views/ToolsList.js';
 import { SkillsList } from './views/SkillsList.js';
 import { AgentsStatus } from './views/AgentsStatus.js';
@@ -44,7 +44,7 @@ interface HistoryItemDisplayProps {
   terminalWidth: number;
   isPending: boolean;
   commands?: readonly SlashCommand[];
-  availableTerminalHeightGemini?: number;
+  availableTerminalHeightJiminy?: number;
   isExpandable?: boolean;
   isFirstThinking?: boolean;
   isFirstAfterThinking?: boolean;
@@ -56,7 +56,7 @@ export const HistoryItemDisplay: React.FC<HistoryItemDisplayProps> = ({
   terminalWidth,
   isPending,
   commands,
-  availableTerminalHeightGemini,
+  availableTerminalHeightJiminy,
   isExpandable,
   isFirstThinking = false,
   isFirstAfterThinking = false,
@@ -92,22 +92,22 @@ export const HistoryItemDisplay: React.FC<HistoryItemDisplayProps> = ({
       {itemForDisplay.type === 'user_shell' && (
         <UserShellMessage text={itemForDisplay.text} width={terminalWidth} />
       )}
-      {itemForDisplay.type === 'gemini' && (
-        <GeminiMessage
+      {itemForDisplay.type === 'jiminy' && (
+        <JiminyMessage
           text={itemForDisplay.text}
           isPending={isPending}
           availableTerminalHeight={
-            availableTerminalHeightGemini ?? availableTerminalHeight
+            availableTerminalHeightJiminy ?? availableTerminalHeight
           }
           terminalWidth={terminalWidth}
         />
       )}
-      {itemForDisplay.type === 'gemini_content' && (
-        <GeminiMessageContent
+      {itemForDisplay.type === 'jiminy_content' && (
+        <JiminyMessageContent
           text={itemForDisplay.text}
           isPending={isPending}
           availableTerminalHeight={
-            availableTerminalHeightGemini ?? availableTerminalHeight
+            availableTerminalHeightJiminy ?? availableTerminalHeight
           }
           terminalWidth={terminalWidth}
         />

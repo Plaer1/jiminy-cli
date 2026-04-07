@@ -13,19 +13,19 @@ import {
 import { ValidationRequiredError } from '../utils/googleQuotaErrors.js';
 import { CodeAssistServer } from '../code_assist/server.js';
 import type { OAuth2Client } from 'google-auth-library';
-import { UserTierId, type GeminiUserTier } from './types.js';
+import { UserTierId, type JiminyUserTier } from './types.js';
 import type { Config } from '../config/config.js';
 
 vi.mock('../code_assist/server.js');
 
-const mockPaidTier: GeminiUserTier = {
+const mockPaidTier: JiminyUserTier = {
   id: UserTierId.STANDARD,
   name: 'paid',
   description: 'Paid tier',
   isDefault: true,
 };
 
-const mockFreeTier: GeminiUserTier = {
+const mockFreeTier: JiminyUserTier = {
   id: UserTierId.FREE,
   name: 'free',
   description: 'Free tier',
@@ -171,7 +171,7 @@ describe('setupUser', () => {
       });
       const httpOptions = {
         headers: {
-          'User-Agent': 'GeminiCLI/1.0.0/gemini-2.0-flash (darwin; arm64)',
+          'User-Agent': 'JiminyCLI/1.0.0/jiminy-2.0-flash (darwin; arm64)',
         },
       };
       await setupUser({} as OAuth2Client, mockConfig, httpOptions);

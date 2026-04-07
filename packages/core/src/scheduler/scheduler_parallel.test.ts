@@ -79,7 +79,7 @@ import {
   type Status,
   type ToolCall,
 } from './types.js';
-import { GeminiCliOperation } from '../telemetry/constants.js';
+import { JiminyCliOperation } from '../telemetry/constants.js';
 import type { EditorType } from '../utils/editor.js';
 
 describe('Scheduler Parallel Execution', () => {
@@ -370,7 +370,7 @@ describe('Scheduler Parallel Execution', () => {
 
     expect(runInDevTraceSpan).toHaveBeenCalledWith(
       expect.objectContaining({
-        operation: GeminiCliOperation.ScheduleToolCalls,
+        operation: JiminyCliOperation.ScheduleToolCalls,
       }),
       expect.any(Function),
     );

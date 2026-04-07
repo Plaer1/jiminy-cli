@@ -13,7 +13,7 @@ import os from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
-import { GEMINI_DIR } from '@google/gemini-cli-core';
+import { GEMINI_DIR } from '@google/jiminy-cli-core';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,16 +27,16 @@ const projectHash = crypto
 // Returns the home directory, respecting GEMINI_CLI_HOME
 const homedir = () => process.env['GEMINI_CLI_HOME'] || os.homedir();
 
-// User-level .gemini directory in home
+// User-level .jiminy directory in home
 const USER_GEMINI_DIR = path.join(homedir(), GEMINI_DIR);
-// Project-level .gemini directory in the workspace
+// Project-level .jiminy directory in the workspace
 const WORKSPACE_GEMINI_DIR = path.join(projectRoot, GEMINI_DIR);
 
-// Telemetry artifacts are stored in a hashed directory under the user's ~/.gemini/tmp
+// Telemetry artifacts are stored in a hashed directory under the user's ~/.jiminy/tmp
 export const OTEL_DIR = path.join(USER_GEMINI_DIR, 'tmp', projectHash, 'otel');
 export const BIN_DIR = path.join(OTEL_DIR, 'bin');
 
-// Workspace settings remain in the project's .gemini directory
+// Workspace settings remain in the project's .jiminy directory
 export const WORKSPACE_SETTINGS_FILE = path.join(
   WORKSPACE_GEMINI_DIR,
   'settings.json',
@@ -45,12 +45,12 @@ export const WORKSPACE_SETTINGS_FILE = path.join(
 export function getJson(url) {
   const tmpFile = path.join(
     os.tmpdir(),
-    `gemini-cli-releases-${Date.now()}.json`,
+    `jiminy-cli-releases-${Date.now()}.json`,
   );
   try {
     const result = spawnSync(
       'curl',
-      ['-sL', '-H', 'User-Agent: gemini-cli-dev-script', '-o', tmpFile, url],
+      ['-sL', '-H', 'User-Agent: jiminy-cli-dev-script', '-o', tmpFile, url],
       { stdio: 'pipe', encoding: 'utf-8' },
     );
     if (result.status !== 0) {
@@ -255,7 +255,7 @@ export async function ensureBinary(
 
   const downloadUrl = asset.browser_download_url;
   const tmpDir = fs.mkdtempSync(
-    path.join(os.tmpdir(), 'gemini-cli-telemetry-'),
+    path.join(os.tmpdir(), 'jiminy-cli-telemetry-'),
   );
   const archivePath = path.join(tmpDir, asset.name);
 

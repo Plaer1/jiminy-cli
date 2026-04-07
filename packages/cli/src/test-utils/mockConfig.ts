@@ -5,8 +5,8 @@
  */
 
 import { vi } from 'vitest';
-import { NoopSandboxManager } from '@google/gemini-cli-core';
-import type { Config } from '@google/gemini-cli-core';
+import { NoopSandboxManager } from '@google/jiminy-cli-core';
+import type { Config } from '@google/jiminy-cli-core';
 import {
   createTestMergedSettings,
   type LoadedSettings,
@@ -24,7 +24,7 @@ export const createMockConfig = (overrides: Partial<Config> = {}): Config =>
     isInitialized: vi.fn(() => true),
     setTerminalBackground: vi.fn(),
     storage: {
-      getProjectTempDir: vi.fn().mockReturnValue('/tmp/gemini-test'),
+      getProjectTempDir: vi.fn().mockReturnValue('/tmp/jiminy-test'),
       initialize: vi.fn().mockResolvedValue(undefined),
     },
     getDebugMode: vi.fn(() => false),
@@ -60,11 +60,11 @@ export const createMockConfig = (overrides: Partial<Config> = {}): Config =>
     getOutputFormat: vi.fn(() => 'text'),
     getUsageStatisticsEnabled: vi.fn(() => true),
     getScreenReader: vi.fn(() => false),
-    getGeminiMdFileCount: vi.fn(() => 0),
+    getJiminyMdFileCount: vi.fn(() => 0),
     getDeferredCommand: vi.fn(() => undefined),
     getFileSystemService: vi.fn(() => ({})),
     clientVersion: '1.0.0',
-    getModel: vi.fn().mockReturnValue('gemini-pro'),
+    getModel: vi.fn().mockReturnValue('jiminy-pro'),
     getWorkingDir: vi.fn().mockReturnValue('/mock/cwd'),
     getToolRegistry: vi.fn().mockReturnValue({
       getTools: vi.fn().mockReturnValue([]),
@@ -81,7 +81,7 @@ export const createMockConfig = (overrides: Partial<Config> = {}): Config =>
     getUserMemory: vi.fn().mockReturnValue(''),
     getSystemInstructionMemory: vi.fn().mockReturnValue(''),
     getSessionMemory: vi.fn().mockReturnValue(''),
-    getGeminiMdFilePaths: vi.fn().mockReturnValue([]),
+    getJiminyMdFilePaths: vi.fn().mockReturnValue([]),
     getShowMemoryUsage: vi.fn().mockReturnValue(false),
     getAccessibility: vi.fn().mockReturnValue({}),
     getTelemetryEnabled: vi.fn().mockReturnValue(false),
@@ -92,7 +92,7 @@ export const createMockConfig = (overrides: Partial<Config> = {}): Config =>
     getTelemetryOutfile: vi.fn().mockReturnValue(undefined),
     getTelemetryUseCollector: vi.fn().mockReturnValue(false),
     getTelemetryUseCliAuth: vi.fn().mockReturnValue(false),
-    getGeminiClient: vi.fn().mockReturnValue({
+    getJiminyClient: vi.fn().mockReturnValue({
       isInitialized: vi.fn().mockReturnValue(true),
     }),
     updateSystemInstructionIfInitialized: vi.fn().mockResolvedValue(undefined),
@@ -100,7 +100,7 @@ export const createMockConfig = (overrides: Partial<Config> = {}): Config =>
     getModelAvailabilityService: vi.fn().mockReturnValue({}),
     getEnableRecursiveFileSearch: vi.fn().mockReturnValue(true),
     getFileFilteringEnableFuzzySearch: vi.fn().mockReturnValue(true),
-    getFileFilteringRespectGeminiIgnore: vi.fn().mockReturnValue(true),
+    getFileFilteringRespectJiminyIgnore: vi.fn().mockReturnValue(true),
     getFileFilteringOptions: vi.fn().mockReturnValue({}),
     getCustomExcludes: vi.fn().mockReturnValue([]),
     getCheckpointingEnabled: vi.fn().mockReturnValue(false),

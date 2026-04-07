@@ -12,7 +12,7 @@ import { waitFor } from '../../test-utils/async.js';
 import type {
   ConversationRecord,
   MessageRecord,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 
 vi.mock('ink', async () => {
   const actual = await vi.importActual<typeof import('ink')>('ink');
@@ -32,9 +32,9 @@ vi.mock('../utils/formatters.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
 
   const partToStringRecursive = (part: unknown): string => {
     if (!part) {
@@ -111,7 +111,7 @@ describe('RewindViewer', () => {
         name: 'a single interaction',
         messages: [
           { type: 'user', content: 'Hello', id: '1', timestamp: '1' },
-          { type: 'gemini', content: 'Hi there!', id: '1', timestamp: '1' },
+          { type: 'jiminy', content: 'Hi there!', id: '1', timestamp: '1' },
         ],
       },
       {
@@ -146,9 +146,9 @@ describe('RewindViewer', () => {
     const longText2 = 'Line 1\nLine 2\nLine 3\nLine 4\nLine 5\nLine 6\nLine 7';
     const conversation = createConversation([
       { type: 'user', content: longText1, id: '1', timestamp: '1' },
-      { type: 'gemini', content: 'Response 1', id: '1', timestamp: '1' },
+      { type: 'jiminy', content: 'Response 1', id: '1', timestamp: '1' },
       { type: 'user', content: longText2, id: '2', timestamp: '1' },
-      { type: 'gemini', content: 'Response 2', id: '2', timestamp: '1' },
+      { type: 'jiminy', content: 'Response 2', id: '2', timestamp: '1' },
     ]);
     const onExit = vi.fn();
     const onRewind = vi.fn();

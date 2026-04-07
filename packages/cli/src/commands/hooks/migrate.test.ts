@@ -16,7 +16,7 @@ import {
 } from 'vitest';
 import * as fs from 'node:fs';
 import { loadSettings, SettingScope } from '../../config/settings.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@google/jiminy-cli-core';
 import { handleMigrateFromClaude } from './migrate.js';
 
 vi.mock('node:fs');
@@ -61,7 +61,7 @@ describe('migrate command', () => {
         hooks: {},
       },
       setValue: mockSetValue,
-      workspace: { path: '/test/project/.gemini' },
+      workspace: { path: '/test/project/.jiminy' },
     });
   });
 
@@ -133,7 +133,7 @@ describe('migrate command', () => {
       expect.stringContaining('Migrating 1 hook event'),
     );
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '✓ Hooks successfully migrated to .gemini/settings.json',
+      '✓ Hooks successfully migrated to .jiminy/settings.json',
     );
   });
 
@@ -300,7 +300,7 @@ describe('migrate command', () => {
     expect(migratedHooks.BeforeTool[0].hooks[0].timeout).toBe(60);
   });
 
-  it('should merge with existing Gemini hooks', async () => {
+  it('should merge with existing Jiminy hooks', async () => {
     const claudeSettings = {
       hooks: {
         PreToolUse: [
@@ -322,7 +322,7 @@ describe('migrate command', () => {
         },
       },
       setValue: mockSetValue,
-      workspace: { path: '/test/project/.gemini' },
+      workspace: { path: '/test/project/.jiminy' },
     });
 
     mockedFs.existsSync.mockReturnValue(true);
@@ -506,10 +506,10 @@ describe('migrate command', () => {
     await handleMigrateFromClaude();
 
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '✓ Hooks successfully migrated to .gemini/settings.json',
+      '✓ Hooks successfully migrated to .jiminy/settings.json',
     );
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '\nMigration complete! Please review the migrated hooks in .gemini/settings.json',
+      '\nMigration complete! Please review the migrated hooks in .jiminy/settings.json',
     );
   });
 });

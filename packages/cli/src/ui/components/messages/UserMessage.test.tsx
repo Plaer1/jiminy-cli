@@ -16,7 +16,7 @@ vi.mock('../../utils/commandUtils.js', () => ({
 describe('UserMessage', () => {
   it('renders normal user message with correct prefix', async () => {
     const { lastFrame, unmount } = await renderWithProviders(
-      <UserMessage text="Hello Gemini" width={80} />,
+      <UserMessage text="Hello Jiminy" width={80} />,
       { width: 80 },
     );
     const output = lastFrame();

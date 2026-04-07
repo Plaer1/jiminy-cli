@@ -112,7 +112,7 @@ export class AgentRegistry {
       return;
     }
 
-    // Load user-level agents: ~/.gemini/agents/
+    // Load user-level agents: ~/.jiminy/agents/
     const userAgentsDir = Storage.getUserAgentsDir();
     const userAgents = await loadAgentsFromDirectory(userAgentsDir);
     for (const error of userAgents.errors) {
@@ -138,7 +138,7 @@ export class AgentRegistry {
       }),
     );
 
-    // Load project-level agents: .gemini/agents/ (relative to Project Root)
+    // Load project-level agents: .jiminy/agents/ (relative to Project Root)
     const folderTrustEnabled = this.config.getFolderTrust();
     const isTrustedFolder = this.config.isTrustedFolder();
 
@@ -264,15 +264,15 @@ export class AgentRegistry {
     if (this.config.isMemoryManagerEnabled()) {
       this.registerLocalAgent(MemoryManagerAgent(this.config));
 
-      // Ensure the global .gemini directory is accessible to tools.
+      // Ensure the global .jiminy directory is accessible to tools.
       // This allows the save_memory agent to read and write to it.
       // Access control is enforced by the Policy Engine (memory-manager.toml).
       try {
-        const globalDir = Storage.getGlobalGeminiDir();
+        const globalDir = Storage.getGlobalJiminyDir();
         this.config.getWorkspaceContext().addDirectory(globalDir);
       } catch (e) {
         debugLogger.warn(
-          `[AgentRegistry] Could not add global .gemini directory to workspace:`,
+          `[AgentRegistry] Could not add global .jiminy directory to workspace:`,
           e,
         );
       }

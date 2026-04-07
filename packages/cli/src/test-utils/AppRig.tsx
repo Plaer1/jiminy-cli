@@ -35,7 +35,7 @@ import {
   debugLogger,
   CoreToolCallStatus,
   IntegrityDataStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import {
   type MockShellCommand,
   MockShellExecutionService,
@@ -88,9 +88,9 @@ vi.mock('../ui/contexts/StreamingContext.js', async (importOriginal) => {
 });
 
 // Mock core functions globally for tests using AppRig.
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   const { MockShellExecutionService: MockService } = await import(
     './MockShellExecutionService.js'
   );
@@ -131,13 +131,13 @@ class MockExtensionManager extends ExtensionLoader {
   };
 }
 
-// Mock GeminiRespondingSpinner to disable animations (avoiding 'act()' warnings) without triggering screen reader mode.
-vi.mock('../ui/components/GeminiRespondingSpinner.js', async () => {
+// Mock JiminyRespondingSpinner to disable animations (avoiding 'act()' warnings) without triggering screen reader mode.
+vi.mock('../ui/components/JiminyRespondingSpinner.js', async () => {
   const React = await import('react');
   const { Text } = await import('ink');
   return {
-    GeminiSpinner: () => React.createElement(Text, null, '...'),
-    GeminiRespondingSpinner: ({
+    JiminySpinner: () => React.createElement(Text, null, '...'),
+    JiminyRespondingSpinner: ({
       nonRespondingDisplay,
     }: {
       nonRespondingDisplay: string;
@@ -177,18 +177,18 @@ export class AppRig {
   constructor(private options: AppRigOptions = {}) {
     const uniqueId = randomUUID();
     this.testDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `gemini-app-rig-${uniqueId.slice(0, 8)}-`),
+      path.join(os.tmpdir(), `jiminy-app-rig-${uniqueId.slice(0, 8)}-`),
     );
     this.sessionId = `test-session-${uniqueId}`;
     activeRigs.set(this.sessionId, this);
 
     // Pre-create the persistent state file to bypass the terminal setup prompt
-    const geminiDir = path.join(this.testDir, '.gemini');
-    if (!fs.existsSync(geminiDir)) {
-      fs.mkdirSync(geminiDir, { recursive: true });
+    const jiminyDir = path.join(this.testDir, '.jiminy');
+    if (!fs.existsSync(jiminyDir)) {
+      fs.mkdirSync(jiminyDir, { recursive: true });
     }
     fs.writeFileSync(
-      path.join(geminiDir, 'state.json'),
+      path.join(jiminyDir, 'state.json'),
       JSON.stringify({ terminalSetupPromptShown: true }),
     );
   }
@@ -265,7 +265,7 @@ export class AppRig {
   private createRigSettings(): LoadedSettings {
     return createMockSettings({
       user: {
-        path: path.join(this.testDir, '.gemini', 'user_settings.json'),
+        path: path.join(this.testDir, '.jiminy', 'user_settings.json'),
         settings: {
           security: {
             auth: {
@@ -324,7 +324,7 @@ export class AppRig {
       gcConfig.contentGeneratorConfig = newContentGeneratorConfig;
 
       // Initialize BaseLlmClient now that the ContentGenerator is available
-      const { BaseLlmClient } = await import('@google/gemini-cli-core');
+      const { BaseLlmClient } = await import('@google/jiminy-cli-core');
       gcConfig.baseLlmClient = new BaseLlmClient(
         gcConfig.contentGenerator,
         this.config!,
@@ -401,7 +401,7 @@ export class AppRig {
         tc.status === CoreToolCallStatus.Cancelled
       ) {
         return !(tc as TrackedCompletedToolCall | TrackedCancelledToolCall)
-          .responseSubmittedToGemini;
+          .responseSubmittedToJiminy;
       }
       return false;
     });
@@ -427,7 +427,7 @@ export class AppRig {
             accountSuspensionInfo: null,
             themeError: null,
             shouldOpenAuthDialog: false,
-            geminiMdFileCount: 0,
+            jiminyMdFileCount: 0,
           }}
         />,
         {
@@ -738,7 +738,7 @@ export class AppRig {
     // Poison the chat recording service to prevent late writes to the test directory
     if (this.config) {
       const recordingService = this.config
-        .getGeminiClient()
+        .getJiminyClient()
         ?.getChatRecordingService();
       if (recordingService) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -10,23 +10,23 @@ import {
   GEMINI_DIR,
   type MCPServerConfig,
   type ExtensionInstallMetadata,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   homedir,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { logger } from '../utils/logger.js';
 
 export const EXTENSIONS_DIRECTORY_NAME = path.join(GEMINI_DIR, 'extensions');
-export const EXTENSIONS_CONFIG_FILENAME = 'gemini-extension.json';
-export const INSTALL_METADATA_FILENAME = '.gemini-extension-install.json';
+export const EXTENSIONS_CONFIG_FILENAME = 'jiminy-extension.json';
+export const INSTALL_METADATA_FILENAME = '.jiminy-extension-install.json';
 
 /**
- * Extension definition as written to disk in gemini-extension.json files.
+ * Extension definition as written to disk in jiminy-extension.json files.
  * This should *not* be referenced outside of the logic for reading files.
  * If information is required for manipulating extensions (load, unload, update)
  * outside of the loading process that data needs to be stored on the
- * GeminiCLIExtension class defined in Core.
+ * JiminyCLIExtension class defined in Core.
  */
 interface ExtensionConfig {
   name: string;
@@ -36,13 +36,13 @@ interface ExtensionConfig {
   excludeTools?: string[];
 }
 
-export function loadExtensions(workspaceDir: string): GeminiCLIExtension[] {
+export function loadExtensions(workspaceDir: string): JiminyCLIExtension[] {
   const allExtensions = [
     ...loadExtensionsFromDir(workspaceDir),
     ...loadExtensionsFromDir(homedir()),
   ];
 
-  const uniqueExtensions: GeminiCLIExtension[] = [];
+  const uniqueExtensions: JiminyCLIExtension[] = [];
   const seenNames = new Set<string>();
   for (const extension of allExtensions) {
     if (!seenNames.has(extension.name)) {
@@ -57,13 +57,13 @@ export function loadExtensions(workspaceDir: string): GeminiCLIExtension[] {
   return uniqueExtensions;
 }
 
-function loadExtensionsFromDir(dir: string): GeminiCLIExtension[] {
+function loadExtensionsFromDir(dir: string): JiminyCLIExtension[] {
   const extensionsDir = path.join(dir, EXTENSIONS_DIRECTORY_NAME);
   if (!fs.existsSync(extensionsDir)) {
     return [];
   }
 
-  const extensions: GeminiCLIExtension[] = [];
+  const extensions: JiminyCLIExtension[] = [];
   for (const subdir of fs.readdirSync(extensionsDir)) {
     const extensionDir = path.join(extensionsDir, subdir);
 
@@ -75,7 +75,7 @@ function loadExtensionsFromDir(dir: string): GeminiCLIExtension[] {
   return extensions;
 }
 
-function loadExtension(extensionDir: string): GeminiCLIExtension | null {
+function loadExtension(extensionDir: string): JiminyCLIExtension | null {
   if (!fs.statSync(extensionDir).isDirectory()) {
     logger.error(
       `Warning: unexpected file ${extensionDir} in extensions directory.`,
@@ -118,7 +118,7 @@ function loadExtension(extensionDir: string): GeminiCLIExtension | null {
       mcpServers: config.mcpServers,
       excludeTools: config.excludeTools,
       isActive: true, // Barring any other signals extensions should be considered Active.
-    } as GeminiCLIExtension;
+    } as JiminyCLIExtension;
   } catch (e) {
     logger.error(
       `Warning: error parsing extension config in ${configFilePath}: ${e}`,

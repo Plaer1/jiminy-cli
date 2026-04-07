@@ -13,7 +13,7 @@ import {
 import type { Content, GenerateContentResponse, Part } from '@google/genai';
 import { CompressionStatus } from '../core/turn.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
-import type { GeminiChat } from '../core/geminiChat.js';
+import type { JiminyChat } from '../core/jiminyChat.js';
 import type { Config } from '../config/config.js';
 import * as fileUtils from '../utils/fileUtils.js';
 import { getInitialChatHistory } from '../utils/environmentContext.js';
@@ -111,22 +111,22 @@ describe('findCompressSplitPoint', () => {
 
 describe('modelStringToModelConfigAlias', () => {
   it('should return the default model for unexpected aliases', () => {
-    expect(modelStringToModelConfigAlias('gemini-flash-flash')).toBe(
+    expect(modelStringToModelConfigAlias('jiminy-flash-flash')).toBe(
       'chat-compression-default',
     );
   });
 
   it('should handle valid names', () => {
-    expect(modelStringToModelConfigAlias('gemini-3-pro-preview')).toBe(
+    expect(modelStringToModelConfigAlias('jiminy-3-pro-preview')).toBe(
       'chat-compression-3-pro',
     );
-    expect(modelStringToModelConfigAlias('gemini-2.5-pro')).toBe(
+    expect(modelStringToModelConfigAlias('jiminy-2.5-pro')).toBe(
       'chat-compression-2.5-pro',
     );
-    expect(modelStringToModelConfigAlias('gemini-2.5-flash')).toBe(
+    expect(modelStringToModelConfigAlias('jiminy-2.5-flash')).toBe(
       'chat-compression-2.5-flash',
     );
-    expect(modelStringToModelConfigAlias('gemini-2.5-flash-lite')).toBe(
+    expect(modelStringToModelConfigAlias('jiminy-2.5-flash-lite')).toBe(
       'chat-compression-2.5-flash-lite',
     );
   });
@@ -134,10 +134,10 @@ describe('modelStringToModelConfigAlias', () => {
 
 describe('ChatCompressionService', () => {
   let service: ChatCompressionService;
-  let mockChat: GeminiChat;
+  let mockChat: JiminyChat;
   let mockConfig: Config;
   let testTempDir: string;
-  const mockModel = 'gemini-2.5-pro';
+  const mockModel = 'jiminy-2.5-pro';
   const mockPromptId = 'test-prompt-id';
 
   beforeEach(() => {
@@ -148,7 +148,7 @@ describe('ChatCompressionService', () => {
     mockChat = {
       getHistory: vi.fn(),
       getLastPromptTokenCount: vi.fn().mockReturnValue(500),
-    } as unknown as GeminiChat;
+    } as unknown as JiminyChat;
 
     const mockGenerateContent = vi
       .fn()
@@ -363,7 +363,7 @@ describe('ChatCompressionService', () => {
     const planPath = '/custom/plan/path.md';
     vi.mocked(mockConfig.getApprovedPlanPath).mockReturnValue(planPath);
     vi.mocked(mockConfig.getActiveModel).mockReturnValue(
-      'gemini-3.1-pro-preview',
+      'jiminy-3.1-pro-preview',
     );
 
     const history: Content[] = [

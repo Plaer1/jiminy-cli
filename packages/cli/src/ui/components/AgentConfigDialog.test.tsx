@@ -10,7 +10,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { act } from 'react';
 import { AgentConfigDialog } from './AgentConfigDialog.js';
 import { LoadedSettings, SettingScope } from '../../config/settings.js';
-import type { AgentDefinition } from '@google/gemini-cli-core';
+import type { AgentDefinition } from '@google/jiminy-cli-core';
 
 enum TerminalKeys {
   ENTER = '\u000D',
@@ -262,7 +262,7 @@ describe('AgentConfigDialog', () => {
     it('should show values from agent definition as defaults', async () => {
       const definition = createMockAgentDefinition({
         modelConfig: {
-          model: 'gemini-2.0-flash',
+          model: 'jiminy-2.0-flash',
           generateContentConfig: {
             temperature: 0.7,
           },
@@ -276,7 +276,7 @@ describe('AgentConfigDialog', () => {
       const { lastFrame, unmount } = await renderDialog(settings, definition);
       const frame = lastFrame();
 
-      expect(frame).toContain('gemini-2.0-flash');
+      expect(frame).toContain('jiminy-2.0-flash');
       expect(frame).toContain('0.7');
       expect(frame).toContain('10');
       expect(frame).toContain('20');

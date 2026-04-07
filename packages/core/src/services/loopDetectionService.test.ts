@@ -7,13 +7,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Content } from '@google/genai';
 import type { Config } from '../config/config.js';
-import type { GeminiClient } from '../core/client.js';
+import type { JiminyClient } from '../core/client.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
 import {
-  GeminiEventType,
-  type ServerGeminiContentEvent,
-  type ServerGeminiStreamEvent,
-  type ServerGeminiToolCallRequestEvent,
+  JiminyEventType,
+  type ServerJiminyContentEvent,
+  type ServerJiminyStreamEvent,
+  type ServerJiminyToolCallRequestEvent,
 } from '../core/turn.js';
 import * as loggers from '../telemetry/loggers.js';
 import { LoopType } from '../telemetry/types.js';
@@ -53,8 +53,8 @@ describe('LoopDetectionService', () => {
   const createToolCallRequestEvent = (
     name: string,
     args: Record<string, unknown>,
-  ): ServerGeminiToolCallRequestEvent => ({
-    type: GeminiEventType.ToolCallRequest,
+  ): ServerJiminyToolCallRequestEvent => ({
+    type: JiminyEventType.ToolCallRequest,
     value: {
       name,
       args,
@@ -64,8 +64,8 @@ describe('LoopDetectionService', () => {
     },
   });
 
-  const createContentEvent = (content: string): ServerGeminiContentEvent => ({
-    type: GeminiEventType.Content,
+  const createContentEvent = (content: string): ServerJiminyContentEvent => ({
+    type: JiminyEventType.Content,
     value: content,
   });
 
@@ -129,7 +129,7 @@ describe('LoopDetectionService', () => {
       });
       const otherEvent = {
         type: 'thought',
-      } as unknown as ServerGeminiStreamEvent;
+      } as unknown as ServerJiminyStreamEvent;
 
       // Send events just below the threshold
       for (let i = 0; i < TOOL_CALL_LOOP_THRESHOLD - 1; i++) {
@@ -782,7 +782,7 @@ describe('LoopDetectionService', () => {
     it('should return 0 count for unhandled event types', () => {
       const otherEvent = {
         type: 'unhandled_event',
-      } as unknown as ServerGeminiStreamEvent;
+      } as unknown as ServerJiminyStreamEvent;
       expect(service.addAndCheck(otherEvent).count).toBe(0);
       expect(service.addAndCheck(otherEvent).count).toBe(0);
     });
@@ -792,14 +792,14 @@ describe('LoopDetectionService', () => {
 describe('LoopDetectionService LLM Checks', () => {
   let service: LoopDetectionService;
   let mockConfig: Config;
-  let mockGeminiClient: GeminiClient;
+  let mockJiminyClient: JiminyClient;
   let mockBaseLlmClient: BaseLlmClient;
   let abortController: AbortController;
 
   beforeEach(() => {
-    mockGeminiClient = {
+    mockJiminyClient = {
       getHistory: vi.fn().mockReturnValue([]),
-    } as unknown as GeminiClient;
+    } as unknown as JiminyClient;
 
     mockBaseLlmClient = {
       generateJson: vi.fn(),
@@ -812,9 +812,9 @@ describe('LoopDetectionService LLM Checks', () => {
       get config() {
         return this;
       },
-      getGeminiClient: () => mockGeminiClient,
-      get geminiClient() {
-        return mockGeminiClient;
+      getJiminyClient: () => mockJiminyClient,
+      get jiminyClient() {
+        return mockJiminyClient;
       },
       getBaseLlmClient: () => mockBaseLlmClient,
       getDisableLoopDetection: () => false,
@@ -824,7 +824,7 @@ describe('LoopDetectionService LLM Checks', () => {
       modelConfigService: {
         getResolvedConfig: vi.fn().mockImplementation((key) => {
           if (key.model === 'loop-detection') {
-            return { model: 'gemini-2.5-flash', generateContentConfig: {} };
+            return { model: 'jiminy-2.5-flash', generateContentConfig: {} };
           }
           return {
             model: 'cognitive-loop-v1',
@@ -965,7 +965,7 @@ describe('LoopDetectionService LLM Checks', () => {
         parts: [{ text: 'Some follow up text' }],
       },
     ];
-    vi.mocked(mockGeminiClient.getHistory).mockReturnValue(functionCallHistory);
+    vi.mocked(mockJiminyClient.getHistory).mockReturnValue(functionCallHistory);
 
     mockBaseLlmClient.generateJson = vi
       .fn()
@@ -1093,7 +1093,7 @@ describe('LoopDetectionService LLM Checks', () => {
     expect(loggers.logLoopDetected).toHaveBeenCalledWith(
       mockConfig,
       expect.objectContaining({
-        confirmed_by_model: 'gemini-2.5-flash',
+        confirmed_by_model: 'jiminy-2.5-flash',
       }),
     );
   });
@@ -1124,7 +1124,7 @@ describe('LoopDetectionService LLM Checks', () => {
   it('should not include user prompt in contents when not provided', async () => {
     service.reset('test-prompt-id');
 
-    vi.mocked(mockGeminiClient.getHistory).mockReturnValue([
+    vi.mocked(mockJiminyClient.getHistory).mockReturnValue([
       {
         role: 'model',
         parts: [{ text: 'Some response' }],

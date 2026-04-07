@@ -1,4 +1,4 @@
-# Gemini CLI Test Utils (`@google/gemini-cli-test-utils`)
+# Jiminy CLI Test Utils (`@google/jiminy-cli-test-utils`)
 
 Shared test utilities used across the monorepo. This is a private package — not
 published to npm.
@@ -25,7 +25,7 @@ endpoints and rate-limiting.
 1. **Programmatic Builder:**
 
    ```typescript
-   import { TestMcpServerBuilder } from '@google/gemini-cli-test-utils';
+   import { TestMcpServerBuilder } from '@google/jiminy-cli-test-utils';
 
    const builder = new TestMcpServerBuilder('weather-server').addTool(
      'get_weather',
@@ -65,4 +65,4 @@ endpoints and rate-limiting.
 
 ## Usage
 
-Import from `@google/gemini-cli-test-utils` in test files across the monorepo.
+Import from `@google/jiminy-cli-test-utils` in test files across the monorepo.

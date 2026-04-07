@@ -10,18 +10,18 @@ if [ -z "$1" ]; then
     exit 1
 fi
 pr="$1"
-model="${2:-gemini-3.1-pro-preview}"
-REPO="google-gemini/gemini-cli"
-REVIEW_DIR="$HOME/git/review/gemini-cli"
+model="${2:-jiminy-3.1-pro-preview}"
+REPO="google-jiminy/jiminy-cli"
+REVIEW_DIR="$HOME/git/review/jiminy-cli"
 
 if [ ! -d "$REVIEW_DIR" ]; then
     echo "ERROR: Directory $REVIEW_DIR does not exist."
     echo ""
-    echo "Please create a new gemini-cli clone at that directory to use for reviews."
+    echo "Please create a new jiminy-cli clone at that directory to use for reviews."
     echo "Instructions:"
     echo "  mkdir -p ~/git/review"
     echo "  cd ~/git/review"
-    echo "  git clone https://github.com/google-gemini/gemini-cli.git"
+    echo "  git clone https://github.com/google-jiminy/jiminy-cli.git"
     exit 1
 fi
 

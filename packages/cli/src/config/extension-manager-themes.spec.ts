@@ -25,7 +25,7 @@ import {
   type Config,
   tmpdir,
   NoopSandboxManager,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { createTestMergedSettings, SettingScope } from './settings.js';
 
 describe('ExtensionManager theme loading', () => {
@@ -35,7 +35,7 @@ describe('ExtensionManager theme loading', () => {
 
   beforeAll(async () => {
     tempHomeDir = await fs.promises.mkdtemp(
-      path.join(tmpdir(), 'gemini-cli-test-'),
+      path.join(tmpdir(), 'jiminy-cli-test-'),
     );
   });
 
@@ -97,7 +97,7 @@ describe('ExtensionManager theme loading', () => {
       getMcpClientManager: () => ({
         startExtension: vi.fn().mockResolvedValue(undefined),
       }),
-      getGeminiClient: () => ({
+      getJiminyClient: () => ({
         isInitialized: () => false,
         updateSystemInstruction: vi.fn(),
         setTools: vi.fn(),
@@ -109,7 +109,7 @@ describe('ExtensionManager theme loading', () => {
       getFileExclusions: () => ({
         isIgnored: () => false,
       }),
-      getGeminiMdFilePaths: () => [],
+      getJiminyMdFilePaths: () => [],
       getMcpServers: () => ({}),
       getAllowedMcpServers: () => [],
       getSanitizationConfig: () => ({
@@ -196,7 +196,7 @@ describe('ExtensionManager theme loading', () => {
       getImportFormat: () => 'tree',
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       getDiscoveryMaxDirs: () => 200,
       getMcpClientManager: () => ({
@@ -205,10 +205,10 @@ describe('ExtensionManager theme loading', () => {
         stopExtension: vi.fn().mockResolvedValue(undefined),
       }),
       setUserMemory: vi.fn(),
-      setGeminiMdFileCount: vi.fn(),
-      setGeminiMdFilePaths: vi.fn(),
+      setJiminyMdFileCount: vi.fn(),
+      setJiminyMdFilePaths: vi.fn(),
       getEnableExtensionReloading: () => true,
-      getGeminiClient: () => ({
+      getJiminyClient: () => ({
         isInitialized: () => false,
         updateSystemInstruction: vi.fn(),
         setTools: vi.fn(),

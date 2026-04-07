@@ -26,10 +26,10 @@ describe('Memory Manager Policy', () => {
     });
   });
 
-  it('should allow save_memory to read ~/.gemini/GEMINI.md', async () => {
+  it('should allow save_memory to read ~/.jiminy/GEMINI.md', async () => {
     const toolCall = {
       name: 'read_file',
-      args: { file_path: '~/.gemini/GEMINI.md' },
+      args: { file_path: '~/.jiminy/GEMINI.md' },
     };
     const result = await engine.check(
       toolCall,
@@ -40,10 +40,10 @@ describe('Memory Manager Policy', () => {
     expect(result.decision).toBe(PolicyDecision.ALLOW);
   });
 
-  it('should allow save_memory to write ~/.gemini/GEMINI.md', async () => {
+  it('should allow save_memory to write ~/.jiminy/GEMINI.md', async () => {
     const toolCall = {
       name: 'write_file',
-      args: { file_path: '~/.gemini/GEMINI.md', content: 'test' },
+      args: { file_path: '~/.jiminy/GEMINI.md', content: 'test' },
     };
     const result = await engine.check(
       toolCall,
@@ -54,10 +54,10 @@ describe('Memory Manager Policy', () => {
     expect(result.decision).toBe(PolicyDecision.ALLOW);
   });
 
-  it('should allow save_memory to list ~/.gemini/', async () => {
+  it('should allow save_memory to list ~/.jiminy/', async () => {
     const toolCall = {
       name: 'list_directory',
-      args: { dir_path: '~/.gemini/' },
+      args: { dir_path: '~/.jiminy/' },
     };
     const result = await engine.check(
       toolCall,
@@ -68,7 +68,7 @@ describe('Memory Manager Policy', () => {
     expect(result.decision).toBe(PolicyDecision.ALLOW);
   });
 
-  it('should fall through to global allow rule for save_memory reading non-.gemini files', async () => {
+  it('should fall through to global allow rule for save_memory reading non-.jiminy files', async () => {
     const toolCall = {
       name: 'read_file',
       args: { file_path: '/etc/passwd' },
@@ -79,15 +79,15 @@ describe('Memory Manager Policy', () => {
       undefined,
       'save_memory',
     );
-    // The memory-manager policy only matches .gemini/ paths.
+    // The memory-manager policy only matches .jiminy/ paths.
     // Other paths fall through to the global read_file allow rule (priority 50).
     expect(result.decision).toBe(PolicyDecision.ALLOW);
   });
 
-  it('should not match paths where .gemini is a substring (e.g. not.gemini)', async () => {
+  it('should not match paths where .jiminy is a substring (e.g. not.jiminy)', async () => {
     const toolCall = {
       name: 'read_file',
-      args: { file_path: '/tmp/not.gemini/evil' },
+      args: { file_path: '/tmp/not.jiminy/evil' },
     };
     const result = await engine.check(
       toolCall,
@@ -95,16 +95,16 @@ describe('Memory Manager Policy', () => {
       undefined,
       'save_memory',
     );
-    // The tighter argsPattern requires .gemini/ to be preceded by start-of-string
-    // or a path separator, so "not.gemini/" should NOT match the memory-manager rule.
+    // The tighter argsPattern requires .jiminy/ to be preceded by start-of-string
+    // or a path separator, so "not.jiminy/" should NOT match the memory-manager rule.
     // It falls through to the global read_file allow rule instead.
     expect(result.decision).toBe(PolicyDecision.ALLOW);
   });
 
-  it('should fall through to global allow rule for other agents accessing ~/.gemini/', async () => {
+  it('should fall through to global allow rule for other agents accessing ~/.jiminy/', async () => {
     const toolCall = {
       name: 'read_file',
-      args: { file_path: '~/.gemini/GEMINI.md' },
+      args: { file_path: '~/.jiminy/GEMINI.md' },
     };
     const result = await engine.check(
       toolCall,

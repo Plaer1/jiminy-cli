@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { isWithinRoot, type FileSystemService } from '@google/gemini-cli-core';
+import { isWithinRoot, type FileSystemService } from '@google/jiminy-cli-core';
 import type * as acp from '@agentclientprotocol/sdk';
 import os from 'node:os';
 import path from 'node:path';
@@ -13,7 +13,7 @@ import path from 'node:path';
  * ACP client-based implementation of FileSystemService
  */
 export class AcpFileSystemService implements FileSystemService {
-  private readonly geminiDir = path.join(os.homedir(), '.gemini');
+  private readonly jiminyDir = path.join(os.homedir(), '.jiminy');
 
   constructor(
     private readonly connection: acp.AgentSideConnection,
@@ -29,7 +29,7 @@ export class AcpFileSystemService implements FileSystemService {
     // would make the IDE's project root overlap with the global directory).
     return (
       !isWithinRoot(filePath, this.root) ||
-      isWithinRoot(filePath, this.geminiDir)
+      isWithinRoot(filePath, this.jiminyDir)
     );
   }
 

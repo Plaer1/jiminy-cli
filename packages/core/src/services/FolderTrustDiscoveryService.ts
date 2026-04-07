@@ -44,26 +44,26 @@ export class FolderTrustDiscoveryService {
       discoveryErrors: [],
     };
 
-    const geminiDir = path.join(workspaceDir, GEMINI_DIR);
-    if (!(await this.exists(geminiDir))) {
+    const jiminyDir = path.join(workspaceDir, GEMINI_DIR);
+    if (!(await this.exists(jiminyDir))) {
       return results;
     }
 
     await Promise.all([
-      this.discoverCommands(geminiDir, results),
-      this.discoverSkills(geminiDir, results),
-      this.discoverAgents(geminiDir, results),
-      this.discoverSettings(geminiDir, results),
+      this.discoverCommands(jiminyDir, results),
+      this.discoverSkills(jiminyDir, results),
+      this.discoverAgents(jiminyDir, results),
+      this.discoverSettings(jiminyDir, results),
     ]);
 
     return results;
   }
 
   private static async discoverCommands(
-    geminiDir: string,
+    jiminyDir: string,
     results: FolderDiscoveryResults,
   ) {
-    const commandsDir = path.join(geminiDir, 'commands');
+    const commandsDir = path.join(jiminyDir, 'commands');
     if (await this.exists(commandsDir)) {
       try {
         const files = await fs.readdir(commandsDir, { recursive: true });
@@ -79,10 +79,10 @@ export class FolderTrustDiscoveryService {
   }
 
   private static async discoverSkills(
-    geminiDir: string,
+    jiminyDir: string,
     results: FolderDiscoveryResults,
   ) {
-    const skillsDir = path.join(geminiDir, 'skills');
+    const skillsDir = path.join(jiminyDir, 'skills');
     if (await this.exists(skillsDir)) {
       try {
         const entries = await fs.readdir(skillsDir, { withFileTypes: true });
@@ -103,10 +103,10 @@ export class FolderTrustDiscoveryService {
   }
 
   private static async discoverAgents(
-    geminiDir: string,
+    jiminyDir: string,
     results: FolderDiscoveryResults,
   ) {
-    const agentsDir = path.join(geminiDir, 'agents');
+    const agentsDir = path.join(jiminyDir, 'agents');
     if (await this.exists(agentsDir)) {
       try {
         const entries = await fs.readdir(agentsDir, { withFileTypes: true });
@@ -131,10 +131,10 @@ export class FolderTrustDiscoveryService {
   }
 
   private static async discoverSettings(
-    geminiDir: string,
+    jiminyDir: string,
     results: FolderDiscoveryResults,
   ) {
-    const settingsPath = path.join(geminiDir, 'settings.json');
+    const settingsPath = path.join(jiminyDir, 'settings.json');
     if (!(await this.exists(settingsPath))) return;
 
     try {

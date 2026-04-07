@@ -12,11 +12,11 @@ import {
   CoreToolCallStatus,
   type Config,
   type ToolExecuteConfirmationDetails,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import { ToolGroupMessage } from './messages/ToolGroupMessage.js';
 import { renderWithProviders } from '../../test-utils/render.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { makeFakeConfig } from '@google/gemini-cli-core';
+import { makeFakeConfig } from '@google/jiminy-cli-core';
 
 // Mock child components
 vi.mock('./messages/ToolGroupMessage.js', () => ({
@@ -147,7 +147,7 @@ describe('<HistoryItemDisplay />', () => {
     const { lastFrame, unmount } = await renderWithProviders(
       <HistoryItemDisplay {...baseItem} item={item} />,
     );
-    expect(lastFrame()).toContain('About Gemini CLI');
+    expect(lastFrame()).toContain('About Jiminy CLI');
     unmount();
   });
 
@@ -314,7 +314,7 @@ describe('<HistoryItemDisplay />', () => {
   });
 
   describe.each([true, false])(
-    'gemini items (alternateBuffer=%s)',
+    'jiminy items (alternateBuffer=%s)',
     (useAlternateBuffer) => {
       const longCode =
         '# Example code block:\n' +
@@ -322,10 +322,10 @@ describe('<HistoryItemDisplay />', () => {
         Array.from({ length: 50 }, (_, i) => `Line ${i + 1}`).join('\n') +
         '\n```';
 
-      it('should render a truncated gemini item', async () => {
+      it('should render a truncated jiminy item', async () => {
         const item: HistoryItem = {
           id: 1,
-          type: 'gemini',
+          type: 'jiminy',
           text: longCode,
         };
         const { lastFrame, unmount } = await renderWithProviders(
@@ -344,10 +344,10 @@ describe('<HistoryItemDisplay />', () => {
         unmount();
       });
 
-      it('should render a full gemini item when using availableTerminalHeightGemini', async () => {
+      it('should render a full jiminy item when using availableTerminalHeightJiminy', async () => {
         const item: HistoryItem = {
           id: 1,
-          type: 'gemini',
+          type: 'jiminy',
           text: longCode,
         };
         const { lastFrame, unmount } = await renderWithProviders(
@@ -356,7 +356,7 @@ describe('<HistoryItemDisplay />', () => {
             isPending={false}
             terminalWidth={80}
             availableTerminalHeight={10}
-            availableTerminalHeightGemini={Number.MAX_SAFE_INTEGER}
+            availableTerminalHeightJiminy={Number.MAX_SAFE_INTEGER}
           />,
           {
             config: makeFakeConfig({ useAlternateBuffer }),
@@ -367,10 +367,10 @@ describe('<HistoryItemDisplay />', () => {
         unmount();
       });
 
-      it('should render a truncated gemini_content item', async () => {
+      it('should render a truncated jiminy_content item', async () => {
         const item: HistoryItem = {
           id: 1,
-          type: 'gemini_content',
+          type: 'jiminy_content',
           text: longCode,
         };
         const { lastFrame, unmount } = await renderWithProviders(
@@ -389,10 +389,10 @@ describe('<HistoryItemDisplay />', () => {
         unmount();
       });
 
-      it('should render a full gemini_content item when using availableTerminalHeightGemini', async () => {
+      it('should render a full jiminy_content item when using availableTerminalHeightJiminy', async () => {
         const item: HistoryItem = {
           id: 1,
-          type: 'gemini_content',
+          type: 'jiminy_content',
           text: longCode,
         };
         const { lastFrame, unmount } = await renderWithProviders(
@@ -401,7 +401,7 @@ describe('<HistoryItemDisplay />', () => {
             isPending={false}
             terminalWidth={80}
             availableTerminalHeight={10}
-            availableTerminalHeightGemini={Number.MAX_SAFE_INTEGER}
+            availableTerminalHeightJiminy={Number.MAX_SAFE_INTEGER}
           />,
           {
             config: makeFakeConfig({ useAlternateBuffer }),

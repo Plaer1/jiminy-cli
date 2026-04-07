@@ -19,7 +19,7 @@ import {
   mergeSettings,
   type LoadedSettings,
 } from '../../config/settings.js';
-import { createTransport, debugLogger } from '@google/gemini-cli-core';
+import { createTransport, debugLogger } from '@google/jiminy-cli-core';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { ExtensionStorage } from '../../config/extensions/storage.js';
 import { ExtensionManager } from '../../config/extension-manager.js';
@@ -39,9 +39,9 @@ vi.mock('../../config/extensions/storage.js', () => ({
   },
 }));
 vi.mock('../../config/extension-manager.js');
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...original,
     createTransport: vi.fn(),
@@ -55,16 +55,16 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
     },
     Storage: Object.assign(
       vi.fn().mockImplementation((_cwd: string) => ({
-        getGlobalSettingsPath: () => '/tmp/gemini/settings.json',
-        getWorkspaceSettingsPath: () => '/tmp/gemini/workspace-settings.json',
-        getProjectTempDir: () => '/test/home/.gemini/tmp/mocked_hash',
+        getGlobalSettingsPath: () => '/tmp/jiminy/settings.json',
+        getWorkspaceSettingsPath: () => '/tmp/jiminy/workspace-settings.json',
+        getProjectTempDir: () => '/test/home/.jiminy/tmp/mocked_hash',
       })),
       {
-        getGlobalSettingsPath: () => '/tmp/gemini/settings.json',
-        getGlobalGeminiDir: () => '/tmp/gemini',
+        getGlobalSettingsPath: () => '/tmp/jiminy/settings.json',
+        getGlobalJiminyDir: () => '/tmp/jiminy',
       },
     ),
-    GEMINI_DIR: '.gemini',
+    GEMINI_DIR: '.jiminy',
     getErrorMessage: (e: unknown) =>
       e instanceof Error ? e.message : String(e),
   };

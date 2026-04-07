@@ -24,7 +24,7 @@ import { createMockMessageBus } from '../test-utils/mock-message-bus.js';
 import type { Config } from '../config/config.js';
 import type { MessageBus } from '../confirmation-bus/message-bus.js';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_AGENT_DESCRIPTION,
   GEN_AI_AGENT_NAME,
 } from '../telemetry/constants.js';
@@ -192,7 +192,7 @@ describe('SubAgentInvocation', () => {
 
     expect(runInDevTraceSpan).toHaveBeenCalledWith(
       expect.objectContaining({
-        operation: GeminiCliOperation.AgentCall,
+        operation: JiminyCliOperation.AgentCall,
         attributes: expect.objectContaining({
           [GEN_AI_AGENT_NAME]: testDefinition.name,
           [GEN_AI_AGENT_DESCRIPTION]: testDefinition.description,

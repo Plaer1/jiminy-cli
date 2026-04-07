@@ -149,7 +149,7 @@ describe('sea-launch', () => {
 
       const mockFs = {
         openSync: vi.fn((p) => {
-          if (p.endsWith('gemini.mjs')) return 10;
+          if (p.endsWith('jiminy.mjs')) return 10;
           if (p.endsWith('file.txt')) return 20;
           throw new Error('Not found');
         }),
@@ -289,7 +289,7 @@ describe('sea-launch', () => {
       deps.fs.readFileSync.mockReturnValue('content');
 
       const runtime = prepareRuntime(mockManifest, mockGetAsset, deps);
-      expect(runtime).toContain('gemini-runtime-1.0.0-user');
+      expect(runtime).toContain('jiminy-runtime-1.0.0-user');
       expect(deps.fs.rmSync).not.toHaveBeenCalled();
     });
 
@@ -341,11 +341,11 @@ describe('sea-launch', () => {
       prepareRuntime(mockManifest, mockGetAsset, deps);
 
       expect(deps.fs.rmSync).toHaveBeenCalledWith(
-        expect.stringContaining('gemini-runtime'),
+        expect.stringContaining('jiminy-runtime'),
         expect.anything(),
       );
       expect(deps.fs.mkdirSync).toHaveBeenCalledWith(
-        expect.stringContaining('gemini-setup'),
+        expect.stringContaining('jiminy-setup'),
         expect.anything(),
       );
     });
@@ -398,7 +398,7 @@ describe('sea-launch', () => {
       prepareRuntime(mockManifest, mockGetAsset, deps);
 
       expect(deps.fs.rmSync).toHaveBeenCalledWith(
-        expect.stringContaining('gemini-runtime'),
+        expect.stringContaining('jiminy-runtime'),
         expect.anything(),
       );
     });
@@ -451,11 +451,11 @@ describe('sea-launch', () => {
       prepareRuntime(mockManifest, mockGetAsset, deps);
 
       expect(deps.fs.rmSync).toHaveBeenCalledWith(
-        expect.stringContaining('gemini-runtime'),
+        expect.stringContaining('jiminy-runtime'),
         expect.anything(),
       );
       expect(deps.fs.mkdirSync).toHaveBeenCalledWith(
-        expect.stringContaining('gemini-setup'),
+        expect.stringContaining('jiminy-setup'),
         expect.anything(),
       );
     });
@@ -519,9 +519,9 @@ describe('sea-launch', () => {
       const runtime = prepareRuntime(mockManifest, mockGetAsset, deps);
 
       expect(deps.fs.renameSync).toHaveBeenCalled();
-      expect(runtime).toContain('gemini-runtime');
+      expect(runtime).toContain('jiminy-runtime');
       expect(deps.fs.rmSync).toHaveBeenCalledWith(
-        expect.stringContaining('gemini-setup'),
+        expect.stringContaining('jiminy-setup'),
         expect.anything(),
       );
     });
@@ -649,7 +649,7 @@ describe('sea-launch', () => {
       prepareRuntime(mockManifest, mockGetAsset, deps);
 
       expect(deps.fs.mkdirSync).toHaveBeenCalledWith(
-        'C:\\Users\\User\\AppData\\Local\\Google\\GeminiCLI',
+        'C:\\Users\\User\\AppData\\Local\\Google\\JiminyCLI',
         expect.objectContaining({ recursive: true }),
       );
 
@@ -715,7 +715,7 @@ describe('sea-launch', () => {
 
       // Should use tmpdir
       expect(runtime).toContain('C:\\Temp');
-      expect(runtime).not.toContain('Google\\GeminiCLI');
+      expect(runtime).not.toContain('Google\\JiminyCLI');
 
       Object.defineProperty(process, 'platform', {
         value: originalPlatform,
@@ -734,7 +734,7 @@ describe('sea-launch', () => {
         fs: {
           existsSync: vi.fn().mockReturnValue(false),
           mkdirSync: vi.fn((p) => {
-            if (typeof p === 'string' && p.includes('Google\\GeminiCLI')) {
+            if (typeof p === 'string' && p.includes('Google\\JiminyCLI')) {
               throw new Error('Permission denied');
             }
           }),
@@ -786,7 +786,7 @@ describe('sea-launch', () => {
       // Should use tmpdir
       expect(runtime).toContain('C:\\Temp');
       expect(deps.fs.mkdirSync).toHaveBeenCalledWith(
-        expect.stringContaining('Google\\GeminiCLI'),
+        expect.stringContaining('Google\\JiminyCLI'),
         expect.anything(),
       );
 

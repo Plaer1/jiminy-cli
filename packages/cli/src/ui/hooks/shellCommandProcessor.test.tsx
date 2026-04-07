@@ -16,7 +16,7 @@ import {
   afterEach,
   type Mock,
 } from 'vitest';
-import { NoopSandboxManager } from '@google/gemini-cli-core';
+import { NoopSandboxManager } from '@google/jiminy-cli-core';
 
 const mockIsBinary = vi.hoisted(() => vi.fn());
 const mockShellExecutionService = vi.hoisted(() => vi.fn());
@@ -36,9 +36,9 @@ const mockShellOnExit = vi.hoisted(() =>
   >(() => vi.fn()),
 );
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/jiminy-cli-core')>();
   return {
     ...actual,
     ShellExecutionService: {
@@ -73,11 +73,11 @@ import {
 } from './shellCommandProcessor.js';
 import {
   type Config,
-  type GeminiClient,
+  type JiminyClient,
   type ShellExecutionResult,
   type ShellOutputEvent,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@google/jiminy-cli-core';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
@@ -89,7 +89,7 @@ describe('useShellCommandProcessor', () => {
   let onExecMock: Mock;
   let onDebugMessageMock: Mock;
   let mockConfig: Config;
-  let mockGeminiClient: GeminiClient;
+  let mockJiminyClient: JiminyClient;
 
   let mockShellOutputCallback: (event: ShellOutputEvent) => void;
   let resolveExecutionPromise: (result: ShellExecutionResult) => void;
@@ -118,7 +118,7 @@ describe('useShellCommandProcessor', () => {
         },
       }),
     } as unknown as Config;
-    mockGeminiClient = { addHistory: vi.fn() } as unknown as GeminiClient;
+    mockJiminyClient = { addHistory: vi.fn() } as unknown as JiminyClient;
 
     vi.mocked(os.platform).mockReturnValue('linux');
     vi.mocked(os.tmpdir).mockReturnValue('/tmp');
@@ -154,7 +154,7 @@ describe('useShellCommandProcessor', () => {
         onExecMock,
         onDebugMessageMock,
         mockConfig,
-        mockGeminiClient,
+        mockJiminyClient,
         setShellInputFocusedMock,
         undefined,
         undefined,
@@ -253,7 +253,7 @@ describe('useShellCommandProcessor', () => {
         ],
       }),
     );
-    expect(mockGeminiClient.addHistory).toHaveBeenCalled();
+    expect(mockJiminyClient.addHistory).toHaveBeenCalled();
     expect(setShellInputFocusedMock).toHaveBeenCalledWith(false);
   });
 
@@ -463,7 +463,7 @@ describe('useShellCommandProcessor', () => {
     await act(async () => await execPromise);
 
     // With the new logic, cancelled commands are not added to history by this hook
-    // to avoid duplication/flickering, as they are handled by useGeminiStream.
+    // to avoid duplication/flickering, as they are handled by useJiminyStream.
     expect(addItemToHistoryMock).toHaveBeenCalledTimes(1);
     expect(setPendingHistoryItemMock).toHaveBeenCalledWith(null);
     expect(setShellInputFocusedMock).toHaveBeenCalledWith(false);

@@ -8,7 +8,7 @@ using the CLI.
 > [!TIP]
 > Looking for a high-level comparison of all available subscriptions?
 > To compare features and find the right quota for your needs, see our
-> [Plans page](https://geminicli.com/plans/).
+> [Plans page](https://jiminycli.com/plans/).
 
 For most users, we recommend starting Jiminy CLI and logging in with your
 personal Google account.

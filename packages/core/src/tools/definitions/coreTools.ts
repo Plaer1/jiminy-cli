@@ -12,7 +12,7 @@
 import type { ToolDefinition, CoreToolSet } from './types.js';
 import { getToolFamily } from './modelFamilyService.js';
 import { DEFAULT_LEGACY_SET } from './model-family-sets/default-legacy.js';
-import { GEMINI_3_SET } from './model-family-sets/gemini-3.js';
+import { GEMINI_3_SET } from './model-family-sets/jiminy-3.js';
 import {
   getShellDeclaration,
   getExitPlanModeDeclaration,
@@ -95,7 +95,7 @@ export {
 
 // Re-export sets for compatibility
 export { DEFAULT_LEGACY_SET } from './model-family-sets/default-legacy.js';
-export { GEMINI_3_SET } from './model-family-sets/gemini-3.js';
+export { GEMINI_3_SET } from './model-family-sets/jiminy-3.js';
 
 /**
  * Resolves the appropriate tool set for a given model ID.
@@ -104,7 +104,7 @@ export function getToolSet(modelId?: string): CoreToolSet {
   const family = getToolFamily(modelId);
 
   switch (family) {
-    case 'gemini-3':
+    case 'jiminy-3':
       return GEMINI_3_SET;
     case 'default-legacy':
     default:

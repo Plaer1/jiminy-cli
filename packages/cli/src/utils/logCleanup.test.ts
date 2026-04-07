@@ -14,9 +14,9 @@ import {
 import * as path from 'node:path';
 import { cleanupBackgroundLogs } from './logCleanup.js';
 
-vi.mock('@google/gemini-cli-core', () => ({
+vi.mock('@google/jiminy-cli-core', () => ({
   ShellExecutionService: {
-    getLogDir: vi.fn().mockReturnValue('/tmp/gemini/tmp/background-processes'),
+    getLogDir: vi.fn().mockReturnValue('/tmp/jiminy/tmp/background-processes'),
   },
   debugLogger: {
     debug: vi.fn(),
@@ -34,7 +34,7 @@ vi.mock('node:fs', () => ({
 }));
 
 describe('logCleanup', () => {
-  const logDir = '/tmp/gemini/tmp/background-processes';
+  const logDir = '/tmp/jiminy/tmp/background-processes';
 
   beforeEach(() => {
     vi.clearAllMocks();

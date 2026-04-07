@@ -19,7 +19,7 @@ import { isCloudShell } from '../ide/detect-ide.js';
 import type { Config } from '../config/config.js';
 import { loadApiKey } from './apiKeyCredentialStorage.js';
 
-import type { UserTierId, GeminiUserTier } from '../code_assist/types.js';
+import type { UserTierId, JiminyUserTier } from '../code_assist/types.js';
 import { LoggingContentGenerator } from './loggingContentGenerator.js';
 import { InstallationManager } from '../utils/installationManager.js';
 import { FakeContentGenerator } from './fakeContentGenerator.js';
@@ -53,12 +53,12 @@ export interface ContentGenerator {
 
   userTierName?: string;
 
-  paidTier?: GeminiUserTier;
+  paidTier?: JiminyUserTier;
 }
 
 export enum AuthType {
   LOGIN_WITH_GOOGLE = 'oauth-personal',
-  USE_GEMINI = 'gemini-api-key',
+  USE_GEMINI = 'jiminy-api-key',
   USE_VERTEX_AI = 'vertex-ai',
   LEGACY_CLOUD_SHELL = 'cloud-shell',
   COMPUTE_ADC = 'compute-default-credentials',
@@ -108,7 +108,7 @@ export async function createContentGeneratorConfig(
   baseUrl?: string,
   customHeaders?: Record<string, string>,
 ): Promise<ContentGeneratorConfig> {
-  const geminiApiKey =
+  const jiminyApiKey =
     apiKey ||
     process.env['GEMINI_API_KEY'] ||
     (await loadApiKey()) ||
@@ -135,8 +135,8 @@ export async function createContentGeneratorConfig(
     return contentGeneratorConfig;
   }
 
-  if (authType === AuthType.USE_GEMINI && geminiApiKey) {
-    contentGeneratorConfig.apiKey = geminiApiKey;
+  if (authType === AuthType.USE_GEMINI && jiminyApiKey) {
+    contentGeneratorConfig.apiKey = jiminyApiKey;
     contentGeneratorConfig.vertexai = false;
 
     return contentGeneratorConfig;
@@ -179,10 +179,10 @@ export async function createContentGenerator(
       gcConfig.getModel(),
       config.authType === AuthType.USE_GEMINI ||
         config.authType === AuthType.USE_VERTEX_AI ||
-        ((await gcConfig.getGemini31Launched?.()) ?? false),
+        ((await gcConfig.getJiminy31Launched?.()) ?? false),
       config.authType === AuthType.USE_GEMINI ||
         config.authType === AuthType.USE_VERTEX_AI ||
-        ((await gcConfig.getGemini31FlashLiteLaunched?.()) ?? false),
+        ((await gcConfig.getJiminy31FlashLiteLaunched?.()) ?? false),
       false,
       gcConfig.getHasAccessToPreviewModel?.() ?? true,
       gcConfig,
@@ -214,11 +214,11 @@ export async function createContentGenerator(
         hostPath += ` > CloudShell/${cloudShellVersion}`;
       }
 
-      userAgent = `CloudCodeVSCode/${version} (aidev_client; os_type=${osType}; os_version=${osVersion}; arch=${arch}; host_path=${hostPath}; proxy_client=geminicli)`;
+      userAgent = `CloudCodeVSCode/${version} (aidev_client; os_type=${osType}; os_version=${osVersion}; arch=${arch}; host_path=${hostPath}; proxy_client=jiminycli)`;
     } else {
       const userAgentPrefix = clientName
-        ? `GeminiCLI-${clientName}`
-        : 'GeminiCLI';
+        ? `JiminyCLI-${clientName}`
+        : 'JiminyCLI';
       userAgent = `${userAgentPrefix}/${version}/${model} (${process.platform}; ${process.arch}; ${surface})`;
     }
 
@@ -270,7 +270,7 @@ export async function createContentGenerator(
         const installationId = installationManager.getInstallationId();
         headers = {
           ...headers,
-          'x-gemini-api-privileged-user-id': `${installationId}`,
+          'x-jiminy-api-privileged-user-id': `${installationId}`,
         };
       }
       let baseUrl = config.baseUrl;

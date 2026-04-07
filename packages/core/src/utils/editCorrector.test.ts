@@ -18,77 +18,77 @@ let mockGenerateJson: any;
 
 import {
   ensureCorrectFileContent,
-  unescapeStringForGeminiBug,
+  unescapeStringForJiminyBug,
   resetEditCorrectorCaches_TEST_ONLY,
 } from './editCorrector.js';
 
 describe('editCorrector', () => {
-  describe('unescapeStringForGeminiBug', () => {
+  describe('unescapeStringForJiminyBug', () => {
     it('should unescape common sequences', () => {
-      expect(unescapeStringForGeminiBug('\\n')).toBe('\n');
-      expect(unescapeStringForGeminiBug('\\t')).toBe('\t');
-      expect(unescapeStringForGeminiBug("\\'")).toBe("'");
-      expect(unescapeStringForGeminiBug('\\"')).toBe('"');
-      expect(unescapeStringForGeminiBug('\\`')).toBe('`');
+      expect(unescapeStringForJiminyBug('\\n')).toBe('\n');
+      expect(unescapeStringForJiminyBug('\\t')).toBe('\t');
+      expect(unescapeStringForJiminyBug("\\'")).toBe("'");
+      expect(unescapeStringForJiminyBug('\\"')).toBe('"');
+      expect(unescapeStringForJiminyBug('\\`')).toBe('`');
     });
     it('should handle multiple escaped sequences', () => {
-      expect(unescapeStringForGeminiBug('Hello\\nWorld\\tTest')).toBe(
+      expect(unescapeStringForJiminyBug('Hello\\nWorld\\tTest')).toBe(
         'Hello\nWorld\tTest',
       );
     });
     it('should not alter already correct sequences', () => {
-      expect(unescapeStringForGeminiBug('\n')).toBe('\n');
-      expect(unescapeStringForGeminiBug('Correct string')).toBe(
+      expect(unescapeStringForJiminyBug('\n')).toBe('\n');
+      expect(unescapeStringForJiminyBug('Correct string')).toBe(
         'Correct string',
       );
     });
     it('should handle mixed correct and incorrect sequences', () => {
-      expect(unescapeStringForGeminiBug('\\nCorrect\t\\`')).toBe(
+      expect(unescapeStringForJiminyBug('\\nCorrect\t\\`')).toBe(
         '\nCorrect\t`',
       );
     });
     it('should handle backslash followed by actual newline character', () => {
-      expect(unescapeStringForGeminiBug('\\\n')).toBe('\n');
-      expect(unescapeStringForGeminiBug('First line\\\nSecond line')).toBe(
+      expect(unescapeStringForJiminyBug('\\\n')).toBe('\n');
+      expect(unescapeStringForJiminyBug('First line\\\nSecond line')).toBe(
         'First line\nSecond line',
       );
     });
     it('should handle multiple backslashes before an escapable character (aggressive unescaping)', () => {
-      expect(unescapeStringForGeminiBug('\\\\n')).toBe('\n');
-      expect(unescapeStringForGeminiBug('\\\\\\t')).toBe('\t');
-      expect(unescapeStringForGeminiBug('\\\\\\\\`')).toBe('`');
+      expect(unescapeStringForJiminyBug('\\\\n')).toBe('\n');
+      expect(unescapeStringForJiminyBug('\\\\\\t')).toBe('\t');
+      expect(unescapeStringForJiminyBug('\\\\\\\\`')).toBe('`');
     });
     it('should return empty string for empty input', () => {
-      expect(unescapeStringForGeminiBug('')).toBe('');
+      expect(unescapeStringForJiminyBug('')).toBe('');
     });
     it('should not alter strings with no targeted escape sequences', () => {
-      expect(unescapeStringForGeminiBug('abc def')).toBe('abc def');
-      expect(unescapeStringForGeminiBug('C:\\Folder\\File')).toBe(
+      expect(unescapeStringForJiminyBug('abc def')).toBe('abc def');
+      expect(unescapeStringForJiminyBug('C:\\Folder\\File')).toBe(
         'C:\\Folder\\File',
       );
     });
     it('should correctly process strings with some targeted escapes', () => {
-      expect(unescapeStringForGeminiBug('C:\\Users\\name')).toBe(
+      expect(unescapeStringForJiminyBug('C:\\Users\\name')).toBe(
         'C:\\Users\name',
       );
     });
     it('should handle complex cases with mixed slashes and characters', () => {
       expect(
-        unescapeStringForGeminiBug('\\\\\\\nLine1\\\nLine2\\tTab\\\\`Tick\\"'),
+        unescapeStringForJiminyBug('\\\\\\\nLine1\\\nLine2\\tTab\\\\`Tick\\"'),
       ).toBe('\nLine1\nLine2\tTab`Tick"');
     });
     it('should handle escaped backslashes', () => {
-      expect(unescapeStringForGeminiBug('\\\\')).toBe('\\');
-      expect(unescapeStringForGeminiBug('C:\\\\Users')).toBe('C:\\Users');
-      expect(unescapeStringForGeminiBug('path\\\\to\\\\file')).toBe(
+      expect(unescapeStringForJiminyBug('\\\\')).toBe('\\');
+      expect(unescapeStringForJiminyBug('C:\\\\Users')).toBe('C:\\Users');
+      expect(unescapeStringForJiminyBug('path\\\\to\\\\file')).toBe(
         'path\to\\file',
       );
     });
     it('should handle escaped backslashes mixed with other escapes (aggressive unescaping)', () => {
-      expect(unescapeStringForGeminiBug('line1\\\\\\nline2')).toBe(
+      expect(unescapeStringForJiminyBug('line1\\\\\\nline2')).toBe(
         'line1\nline2',
       );
-      expect(unescapeStringForGeminiBug('quote\\\\"text\\\\nline')).toBe(
+      expect(unescapeStringForJiminyBug('quote\\\\"text\\\\nline')).toBe(
         'quote"text\nline',
       );
     });
@@ -216,7 +216,7 @@ describe('editCorrector', () => {
 
     it('should return unescaped content when LLM is disabled and aggressiveUnescape is true', async () => {
       const content = 'LaTeX command \\\\title{Example}';
-      // unescapeStringForGeminiBug would change \\\\title to \title (literal tab and "itle")
+      // unescapeStringForJiminyBug would change \\\\title to \title (literal tab and "itle")
       const expected = 'LaTeX command \title{Example}';
 
       const result = await ensureCorrectFileContent(

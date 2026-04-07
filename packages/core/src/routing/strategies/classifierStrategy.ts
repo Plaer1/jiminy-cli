@@ -12,7 +12,7 @@ import type {
   RoutingDecision,
   RoutingStrategy,
 } from '../routingStrategy.js';
-import { resolveClassifierModel, isGemini3Model } from '../../config/models.js';
+import { resolveClassifierModel, isJiminy3Model } from '../../config/models.js';
 import { createUserContent, Type } from '@google/genai';
 import type { Config } from '../../config/config.js';
 import {
@@ -139,7 +139,7 @@ export class ClassifierStrategy implements RoutingStrategy {
       const model = context.requestedModel ?? config.getModel();
       if (
         (await config.getNumericalRoutingEnabled()) &&
-        isGemini3Model(model, config)
+        isJiminy3Model(model, config)
       ) {
         return null;
       }
@@ -171,17 +171,17 @@ export class ClassifierStrategy implements RoutingStrategy {
 
       const reasoning = routerResponse.reasoning;
       const latencyMs = Date.now() - startTime;
-      const [useGemini3_1, useGemini3_1FlashLite, useCustomToolModel] =
+      const [useJiminy3_1, useJiminy3_1FlashLite, useCustomToolModel] =
         await Promise.all([
-          config.getGemini31Launched(),
-          config.getGemini31FlashLiteLaunched(),
+          config.getJiminy31Launched(),
+          config.getJiminy31FlashLiteLaunched(),
           config.getUseCustomToolModel(),
         ]);
       const selectedModel = resolveClassifierModel(
         model,
         routerResponse.model_choice,
-        useGemini3_1,
-        useGemini3_1FlashLite,
+        useJiminy3_1,
+        useJiminy3_1FlashLite,
         useCustomToolModel,
         config.getHasAccessToPreviewModel?.() ?? true,
         config,

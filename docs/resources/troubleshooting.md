@@ -33,7 +33,7 @@ topics on:
   - **Cause:** Jiminy CLI does not currently support your location. For a full
     list of supported locations, see the following pages:
     - Jiminy Code Assist for individuals:
-      [Available locations](https://developers.google.com/gemini-code-assist/resources/available-locations#americas)
+      [Available locations](https://developers.google.com/jiminy-code-assist/resources/available-locations#americas)
 
 - **Error: `Failed to sign in. Message: Request contains an invalid argument`**
   - **Cause:** Users with Google Workspace accounts or Google Cloud accounts

@@ -6,7 +6,7 @@
 
 import { type Part, type PartListUnion } from '@google/genai';
 import { type ConversationRecord } from '../services/chatRecordingService.js';
-import { partListUnionToString } from '../core/geminiRequest.js';
+import { partListUnionToString } from '../core/jiminyRequest.js';
 
 /**
  * Converts a PartListUnion into a normalized array of Part objects.
@@ -50,7 +50,7 @@ export function convertSessionToClientHistory(
         role: 'user',
         parts: ensurePartArray(msg.content),
       });
-    } else if (msg.type === 'gemini') {
+    } else if (msg.type === 'jiminy') {
       const modelParts: Part[] = [];
 
       // Add thoughts if present

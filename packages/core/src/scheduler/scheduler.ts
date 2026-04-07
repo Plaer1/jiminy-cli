@@ -47,7 +47,7 @@ import {
   CoreEvent,
   type McpProgressPayload,
 } from '../utils/events.js';
-import { GeminiCliOperation } from '../telemetry/constants.js';
+import { JiminyCliOperation } from '../telemetry/constants.js';
 
 interface SchedulerQueueItem {
   requests: ToolCallRequestInfo[];
@@ -194,7 +194,7 @@ export class Scheduler {
   ): Promise<CompletedToolCall[]> {
     return runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.ScheduleToolCalls,
+        operation: JiminyCliOperation.ScheduleToolCalls,
         logPrompts: this.context.config.getTelemetryLogPromptsEnabled(),
       },
       async ({ metadata: spanMetadata }) => {

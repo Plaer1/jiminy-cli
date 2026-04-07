@@ -27,62 +27,62 @@ import { AuthType } from '../core/contentGenerator.js';
 import { getCommonAttributes } from './telemetryAttributes.js';
 import { sanitizeHookName } from './sanitize.js';
 
-const EVENT_CHAT_COMPRESSION = 'gemini_cli.chat_compression';
-const TOOL_CALL_COUNT = 'gemini_cli.tool.call.count';
-const TOOL_CALL_LATENCY = 'gemini_cli.tool.call.latency';
-const API_REQUEST_COUNT = 'gemini_cli.api.request.count';
-const API_REQUEST_LATENCY = 'gemini_cli.api.request.latency';
-const TOKEN_USAGE = 'gemini_cli.token.usage';
-const SESSION_COUNT = 'gemini_cli.session.count';
-const FILE_OPERATION_COUNT = 'gemini_cli.file.operation.count';
-const LINES_CHANGED = 'gemini_cli.lines.changed';
-const INVALID_CHUNK_COUNT = 'gemini_cli.chat.invalid_chunk.count';
-const CONTENT_RETRY_COUNT = 'gemini_cli.chat.content_retry.count';
+const EVENT_CHAT_COMPRESSION = 'jiminy_cli.chat_compression';
+const TOOL_CALL_COUNT = 'jiminy_cli.tool.call.count';
+const TOOL_CALL_LATENCY = 'jiminy_cli.tool.call.latency';
+const API_REQUEST_COUNT = 'jiminy_cli.api.request.count';
+const API_REQUEST_LATENCY = 'jiminy_cli.api.request.latency';
+const TOKEN_USAGE = 'jiminy_cli.token.usage';
+const SESSION_COUNT = 'jiminy_cli.session.count';
+const FILE_OPERATION_COUNT = 'jiminy_cli.file.operation.count';
+const LINES_CHANGED = 'jiminy_cli.lines.changed';
+const INVALID_CHUNK_COUNT = 'jiminy_cli.chat.invalid_chunk.count';
+const CONTENT_RETRY_COUNT = 'jiminy_cli.chat.content_retry.count';
 const CONTENT_RETRY_FAILURE_COUNT =
-  'gemini_cli.chat.content_retry_failure.count';
-const NETWORK_RETRY_COUNT = 'gemini_cli.network_retry.count';
-const MODEL_ROUTING_LATENCY = 'gemini_cli.model_routing.latency';
-const MODEL_ROUTING_FAILURE_COUNT = 'gemini_cli.model_routing.failure.count';
+  'jiminy_cli.chat.content_retry_failure.count';
+const NETWORK_RETRY_COUNT = 'jiminy_cli.network_retry.count';
+const MODEL_ROUTING_LATENCY = 'jiminy_cli.model_routing.latency';
+const MODEL_ROUTING_FAILURE_COUNT = 'jiminy_cli.model_routing.failure.count';
 const MODEL_SLASH_COMMAND_CALL_COUNT =
-  'gemini_cli.slash_command.model.call_count';
-const EVENT_HOOK_CALL_COUNT = 'gemini_cli.hook_call.count';
-const EVENT_HOOK_CALL_LATENCY = 'gemini_cli.hook_call.latency';
-const KEYCHAIN_AVAILABILITY_COUNT = 'gemini_cli.keychain.availability.count';
-const TOKEN_STORAGE_TYPE_COUNT = 'gemini_cli.token_storage.type.count';
-const OVERAGE_OPTION_COUNT = 'gemini_cli.overage_option.count';
-const CREDIT_PURCHASE_COUNT = 'gemini_cli.credit_purchase.count';
-const EVENT_ONBOARDING_START = 'gemini_cli.onboarding.start';
-const EVENT_ONBOARDING_SUCCESS = 'gemini_cli.onboarding.success';
+  'jiminy_cli.slash_command.model.call_count';
+const EVENT_HOOK_CALL_COUNT = 'jiminy_cli.hook_call.count';
+const EVENT_HOOK_CALL_LATENCY = 'jiminy_cli.hook_call.latency';
+const KEYCHAIN_AVAILABILITY_COUNT = 'jiminy_cli.keychain.availability.count';
+const TOKEN_STORAGE_TYPE_COUNT = 'jiminy_cli.token_storage.type.count';
+const OVERAGE_OPTION_COUNT = 'jiminy_cli.overage_option.count';
+const CREDIT_PURCHASE_COUNT = 'jiminy_cli.credit_purchase.count';
+const EVENT_ONBOARDING_START = 'jiminy_cli.onboarding.start';
+const EVENT_ONBOARDING_SUCCESS = 'jiminy_cli.onboarding.success';
 
 // Agent Metrics
-const AGENT_RUN_COUNT = 'gemini_cli.agent.run.count';
-const AGENT_DURATION_MS = 'gemini_cli.agent.duration';
-const AGENT_TURNS = 'gemini_cli.agent.turns';
-const AGENT_RECOVERY_ATTEMPT_COUNT = 'gemini_cli.agent.recovery_attempt.count';
+const AGENT_RUN_COUNT = 'jiminy_cli.agent.run.count';
+const AGENT_DURATION_MS = 'jiminy_cli.agent.duration';
+const AGENT_TURNS = 'jiminy_cli.agent.turns';
+const AGENT_RECOVERY_ATTEMPT_COUNT = 'jiminy_cli.agent.recovery_attempt.count';
 const AGENT_RECOVERY_ATTEMPT_DURATION =
-  'gemini_cli.agent.recovery_attempt.duration';
+  'jiminy_cli.agent.recovery_attempt.duration';
 
 // OpenTelemetry GenAI Semantic Convention Metrics
 const GEN_AI_CLIENT_TOKEN_USAGE = 'gen_ai.client.token.usage';
 const GEN_AI_CLIENT_OPERATION_DURATION = 'gen_ai.client.operation.duration';
 
 // Performance Monitoring Metrics
-const STARTUP_TIME = 'gemini_cli.startup.duration';
-const MEMORY_USAGE = 'gemini_cli.memory.usage';
-const CPU_USAGE = 'gemini_cli.cpu.usage';
-const TOOL_QUEUE_DEPTH = 'gemini_cli.tool.queue.depth';
-const TOOL_EXECUTION_BREAKDOWN = 'gemini_cli.tool.execution.breakdown';
-const TOKEN_EFFICIENCY = 'gemini_cli.token.efficiency';
-const API_REQUEST_BREAKDOWN = 'gemini_cli.api.request.breakdown';
-const PERFORMANCE_SCORE = 'gemini_cli.performance.score';
-const REGRESSION_DETECTION = 'gemini_cli.performance.regression';
+const STARTUP_TIME = 'jiminy_cli.startup.duration';
+const MEMORY_USAGE = 'jiminy_cli.memory.usage';
+const CPU_USAGE = 'jiminy_cli.cpu.usage';
+const TOOL_QUEUE_DEPTH = 'jiminy_cli.tool.queue.depth';
+const TOOL_EXECUTION_BREAKDOWN = 'jiminy_cli.tool.execution.breakdown';
+const TOKEN_EFFICIENCY = 'jiminy_cli.token.efficiency';
+const API_REQUEST_BREAKDOWN = 'jiminy_cli.api.request.breakdown';
+const PERFORMANCE_SCORE = 'jiminy_cli.performance.score';
+const REGRESSION_DETECTION = 'jiminy_cli.performance.regression';
 const REGRESSION_PERCENTAGE_CHANGE =
-  'gemini_cli.performance.regression.percentage_change';
-const BASELINE_COMPARISON = 'gemini_cli.performance.baseline.comparison';
-const FLICKER_FRAME_COUNT = 'gemini_cli.ui.flicker.count';
-const SLOW_RENDER_LATENCY = 'gemini_cli.ui.slow_render.latency';
-const EXIT_FAIL_COUNT = 'gemini_cli.exit.fail.count';
-const PLAN_EXECUTION_COUNT = 'gemini_cli.plan.execution.count';
+  'jiminy_cli.performance.regression.percentage_change';
+const BASELINE_COMPARISON = 'jiminy_cli.performance.baseline.comparison';
+const FLICKER_FRAME_COUNT = 'jiminy_cli.ui.flicker.count';
+const SLOW_RENDER_LATENCY = 'jiminy_cli.ui.slow_render.latency';
+const EXIT_FAIL_COUNT = 'jiminy_cli.exit.fail.count';
+const PLAN_EXECUTION_COUNT = 'jiminy_cli.plan.execution.count';
 
 const baseMetricDefinition = {
   getCommonAttributes,

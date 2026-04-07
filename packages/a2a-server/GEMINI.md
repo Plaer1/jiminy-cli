@@ -1,6 +1,6 @@
-# Gemini CLI A2A Server (`@google/gemini-cli-a2a-server`)
+# Jiminy CLI A2A Server (`@google/jiminy-cli-a2a-server`)
 
-Experimental Agent-to-Agent (A2A) server that exposes Gemini CLI capabilities
+Experimental Agent-to-Agent (A2A) server that exposes Jiminy CLI capabilities
 over HTTP for inter-agent communication.
 
 ## Architecture
@@ -15,8 +15,8 @@ over HTTP for inter-agent communication.
 
 ## Running
 
-- Binary entry point: `gemini-cli-a2a-server`
+- Binary entry point: `jiminy-cli-a2a-server`
 
 ## Testing
 
-- Run tests: `npm test -w @google/gemini-cli-a2a-server`
+- Run tests: `npm test -w @google/jiminy-cli-a2a-server`

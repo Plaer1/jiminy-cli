@@ -37,12 +37,12 @@ export * from './core/baseLlmClient.js';
 export * from './core/client.js';
 export * from './core/contentGenerator.js';
 export * from './core/loggingContentGenerator.js';
-export * from './core/geminiChat.js';
+export * from './core/jiminyChat.js';
 export * from './core/logger.js';
 export * from './core/prompts.js';
 export * from './core/tokenLimits.js';
 export * from './core/turn.js';
-export * from './core/geminiRequest.js';
+export * from './core/jiminyRequest.js';
 export * from './scheduler/scheduler.js';
 export * from './scheduler/types.js';
 export * from './scheduler/tool-executor.js';
@@ -91,6 +91,7 @@ export * from './utils/shell-utils.js';
 export {
   PolicyDecision,
   ApprovalMode,
+  MODES_BY_PERMISSIVENESS,
   PRIORITY_YOLO_ALLOW_ALL,
 } from './policy/types.js';
 export * from './utils/tool-utils.js';

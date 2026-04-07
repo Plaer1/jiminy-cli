@@ -9,9 +9,9 @@
  * scheduler loop, adapted to the merged AgentProtocol / AgentSession surface.
  */
 
-import { GeminiEventType } from '../core/turn.js';
+import { JiminyEventType } from '../core/turn.js';
 import type { Part } from '@google/genai';
-import type { GeminiClient } from '../core/client.js';
+import type { JiminyClient } from '../core/client.js';
 import type { Config } from '../config/config.js';
 import type { ToolCallRequestInfo } from '../scheduler/types.js';
 import type { Scheduler } from '../scheduler/scheduler.js';
@@ -20,8 +20,8 @@ import { ToolErrorType, isFatalToolError } from '../tools/tool-error.js';
 import { debugLogger } from '../utils/debugLogger.js';
 import {
   buildToolResponseData,
-  contentPartsToGeminiParts,
-  geminiPartsToContentParts,
+  contentPartsToJiminyParts,
+  jiminyPartsToContentParts,
   toolResultDisplayToContentParts,
 } from './content-utils.js';
 import { AgentSession } from './agent-session.js';
@@ -45,7 +45,7 @@ function isAbortLikeError(err: unknown): boolean {
 }
 
 export interface LegacyAgentSessionDeps {
-  client: GeminiClient;
+  client: JiminyClient;
   scheduler: Scheduler;
   config: Config;
   promptId: string;
@@ -61,7 +61,7 @@ class LegacyAgentProtocol implements AgentProtocol {
   private _abortController = new AbortController();
   private _nextStreamIdOverride?: string;
 
-  private readonly _client: GeminiClient;
+  private readonly _client: JiminyClient;
   private readonly _scheduler: Scheduler;
   private readonly _config: Config;
   private readonly _promptId: string;
@@ -105,7 +105,7 @@ class LegacyAgentProtocol implements AgentProtocol {
 
     this._beginNewStream();
     const streamId = this._translationState.streamId;
-    const parts = contentPartsToGeminiParts(message);
+    const parts = contentPartsToJiminyParts(message);
     const userMessage = this._makeUserMessageEvent(message, payload._meta);
 
     this._emit([userMessage]);
@@ -170,27 +170,27 @@ class LegacyAgentProtocol implements AgentProtocol {
           return;
         }
 
-        if (event.type === GeminiEventType.ToolCallRequest) {
+        if (event.type === JiminyEventType.ToolCallRequest) {
           toolCallRequests.push(event.value);
         }
 
         this._emit(translateEvent(event, this._translationState));
 
         switch (event.type) {
-          case GeminiEventType.Error:
-          case GeminiEventType.InvalidStream:
-          case GeminiEventType.ContextWindowWillOverflow:
+          case JiminyEventType.Error:
+          case JiminyEventType.InvalidStream:
+          case JiminyEventType.ContextWindowWillOverflow:
             this._finishStream('failed');
             return;
-          case GeminiEventType.Finished:
+          case JiminyEventType.Finished:
             if (toolCallRequests.length === 0) {
               this._finishStream(mapFinishReason(event.value.reason));
               return;
             }
             break;
-          case GeminiEventType.AgentExecutionStopped:
-          case GeminiEventType.UserCancelled:
-          case GeminiEventType.MaxSessionTurns:
+          case JiminyEventType.AgentExecutionStopped:
+          case JiminyEventType.UserCancelled:
+          case JiminyEventType.MaxSessionTurns:
             this._clearActiveStream();
             return;
           default:
@@ -224,7 +224,7 @@ class LegacyAgentProtocol implements AgentProtocol {
         const request = tc.request;
         const content: ContentPart[] = response.error
           ? [{ type: 'text', text: response.error.message }]
-          : geminiPartsToContentParts(response.responseParts);
+          : jiminyPartsToContentParts(response.responseParts);
         const displayContent = toolResultDisplayToContentParts(
           response.resultDisplay,
         );

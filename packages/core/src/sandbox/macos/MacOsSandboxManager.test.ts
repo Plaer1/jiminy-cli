@@ -20,10 +20,10 @@ describe('MacOsSandboxManager', () => {
 
   beforeEach(() => {
     mockWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-cli-macos-test-'),
+      path.join(os.tmpdir(), 'jiminy-cli-macos-test-'),
     );
     mockAllowedPaths = [
-      path.join(os.tmpdir(), 'gemini-cli-macos-test-allowed'),
+      path.join(os.tmpdir(), 'jiminy-cli-macos-test-allowed'),
     ];
     if (!fs.existsSync(mockAllowedPaths[0])) {
       fs.mkdirSync(mockAllowedPaths[0]);
@@ -75,7 +75,7 @@ describe('MacOsSandboxManager', () => {
       ); // .gitignore
       expect(profile).toContain(
         '(deny file-write* (literal (param "GOVERNANCE_FILE_1")))',
-      ); // .geminiignore
+      ); // .jiminyignore
       expect(profile).toContain(
         '(deny file-write* (subpath (param "GOVERNANCE_FILE_2")))',
       ); // .git
@@ -165,7 +165,7 @@ describe('MacOsSandboxManager', () => {
 
     it('should resolve parent directories if a file does not exist', async () => {
       const baseTmpDir = fs.mkdtempSync(
-        path.join(os.tmpdir(), 'gemini-cli-macos-realpath-test-'),
+        path.join(os.tmpdir(), 'jiminy-cli-macos-realpath-test-'),
       );
       const realPath = path.join(baseTmpDir, 'real_path');
       const nonexistentFile = path.join(realPath, 'nonexistent.txt');
