@@ -257,7 +257,7 @@ Return a JSON object with:
 `;
       const response = await client.generateJson({
         modelConfigKey: {
-          model: 'jiminy-3-pro-preview',
+          model: 'gemini-3-pro-preview',
         },
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         schema: {

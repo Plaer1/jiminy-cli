@@ -217,7 +217,7 @@ Return a JSON object with:
 - "suggested_comment": "polite closing comment"
 `;
       const response = await client.generateJson({
-        modelConfigKey: { model: 'jiminy-3-flash-preview' },
+        modelConfigKey: { model: 'gemini-3-flash-preview' },
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         schema: {
           type: 'object',

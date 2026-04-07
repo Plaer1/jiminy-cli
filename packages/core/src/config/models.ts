@@ -50,16 +50,16 @@ export interface ModelCapabilityContext {
   getExperimentalDynamicModelConfiguration(): boolean;
 }
 
-export const PREVIEW_GEMINI_MODEL = 'jiminy-3-pro-preview';
-export const PREVIEW_GEMINI_3_1_MODEL = 'jiminy-3.1-pro-preview';
+export const PREVIEW_GEMINI_MODEL = 'gemini-3-pro-preview';
+export const PREVIEW_GEMINI_3_1_MODEL = 'gemini-3.1-pro-preview';
 export const PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL =
-  'jiminy-3.1-pro-preview-customtools';
-export const PREVIEW_GEMINI_FLASH_MODEL = 'jiminy-3-flash-preview';
+  'gemini-3.1-pro-preview-customtools';
+export const PREVIEW_GEMINI_FLASH_MODEL = 'gemini-3-flash-preview';
 export const PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL =
-  'jiminy-3.1-flash-lite-preview';
-export const DEFAULT_GEMINI_MODEL = 'jiminy-2.5-pro';
-export const DEFAULT_GEMINI_FLASH_MODEL = 'jiminy-2.5-flash';
-export const DEFAULT_GEMINI_FLASH_LITE_MODEL = 'jiminy-2.5-flash-lite';
+  'gemini-3.1-flash-lite-preview';
+export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-pro';
+export const DEFAULT_GEMINI_FLASH_MODEL = 'gemini-2.5-flash';
+export const DEFAULT_GEMINI_FLASH_LITE_MODEL = 'gemini-2.5-flash-lite';
 
 export const VALID_GEMINI_MODELS = new Set([
   PREVIEW_GEMINI_MODEL,
@@ -72,8 +72,8 @@ export const VALID_GEMINI_MODELS = new Set([
   DEFAULT_GEMINI_FLASH_LITE_MODEL,
 ]);
 
-export const PREVIEW_GEMINI_MODEL_AUTO = 'auto-jiminy-3';
-export const DEFAULT_GEMINI_MODEL_AUTO = 'auto-jiminy-2.5';
+export const PREVIEW_GEMINI_MODEL_AUTO = 'auto-gemini-3';
+export const DEFAULT_GEMINI_MODEL_AUTO = 'auto-gemini-2.5';
 
 // Model aliases for user convenience.
 export const GEMINI_MODEL_ALIAS_AUTO = 'auto';
@@ -81,7 +81,28 @@ export const GEMINI_MODEL_ALIAS_PRO = 'pro';
 export const GEMINI_MODEL_ALIAS_FLASH = 'flash';
 export const GEMINI_MODEL_ALIAS_FLASH_LITE = 'flash-lite';
 
-export const DEFAULT_GEMINI_EMBEDDING_MODEL = 'jiminy-embedding-001';
+export const DEFAULT_GEMINI_EMBEDDING_MODEL = 'gemini-embedding-001';
+
+// Backward-compatibility shims for older/broken fork values.
+const LEGACY_PREVIEW_GEMINI_MODEL_AUTO = 'auto-jiminy-3';
+const LEGACY_DEFAULT_GEMINI_MODEL_AUTO = 'auto-jiminy-2.5';
+const LEGACY_MODEL_PREFIX = /^jiminy-/;
+
+function normalizeLegacyModelId(model: string): string {
+  if (model === LEGACY_PREVIEW_GEMINI_MODEL_AUTO) {
+    return PREVIEW_GEMINI_MODEL_AUTO;
+  }
+  if (model === LEGACY_DEFAULT_GEMINI_MODEL_AUTO) {
+    return DEFAULT_GEMINI_MODEL_AUTO;
+  }
+  if (model === 'jiminy') {
+    return GEMINI_MODEL_ALIAS_AUTO;
+  }
+  if (LEGACY_MODEL_PREFIX.test(model)) {
+    return model.replace(LEGACY_MODEL_PREFIX, 'gemini-');
+  }
+  return model;
+}
 
 // Cap the thinking at 8192 to prevent run-away thinking loops.
 export const DEFAULT_THINKING_MODE = 8192;
@@ -103,6 +124,7 @@ export function resolveModel(
   hasAccessToPreview: boolean = true,
   config?: ModelCapabilityContext,
 ): string {
+  requestedModel = normalizeLegacyModelId(requestedModel);
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     const resolved = config.modelConfigService.resolveModelId(requestedModel, {
       useJiminy3_1,
@@ -281,6 +303,7 @@ export function isPreviewModel(
   model: string,
   config?: ModelCapabilityContext,
 ): boolean {
+  model = normalizeLegacyModelId(model);
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     return (
       config.modelConfigService.getModelDefinition(model)?.isPreview === true
@@ -309,6 +332,7 @@ export function isProModel(
   model: string,
   config?: ModelCapabilityContext,
 ): boolean {
+  model = normalizeLegacyModelId(model);
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     return config.modelConfigService.getModelDefinition(model)?.tier === 'pro';
   }
@@ -326,17 +350,18 @@ export function isJiminy3Model(
   model: string,
   config?: ModelCapabilityContext,
 ): boolean {
+  model = normalizeLegacyModelId(model);
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     // Legacy behavior resolves the model first.
     const resolved = resolveModel(model);
     return (
       config.modelConfigService.getModelDefinition(resolved)?.family ===
-      'jiminy-3'
+      'gemini-3'
     );
   }
 
   const resolved = resolveModel(model);
-  return /^jiminy-3(\.|-|$)/.test(resolved);
+  return /^gemini-3(\.|-|$)/.test(resolved);
 }
 
 /**
@@ -346,9 +371,10 @@ export function isJiminy3Model(
  * @returns True if the model is a Jiminy-2.x model.
  */
 export function isJiminy2Model(model: string): boolean {
+  model = normalizeLegacyModelId(model);
   // This is legacy behavior, will remove this when jiminy 2 models are no
   // longer needed.
-  return /^jiminy-2(\.|$)/.test(model);
+  return /^gemini-2(\.|$)/.test(model);
 }
 
 /**
@@ -362,15 +388,16 @@ export function isCustomModel(
   model: string,
   config?: ModelCapabilityContext,
 ): boolean {
+  model = normalizeLegacyModelId(model);
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     const resolved = resolveModel(model, false, false, false, true, config);
     return (
       config.modelConfigService.getModelDefinition(resolved)?.tier ===
-        'custom' || !resolved.startsWith('jiminy-')
+        'custom' || !resolved.startsWith('gemini-')
     );
   }
   const resolved = resolveModel(model);
-  return !resolved.startsWith('jiminy-');
+  return !resolved.startsWith('gemini-');
 }
 
 /**
@@ -396,6 +423,7 @@ export function isAutoModel(
   model: string,
   config?: ModelCapabilityContext,
 ): boolean {
+  model = normalizeLegacyModelId(model);
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     return config.modelConfigService.getModelDefinition(model)?.tier === 'auto';
   }
@@ -417,13 +445,14 @@ export function supportsMultimodalFunctionResponse(
   model: string,
   config?: ModelCapabilityContext,
 ): boolean {
+  model = normalizeLegacyModelId(model);
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     return (
       config.modelConfigService.getModelDefinition(model)?.features
         ?.multimodalToolUse === true
     );
   }
-  return model.startsWith('jiminy-3-');
+  return model.startsWith('gemini-3-');
 }
 
 /**
@@ -439,6 +468,7 @@ export function isActiveModel(
   useJiminy3_1FlashLite: boolean = false,
   useCustomToolModel: boolean = false,
 ): boolean {
+  model = normalizeLegacyModelId(model);
   if (!VALID_GEMINI_MODELS.has(model)) {
     return false;
   }
