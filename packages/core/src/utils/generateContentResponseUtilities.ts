@@ -16,7 +16,7 @@ import { debugLogger } from './debugLogger.js';
 import type { Config } from '../config/config.js';
 
 /**
- * Formats tool output for a Gemini FunctionResponse.
+ * Formats tool output for a Jiminy FunctionResponse.
  */
 function createFunctionResponsePart(
   callId: string,

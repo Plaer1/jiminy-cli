@@ -1,18 +1,18 @@
 # Custom commands
 
 Custom commands let you save and reuse your favorite or most frequently used
-prompts as personal shortcuts within Gemini CLI. You can create commands that
+prompts as personal shortcuts within Jiminy CLI. You can create commands that
 are specific to a single project or commands that are available globally across
 all your projects, streamlining your workflow and ensuring consistency.
 
 ## File locations and precedence
 
-Gemini CLI discovers commands from two locations, loaded in a specific order:
+Jiminy CLI discovers commands from two locations, loaded in a specific order:
 
-1.  **User commands (global):** Located in `~/.gemini/commands/`. These commands
+1.  **User commands (global):** Located in `~/.jiminy/commands/`. These commands
     are available in any project you are working on.
 2.  **Project commands (local):** Located in
-    `<your-project-root>/.gemini/commands/`. These commands are specific to the
+    `<your-project-root>/.jiminy/commands/`. These commands are specific to the
     current project and can be checked into version control to be shared with
     your team.
 
@@ -26,8 +26,8 @@ The name of a command is determined by its file path relative to its `commands`
 directory. Subdirectories are used to create namespaced commands, with the path
 separator (`/` or `\`) being converted to a colon (`:`).
 
-- A file at `~/.gemini/commands/test.toml` becomes the command `/test`.
-- A file at `<project>/.gemini/commands/git/commit.toml` becomes the namespaced
+- A file at `~/.jiminy/commands/test.toml` becomes the command `/test`.
+- A file at `<project>/.jiminy/commands/git/commit.toml` becomes the namespaced
   command `/git:commit`.
 
 <!-- prettier-ignore -->
@@ -42,7 +42,7 @@ Your command definition files must be written in the TOML format and use the
 
 ### Required fields
 
-- `prompt` (String): The prompt that will be sent to the Gemini model when the
+- `prompt` (String): The prompt that will be sent to the Jiminy model when the
   command is executed. This can be a single-line or multi-line string.
 
 ### Optional fields
@@ -131,7 +131,7 @@ model, explaining where to find the user's input, and specifying the expected
 format and behavior.
 
 ```toml
-# In: <project>/.gemini/commands/changelog.toml
+# In: <project>/.jiminy/commands/changelog.toml
 # Invoked via: /changelog 1.2.0 added "Support for default argument parsing."
 
 description = "Adds a new entry to the project's CHANGELOG.md file."
@@ -168,7 +168,7 @@ your `prompt` and injecting their output. This is ideal for gathering context
 from your local environment, like reading file content or checking the status of
 Git.
 
-When a custom command attempts to execute a shell command, Gemini CLI will now
+When a custom command attempts to execute a shell command, Jiminy CLI will now
 prompt you for confirmation before proceeding. This is a security measure to
 ensure that only intended commands can be run.
 
@@ -198,7 +198,7 @@ This command gets the staged git diff and uses it to ask the model to write a
 commit message.
 
 ````toml
-# In: <project>/.gemini/commands/git/commit.toml
+# In: <project>/.jiminy/commands/git/commit.toml
 # Invoked via: /git:commit
 
 description = "Generates a Git commit message based on staged changes."
@@ -250,7 +250,7 @@ This command injects the content of a _fixed_ best practices file
 the review.
 
 ```toml
-# In: <project>/.gemini/commands/review.toml
+# In: <project>/.jiminy/commands/review.toml
 # Invoked via: /review FileCommandLoader.ts
 
 description = "Reviews the provided context using a best practice guide."
@@ -283,25 +283,25 @@ subdirectory for organization and the final TOML file.
 **macOS/Linux**
 
 ```bash
-mkdir -p ~/.gemini/commands/refactor
-touch ~/.gemini/commands/refactor/pure.toml
+mkdir -p ~/.jiminy/commands/refactor
+touch ~/.jiminy/commands/refactor/pure.toml
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\commands\refactor"
-New-Item -ItemType File -Force -Path "$env:USERPROFILE\.gemini\commands\refactor\pure.toml"
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.jiminy\commands\refactor"
+New-Item -ItemType File -Force -Path "$env:USERPROFILE\.jiminy\commands\refactor\pure.toml"
 ```
 
 **2. Add the content to the file:**
 
-Open `~/.gemini/commands/refactor/pure.toml` in your editor and add the
+Open `~/.jiminy/commands/refactor/pure.toml` in your editor and add the
 following content. We are including the optional `description` for best
 practice.
 
 ```toml
-# In: ~/.gemini/commands/refactor/pure.toml
+# In: ~/.jiminy/commands/refactor/pure.toml
 # This command will be invoked via: /refactor:pure
 
 description = "Asks the model to refactor the current context into a pure function."
@@ -326,4 +326,4 @@ to the context, and then invoke your command:
 > /refactor:pure
 ```
 
-Gemini CLI will then execute the multi-line prompt defined in your TOML file.
+Jiminy CLI will then execute the multi-line prompt defined in your TOML file.

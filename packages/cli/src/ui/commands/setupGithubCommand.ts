@@ -65,7 +65,7 @@ function getOpenUrlsCommands(readmeUrl: string): string[] {
   return commands;
 }
 
-// Add Gemini CLI specific entries to .gitignore file
+// Add Jiminy CLI specific entries to .gitignore file
 export async function updateGitignore(gitRepoRoot: string): Promise<void> {
   const gitignoreEntries = ['.gemini/', 'gha-creds-*.json'];
 
@@ -270,7 +270,7 @@ export const setupGithubCommand: SlashCommand = {
       toolName: 'run_shell_command',
       toolArgs: {
         description:
-          'Setting up GitHub Actions to triage issues and review PRs with Gemini.',
+          'Setting up GitHub Actions to triage issues and review PRs with Jiminy.',
         command,
       },
     };

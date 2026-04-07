@@ -17,14 +17,14 @@ interface MigrateArgs {
 }
 
 /**
- * Mapping from Claude Code event names to Gemini event names
+ * Mapping from Claude Code event names to Jiminy event names
  */
 const EVENT_MAPPING: Record<string, string> = {
   PreToolUse: 'BeforeTool',
   PostToolUse: 'AfterTool',
   UserPromptSubmit: 'BeforeAgent',
   Stop: 'AfterAgent',
-  SubAgentStop: 'AfterAgent', // Gemini doesn't have sub-agents, map to AfterAgent
+  SubAgentStop: 'AfterAgent', // Jiminy doesn't have sub-agents, map to AfterAgent
   SessionStart: 'SessionStart',
   SessionEnd: 'SessionEnd',
   PreCompact: 'PreCompress',
@@ -32,7 +32,7 @@ const EVENT_MAPPING: Record<string, string> = {
 };
 
 /**
- * Mapping from Claude Code tool names to Gemini tool names
+ * Mapping from Claude Code tool names to Jiminy tool names
  */
 const TOOL_NAME_MAPPING: Record<string, string> = {
   Edit: 'replace',
@@ -45,7 +45,7 @@ const TOOL_NAME_MAPPING: Record<string, string> = {
 };
 
 /**
- * Transform a matcher regex to update tool names from Claude to Gemini
+ * Transform a matcher regex to update tool names from Claude to Jiminy
  */
 function transformMatcher(matcher: string | undefined): string | undefined {
   if (!matcher) return matcher;
@@ -63,7 +63,7 @@ function transformMatcher(matcher: string | undefined): string | undefined {
 }
 
 /**
- * Migrate a Claude Code hook configuration to Gemini format
+ * Migrate a Claude Code hook configuration to Jiminy format
  */
 function migrateClaudeHook(claudeHook: unknown): unknown {
   if (!claudeHook || typeof claudeHook !== 'object') {
@@ -93,7 +93,7 @@ function migrateClaudeHook(claudeHook: unknown): unknown {
     migrated['type'] = 'command';
   }
 
-  // Map timeout field (Claude uses seconds, Gemini uses seconds)
+  // Map timeout field (Claude uses seconds, Jiminy uses seconds)
   // eslint-disable-next-line no-restricted-syntax
   if ('timeout' in hook && typeof hook['timeout'] === 'number') {
     migrated['timeout'] = hook['timeout'];
@@ -103,7 +103,7 @@ function migrateClaudeHook(claudeHook: unknown): unknown {
 }
 
 /**
- * Migrate Claude Code hooks configuration to Gemini format
+ * Migrate Claude Code hooks configuration to Jiminy format
  */
 function migrateClaudeHooks(claudeConfig: unknown): Record<string, unknown> {
   if (!claudeConfig || typeof claudeConfig !== 'object') {
@@ -235,7 +235,7 @@ export async function handleMigrateFromClaude() {
     `Migrating ${Object.keys(migratedHooks).length} hook event(s)...`,
   );
 
-  // Load current Gemini settings
+  // Load current Jiminy settings
   const settings = loadSettings(workingDir);
 
   // Merge migrated hooks with existing hooks
@@ -260,7 +260,7 @@ export async function handleMigrateFromClaude() {
 
 export const migrateCommand: CommandModule = {
   command: 'migrate',
-  describe: 'Migrate hooks from Claude Code to Gemini CLI',
+  describe: 'Migrate hooks from Claude Code to Jiminy CLI',
   builder: (yargs) =>
     yargs.option('from-claude', {
       describe: 'Migrate from Claude Code hooks',
@@ -274,7 +274,7 @@ export const migrateCommand: CommandModule = {
       await handleMigrateFromClaude();
     } else {
       debugLogger.log(
-        'Usage: gemini hooks migrate --from-claude\n\nMigrate hooks from Claude Code to Gemini CLI format.',
+        'Usage: jiminy hooks migrate --from-claude\n\nMigrate hooks from Claude Code to Jiminy CLI format.',
       );
     }
     await exitCli();

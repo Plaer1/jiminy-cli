@@ -804,7 +804,7 @@ export async function start_sandbox(
 
 // Helper function to start a sandbox using LXC/LXD.
 // Unlike Docker/Podman, LXC does not launch a transient container from an
-// image. The user creates and manages their own LXC container; Gemini runs
+// image. The user creates and manages their own LXC container; Jiminy runs
 // inside it via `lxc exec`. The container name is stored in config.image
 // (default: "gemini-sandbox"). The workspace is bind-mounted into the
 // container at the same absolute path.

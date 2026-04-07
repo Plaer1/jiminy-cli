@@ -501,7 +501,7 @@ const SETTINGS_SCHEMA = {
         requiresRestart: false,
         default: false,
         description:
-          'Show Gemini CLI model thoughts in the terminal window title during the working phase',
+          'Show Jiminy CLI model thoughts in the terminal window title during the working phase',
         showInDialog: true,
       },
       dynamicWindowTitle: {
@@ -521,7 +521,7 @@ const SETTINGS_SCHEMA = {
         requiresRestart: true,
         default: true,
         description:
-          'Show a warning when running Gemini CLI in the home directory.',
+          'Show a warning when running Jiminy CLI in the home directory.',
         showInDialog: true,
       },
       showCompatibilityWarnings: {
@@ -935,7 +935,7 @@ const SETTINGS_SCHEMA = {
         category: 'Model',
         requiresRestart: false,
         default: undefined as string | undefined,
-        description: 'The Gemini model to use for conversations.',
+        description: 'The Jiminy model to use for conversations.',
         showInDialog: true,
       },
       maxSessionTurns: {
@@ -1321,7 +1321,7 @@ const SETTINGS_SCHEMA = {
             label: 'Respect .gitignore',
             category: 'Context',
             requiresRestart: true,
-            default: true,
+            default: false,
             description: 'Respect .gitignore files when searching.',
             showInDialog: true,
           },
@@ -1664,7 +1664,7 @@ const SETTINGS_SCHEMA = {
         label: 'Allow Permanent Tool Approval',
         category: 'Security',
         requiresRestart: false,
-        default: false,
+        default: true,
         description:
           'Enable the "Allow for all future sessions" option in tool confirmation dialogs.',
         showInDialog: true,
@@ -1674,7 +1674,7 @@ const SETTINGS_SCHEMA = {
         label: 'Auto-add to Policy by Default',
         category: 'Security',
         requiresRestart: false,
-        default: false,
+        default: true,
         description: oneLine`
           When enabled, the "Allow for all future sessions" option becomes the
           default choice for low-risk tools in trusted workspaces.
@@ -1807,7 +1807,7 @@ const SETTINGS_SCHEMA = {
         label: 'Enable Context-Aware Security',
         category: 'Security',
         requiresRestart: true,
-        default: false,
+        default: true,
         description:
           'Enable the context-aware security checker. This feature uses an LLM to dynamically generate and enforce security policies for tool use based on your prompt, providing an additional layer of protection against unintended actions.',
         showInDialog: true,
@@ -2045,7 +2045,7 @@ const SETTINGS_SCHEMA = {
         label: 'Model Steering',
         category: 'Experimental',
         requiresRestart: false,
-        default: false,
+        default: true,
         description:
           'Enable model steering (user hints) to guide the model during tool execution.',
         showInDialog: true,
@@ -2086,7 +2086,7 @@ const SETTINGS_SCHEMA = {
             requiresRestart: true,
             default: false,
             description:
-              'Enable the Gemma Model Router (experimental). Requires a local endpoint serving Gemma via the Gemini API using LiteRT-LM shim.',
+              'Enable the Gemma Model Router (experimental). Requires a local endpoint serving Gemma via the Jiminy API using LiteRT-LM shim.',
             showInDialog: false,
           },
           classifier: {
@@ -2611,7 +2611,7 @@ export const SETTINGS_SCHEMA_DEFINITIONS: Record<
       extension: {
         type: 'object',
         description:
-          'Metadata describing the Gemini CLI extension that owns this MCP server.',
+          'Metadata describing the Jiminy CLI extension that owns this MCP server.',
         additionalProperties: { type: ['string', 'boolean', 'number'] },
       },
       oauth: {
@@ -2704,7 +2704,7 @@ export const SETTINGS_SCHEMA_DEFINITIONS: Record<
   },
   TelemetrySettings: {
     type: 'object',
-    description: 'Telemetry configuration for Gemini CLI.',
+    description: 'Telemetry configuration for Jiminy CLI.',
     additionalProperties: false,
     properties: {
       enabled: {
@@ -2803,7 +2803,7 @@ export const SETTINGS_SCHEMA_DEFINITIONS: Record<
   CustomTheme: {
     type: 'object',
     description:
-      'Custom theme definition used for styling Gemini CLI output. Colors are provided as hex strings or named ANSI colors.',
+      'Custom theme definition used for styling Jiminy CLI output. Colors are provided as hex strings or named ANSI colors.',
     additionalProperties: false,
     properties: {
       type: {

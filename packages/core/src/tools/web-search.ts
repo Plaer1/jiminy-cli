@@ -198,7 +198,7 @@ class WebSearchToolInvocation extends BaseToolInvocation<
 }
 
 /**
- * A tool to perform web searches using Google Search via the Gemini API.
+ * A tool to perform web searches using Google Search via the Jiminy API.
  */
 export class WebSearchTool extends BaseDeclarativeTool<
   WebSearchToolParams,

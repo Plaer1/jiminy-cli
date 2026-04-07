@@ -257,7 +257,7 @@ export class ChatRecordingService {
           message.displayContent,
         );
         if (msg.type === 'gemini') {
-          // If it's a new Gemini message then incorporate any queued thoughts.
+          // If it's a new Jiminy message then incorporate any queued thoughts.
           conversation.messages.push({
             ...msg,
             thoughts: this.queuedThoughts,
@@ -295,7 +295,7 @@ export class ChatRecordingService {
   }
 
   /**
-   * Updates the tokens for the last message in the conversation (which should be by Gemini).
+   * Updates the tokens for the last message in the conversation (which should be by Jiminy).
    */
   recordMessageTokens(
     respUsageMetadata: GenerateContentResponseUsageMetadata,
@@ -334,7 +334,7 @@ export class ChatRecordingService {
   }
 
   /**
-   * Adds tool calls to the last message in the conversation (which should be by Gemini).
+   * Adds tool calls to the last message in the conversation (which should be by Jiminy).
    * This method enriches tool calls with metadata from the ToolRegistry.
    */
   recordToolCalls(model: string, toolCalls: ToolCallRecord[]): void {
@@ -356,12 +356,12 @@ export class ChatRecordingService {
     try {
       this.updateConversation((conversation) => {
         const lastMsg = this.getLastMessage(conversation);
-        // If a tool call was made, but the last message isn't from Gemini, it's because Gemini is
+        // If a tool call was made, but the last message isn't from Jiminy, it's because Jiminy is
         // calling tools without starting the message with text.  So the user submits a prompt, and
-        // Gemini immediately calls a tool (maybe with some thinking first).  In that case, create
-        // a new empty Gemini message.
-        // Also if there are any queued thoughts, it means this tool call(s) is from a new Gemini
-        // message--because it's thought some more since we last, if ever, created a new Gemini
+        // Jiminy immediately calls a tool (maybe with some thinking first).  In that case, create
+        // a new empty Jiminy message.
+        // Also if there are any queued thoughts, it means this tool call(s) is from a new Jiminy
+        // message--because it's thought some more since we last, if ever, created a new Jiminy
         // message from tool calls, when we dequeued the thoughts.
         if (
           !lastMsg ||
@@ -391,7 +391,7 @@ export class ChatRecordingService {
           }
           conversation.messages.push(newMsg);
         } else {
-          // The last message is an existing Gemini message that we need to update.
+          // The last message is an existing Jiminy message that we need to update.
 
           // Update any existing tool call entries.
           if (!lastMsg.toolCalls) {

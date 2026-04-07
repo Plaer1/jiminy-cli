@@ -102,7 +102,7 @@ export async function resolveWorkspacePolicyState(options: {
   if (trustedFolder && !disableWorkspacePolicies) {
     const storage = new Storage(cwd);
 
-    // If we are in the home directory (or rather, our target Gemini dir is the global one),
+    // If we are in the home directory (or rather, our target Jiminy dir is the global one),
     // don't treat it as a workspace to avoid loading global policies twice.
     if (storage.isWorkspaceHomeDir()) {
       return { workspacePoliciesDir: undefined };

@@ -1,6 +1,6 @@
 # Release extensions
 
-Release Gemini CLI extensions to your users through a Git repository or GitHub
+Release Jiminy CLI extensions to your users through a Git repository or GitHub
 Releases.
 
 Git repository releases are the simplest approach and offer the most flexibility
@@ -11,7 +11,7 @@ binary files.
 
 ## List your extension in the gallery
 
-The [Gemini CLI extension gallery](https://geminicli.com/extensions/browse/)
+The [Jiminy CLI extension gallery](https://geminicli.com/extensions/browse/)
 automatically indexes public extensions to help users discover your work. You
 don't need to submit an issue or email us to list your extension.
 
@@ -19,10 +19,10 @@ To have your extension automatically discovered and listed:
 
 1.  **Use a public repository:** Ensure your extension is hosted in a public
     GitHub repository.
-2.  **Add the GitHub topic:** Add the `gemini-cli-extension` topic to your
+2.  **Add the GitHub topic:** Add the `jiminy-cli-extension` topic to your
     repository's **About** section. Our crawler uses this topic to find new
     extensions.
-3.  **Place the manifest at the root:** Ensure your `gemini-extension.json` file
+3.  **Place the manifest at the root:** Ensure your `jiminy-extension.json` file
     is in the absolute root of the repository or the release archive.
 
 Our system crawls tagged repositories daily. Once you tag your repository, your
@@ -32,13 +32,13 @@ extension will appear in the gallery if it passes validation.
 
 Releasing through Git is the most flexible option. Create a public Git
 repository and provide the URL to your users. They can then install your
-extension using `gemini extensions install <your-repo-uri>`.
+extension using `jiminy extensions install <your-repo-uri>`.
 
 Users can optionally depend on a specific branch, tag, or commit using the
 `--ref` argument. For example:
 
 ```bash
-gemini extensions install <your-repo-uri> --ref=stable
+jiminy extensions install <your-repo-uri> --ref=stable
 ```
 
 Whenever you push commits to the referenced branch, the CLI prompts users to
@@ -62,7 +62,7 @@ Distributing extensions through
 [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
 provides a faster installation experience by avoiding a repository clone.
 
-Gemini CLI checks for updates by looking for the **Latest** release on GitHub.
+Jiminy CLI checks for updates by looking for the **Latest** release on GitHub.
 Users can also install specific versions using the `--ref` argument with a
 release tag. Use the `--pre-release` flag to install the latest version even if
 it isn't marked as **Latest**.
@@ -79,7 +79,7 @@ platform-independent, provide a single generic asset.
 
 #### Platform-specific archives
 
-To let Gemini CLI find the correct asset for a user's platform, use the
+To let Jiminy CLI find the correct asset for a user's platform, use the
 following naming convention:
 
 1.  **Platform and architecture-specific:**
@@ -104,7 +104,7 @@ Use these values for the placeholders:
 
 #### Archive structure
 
-Archives must be fully contained extensions. The `gemini-extension.json` file
+Archives must be fully contained extensions. The `jiminy-extension.json` file
 must be at the root of the archive. The rest of the layout should match a
 standard extension structure.
 
@@ -157,11 +157,11 @@ jobs:
 
 If you need to move your extension to a new repository (e.g., from a personal
 account to an organization) or rename it, you can use the `migratedTo` property
-in your `gemini-extension.json` file to seamlessly transition your users.
+in your `jiminy-extension.json` file to seamlessly transition your users.
 
 1. **Create the new repository**: Setup your extension in its new location.
 2. **Update the old repository**: In your original repository, update the
-   `gemini-extension.json` file to include the `migratedTo` property, pointing
+   `jiminy-extension.json` file to include the `migratedTo` property, pointing
    to the new repository URL, and bump the version number. You can optionally
    change the `name` of your extension at this time in the new repository.
    ```json
@@ -173,7 +173,7 @@ in your `gemini-extension.json` file to seamlessly transition your users.
    ```
 3. **Release the update**: Publish this new version in your old repository.
 
-When users check for updates, the Gemini CLI will detect the `migratedTo` field,
+When users check for updates, the Jiminy CLI will detect the `migratedTo` field,
 verify that the new repository contains a valid extension update, and
 automatically update their local installation to track the new source and name
 moving forward. All extension settings will automatically migrate to the new

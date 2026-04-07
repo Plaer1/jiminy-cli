@@ -6,7 +6,7 @@ for either npx or a global npm installation.
 ## Method 1: Using npx
 
 npx runs packages from a temporary cache without a permanent installation. To
-"uninstall" the CLI, you must clear this cache, which will remove gemini-cli and
+"uninstall" the CLI, you must clear this cache, which will remove jiminy-cli and
 any other packages previously executed with npx.
 
 The npx cache is a directory named `_npx` inside your main npm cache folder. You
@@ -28,11 +28,11 @@ Remove-Item -Path (Join-Path $env:LocalAppData "npm-cache\_npx") -Recurse -Force
 
 ## Method 2: Using npm (global install)
 
-If you installed the CLI globally (e.g., `npm install -g @google/gemini-cli`),
+If you installed the CLI globally (e.g., `npm install -g @google/jiminy-cli`),
 use the `npm uninstall` command with the `-g` flag to remove it.
 
 ```bash
-npm uninstall -g @google/gemini-cli
+npm uninstall -g @google/jiminy-cli
 ```
 
 This command completely removes the package from your system.
@@ -40,17 +40,17 @@ This command completely removes the package from your system.
 ## Method 3: Homebrew
 
 If you installed the CLI globally using Homebrew (e.g.,
-`brew install gemini-cli`), use the `brew uninstall` command to remove it.
+`brew install jiminy-cli`), use the `brew uninstall` command to remove it.
 
 ```bash
-brew uninstall gemini-cli
+brew uninstall jiminy-cli
 ```
 
 ## Method 4: MacPorts
 
 If you installed the CLI globally using MacPorts (e.g.,
-`sudo port install gemini-cli`), use the `port uninstall` command to remove it.
+`sudo port install jiminy-cli`), use the `port uninstall` command to remove it.
 
 ```bash
-sudo port uninstall gemini-cli
+sudo port uninstall jiminy-cli
 ```

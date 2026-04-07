@@ -129,8 +129,8 @@ export class GeminiAgent {
       },
       {
         id: AuthType.USE_GEMINI,
-        name: 'Gemini API key',
-        description: 'Use an API key with Gemini Developer API',
+        name: 'Jiminy API key',
+        description: 'Use an API key with Jiminy Developer API',
         _meta: {
           'api-key': {
             provider: 'google',
@@ -162,7 +162,7 @@ export class GeminiAgent {
       authMethods,
       agentInfo: {
         name: 'gemini-cli',
-        title: 'Gemini CLI',
+        title: 'Jiminy CLI',
         version,
       },
       agentCapabilities: {
@@ -270,14 +270,14 @@ export class GeminiAgent {
       );
       isAuthenticated = true;
 
-      // Extra validation for Gemini API key
+      // Extra validation for Jiminy API key
       const contentGeneratorConfig = config.getContentGeneratorConfig();
       if (
         authType === AuthType.USE_GEMINI &&
         (!contentGeneratorConfig || !contentGeneratorConfig.apiKey)
       ) {
         isAuthenticated = false;
-        authErrorMessage = 'Gemini API key is missing or not configured.';
+        authErrorMessage = 'Jiminy API key is missing or not configured.';
       }
     } catch (e) {
       isAuthenticated = false;
@@ -1718,7 +1718,7 @@ function buildAvailableModels(
       value: DEFAULT_GEMINI_MODEL_AUTO,
       title: getDisplayString(DEFAULT_GEMINI_MODEL_AUTO),
       description:
-        'Let Gemini CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
+        'Let Jiminy CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
     },
   ];
 
@@ -1727,8 +1727,8 @@ function buildAvailableModels(
       value: PREVIEW_GEMINI_MODEL_AUTO,
       title: getDisplayString(PREVIEW_GEMINI_MODEL_AUTO),
       description: useGemini31
-        ? 'Let Gemini CLI decide the best model for the task: gemini-3.1-pro, gemini-3-flash'
-        : 'Let Gemini CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
+        ? 'Let Jiminy CLI decide the best model for the task: gemini-3.1-pro, gemini-3-flash'
+        : 'Let Jiminy CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
     });
   }
 

@@ -15,13 +15,13 @@
           { "label": "Examples", "slug": "docs/get-started/examples" },
           { "label": "CLI cheatsheet", "slug": "docs/cli/cli-reference" },
           {
-            "label": "Gemini 3 on Gemini CLI",
+            "label": "Jiminy 3 on Jiminy CLI",
             "slug": "docs/get-started/gemini-3"
           }
         ]
       },
       {
-        "label": "Use Gemini CLI",
+        "label": "Use Jiminy CLI",
         "items": [
           {
             "label": "File management",

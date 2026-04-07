@@ -1,19 +1,19 @@
 # Tools reference
 
-Gemini CLI uses tools to interact with your local environment, access
+Jiminy CLI uses tools to interact with your local environment, access
 information, and perform actions on your behalf. These tools extend the model's
 capabilities beyond text generation, letting it read files, execute commands,
 and search the web.
 
-## How to use Gemini CLI's tools
+## How to use Jiminy CLI's tools
 
-Tools are generally invoked automatically by Gemini CLI when it needs to perform
+Tools are generally invoked automatically by Jiminy CLI when it needs to perform
 an action. However, you can also trigger specific tools manually using shorthand
 syntax.
 
 ### Automatic execution and security
 
-When the model wants to use a tool, Gemini CLI evaluates the request against its
+When the model wants to use a tool, Jiminy CLI evaluates the request against its
 security policies.
 
 - **User confirmation:** You must manually approve tools that modify files or
@@ -69,7 +69,7 @@ function.
 | Category    | Tool                                             | Kind          | Description                                                                                                                                                                                                                                 |
 | :---------- | :----------------------------------------------- | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Execution   | [`run_shell_command`](../tools/shell.md)         | `Execute`     | Executes arbitrary shell commands. Supports interactive sessions and background processes. Requires manual confirmation.<br><br>**Parameters:** `command`, `description`, `dir_path`, `is_background`                                       |
-| File System | [`glob`](../tools/file-system.md)                | `Search`      | Finds files matching specific glob patterns across the workspace.<br><br>**Parameters:** `pattern`, `dir_path`, `case_sensitive`, `respect_git_ignore`, `respect_gemini_ignore`                                                             |
+| File System | [`glob`](../tools/file-system.md)                | `Search`      | Finds files matching specific glob patterns across the workspace.<br><br>**Parameters:** `pattern`, `dir_path`, `case_sensitive`, `respect_git_ignore`, `respect_jiminy_ignore`                                                             |
 | File System | [`grep_search`](../tools/file-system.md)         | `Search`      | Searches for a regular expression pattern within file contents. Legacy alias: `search_file_content`.<br><br>**Parameters:** `pattern`, `dir_path`, `include`, `exclude_pattern`, `names_only`, `max_matches_per_file`, `total_max_matches`  |
 | File System | [`list_directory`](../tools/file-system.md)      | `Read`        | Lists the names of files and subdirectories within a specified path.<br><br>**Parameters:** `dir_path`, `ignore`, `file_filtering_options`                                                                                                  |
 | File System | [`read_file`](../tools/file-system.md)           | `Read`        | Reads the content of a specific file. Supports text, images, audio, and PDF.<br><br>**Parameters:** `file_path`, `start_line`, `end_line`                                                                                                   |
@@ -78,8 +78,8 @@ function.
 | File System | [`write_file`](../tools/file-system.md)          | `Edit`        | Creates or overwrites a file with new content. Requires manual confirmation.<br><br>**Parameters:** `file_path`, `content`                                                                                                                  |
 | Interaction | [`ask_user`](../tools/ask-user.md)               | `Communicate` | Requests clarification or missing information via an interactive dialog.<br><br>**Parameters:** `questions`                                                                                                                                 |
 | Interaction | [`write_todos`](../tools/todos.md)               | `Other`       | Maintains an internal list of subtasks. The model uses this to track its own progress and display it to you.<br><br>**Parameters:** `todos`                                                                                                 |
-| Memory      | [`activate_skill`](../tools/activate-skill.md)   | `Other`       | Loads specialized procedural expertise for specific tasks from the `.gemini/skills` directory.<br><br>**Parameters:** `name`                                                                                                                |
-| Memory      | [`get_internal_docs`](../tools/internal-docs.md) | `Think`       | Accesses Gemini CLI's own documentation to provide more accurate answers about its capabilities.<br><br>**Parameters:** `path`                                                                                                              |
+| Memory      | [`activate_skill`](../tools/activate-skill.md)   | `Other`       | Loads specialized procedural expertise for specific tasks from the `.jiminy/skills` directory.<br><br>**Parameters:** `name`                                                                                                                |
+| Memory      | [`get_internal_docs`](../tools/internal-docs.md) | `Think`       | Accesses Jiminy CLI's own documentation to provide more accurate answers about its capabilities.<br><br>**Parameters:** `path`                                                                                                              |
 | Memory      | [`save_memory`](../tools/memory.md)              | `Think`       | Persists specific facts and project details to your `GEMINI.md` file to retain context.<br><br>**Parameters:** `fact`                                                                                                                       |
 | Planning    | [`enter_plan_mode`](../tools/planning.md)        | `Plan`        | Switches the CLI to a safe, read-only "Plan Mode" for researching complex changes.<br><br>**Parameters:** `reason`                                                                                                                          |
 | Planning    | [`exit_plan_mode`](../tools/planning.md)         | `Plan`        | Finalizes a plan, presents it for review, and requests approval to start implementation.<br><br>**Parameters:** `plan`                                                                                                                      |
@@ -92,7 +92,7 @@ function.
 For developers, the tool system is designed to be extensible and robust. The
 `ToolRegistry` class manages all available tools.
 
-You can extend Gemini CLI with custom tools by configuring
+You can extend Jiminy CLI with custom tools by configuring
 `tools.discoveryCommand` in your settings or by connecting to MCP servers.
 
 <!-- prettier-ignore -->

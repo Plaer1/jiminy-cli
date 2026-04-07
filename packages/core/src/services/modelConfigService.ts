@@ -68,7 +68,7 @@ export interface ModelDefinition {
     // Whether the model supports thinking.
     thinking?: boolean;
     // Whether the model supports mutlimodal function responses. This is
-    // supported in Gemini 3.
+    // supported in Jiminy 3.
     multimodalToolUse?: boolean;
   };
 }

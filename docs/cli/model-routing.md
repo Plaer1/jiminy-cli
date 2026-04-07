@@ -1,6 +1,6 @@
 # Model routing
 
-Gemini CLI includes a model routing feature that automatically switches to a
+Jiminy CLI includes a model routing feature that automatically switches to a
 fallback model in case of a model failure. This feature is enabled by default
 and provides resilience when the primary model is unavailable.
 
@@ -28,21 +28,21 @@ policies.
 
 ### Local Model Routing (Experimental)
 
-Gemini CLI supports using a local model for routing decisions. When configured,
-Gemini CLI will use a locally-running **Gemma** model to make routing decisions
+Jiminy CLI supports using a local model for routing decisions. When configured,
+Jiminy CLI will use a locally-running **Gemma** model to make routing decisions
 (instead of sending routing decisions to a hosted model). This feature can help
 reduce costs associated with hosted model usage while offering similar routing
 decision latency and quality.
 
 In order to use this feature, the local Gemma model **must** be served behind a
-Gemini API and accessible via HTTP at an endpoint configured in `settings.json`.
+Jiminy API and accessible via HTTP at an endpoint configured in `settings.json`.
 
 For more details on how to configure local model routing, see
 [Local Model Routing](../core/local-model-routing.md).
 
 ### Model selection precedence
 
-The model used by Gemini CLI is determined by the following order of precedence:
+The model used by Jiminy CLI is determined by the following order of precedence:
 
 1.  **`--model` command-line flag:** A model specified with the `--model` flag
     when launching the CLI will always be used.
@@ -54,6 +54,6 @@ The model used by Gemini CLI is determined by the following order of precedence:
     will be used.
 4.  **Local model (experimental):** If the Gemma local model router is enabled
     in your `settings.json` file, the CLI will use the local Gemma model
-    (instead of Gemini models) to route the request to an appropriate model.
+    (instead of Jiminy models) to route the request to an appropriate model.
 5.  **Default model:** If none of the above are set, the default model will be
     used. The default model is `auto`

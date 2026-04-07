@@ -17,7 +17,7 @@ interface GeminiMessageContentProps {
 }
 
 /*
- * Gemini message content is a semi-hacked component. The intention is to represent a partial
+ * Jiminy message content is a semi-hacked component. The intention is to represent a partial
  * of GeminiMessage and is only used when a response gets too long. In that instance messages
  * are split into multiple GeminiMessageContent's to enable the root <Static> component in
  * App.tsx to be as performant as humanly possible.

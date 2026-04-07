@@ -1016,7 +1016,7 @@ export class GeminiChat {
 
   /**
    * Records completed tool calls with full metadata.
-   * This is called by external components when tool calls complete, before sending responses to Gemini.
+   * This is called by external components when tool calls complete, before sending responses to Jiminy.
    */
   recordCompletedToolCalls(
     model: string,

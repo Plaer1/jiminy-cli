@@ -316,7 +316,7 @@ function handleError(
 // ---------------------------------------------------------------------------
 
 /**
- * Maps a Gemini FinishReason to an AgentEnd reason.
+ * Maps a Jiminy FinishReason to an AgentEnd reason.
  */
 export function mapFinishReason(
   reason: FinishReason | undefined,
@@ -438,7 +438,7 @@ function isStructuredError(error: unknown): error is StructuredError {
 }
 
 /**
- * Maps Gemini usageMetadata to Usage.
+ * Maps Jiminy usageMetadata to Usage.
  */
 export function mapUsage(
   metadata: {

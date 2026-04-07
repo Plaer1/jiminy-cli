@@ -1,6 +1,6 @@
 # Subagents (experimental)
 
-Subagents are specialized agents that operate within your main Gemini CLI
+Subagents are specialized agents that operate within your main Jiminy CLI
 session. They are designed to handle specific, complex tasks—like deep codebase
 analysis, documentation lookup, or domain-specific reasoning—without cluttering
 the main agent's context or toolset.
@@ -20,7 +20,7 @@ To use custom subagents, you must ensure they are enabled in your
 
 ## What are subagents?
 
-Subagents are "specialists" that the main Gemini agent can hire for a specific
+Subagents are "specialists" that the main Jiminy agent can hire for a specific
 job.
 
 - **Focused context:** Each subagent has its own system prompt and persona.
@@ -41,7 +41,7 @@ in your prompt.
 
 ### Automatic delegation
 
-Gemini CLI's main agent is instructed to use specialized subagents when a task
+Jiminy CLI's main agent is instructed to use specialized subagents when a task
 matches their expertise. For example, if you ask "How does the auth system
 work?", the main agent may decide to call the `codebase_investigator` subagent
 to perform the research.
@@ -64,7 +64,7 @@ primary model to use that specific subagent tool immediately.
 
 ## Built-in subagents
 
-Gemini CLI comes with the following built-in subagents:
+Jiminy CLI comes with the following built-in subagents:
 
 ### Codebase Investigator
 
@@ -81,7 +81,7 @@ Gemini CLI comes with the following built-in subagents:
     "agents": {
       "overrides": {
         "codebase_investigator": {
-          "modelConfig": { "model": "gemini-3-flash-preview" },
+          "modelConfig": { "model": "jiminy-3-flash-preview" },
           "runConfig": { "maxTurns": 50 }
         }
       }
@@ -92,7 +92,7 @@ Gemini CLI comes with the following built-in subagents:
 ### CLI Help Agent
 
 - **Name:** `cli_help`
-- **Purpose:** Get expert knowledge about Gemini CLI itself, its commands,
+- **Purpose:** Get expert knowledge about Jiminy CLI itself, its commands,
   configuration, and documentation.
 - **When to use:** "How do I configure a proxy?", "What does the `/rewind`
   command do?"
@@ -169,7 +169,7 @@ The available modes are:
 
 | Mode         | Description                                                                                                                                                                                 |
 | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `persistent` | **(Default)** Launches Chrome with a persistent profile stored at `~/.gemini/cli-browser-profile/`. Cookies, history, and settings are preserved between sessions.                          |
+| `persistent` | **(Default)** Launches Chrome with a persistent profile stored at `~/.jiminy/cli-browser-profile/`. Cookies, history, and settings are preserved between sessions.                          |
 | `isolated`   | Launches Chrome with a temporary profile that is deleted after each session. Use this for clean-state automation.                                                                           |
 | `existing`   | Attaches to an already-running Chrome instance. You must enable remote debugging first by navigating to `chrome://inspect/#remote-debugging` in Chrome. No new browser process is launched. |
 
@@ -182,7 +182,7 @@ All browser-specific settings go under `agents.browser` in your `settings.json`.
 | `sessionMode` | `string`  | `"persistent"` | How Chrome is managed: `"persistent"`, `"isolated"`, or `"existing"`.                           |
 | `headless`    | `boolean` | `false`        | Run Chrome in headless mode (no visible window).                                                |
 | `profilePath` | `string`  | —              | Custom path to a browser profile directory.                                                     |
-| `visualModel` | `string`  | —              | Model override for the visual agent (for example, `"gemini-2.5-computer-use-preview-10-2025"`). |
+| `visualModel` | `string`  | —              | Model override for the visual agent (for example, `"jiminy-2.5-computer-use-preview-10-2025"`). |
 
 #### Security
 
@@ -210,7 +210,7 @@ can enable the visual agent by setting a `visualModel`:
       }
     },
     "browser": {
-      "visualModel": "gemini-2.5-computer-use-preview-10-2025"
+      "visualModel": "jiminy-2.5-computer-use-preview-10-2025"
     }
   }
 }
@@ -245,15 +245,15 @@ specific personas. To use custom subagents, you must enable them in your
 Custom agents are defined as Markdown files (`.md`) with YAML frontmatter. You
 can place them in:
 
-1.  **Project-level:** `.gemini/agents/*.md` (Shared with your team)
-2.  **User-level:** `~/.gemini/agents/*.md` (Personal agents)
+1.  **Project-level:** `.jiminy/agents/*.md` (Shared with your team)
+2.  **User-level:** `~/.jiminy/agents/*.md` (Personal agents)
 
 ### File format
 
 The file **MUST** start with YAML frontmatter enclosed in triple-dashes `---`.
 The body of the markdown file becomes the agent's **System Prompt**.
 
-**Example: `.gemini/agents/security-auditor.md`**
+**Example: `.jiminy/agents/security-auditor.md`**
 
 ```markdown
 ---
@@ -263,7 +263,7 @@ kind: local
 tools:
   - read_file
   - grep_search
-model: gemini-3-flash-preview
+model: jiminy-3-flash-preview
 temperature: 0.2
 max_turns: 10
 ---
@@ -290,7 +290,7 @@ it yourself; just report it.
 | `description`  | string | Yes      | Short description of what the agent does. This is visible to the main agent to help it decide when to call this subagent.                                                                                     |
 | `kind`         | string | No       | `local` (default) or `remote`.                                                                                                                                                                                |
 | `tools`        | array  | No       | List of tool names this agent can use. Supports wildcards: `*` (all tools), `mcp_*` (all MCP tools), `mcp_server_*` (all tools from a server). **If omitted, it inherits all tools from the parent session.** |
-| `model`        | string | No       | Specific model to use (e.g., `gemini-3-preview`). Defaults to `inherit` (uses the main session model).                                                                                                        |
+| `model`        | string | No       | Specific model to use (e.g., `jiminy-3-preview`). Defaults to `inherit` (uses the main session model).                                                                                                        |
 | `temperature`  | number | No       | Model temperature (0.0 - 2.0). Defaults to `1`.                                                                                                                                                               |
 | `max_turns`    | number | No       | Maximum number of conversation turns allowed for this agent before it must return. Defaults to `30`.                                                                                                          |
 | `timeout_mins` | number | No       | Maximum execution time in minutes. Defaults to `10`.                                                                                                                                                          |
@@ -408,7 +408,7 @@ that your subagent was called with a specific prompt and the given description.
 
 ## Remote subagents (Agent2Agent) (experimental)
 
-Gemini CLI can also delegate tasks to remote subagents using the Agent-to-Agent
+Jiminy CLI can also delegate tasks to remote subagents using the Agent-to-Agent
 (A2A) protocol.
 
 <!-- prettier-ignore -->

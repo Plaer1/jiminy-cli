@@ -581,7 +581,7 @@ function getStringifiedResultForDisplay(rawResponse: Part[]): string {
 }
 
 /**
- * Maximum length for a function name in the Gemini API.
+ * Maximum length for a function name in the Jiminy API.
  * @see https://docs.cloud.google.com/vertex-ai/generative-ai/docs/model-reference/function-calling#functiondeclaration
  */
 const MAX_FUNCTION_NAME_LENGTH = 64;
@@ -591,7 +591,7 @@ export function generateValidName(name: string) {
   // Enforce the mcp_ prefix for all generated MCP tool names
   let validToolname = name.startsWith('mcp_') ? name : `mcp_${name}`;
 
-  // Replace invalid characters with underscores to conform to Gemini API:
+  // Replace invalid characters with underscores to conform to Jiminy API:
   // ^[a-zA-Z_][a-zA-Z0-9_\-.:]{0,63}$
   validToolname = validToolname.replace(/[^a-zA-Z0-9_\-.:]/g, '_');
 

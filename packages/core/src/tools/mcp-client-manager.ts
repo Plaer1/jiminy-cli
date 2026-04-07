@@ -179,7 +179,7 @@ export class McpClientManager {
    *
    *    - Removes all its MCP servers from the global configuration object.
    *    - Disconnects all MCP clients from their servers.
-   *    - Updates the Gemini chat configuration to load the new tools.
+   *    - Updates the Jiminy chat configuration to load the new tools.
    */
   async stopExtension(extension: GeminiCLIExtension) {
     debugLogger.log(`Unloading extension: ${extension.name}`);
@@ -208,7 +208,7 @@ export class McpClientManager {
    *
    *    - Adds all its MCP servers to the global configuration object.
    *    - Connects MCP clients to each server and discovers their tools.
-   *    - Updates the Gemini chat configuration to load the new tools.
+   *    - Updates the Jiminy chat configuration to load the new tools.
    */
   async startExtension(extension: GeminiCLIExtension) {
     debugLogger.log(`Loading extension: ${extension.name}`);

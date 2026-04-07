@@ -91,7 +91,7 @@ export const DEFAULT_THINKING_MODE = 8192;
  * to a concrete model name.
  *
  * @param requestedModel The model alias or concrete model name requested by the user.
- * @param useGemini3_1 Whether to use Gemini 3.1 Pro Preview for auto/pro aliases.
+ * @param useGemini3_1 Whether to use Jiminy 3.1 Pro Preview for auto/pro aliases.
  * @param hasAccessToPreview Whether the user has access to preview models.
  * @returns The resolved concrete model name.
  */
@@ -191,7 +191,7 @@ export function resolveModel(
  *
  * @param requestedModel The current requested model (e.g. auto-gemini-2.5).
  * @param modelAlias The alias selected by the classifier ('flash' or 'pro').
- * @param useGemini3_1 Whether to use Gemini 3.1 Pro Preview.
+ * @param useGemini3_1 Whether to use Jiminy 3.1 Pro Preview.
  * @param useCustomToolModel Whether to use the custom tool model.
  * @param config Optional config object for dynamic model configuration.
  * @returns The resolved concrete model name.
@@ -254,9 +254,9 @@ export function getDisplayString(
 
   switch (model) {
     case PREVIEW_GEMINI_MODEL_AUTO:
-      return 'Auto (Gemini 3)';
+      return 'Auto (Jiminy 3)';
     case DEFAULT_GEMINI_MODEL_AUTO:
-      return 'Auto (Gemini 2.5)';
+      return 'Auto (Jiminy 2.5)';
     case GEMINI_MODEL_ALIAS_PRO:
       return PREVIEW_GEMINI_MODEL;
     case GEMINI_MODEL_ALIAS_FLASH:
@@ -316,11 +316,11 @@ export function isProModel(
 }
 
 /**
- * Checks if the model is a Gemini 3 model.
+ * Checks if the model is a Jiminy 3 model.
  *
  * @param model The model name to check.
  * @param config Optional config object for dynamic model configuration.
- * @returns True if the model is a Gemini 3 model.
+ * @returns True if the model is a Jiminy 3 model.
  */
 export function isGemini3Model(
   model: string,
@@ -340,10 +340,10 @@ export function isGemini3Model(
 }
 
 /**
- * Checks if the model is a Gemini 2.x model.
+ * Checks if the model is a Jiminy 2.x model.
  *
  * @param model The model name to check.
- * @returns True if the model is a Gemini-2.x model.
+ * @returns True if the model is a Jiminy-2.x model.
  */
 export function isGemini2Model(model: string): boolean {
   // This is legacy behavior, will remove this when gemini 2 models are no
@@ -352,11 +352,11 @@ export function isGemini2Model(model: string): boolean {
 }
 
 /**
- * Checks if the model is a "custom" model (not Gemini branded).
+ * Checks if the model is a "custom" model (not Jiminy branded).
  *
  * @param model The model name to check.
  * @param config Optional config object for dynamic model configuration.
- * @returns True if the model is not a Gemini branded model.
+ * @returns True if the model is not a Jiminy branded model.
  */
 export function isCustomModel(
   model: string,
@@ -375,7 +375,7 @@ export function isCustomModel(
 
 /**
  * Checks if the model should be treated as a modern model.
- * This includes Gemini 3 models and any custom models.
+ * This includes Jiminy 3 models and any custom models.
  *
  * @param model The model name to check.
  * @returns True if the model supports modern features like thoughts.
@@ -408,7 +408,7 @@ export function isAutoModel(
 
 /**
  * Checks if the model supports multimodal function responses (multimodal data nested within function response).
- * This is supported in Gemini 3.
+ * This is supported in Jiminy 3.
  *
  * @param model The model name to check.
  * @returns True if the model supports multimodal function responses.
@@ -430,7 +430,7 @@ export function supportsMultimodalFunctionResponse(
  * Checks if the given model is considered active based on the current configuration.
  *
  * @param model The model name to check.
- * @param useGemini3_1 Whether Gemini 3.1 Pro Preview is enabled.
+ * @param useGemini3_1 Whether Jiminy 3.1 Pro Preview is enabled.
  * @returns True if the model is active.
  */
 export function isActiveModel(

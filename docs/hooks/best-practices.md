@@ -2,7 +2,7 @@
 
 This guide covers security considerations, performance optimization, debugging
 techniques, and privacy considerations for developing and deploying hooks in
-Gemini CLI.
+Jiminy CLI.
 
 ## Performance
 
@@ -34,7 +34,7 @@ hooks that run frequently (like `BeforeTool` or `AfterModel`).
 const fs = require('fs');
 const path = require('path');
 
-const CACHE_FILE = '.gemini/hook-cache.json';
+const CACHE_FILE = '.jiminy/hook-cache.json';
 
 function readCache() {
   try {
@@ -129,7 +129,7 @@ easiest way to debug complex logic.
 
 ```bash
 #!/usr/bin/env bash
-LOG_FILE=".gemini/hooks/debug.log"
+LOG_FILE=".jiminy/hooks/debug.log"
 
 # Log with timestamp
 log() {
@@ -185,7 +185,7 @@ cat > test-input.json << 'EOF'
 EOF
 
 # Test the hook
-cat test-input.json | .gemini/hooks/my-hook.sh
+cat test-input.json | .jiminy/hooks/my-hook.sh
 
 # Check exit code
 echo "Exit code: $?"
@@ -209,7 +209,7 @@ echo "Exit code: $?"
 "@ | Out-File -FilePath test-input.json -Encoding utf8
 
 # Test the hook
-Get-Content test-input.json | .\.gemini\hooks\my-hook.ps1
+Get-Content test-input.json | .\.jiminy\hooks\my-hook.ps1
 
 # Check exit code
 Write-Host "Exit code: $LASTEXITCODE"
@@ -217,7 +217,7 @@ Write-Host "Exit code: $LASTEXITCODE"
 
 ### Check exit codes
 
-Gemini CLI uses exit codes for high-level flow control:
+Jiminy CLI uses exit codes for high-level flow control:
 
 - **Exit 0 (Success)**: The hook ran successfully. The CLI parses `stdout` for
   JSON decisions.
@@ -287,7 +287,7 @@ Begin with basic logging hooks before implementing complex logic:
 #!/usr/bin/env bash
 # Simple logging hook to understand input structure
 input=$(cat)
-echo "$input" >> .gemini/hook-inputs.log
+echo "$input" >> .jiminy/hook-inputs.log
 # Always return valid JSON
 echo "{}"
 
@@ -311,7 +311,7 @@ and helps diagnose issues.
           {
             "name": "secret-scanner",
             "type": "command",
-            "command": "$GEMINI_PROJECT_DIR/.gemini/hooks/block-secrets.sh",
+            "command": "$GEMINI_PROJECT_DIR/.jiminy/hooks/block-secrets.sh",
             "description": "Scans code changes for API keys and secrets before writing"
           }
         ]
@@ -361,8 +361,8 @@ tool_name=$(echo "$input" | jq -r '.tool_name')
 Always make hook scripts executable on macOS/Linux:
 
 ```bash
-chmod +x .gemini/hooks/*.sh
-chmod +x .gemini/hooks/*.js
+chmod +x .jiminy/hooks/*.sh
+chmod +x .jiminy/hooks/*.js
 
 ```
 
@@ -375,8 +375,8 @@ you may need to ensure your execution policy allows them to run (e.g.,
 Commit hooks to share with your team:
 
 ```bash
-git add .gemini/hooks/
-git add .gemini/settings.json
+git add .jiminy/hooks/
+git add .jiminy/settings.json
 
 ```
 
@@ -384,13 +384,13 @@ git add .gemini/settings.json
 
 ```gitignore
 # Ignore hook cache and logs
-.gemini/hook-cache.json
-.gemini/hook-debug.log
-.gemini/memory/session-*.jsonl
+.jiminy/hook-cache.json
+.jiminy/hook-debug.log
+.jiminy/memory/session-*.jsonl
 
 # Keep hook scripts
-!.gemini/hooks/*.sh
-!.gemini/hooks/*.js
+!.jiminy/hooks/*.sh
+!.jiminy/hooks/*.js
 
 ```
 
@@ -403,16 +403,16 @@ usage.
 
 | Hook Source                   | Description                                                                                                                |
 | :---------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
-| **System**                    | Configured by system administrators (e.g., `/etc/gemini-cli/settings.json`, `/Library/...`). Assumed to be the **safest**. |
-| **User** (`~/.gemini/...`)    | Configured by you. You are responsible for ensuring they are safe.                                                         |
+| **System**                    | Configured by system administrators (e.g., `/etc/jiminy-cli/settings.json`, `/Library/...`). Assumed to be the **safest**. |
+| **User** (`~/.jiminy/...`)    | Configured by you. You are responsible for ensuring they are safe.                                                         |
 | **Extensions**                | You explicitly approve and install these. Security depends on the extension source (integrity).                            |
-| **Project** (`./.gemini/...`) | **Untrusted by default.** Safest in trusted internal repos; higher risk in third-party/public repos.                       |
+| **Project** (`./.jiminy/...`) | **Untrusted by default.** Safest in trusted internal repos; higher risk in third-party/public repos.                       |
 
 #### Project Hook Security
 
-When you open a project with hooks defined in `.gemini/settings.json`:
+When you open a project with hooks defined in `.jiminy/settings.json`:
 
-1. **Detection**: Gemini CLI detects the hooks.
+1. **Detection**: Jiminy CLI detects the hooks.
 2. **Identification**: A unique identity is generated for each hook based on its
    `name` and `command`.
 3. **Warning**: If this specific hook identity has not been seen before, a
@@ -422,7 +422,7 @@ When you open a project with hooks defined in `.gemini/settings.json`:
 5. **Trust**: The hook is marked as "trusted" for this project.
 
 > **Modification detection**: If the `command` string of a project hook is
-> changed (e.g., by a `git pull`), its identity changes. Gemini CLI will treat
+> changed (e.g., by a `git pull`), its identity changes. Jiminy CLI will treat
 > it as a **new, untrusted hook** and warn you again. This prevents malicious
 > actors from silently swapping a verified command for a malicious one.
 
@@ -447,8 +447,8 @@ When you open a project with hooks defined in `.gemini/settings.json`:
 
 #### Sanitize environment
 
-Hooks inherit the environment of the Gemini CLI process, which may include
-sensitive API keys. Gemini CLI provides a
+Hooks inherit the environment of the Jiminy CLI process, which may include
+sensitive API keys. Jiminy CLI provides a
 [redaction system](../reference/configuration.md#environment-variable-redaction)
 that automatically filters variables matching sensitive patterns (e.g., `KEY`,
 `TOKEN`).
@@ -506,8 +506,8 @@ echo "write_file|replace" | grep -E "write_.*|replace"
 has execution permissions:
 
 ```bash
-ls -la .gemini/hooks/my-hook.sh
-chmod +x .gemini/hooks/my-hook.sh
+ls -la .jiminy/hooks/my-hook.sh
+chmod +x .jiminy/hooks/my-hook.sh
 ```
 
 **Windows Note**: On Windows, ensure your execution policy allows running
@@ -517,10 +517,10 @@ scripts (e.g., `Get-ExecutionPolicy`).
 
 ```bash
 # Check path expansion
-echo "$GEMINI_PROJECT_DIR/.gemini/hooks/my-hook.sh"
+echo "$GEMINI_PROJECT_DIR/.jiminy/hooks/my-hook.sh"
 
 # Verify file exists
-test -f "$GEMINI_PROJECT_DIR/.gemini/hooks/my-hook.sh" && echo "File exists"
+test -f "$GEMINI_PROJECT_DIR/.jiminy/hooks/my-hook.sh" && echo "File exists"
 ```
 
 ### Hook timing out
@@ -572,7 +572,7 @@ fi
 **Debug available variables:**
 
 ```bash
-env > .gemini/hook-env.log
+env > .jiminy/hook-env.log
 ```
 
 ## Authoring secure hooks
@@ -605,7 +605,7 @@ fi
 
 ### Use timeouts
 
-Prevent denial-of-service (hanging agents) by enforcing timeouts. Gemini CLI
+Prevent denial-of-service (hanging agents) by enforcing timeouts. Jiminy CLI
 defaults to 60 seconds, but you should set stricter limits for fast hooks.
 
 ```json

@@ -23,8 +23,8 @@ import { ToolConfirmationQueue } from './ToolConfirmationQueue.js';
 const MemoizedHistoryItemDisplay = memo(HistoryItemDisplay);
 const MemoizedAppHeader = memo(AppHeader);
 
-// Limit Gemini messages to a very high number of lines to mitigate performance
-// issues in the worst case if we somehow get an enormous response from Gemini.
+// Limit Jiminy messages to a very high number of lines to mitigate performance
+// issues in the worst case if we somehow get an enormous response from Jiminy.
 // This threshold is arbitrary but should be high enough to never impact normal
 // usage.
 export const MainContent = () => {
@@ -95,7 +95,7 @@ export const MainContent = () => {
                 ? staticAreaMaxItemHeight
                 : undefined
             }
-            availableTerminalHeightGemini={MAX_GEMINI_MESSAGE_LINES}
+            availableTerminalHeightJiminy={MAX_GEMINI_MESSAGE_LINES}
             key={item.id}
             item={item}
             isPending={false}
@@ -208,7 +208,7 @@ export const MainContent = () => {
                 ? staticAreaMaxItemHeight
                 : undefined
             }
-            availableTerminalHeightGemini={MAX_GEMINI_MESSAGE_LINES}
+            availableTerminalHeightJiminy={MAX_GEMINI_MESSAGE_LINES}
             key={item.item.id}
             item={item.item}
             isPending={false}

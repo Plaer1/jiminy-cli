@@ -19,7 +19,7 @@ export function validateAuthMethod(authMethod: string): string | null {
   if (authMethod === AuthType.USE_GEMINI) {
     if (!process.env['GEMINI_API_KEY']) {
       return (
-        'When using Gemini API, you must specify the GEMINI_API_KEY environment variable.\n' +
+        'When using Jiminy API, you must specify the GEMINI_API_KEY environment variable.\n' +
         'Update your environment and try again (no reload needed if using .env)!'
       );
     }

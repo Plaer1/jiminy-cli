@@ -481,7 +481,7 @@ export interface ConsoleMessageItem {
 
 /**
  * Result type for a slash command that should immediately result in a prompt
- * being submitted to the Gemini model.
+ * being submitted to the Jiminy model.
  */
 export interface SubmitPromptResult {
   type: 'submit_prompt';

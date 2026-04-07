@@ -159,9 +159,9 @@ export async function parseArguments(
   const startupMessages: string[] = [];
   const yargsInstance = yargs(rawArgv)
     .locale('en')
-    .scriptName('gemini')
+    .scriptName('jiminy')
     .usage(
-      'Usage: gemini [options] [command]\n\nGemini CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.',
+      'Usage: jiminy [options] [command]\n\nJiminy CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.',
     )
     .option('isCommand', {
       type: 'boolean',
@@ -261,7 +261,7 @@ export async function parseArguments(
   yargsInstance.command(hooksCommand);
 
   yargsInstance
-    .command('$0 [query..]', 'Launch Gemini CLI', (yargsInstance) =>
+    .command('$0 [query..]', 'Launch Jiminy CLI', (yargsInstance) =>
       yargsInstance
         .positional('query', {
           description:
@@ -292,7 +292,7 @@ export async function parseArguments(
           type: 'string',
           skipValidation: true,
           description:
-            'Start Gemini in a new git worktree. If no name is provided, one is generated automatically.',
+            'Start Jiminy in a new git worktree. If no name is provided, one is generated automatically.',
           coerce: (value: unknown): string => {
             const trimmed = typeof value === 'string' ? value.trim() : '';
             if (trimmed === '') {
@@ -578,7 +578,7 @@ export async function loadCliConfig(
 
   // When running inside VSCode with multiple workspace folders,
   // automatically add the other folders as include directories
-  // so Gemini has context of all open folders, not just the cwd.
+  // so Jiminy has context of all open folders, not just the cwd.
   const ideWorkspacePath = process.env['GEMINI_CLI_IDE_WORKSPACE_PATH'];
   if (ideWorkspacePath) {
     const realCwd = resolveToRealPath(cwd);

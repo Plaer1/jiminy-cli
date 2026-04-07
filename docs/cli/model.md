@@ -1,7 +1,7 @@
-# Gemini CLI model selection (`/model` command)
+# Jiminy CLI model selection (`/model` command)
 
-Select your Gemini CLI model. The `/model` command lets you configure the model
-used by Gemini CLI, giving you more control over your results. Use **Pro**
+Select your Jiminy CLI model. The `/model` command lets you configure the model
+used by Jiminy CLI, giving you more control over your results. Use **Pro**
 models for complex tasks and reasoning, **Flash** models for high speed results,
 or the (recommended) **Auto** setting to choose the best model for your tasks.
 
@@ -13,7 +13,7 @@ or the (recommended) **Auto** setting to choose the best model for your tasks.
 
 ## How to use the `/model` command
 
-Use the following command in Gemini CLI:
+Use the following command in Jiminy CLI:
 
 ```
 /model
@@ -30,12 +30,12 @@ Running this command will open a dialog with your options:
 We recommend selecting one of the above **Auto** options. However, you can
 select **Manual** to select a specific model from those available.
 
-You can also use the `--model` flag to specify a particular Gemini model on
+You can also use the `--model` flag to specify a particular Jiminy model on
 startup. For more details, refer to the
 [configuration documentation](../reference/configuration.md).
 
 Changes to these settings will be applied to all subsequent interactions with
-Gemini CLI.
+Jiminy CLI.
 
 ## Best practices for model selection
 

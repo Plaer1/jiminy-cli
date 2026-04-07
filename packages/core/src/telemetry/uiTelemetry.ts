@@ -226,7 +226,7 @@ export class UiTelemetryService extends EventEmitter {
             modelMetrics.tokens.prompt - modelMetrics.tokens.cached,
           );
 
-          // The total tokens of the last Gemini message represents the context
+          // The total tokens of the last Jiminy message represents the context
           // size at that point in time.
           totalTokensInContext = message.tokens.total;
         }

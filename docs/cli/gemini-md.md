@@ -1,7 +1,7 @@
 # Provide context with GEMINI.md files
 
 Context files, which use the default name `GEMINI.md`, are a powerful feature
-for providing instructional context to the Gemini model. You can use these files
+for providing instructional context to the Jiminy model. You can use these files
 to give project-specific instructions, define a persona, or provide coding style
 guides to make the AI's responses more accurate and tailored to your needs.
 
@@ -16,7 +16,7 @@ sends them to the model with every prompt. The CLI loads files in the following
 order:
 
 1.  **Global context file:**
-    - **Location:** `~/.gemini/GEMINI.md` (in your user home directory).
+    - **Location:** `~/.jiminy/GEMINI.md` (in your user home directory).
     - **Scope:** Provides default instructions for all your projects.
 
 2.  **Environment and workspace context files:**
@@ -66,7 +66,7 @@ You can interact with the loaded context files by using the `/memory` command.
 - **`/memory reload`**: Forces a re-scan and reload of all `GEMINI.md` files
   from all configured locations.
 - **`/memory add <text>`**: Appends your text to your global
-  `~/.gemini/GEMINI.md` file. This lets you add persistent memories on the fly.
+  `~/.jiminy/GEMINI.md` file. This lets you add persistent memories on the fly.
 
 ## Modularize context with imports
 
@@ -109,7 +109,7 @@ While `GEMINI.md` is the default filename, you can configure this in your
 
 ## Next steps
 
-- Learn about [Ignoring files](./gemini-ignore.md) to exclude content from the
+- Learn about [Ignoring files](./jiminy-ignore.md) to exclude content from the
   context system.
 - Explore the [Memory tool](../tools/memory.md) to save persistent memories.
 - See how to use [Custom commands](./custom-commands.md) to automate common

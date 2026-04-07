@@ -9,7 +9,7 @@ import type { Config } from '../config/config.js';
 import { debugLogger } from '../utils/debugLogger.js';
 
 /**
- * A client for making single, non-streaming calls to a local Gemini-compatible API
+ * A client for making single, non-streaming calls to a local Jiminy-compatible API
  * and expecting a JSON response.
  */
 export class LocalLiteRtLmClient {
@@ -37,7 +37,7 @@ export class LocalLiteRtLmClient {
   }
 
   /**
-   * Sends a prompt to the local Gemini model and expects a JSON object in response.
+   * Sends a prompt to the local Jiminy model and expects a JSON object in response.
    * @param contents The history and current prompt.
    * @param systemInstruction The system prompt.
    * @returns A promise that resolves to the parsed JSON object.
@@ -78,7 +78,7 @@ export class LocalLiteRtLmClient {
       const text = result.text;
       if (!text) {
         throw new Error(
-          'Invalid response from Local Gemini API: No text found',
+          'Invalid response from Local Jiminy API: No text found',
         );
       }
 

@@ -1,20 +1,20 @@
 # Observability with OpenTelemetry
 
 Observability is the key to turning experimental AI into reliable software.
-Gemini CLI provides built-in support for OpenTelemetry, transforming every agent
+Jiminy CLI provides built-in support for OpenTelemetry, transforming every agent
 interaction into a rich stream of logs, metrics, and traces. This three-pillar
 approach gives you the high-fidelity visibility needed to understand agent
 behavior, optimize performance, and ensure reliability across your entire
 workflow.
 
 Whether you are debugging a complex tool interaction locally or monitoring
-enterprise-wide usage in the cloud, Gemini CLI's observability system provides
+enterprise-wide usage in the cloud, Jiminy CLI's observability system provides
 the actionable intelligence needed to move from "black box" AI to predictable,
 high-performance systems.
 
 ## OpenTelemetry integration
 
-Gemini CLI integrates with **[OpenTelemetry]**, a vendor-neutral,
+Jiminy CLI integrates with **[OpenTelemetry]**, a vendor-neutral,
 industry-standard observability framework.
 
 The observability system provides:
@@ -32,7 +32,7 @@ The observability system provides:
 
 ## Configuration
 
-You control telemetry behavior through the `.gemini/settings.json` file.
+You control telemetry behavior through the `.jiminy/settings.json` file.
 Environment variables can override these settings.
 
 | Setting        | Environment Variable             | Description                                         | Values            | Default                 |
@@ -112,8 +112,8 @@ You must complete several setup steps before enabling Google Cloud telemetry.
         $env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\your\service-account.json"
         ```
     * **Method B: CLI Auth** (Direct export only): Simplest method for local
-      users. Gemini CLI uses the same OAuth credentials you used for login. To
-      enable this, set `useCliAuth: true` in your `.gemini/settings.json`:
+      users. Jiminy CLI uses the same OAuth credentials you used for login. To
+      enable this, set `useCliAuth: true` in your `.jiminy/settings.json`:
 
       ```json
       {
@@ -150,7 +150,7 @@ You must complete several setup steps before enabling Google Cloud telemetry.
 We recommend using direct export to send telemetry directly to Google Cloud
 services.
 
-1.  Enable telemetry in `.gemini/settings.json`:
+1.  Enable telemetry in `.jiminy/settings.json`:
     ```json
     {
       "telemetry": {
@@ -159,13 +159,13 @@ services.
       }
     }
     ```
-2.  Run Gemini CLI and send prompts.
+2.  Run Jiminy CLI and send prompts.
 3.  View logs, metrics, and traces in the Google Cloud Console. See
     [View Google Cloud telemetry](#view-google-cloud-telemetry) for details.
 
 ### View Google Cloud telemetry
 
-After you enable telemetry and run Gemini CLI, you can view your data in the
+After you enable telemetry and run Jiminy CLI, you can view your data in the
 Google Cloud Console.
 
 - **Logs:** [Logs Explorer](https://console.cloud.google.com/logs/)
@@ -182,48 +182,48 @@ Google Cloud documentation:
 
 #### Monitoring dashboards
 
-Gemini CLI provides a pre-configured
+Jiminy CLI provides a pre-configured
 [Google Cloud Monitoring](https://cloud.google.com/monitoring) dashboard to
 visualize your telemetry.
 
 Find this dashboard under **Google Cloud Monitoring Dashboard Templates** as
-"**Gemini CLI Monitoring**".
+"**Jiminy CLI Monitoring**".
 
-![Gemini CLI Monitoring Dashboard Overview](/docs/assets/monitoring-dashboard-overview.png)
+![Jiminy CLI Monitoring Dashboard Overview](/docs/assets/monitoring-dashboard-overview.png)
 
-![Gemini CLI Monitoring Dashboard Metrics](/docs/assets/monitoring-dashboard-metrics.png)
+![Jiminy CLI Monitoring Dashboard Metrics](/docs/assets/monitoring-dashboard-metrics.png)
 
-![Gemini CLI Monitoring Dashboard Logs](/docs/assets/monitoring-dashboard-logs.png)
+![Jiminy CLI Monitoring Dashboard Logs](/docs/assets/monitoring-dashboard-logs.png)
 
 To learn more, see
-[Instant insights: Gemini CLI’s pre-configured monitoring dashboards](https://cloud.google.com/blog/topics/developers-practitioners/instant-insights-gemini-clis-new-pre-configured-monitoring-dashboards/).
+[Instant insights: Jiminy CLI’s pre-configured monitoring dashboards](https://cloud.google.com/blog/topics/developers-practitioners/instant-insights-jiminy-clis-new-pre-configured-monitoring-dashboards/).
 
 ## Local telemetry
 
 You can capture telemetry data locally for development and debugging. We
 recommend using file-based output for local development.
 
-1.  Enable telemetry in `.gemini/settings.json`:
+1.  Enable telemetry in `.jiminy/settings.json`:
     ```json
     {
       "telemetry": {
         "enabled": true,
         "target": "local",
-        "outfile": ".gemini/telemetry.log"
+        "outfile": ".jiminy/telemetry.log"
       }
     }
     ```
-2.  Run Gemini CLI and send prompts.
-3.  View logs and metrics in `.gemini/telemetry.log`.
+2.  Run Jiminy CLI and send prompts.
+3.  View logs and metrics in `.jiminy/telemetry.log`.
 
 For advanced local telemetry setups (such as Jaeger or Genkit), see the
 [Local development guide](../local-development.md#viewing-traces).
 
 ## Client identification
 
-Gemini CLI includes identifiers in its `User-Agent` header to help you
+Jiminy CLI includes identifiers in its `User-Agent` header to help you
 differentiate and report on API traffic from different environments (for
-example, identifying calls from Gemini Code Assist versus a standard terminal).
+example, identifying calls from Jiminy Code Assist versus a standard terminal).
 
 ### Automatic identification
 
@@ -233,7 +233,7 @@ a "surface" tag in the parenthetical metadata.
 
 | Environment                         | User-Agent Prefix            | Surface Tag |
 | :---------------------------------- | :--------------------------- | :---------- |
-| **Gemini Code Assist (Agent Mode)** | `GeminiCLI-a2a-server`       | `vscode`    |
+| **Jiminy Code Assist (Agent Mode)** | `GeminiCLI-a2a-server`       | `vscode`    |
 | **Zed (via ACP)**                   | `GeminiCLI-acp-zed`          | `zed`       |
 | **XCode (via ACP)**                 | `GeminiCLI-acp-xcode`        | `xcode`     |
 | **IntelliJ IDEA (via ACP)**         | `GeminiCLI-acp-intellijidea` | `jetbrains` |
@@ -266,14 +266,14 @@ When set, the value appears at the end of the `User-Agent` parenthetical:
 ## Logs, metrics, and traces
 
 This section describes the structure of logs, metrics, and traces generated by
-Gemini CLI.
+Jiminy CLI.
 
-Gemini CLI includes `session.id`, `installation.id`, `active_approval_mode`, and
+Jiminy CLI includes `session.id`, `installation.id`, `active_approval_mode`, and
 `user.email` (when authenticated) as common attributes on all data.
 
 ### Logs
 
-Logs provide timestamped records of specific events. Gemini CLI logs events
+Logs provide timestamped records of specific events. Jiminy CLI logs events
 across several categories.
 
 #### Sessions
@@ -493,11 +493,11 @@ Emitted for each file creation, read, or update.
 
 #### API
 
-API logs capture requests, responses, and errors from Gemini API.
+API logs capture requests, responses, and errors from Jiminy API.
 
 ##### `gemini_cli.api_request`
 
-Request sent to Gemini API.
+Request sent to Jiminy API.
 
 <details>
 <summary>Attributes</summary>
@@ -511,7 +511,7 @@ Request sent to Gemini API.
 
 ##### `gemini_cli.api_response`
 
-Response received from Gemini API.
+Response received from Jiminy API.
 
 <details>
 <summary>Attributes</summary>
@@ -563,7 +563,7 @@ Logs when a JSON response cannot be parsed.
 
 #### Model routing
 
-These logs track how Gemini CLI selects and routes requests to models.
+These logs track how Jiminy CLI selects and routes requests to models.
 
 ##### `gemini_cli.slash_command`
 
@@ -926,7 +926,7 @@ Metrics provide numerical measurements of behavior over time.
 
 #### Custom metrics
 
-Gemini CLI exports several custom metrics.
+Jiminy CLI exports several custom metrics.
 
 ##### Sessions
 
@@ -1166,7 +1166,7 @@ Counts terminal flicker events.
 
 ##### Performance
 
-Gemini CLI provides detailed performance metrics for advanced monitoring.
+Jiminy CLI provides detailed performance metrics for advanced monitoring.
 
 ##### `gemini_cli.startup.duration`
 
@@ -1243,7 +1243,7 @@ Every trace captures rich metadata via standard span attributes.
 - `gen_ai.operation.name`: High-level operation (for example, `tool_call`,
   `llm_call`, `user_prompt`, `system_prompt`, `agent_call`, or
   `schedule_tool_calls`).
-- `gen_ai.agent.name`: Set to `gemini-cli`.
+- `gen_ai.agent.name`: Set to `jiminy-cli`.
 - `gen_ai.agent.description`: The service agent description.
 - `gen_ai.input.messages`: Input data or metadata.
 - `gen_ai.output.messages`: Output data or results.

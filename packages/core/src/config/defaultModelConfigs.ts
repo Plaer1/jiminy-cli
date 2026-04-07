@@ -338,21 +338,21 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       features: { thinking: false, multimodalToolUse: false },
     },
     'auto-gemini-3': {
-      displayName: 'Auto (Gemini 3)',
+      displayName: 'Auto (Jiminy 3)',
       tier: 'auto',
       isPreview: true,
       isVisible: true,
       dialogDescription:
-        'Let Gemini CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
+        'Let Jiminy CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
       features: { thinking: true, multimodalToolUse: false },
     },
     'auto-gemini-2.5': {
-      displayName: 'Auto (Gemini 2.5)',
+      displayName: 'Auto (Jiminy 2.5)',
       tier: 'auto',
       isPreview: false,
       isVisible: true,
       dialogDescription:
-        'Let Gemini CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
+        'Let Jiminy CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
       features: { thinking: false, multimodalToolUse: false },
     },
   },

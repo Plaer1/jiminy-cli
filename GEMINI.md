@@ -1,12 +1,12 @@
-# Gemini CLI Project Context
+# Jiminy CLI Project Context
 
-Gemini CLI is an open-source AI agent that brings the power of Gemini directly
+Jiminy CLI is an open-source AI agent that brings the power of Jiminy directly
 into the terminal. It is designed to be a terminal-first, extensible, and
 powerful tool for developers.
 
 ## Project Overview
 
-- **Purpose:** Provide a seamless terminal interface for Gemini models,
+- **Purpose:** Provide a seamless terminal interface for Jiminy models,
   supporting code understanding, generation, automation, and integration via MCP
   (Model Context Protocol).
 - **Main Technologies:**
@@ -20,10 +20,10 @@ powerful tool for developers.
 - **Architecture:** Monorepo structure using npm workspaces.
   - `packages/cli`: User-facing terminal UI, input processing, and display
     rendering.
-  - `packages/core`: Backend logic, Gemini API orchestration, prompt
+  - `packages/core`: Backend logic, Jiminy API orchestration, prompt
     construction, and tool execution.
   - `packages/a2a-server`: Experimental Agent-to-Agent server.
-  - `packages/sdk`: Programmatic SDK for embedding Gemini CLI capabilities.
+  - `packages/sdk`: Programmatic SDK for embedding Jiminy CLI capabilities.
   - `packages/devtools`: Integrated developer tools (Network/Console inspector).
   - `packages/test-utils`: Shared test utilities and test rig.
   - `packages/vscode-ide-companion`: VS Code extension pairing with the CLI.

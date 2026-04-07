@@ -106,11 +106,11 @@ export function ApiAuthDialog({
       width="100%"
     >
       <Text bold color={theme.text.primary}>
-        Enter Gemini API Key
+        Enter Jiminy API Key
       </Text>
       <Box marginTop={1} flexDirection="column">
         <Text color={theme.text.primary}>
-          Please enter your Gemini API key. It will be securely stored in your
+          Please enter your Jiminy API key. It will be securely stored in your
           system keychain.
         </Text>
         <Text color={theme.text.secondary}>

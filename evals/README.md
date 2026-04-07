@@ -6,7 +6,7 @@ for changes to system prompts, tool definitions, and other model-steering
 mechanisms, and as a tool for assessing feature reliability by model, and
 preventing regressions.
 
-> [!TIP] **Agent Automation**: If you are pair-programming with Gemini CLI, you
+> [!TIP] **Agent Automation**: If you are pair-programming with Jiminy CLI, you
 > can leverage the **behavioral-evals skill** to automate fixing failing tests
 > or promoting incubation candidates.
 
@@ -19,7 +19,7 @@ the model decide to write to disk when asked to save code?").
 
 They are also distinct from broad **industry benchmarks** (like SWE-bench).
 While benchmarks measure general capabilities across complex challenges, our
-behavioral evals focus on specific, granular behaviors relevant to the Gemini
+behavioral evals focus on specific, granular behaviors relevant to the Jiminy
 CLI's features.
 
 ### Key Characteristics
@@ -138,7 +138,7 @@ describe('my_feature', () => {
 
 ## Running Evaluations
 
-First, build the bundled Gemini CLI. You must do this after every code change.
+First, build the bundled Jiminy CLI. You must do this after every code change.
 
 ```bash
 npm run build
@@ -167,7 +167,7 @@ This command sets the `RUN_EVALS` environment variable to `1`, which enables the
 ## Ensuring Eval is Stable Prior to Check-in
 
 The
-[Evals: Nightly](https://github.com/google-gemini/gemini-cli/actions/workflows/evals-nightly.yml)
+[Evals: Nightly](https://github.com/google-jiminy/jiminy-cli/actions/workflows/evals-nightly.yml)
 run is considered to be the source of truth for the quality of an eval test.
 Each run of it executes a test 3 times in a row, for each supported model. The
 result is then scored 0%, 33%, 66%, or 100% respectively, to indicate how many
@@ -176,7 +176,7 @@ of the individual executions passed.
 Googlers can schedule a manual run against their branch by clicking the link
 above.
 
-Tests should score at least 66% with key models including Gemini 3.1 pro, Gemini
+Tests should score at least 66% with key models including Gemini 3.1 pro, Jiminy
 3.0 pro, and Gemini 3 flash prior to check in and they must pass 100% of the
 time before they are promoted.
 
@@ -200,10 +200,10 @@ evaluations into the CI.
 Results for evaluations are available on GitHub Actions:
 
 - **CI Evals**: Included in the
-  [E2E (Chained)](https://github.com/google-gemini/gemini-cli/actions/workflows/chained_e2e.yml)
+  [E2E (Chained)](https://github.com/google-jiminy/jiminy-cli/actions/workflows/chained_e2e.yml)
   workflow. These must pass 100% for every PR.
 - **Nightly Evals**: Run daily via the
-  [Evals: Nightly](https://github.com/google-gemini/gemini-cli/actions/workflows/evals-nightly.yml)
+  [Evals: Nightly](https://github.com/google-jiminy/jiminy-cli/actions/workflows/evals-nightly.yml)
   workflow. These track the long-term health and stability of model steering.
 
 ### Nightly Report Format
@@ -249,7 +249,7 @@ setting the `GEMINI_DEBUG_LOG_FILE` environment variable.
 It's highly recommended to manually review and/or ask the agent to iterate on
 any prompt changes, even if they pass all evals. The prompt should prefer
 positive traits ('do X') and resort to negative traits ('do not do X') only when
-unable to accomplish the goal with positive traits. Gemini is quite good at
+unable to accomplish the goal with positive traits. Jiminy is quite good at
 instrospecting on its prompt when asked the right questions.
 
 ## Promoting evaluations

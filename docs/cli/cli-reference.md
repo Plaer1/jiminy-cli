@@ -1,23 +1,23 @@
-# Gemini CLI cheatsheet
+# Jiminy CLI cheatsheet
 
-This page provides a reference for commonly used Gemini CLI commands, options,
+This page provides a reference for commonly used Jiminy CLI commands, options,
 and parameters.
 
 ## CLI commands
 
 | Command                            | Description                        | Example                                                      |
 | ---------------------------------- | ---------------------------------- | ------------------------------------------------------------ |
-| `gemini`                           | Start interactive REPL             | `gemini`                                                     |
-| `gemini -p "query"`                | Query non-interactively            | `gemini -p "summarize README.md"`                            |
-| `gemini "query"`                   | Query and continue interactively   | `gemini "explain this project"`                              |
-| `cat file \| gemini`               | Process piped content              | `cat logs.txt \| gemini`<br>`Get-Content logs.txt \| gemini` |
-| `gemini -i "query"`                | Execute and continue interactively | `gemini -i "What is the purpose of this project?"`           |
-| `gemini -r "latest"`               | Continue most recent session       | `gemini -r "latest"`                                         |
-| `gemini -r "latest" "query"`       | Continue session with a new prompt | `gemini -r "latest" "Check for type errors"`                 |
-| `gemini -r "<session-id>" "query"` | Resume session by ID               | `gemini -r "abc123" "Finish this PR"`                        |
-| `gemini update`                    | Update to latest version           | `gemini update`                                              |
-| `gemini extensions`                | Manage extensions                  | See [Extensions Management](#extensions-management)          |
-| `gemini mcp`                       | Configure MCP servers              | See [MCP Server Management](#mcp-server-management)          |
+| `jiminy`                           | Start interactive REPL             | `jiminy`                                                     |
+| `jiminy -p "query"`                | Query non-interactively            | `jiminy -p "summarize README.md"`                            |
+| `jiminy "query"`                   | Query and continue interactively   | `jiminy "explain this project"`                              |
+| `cat file \| jiminy`               | Process piped content              | `cat logs.txt \| jiminy`<br>`Get-Content logs.txt \| jiminy` |
+| `jiminy -i "query"`                | Execute and continue interactively | `jiminy -i "What is the purpose of this project?"`           |
+| `jiminy -r "latest"`               | Continue most recent session       | `jiminy -r "latest"`                                         |
+| `jiminy -r "latest" "query"`       | Continue session with a new prompt | `jiminy -r "latest" "Check for type errors"`                 |
+| `jiminy -r "<session-id>" "query"` | Resume session by ID               | `jiminy -r "abc123" "Finish this PR"`                        |
+| `jiminy update`                    | Update to latest version           | `jiminy update`                                              |
+| `jiminy extensions`                | Manage extensions                  | See [Extensions Management](#extensions-management)          |
+| `jiminy mcp`                       | Configure MCP servers              | See [MCP Server Management](#mcp-server-management)          |
 
 ### Positional arguments
 
@@ -50,7 +50,7 @@ These commands are available within the interactive REPL.
 | `--model`                        | `-m`  | string  | `auto`    | Model to use. See [Model Selection](#model-selection) for available values.                                                                                            |
 | `--prompt`                       | `-p`  | string  | -         | Prompt text. Appended to stdin input if provided. Forces non-interactive mode.                                                                                         |
 | `--prompt-interactive`           | `-i`  | string  | -         | Execute prompt and continue in interactive mode                                                                                                                        |
-| `--worktree`                     | `-w`  | string  | -         | Start Gemini in a new git worktree. If no name is provided, one is generated automatically. Requires `experimental.worktrees: true` in settings.                       |
+| `--worktree`                     | `-w`  | string  | -         | Start Jiminy in a new git worktree. If no name is provided, one is generated automatically. Requires `experimental.worktrees: true` in settings.                       |
 | `--sandbox`                      | `-s`  | boolean | `false`   | Run in a sandboxed environment for safer execution                                                                                                                     |
 | `--approval-mode`                | -     | string  | `default` | Approval mode for tool execution. Choices: `default`, `auto_edit`, `yolo`                                                                                              |
 | `--yolo`                         | `-y`  | boolean | `false`   | **Deprecated.** Auto-approve all actions. Use `--approval-mode=yolo` instead.                                                                                          |
@@ -69,7 +69,7 @@ These commands are available within the interactive REPL.
 
 ## Model selection
 
-The `--model` (or `-m`) flag lets you specify which Gemini model to use. You can
+The `--model` (or `-m`) flag lets you specify which Jiminy model to use. You can
 use either model aliases (user-friendly names) or concrete model names.
 
 ### Model aliases
@@ -87,18 +87,18 @@ These are convenient shortcuts that map to specific models:
 
 | Command                                            | Description                                  | Example                                                                        |
 | -------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------ |
-| `gemini extensions install <source>`               | Install extension from Git URL or local path | `gemini extensions install https://github.com/user/my-extension`               |
-| `gemini extensions install <source> --ref <ref>`   | Install from specific branch/tag/commit      | `gemini extensions install https://github.com/user/my-extension --ref develop` |
-| `gemini extensions install <source> --auto-update` | Install with auto-update enabled             | `gemini extensions install https://github.com/user/my-extension --auto-update` |
-| `gemini extensions uninstall <name>`               | Uninstall one or more extensions             | `gemini extensions uninstall my-extension`                                     |
-| `gemini extensions list`                           | List all installed extensions                | `gemini extensions list`                                                       |
-| `gemini extensions update <name>`                  | Update a specific extension                  | `gemini extensions update my-extension`                                        |
-| `gemini extensions update --all`                   | Update all extensions                        | `gemini extensions update --all`                                               |
-| `gemini extensions enable <name>`                  | Enable an extension                          | `gemini extensions enable my-extension`                                        |
-| `gemini extensions disable <name>`                 | Disable an extension                         | `gemini extensions disable my-extension`                                       |
-| `gemini extensions link <path>`                    | Link local extension for development         | `gemini extensions link /path/to/extension`                                    |
-| `gemini extensions new <path>`                     | Create new extension from template           | `gemini extensions new ./my-extension`                                         |
-| `gemini extensions validate <path>`                | Validate extension structure                 | `gemini extensions validate ./my-extension`                                    |
+| `jiminy extensions install <source>`               | Install extension from Git URL or local path | `jiminy extensions install https://github.com/user/my-extension`               |
+| `jiminy extensions install <source> --ref <ref>`   | Install from specific branch/tag/commit      | `jiminy extensions install https://github.com/user/my-extension --ref develop` |
+| `jiminy extensions install <source> --auto-update` | Install with auto-update enabled             | `jiminy extensions install https://github.com/user/my-extension --auto-update` |
+| `jiminy extensions uninstall <name>`               | Uninstall one or more extensions             | `jiminy extensions uninstall my-extension`                                     |
+| `jiminy extensions list`                           | List all installed extensions                | `jiminy extensions list`                                                       |
+| `jiminy extensions update <name>`                  | Update a specific extension                  | `jiminy extensions update my-extension`                                        |
+| `jiminy extensions update --all`                   | Update all extensions                        | `jiminy extensions update --all`                                               |
+| `jiminy extensions enable <name>`                  | Enable an extension                          | `jiminy extensions enable my-extension`                                        |
+| `jiminy extensions disable <name>`                 | Disable an extension                         | `jiminy extensions disable my-extension`                                       |
+| `jiminy extensions link <path>`                    | Link local extension for development         | `jiminy extensions link /path/to/extension`                                    |
+| `jiminy extensions new <path>`                     | Create new extension from template           | `jiminy extensions new ./my-extension`                                         |
+| `jiminy extensions validate <path>`                | Validate extension structure                 | `jiminy extensions validate ./my-extension`                                    |
 
 See [Extensions Documentation](../extensions/index.md) for more details.
 
@@ -106,13 +106,13 @@ See [Extensions Documentation](../extensions/index.md) for more details.
 
 | Command                                                       | Description                     | Example                                                                                              |
 | ------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `gemini mcp add <name> <command>`                             | Add stdio-based MCP server      | `gemini mcp add github npx -y @modelcontextprotocol/server-github`                                   |
-| `gemini mcp add <name> <url> --transport http`                | Add HTTP-based MCP server       | `gemini mcp add api-server http://localhost:3000 --transport http`                                   |
-| `gemini mcp add <name> <command> --env KEY=value`             | Add with environment variables  | `gemini mcp add slack node server.js --env SLACK_TOKEN=xoxb-xxx`                                     |
-| `gemini mcp add <name> <command> --scope user`                | Add with user scope             | `gemini mcp add db node db-server.js --scope user`                                                   |
-| `gemini mcp add <name> <command> --include-tools tool1,tool2` | Add with specific tools         | `gemini mcp add github npx -y @modelcontextprotocol/server-github --include-tools list_repos,get_pr` |
-| `gemini mcp remove <name>`                                    | Remove an MCP server            | `gemini mcp remove github`                                                                           |
-| `gemini mcp list`                                             | List all configured MCP servers | `gemini mcp list`                                                                                    |
+| `jiminy mcp add <name> <command>`                             | Add stdio-based MCP server      | `jiminy mcp add github npx -y @modelcontextprotocol/server-github`                                   |
+| `jiminy mcp add <name> <url> --transport http`                | Add HTTP-based MCP server       | `jiminy mcp add api-server http://localhost:3000 --transport http`                                   |
+| `jiminy mcp add <name> <command> --env KEY=value`             | Add with environment variables  | `jiminy mcp add slack node server.js --env SLACK_TOKEN=xoxb-xxx`                                     |
+| `jiminy mcp add <name> <command> --scope user`                | Add with user scope             | `jiminy mcp add db node db-server.js --scope user`                                                   |
+| `jiminy mcp add <name> <command> --include-tools tool1,tool2` | Add with specific tools         | `jiminy mcp add github npx -y @modelcontextprotocol/server-github --include-tools list_repos,get_pr` |
+| `jiminy mcp remove <name>`                                    | Remove an MCP server            | `jiminy mcp remove github`                                                                           |
+| `jiminy mcp list`                                             | List all configured MCP servers | `jiminy mcp list`                                                                                    |
 
 See [MCP Server Integration](../tools/mcp-server.md) for more details.
 
@@ -120,13 +120,13 @@ See [MCP Server Integration](../tools/mcp-server.md) for more details.
 
 | Command                          | Description                           | Example                                           |
 | -------------------------------- | ------------------------------------- | ------------------------------------------------- |
-| `gemini skills list`             | List all discovered agent skills      | `gemini skills list`                              |
-| `gemini skills install <source>` | Install skill from Git, path, or file | `gemini skills install https://github.com/u/repo` |
-| `gemini skills link <path>`      | Link local agent skills via symlink   | `gemini skills link /path/to/my-skills`           |
-| `gemini skills uninstall <name>` | Uninstall an agent skill              | `gemini skills uninstall my-skill`                |
-| `gemini skills enable <name>`    | Enable an agent skill                 | `gemini skills enable my-skill`                   |
-| `gemini skills disable <name>`   | Disable an agent skill                | `gemini skills disable my-skill`                  |
-| `gemini skills enable --all`     | Enable all skills                     | `gemini skills enable --all`                      |
-| `gemini skills disable --all`    | Disable all skills                    | `gemini skills disable --all`                     |
+| `jiminy skills list`             | List all discovered agent skills      | `jiminy skills list`                              |
+| `jiminy skills install <source>` | Install skill from Git, path, or file | `jiminy skills install https://github.com/u/repo` |
+| `jiminy skills link <path>`      | Link local agent skills via symlink   | `jiminy skills link /path/to/my-skills`           |
+| `jiminy skills uninstall <name>` | Uninstall an agent skill              | `jiminy skills uninstall my-skill`                |
+| `jiminy skills enable <name>`    | Enable an agent skill                 | `jiminy skills enable my-skill`                   |
+| `jiminy skills disable <name>`   | Disable an agent skill                | `jiminy skills disable my-skill`                  |
+| `jiminy skills enable --all`     | Enable all skills                     | `jiminy skills enable --all`                      |
+| `jiminy skills disable --all`    | Disable all skills                    | `jiminy skills disable --all`                     |
 
 See [Agent Skills Documentation](./skills.md) for more details.

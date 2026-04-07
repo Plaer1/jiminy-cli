@@ -1,14 +1,14 @@
 # Extension reference
 
-This guide covers the `gemini extensions` commands and the structure of the
-`gemini-extension.json` configuration file.
+This guide covers the `jiminy extensions` commands and the structure of the
+`jiminy-extension.json` configuration file.
 
 ## Manage extensions
 
-Use the `gemini extensions` command group to manage your extensions from the
+Use the `jiminy extensions` command group to manage your extensions from the
 terminal.
 
-Note that commands like `gemini extensions install` are not supported within the
+Note that commands like `jiminy extensions install` are not supported within the
 CLI's interactive mode. However, you can use the `/extensions list` command to
 view installed extensions. All management operations, including updates to slash
 commands, take effect only after you restart the CLI session.
@@ -18,12 +18,12 @@ commands, take effect only after you restart the CLI session.
 Install an extension by providing its GitHub repository URL or a local file
 path.
 
-Gemini CLI creates a copy of the extension during installation. You must run
-`gemini extensions update` to pull changes from the source. To install from
+Jiminy CLI creates a copy of the extension during installation. You must run
+`jiminy extensions update` to pull changes from the source. To install from
 GitHub, you must have `git` installed on your machine.
 
 ```bash
-gemini extensions install <source> [--ref <ref>] [--auto-update] [--pre-release] [--consent] [--skip-settings]
+jiminy extensions install <source> [--ref <ref>] [--auto-update] [--pre-release] [--consent] [--skip-settings]
 ```
 
 - `<source>`: The GitHub URL or local path of the extension.
@@ -38,7 +38,7 @@ gemini extensions install <source> [--ref <ref>] [--auto-update] [--pre-release]
 To uninstall one or more extensions, use the `uninstall` command:
 
 ```bash
-gemini extensions uninstall <name...>
+jiminy extensions uninstall <name...>
 ```
 
 ### Disable an extension
@@ -47,7 +47,7 @@ Extensions are enabled globally by default. You can disable an extension
 entirely or for a specific workspace.
 
 ```bash
-gemini extensions disable <name> [--scope <scope>]
+jiminy extensions disable <name> [--scope <scope>]
 ```
 
 - `<name>`: The name of the extension to disable.
@@ -58,7 +58,7 @@ gemini extensions disable <name> [--scope <scope>]
 Re-enable a disabled extension using the `enable` command:
 
 ```bash
-gemini extensions enable <name> [--scope <scope>]
+jiminy extensions enable <name> [--scope <scope>]
 ```
 
 - `<name>`: The name of the extension to enable.
@@ -66,17 +66,17 @@ gemini extensions enable <name> [--scope <scope>]
 
 ### Update an extension
 
-Update an extension to the version specified in its `gemini-extension.json`
+Update an extension to the version specified in its `jiminy-extension.json`
 file.
 
 ```bash
-gemini extensions update <name>
+jiminy extensions update <name>
 ```
 
 To update all installed extensions at once:
 
 ```bash
-gemini extensions update --all
+jiminy extensions update --all
 ```
 
 ### Create an extension from a template
@@ -84,7 +84,7 @@ gemini extensions update --all
 Create a new extension directory using a built-in template.
 
 ```bash
-gemini extensions new <path> [template]
+jiminy extensions new <path> [template]
 ```
 
 - `<path>`: The directory to create.
@@ -93,20 +93,20 @@ gemini extensions new <path> [template]
 
 ### Link a local extension
 
-Create a symbolic link between your development directory and the Gemini CLI
+Create a symbolic link between your development directory and the Jiminy CLI
 extensions directory. This lets you test changes immediately without
 reinstalling.
 
 ```bash
-gemini extensions link <path>
+jiminy extensions link <path>
 ```
 
 ## Extension format
 
-Gemini CLI loads extensions from `<home>/.gemini/extensions`. Each extension
-must have a `gemini-extension.json` file in its root directory.
+Jiminy CLI loads extensions from `<home>/.jiminy/extensions`. Each extension
+must have a `jiminy-extension.json` file in its root directory.
 
-### `gemini-extension.json`
+### `jiminy-extension.json`
 
 The manifest file defines the extension's behavior and configuration.
 
@@ -126,7 +126,7 @@ The manifest file defines the extension's behavior and configuration.
   "excludeTools": ["run_shell_command"],
   "migratedTo": "https://github.com/new-owner/new-extension-repo",
   "plan": {
-    "directory": ".gemini/plans"
+    "directory": ".jiminy/plans"
   }
 }
 ```
@@ -169,9 +169,9 @@ The manifest file defines the extension's behavior and configuration.
   - `directory`: The directory where planning artifacts are stored. This serves
     as a fallback if the user hasn't specified a plan directory in their
     settings. If not specified by either the extension or the user, the default
-    is `~/.gemini/tmp/<project>/<session-id>/plans/`.
+    is `~/.jiminy/tmp/<project>/<session-id>/plans/`.
 
-When Gemini CLI starts, it loads all the extensions and merges their
+When Jiminy CLI starts, it loads all the extensions and merges their
 configurations. If there are any conflicts, the workspace configuration takes
 precedence.
 
@@ -207,13 +207,13 @@ To define settings, add a `settings` array to your manifest:
 To update an extension's settings:
 
 ```bash
-gemini extensions config <name> [setting] [--scope <scope>]
+jiminy extensions config <name> [setting] [--scope <scope>]
 ```
 
 ### Custom commands
 
 Provide [custom commands](../cli/custom-commands.md) by placing TOML files in a
-`commands/` subdirectory. Gemini CLI uses the directory structure to determine
+`commands/` subdirectory. Jiminy CLI uses the directory structure to determine
 the command name.
 
 For an extension named `gcp`:
@@ -225,7 +225,7 @@ For an extension named `gcp`:
 
 Intercept and customize CLI behavior using [hooks](../hooks/index.md). Define
 hooks in a `hooks/hooks.json` file within your extension directory. Note that
-hooks are not defined in the `gemini-extension.json` manifest.
+hooks are not defined in the `jiminy-extension.json` manifest.
 
 ### Agent skills
 
@@ -244,12 +244,12 @@ agent definition files (`.md`) to an `agents/` directory in your extension root.
 
 ### <a id="policy-engine"></a>Policy Engine
 
-Extensions can contribute policy rules and safety checkers to the Gemini CLI
+Extensions can contribute policy rules and safety checkers to the Jiminy CLI
 [Policy Engine](../reference/policy-engine.md). These rules are defined in
 `.toml` files and take effect when the extension is activated.
 
 To add policies, create a `policies/` directory in your extension's root and
-place your `.toml` policy files inside it. Gemini CLI automatically loads all
+place your `.toml` policy files inside it. Jiminy CLI automatically loads all
 `.toml` files from this directory.
 
 Rules contributed by extensions run in their own tier (tier 2), alongside
@@ -258,7 +258,7 @@ but lower priority than user or admin policies.
 
 <!-- prettier-ignore -->
 > [!WARNING]
-> For security, Gemini CLI ignores any `allow` decisions or `yolo`
+> For security, Jiminy CLI ignores any `allow` decisions or `yolo`
 > mode configurations in extension policies. This ensures that an extension
 > cannot automatically approve tool calls or bypass security measures without
 > your confirmation.
@@ -285,7 +285,7 @@ required_context = ["environment"]
 ### Themes
 
 Extensions can provide custom themes to personalize the CLI UI. Themes are
-defined in the `themes` array in `gemini-extension.json`.
+defined in the `themes` array in `jiminy-extension.json`.
 
 **Example**
 
@@ -334,7 +334,7 @@ the extension name (e.g., `/gcp.deploy`) using a dot separator.
 
 ## Variables
 
-Gemini CLI supports variable substitution in `gemini-extension.json` and
+Jiminy CLI supports variable substitution in `jiminy-extension.json` and
 `hooks/hooks.json`.
 
 | Variable           | Description                                     |

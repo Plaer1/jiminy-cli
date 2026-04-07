@@ -1,6 +1,6 @@
-# Gemini CLI authentication setup
+# Jiminy CLI authentication setup
 
-To use Gemini CLI, you'll need to authenticate with Google. This guide helps you
+To use Jiminy CLI, you'll need to authenticate with Google. This guide helps you
 quickly find the best way to sign in based on your account type and how you're
 using the CLI.
 
@@ -10,7 +10,7 @@ using the CLI.
 > To compare features and find the right quota for your needs, see our
 > [Plans page](https://geminicli.com/plans/).
 
-For most users, we recommend starting Gemini CLI and logging in with your
+For most users, we recommend starting Jiminy CLI and logging in with your
 personal Google account.
 
 ## Choose your authentication method <a id="auth-methods"></a>
@@ -21,16 +21,16 @@ Select the authentication method that matches your situation in the table below:
 | :--------------------------------------------------------------------- | :--------------------------------------------------------------- | :---------------------------------------------------------- |
 | Individual Google accounts                                             | [Sign in with Google](#login-google)                             | No, with exceptions                                         |
 | Organization users with a company, school, or Google Workspace account | [Sign in with Google](#login-google)                             | [Yes](#set-gcp)                                             |
-| AI Studio user with a Gemini API key                                   | [Use Gemini API Key](#gemini-api)                                | No                                                          |
+| AI Studio user with a Jiminy API key                                   | [Use Jiminy API Key](#jiminy-api)                                | No                                                          |
 | Google Cloud Vertex AI user                                            | [Vertex AI](#vertex-ai)                                          | [Yes](#set-gcp)                                             |
-| [Headless mode](#headless)                                             | [Use Gemini API Key](#gemini-api) or<br> [Vertex AI](#vertex-ai) | No (for Gemini API Key)<br> [Yes](#set-gcp) (for Vertex AI) |
+| [Headless mode](#headless)                                             | [Use Jiminy API Key](#jiminy-api) or<br> [Vertex AI](#vertex-ai) | No (for Jiminy API Key)<br> [Yes](#set-gcp) (for Vertex AI) |
 
 ### What is my Google account type?
 
 - **Individual Google accounts:** Includes all
   [free tier accounts](../resources/quota-and-pricing.md#free-usage) such as
-  Gemini Code Assist for individuals, as well as paid subscriptions for
-  [Google AI Pro and Ultra](https://gemini.google/subscriptions/).
+  Jiminy Code Assist for individuals, as well as paid subscriptions for
+  [Google AI Pro and Ultra](https://jiminy.google/subscriptions/).
 
 - **Organization accounts:** Accounts using paid licenses through an
   organization such as a company, school, or
@@ -40,23 +40,23 @@ Select the authentication method that matches your situation in the table below:
 
 ## (Recommended) Sign in with Google <a id="login-google"></a>
 
-If you run Gemini CLI on your local machine, the simplest authentication method
+If you run Jiminy CLI on your local machine, the simplest authentication method
 is logging in with your Google account. This method requires a web browser on a
-machine that can communicate with the terminal running Gemini CLI (for example,
+machine that can communicate with the terminal running Jiminy CLI (for example,
 your local machine).
 
 If you are a **Google AI Pro** or **Google AI Ultra** subscriber, use the Google
 account associated with your subscription.
 
-To authenticate and use Gemini CLI:
+To authenticate and use Jiminy CLI:
 
 1. Start the CLI:
 
    ```bash
-   gemini
+   jiminy
    ```
 
-2. Select **Sign in with Google**. Gemini CLI opens a sign in prompt using your
+2. Select **Sign in with Google**. Jiminy CLI opens a sign in prompt using your
    web browser. Follow the on-screen instructions. Your credentials will be
    cached locally for future sessions.
 
@@ -67,17 +67,17 @@ project for authentication. However, you'll need to set a Google Cloud project
 when you meet at least one of the following conditions:
 
 - You are using a company, school, or Google Workspace account.
-- You are using a Gemini Code Assist license from the Google Developer Program.
-- You are using a license from a Gemini Code Assist subscription.
+- You are using a Jiminy Code Assist license from the Google Developer Program.
+- You are using a license from a Jiminy Code Assist subscription.
 
 For instructions, see [Set your Google Cloud Project](#set-gcp).
 
-## Use Gemini API key <a id="gemini-api"></a>
+## Use Jiminy API key <a id="jiminy-api"></a>
 
 If you don't want to authenticate using your Google account, you can use an API
 key from Google AI Studio.
 
-To authenticate and use Gemini CLI with a Gemini API key:
+To authenticate and use Jiminy CLI with a Jiminy API key:
 
 1. Obtain your API key from
    [Google AI Studio](https://aistudio.google.com/app/apikey).
@@ -104,20 +104,20 @@ To authenticate and use Gemini CLI with a Gemini API key:
 3. Start the CLI:
 
    ```bash
-   gemini
+   jiminy
    ```
 
-4. Select **Use Gemini API key**.
+4. Select **Use Jiminy API key**.
 
 <!-- prettier-ignore -->
 > [!WARNING]
-> Treat API keys, especially for services like Gemini, as sensitive
+> Treat API keys, especially for services like Jiminy, as sensitive
 > credentials. Protect them to prevent unauthorized access and potential misuse
 > of the service under your account.
 
 ## Use Vertex AI <a id="vertex-ai"></a>
 
-To use Gemini CLI with Google Cloud's Vertex AI platform, choose from the
+To use Jiminy CLI with Google Cloud's Vertex AI platform, choose from the
 following authentication options:
 
 - A. Application Default Credentials (ADC) using `gcloud`.
@@ -182,7 +182,7 @@ Remove-Item Env:\GOOGLE_API_KEY, Env:\GEMINI_API_KEY -ErrorAction Ignore
 4. Start the CLI:
 
    ```bash
-   gemini
+   jiminy
    ```
 
 5. Select **Vertex AI**.
@@ -233,7 +233,7 @@ Remove-Item Env:\GOOGLE_API_KEY, Env:\GEMINI_API_KEY -ErrorAction Ignore
 4.  Start the CLI:
 
     ```bash
-    gemini
+    jiminy
     ```
 
 5.  Select **Vertex AI**.
@@ -273,7 +273,7 @@ Remove-Item Env:\GOOGLE_API_KEY, Env:\GEMINI_API_KEY -ErrorAction Ignore
 4.  Start the CLI:
 
     ```bash
-    gemini
+    jiminy
     ```
 
 5.  Select **Vertex AI**.
@@ -286,24 +286,24 @@ Remove-Item Env:\GOOGLE_API_KEY, Env:\GEMINI_API_KEY -ErrorAction Ignore
 > Google Cloud project for authentication.
 
 When you sign in using your Google account, you may need to configure a Google
-Cloud project for Gemini CLI to use. This applies when you meet at least one of
+Cloud project for Jiminy CLI to use. This applies when you meet at least one of
 the following conditions:
 
 - You are using a Company, School, or Google Workspace account.
-- You are using a Gemini Code Assist license from the Google Developer Program.
-- You are using a license from a Gemini Code Assist subscription.
+- You are using a Jiminy Code Assist license from the Google Developer Program.
+- You are using a license from a Jiminy Code Assist subscription.
 
-To configure Gemini CLI to use a Google Cloud project, do the following:
+To configure Jiminy CLI to use a Google Cloud project, do the following:
 
 1.  [Find your Google Cloud Project ID](https://support.google.com/googleapi/answer/7014113).
 
-2.  [Enable the Gemini for Cloud API](https://cloud.google.com/gemini/docs/discover/set-up-gemini#enable-api).
+2.  [Enable the Jiminy for Cloud API](https://cloud.google.com/jiminy/docs/discover/set-up-jiminy#enable-api).
 
-3.  [Configure necessary IAM access permissions](https://cloud.google.com/gemini/docs/discover/set-up-gemini#grant-iam).
+3.  [Configure necessary IAM access permissions](https://cloud.google.com/jiminy/docs/discover/set-up-jiminy#grant-iam).
 
 4.  Configure your environment variables. Set either the `GOOGLE_CLOUD_PROJECT`
-    or `GOOGLE_CLOUD_PROJECT_ID` variable to the project ID to use with Gemini
-    CLI. Gemini CLI checks for `GOOGLE_CLOUD_PROJECT` first, then falls back to
+    or `GOOGLE_CLOUD_PROJECT_ID` variable to the project ID to use with Jiminy
+    CLI. Jiminy CLI checks for `GOOGLE_CLOUD_PROJECT` first, then falls back to
     `GOOGLE_CLOUD_PROJECT_ID`.
 
     For example, to set the `GOOGLE_CLOUD_PROJECT_ID` variable:
@@ -353,19 +353,19 @@ persist them with the following methods:
 > paths in your shell configuration file, any process launched from that
 > shell can read them.
 
-2.  **Use a `.env` file:** Create a `.gemini/.env` file in your project
-    directory or home directory. Gemini CLI automatically loads variables from
+2.  **Use a `.env` file:** Create a `.jiminy/.env` file in your project
+    directory or home directory. Jiminy CLI automatically loads variables from
     the first `.env` file it finds, searching up from the current directory,
-    then in your home directory's `.gemini/.env` (for example, `~/.gemini/.env`
-    or `%USERPROFILE%\.gemini\.env`).
+    then in your home directory's `.jiminy/.env` (for example, `~/.jiminy/.env`
+    or `%USERPROFILE%\.jiminy\.env`).
 
     Example for user-wide settings:
 
     **macOS/Linux**
 
     ```bash
-    mkdir -p ~/.gemini
-    cat >> ~/.gemini/.env <<'EOF'
+    mkdir -p ~/.jiminy
+    cat >> ~/.jiminy/.env <<'EOF'
     GOOGLE_CLOUD_PROJECT="your-project-id"
     # Add other variables like GEMINI_API_KEY as needed
     EOF
@@ -374,23 +374,23 @@ persist them with the following methods:
     **Windows (PowerShell)**
 
     ```powershell
-    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini"
+    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.jiminy"
     @"
     GOOGLE_CLOUD_PROJECT="your-project-id"
     # Add other variables like GEMINI_API_KEY as needed
-    "@ | Out-File -FilePath "$env:USERPROFILE\.gemini\.env" -Encoding utf8 -Append
+    "@ | Out-File -FilePath "$env:USERPROFILE\.jiminy\.env" -Encoding utf8 -Append
     ```
 
 Variables are loaded from the first file found, not merged.
 
 ## Running in Google Cloud environments <a id="cloud-env"></a>
 
-When running Gemini CLI within certain Google Cloud environments, authentication
+When running Jiminy CLI within certain Google Cloud environments, authentication
 is automatic.
 
-In a Google Cloud Shell environment, Gemini CLI typically authenticates
+In a Google Cloud Shell environment, Jiminy CLI typically authenticates
 automatically using your Cloud Shell credentials. In Compute Engine
-environments, Gemini CLI automatically uses Application Default Credentials
+environments, Jiminy CLI automatically uses Application Default Credentials
 (ADC) from the environment's metadata server.
 
 If automatic authentication fails, use one of the interactive methods described
@@ -404,7 +404,7 @@ if an existing authentication credential is cached.
 If you have not already signed in with an authentication credential, you must
 configure authentication using environment variables:
 
-- [Use Gemini API Key](#gemini-api)
+- [Use Jiminy API Key](#jiminy-api)
 - [Vertex AI](#vertex-ai)
 
 ## What's next?
@@ -412,5 +412,5 @@ configure authentication using environment variables:
 Your authentication method affects your quotas, pricing, Terms of Service, and
 privacy notices. Review the following pages to learn more:
 
-- [Gemini CLI: Quotas and Pricing](../resources/quota-and-pricing.md).
-- [Gemini CLI: Terms of Service and Privacy Notice](../resources/tos-privacy.md).
+- [Jiminy CLI: Quotas and Pricing](../resources/quota-and-pricing.md).
+- [Jiminy CLI: Terms of Service and Privacy Notice](../resources/tos-privacy.md).

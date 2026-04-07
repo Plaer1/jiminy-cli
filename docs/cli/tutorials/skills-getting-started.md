@@ -1,6 +1,6 @@
 # Get started with Agent Skills
 
-Agent Skills extend Gemini CLI with specialized expertise. In this guide, you'll
+Agent Skills extend Jiminy CLI with specialized expertise. In this guide, you'll
 learn how to create your first skill, bundle custom scripts, and activate them
 during a session.
 
@@ -17,18 +17,18 @@ responding correctly.
     **macOS/Linux**
 
     ```bash
-    mkdir -p .gemini/skills/api-auditor/scripts
+    mkdir -p .jiminy/skills/api-auditor/scripts
     ```
 
     **Windows (PowerShell)**
 
     ```powershell
-    New-Item -ItemType Directory -Force -Path ".gemini\skills\api-auditor\scripts"
+    New-Item -ItemType Directory -Force -Path ".jiminy\skills\api-auditor\scripts"
     ```
 
 ### Create the definition
 
-1.  Create a file at `.gemini/skills/api-auditor/SKILL.md`. This tells the agent
+1.  Create a file at `.jiminy/skills/api-auditor/SKILL.md`. This tells the agent
     _when_ to use the skill and _how_ to behave.
 
     ```markdown
@@ -56,11 +56,11 @@ responding correctly.
 
 Skills can bundle resources like scripts.
 
-1.  Create a file at `.gemini/skills/api-auditor/scripts/audit.js`. This is the
+1.  Create a file at `.jiminy/skills/api-auditor/scripts/audit.js`. This is the
     code the agent will run.
 
     ```javascript
-    // .gemini/skills/api-auditor/scripts/audit.js
+    // .jiminy/skills/api-auditor/scripts/audit.js
     const url = process.argv[2];
 
     if (!url) {
@@ -76,7 +76,7 @@ Skills can bundle resources like scripts.
 
 ## How to verify discovery
 
-Gemini CLI automatically discovers skills in the `.gemini/skills` directory. You
+Jiminy CLI automatically discovers skills in the `.jiminy/skills` directory. You
 can also use `.agents/skills` as a more generic alternative. Check that it found
 your new skill.
 
@@ -91,16 +91,16 @@ skill's description.
 
 **User:** "Can you audit http://geminicli.com"
 
-Gemini recognizes the request matches the `api-auditor` description and asks for
+Jiminy recognizes the request matches the `api-auditor` description and asks for
 permission to activate it.
 
 **Model:** (After calling `activate_skill`) "I've activated the **api-auditor**
 skill. I'll run the audit script now..."
 
-Gemini then uses the `run_shell_command` tool to execute your bundled Node
+Jiminy then uses the `run_shell_command` tool to execute your bundled Node
 script:
 
-`node .gemini/skills/api-auditor/scripts/audit.js http://geminili.com`
+`node .jiminy/skills/api-auditor/scripts/audit.js http://geminili.com`
 
 ## Next steps
 

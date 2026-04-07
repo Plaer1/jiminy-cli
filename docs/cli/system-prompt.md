@@ -1,6 +1,6 @@
 # System Prompt Override (GEMINI_SYSTEM_MD)
 
-The core system instructions that guide Gemini CLI can be completely replaced
+The core system instructions that guide Jiminy CLI can be completely replaced
 with your own Markdown file. This feature is controlled via the
 `GEMINI_SYSTEM_MD` environment variable.
 
@@ -23,12 +23,12 @@ project-specific behavior or create a customized persona.
 ## How to enable
 
 You can set the environment variable temporarily in your shell, or persist it
-via a `.gemini/.env` file. See
+via a `.jiminy/.env` file. See
 [Persisting Environment Variables](../get-started/authentication.md#persisting-environment-variables).
 
-- Use the project default path (`.gemini/system.md`):
+- Use the project default path (`.jiminy/system.md`):
   - `GEMINI_SYSTEM_MD=true` or `GEMINI_SYSTEM_MD=1`
-  - The CLI reads `./.gemini/system.md` (relative to your current project
+  - The CLI reads `./.jiminy/system.md` (relative to your current project
     directory).
 
 - Use a custom file path:
@@ -46,12 +46,12 @@ error with: `missing system prompt file '<path>'`.
 ## Quick examples
 
 - One‑off session using a project file:
-  - `GEMINI_SYSTEM_MD=1 gemini`
-- Persist for a project using `.gemini/.env`:
-  - Create `.gemini/system.md`, then add to `.gemini/.env`:
+  - `GEMINI_SYSTEM_MD=1 jiminy`
+- Persist for a project using `.jiminy/.env`:
+  - Create `.jiminy/system.md`, then add to `.jiminy/.env`:
     - `GEMINI_SYSTEM_MD=1`
 - Use a custom file under your home directory:
-  - `GEMINI_SYSTEM_MD=~/prompts/SYSTEM.md gemini`
+  - `GEMINI_SYSTEM_MD=~/prompts/SYSTEM.md jiminy`
 
 ## UI indicator
 
@@ -96,9 +96,9 @@ Before overriding, export the current default prompt so you can review required
 safety and workflow rules.
 
 - Write the built‑in prompt to the project default path:
-  - `GEMINI_WRITE_SYSTEM_MD=1 gemini`
+  - `GEMINI_WRITE_SYSTEM_MD=1 jiminy`
 - Or write to a custom path:
-  - `GEMINI_WRITE_SYSTEM_MD=~/prompts/DEFAULT_SYSTEM.md gemini`
+  - `GEMINI_WRITE_SYSTEM_MD=~/prompts/DEFAULT_SYSTEM.md jiminy`
 
 This creates the file and writes the current built‑in system prompt to it.
 
@@ -119,9 +119,9 @@ GEMINI.md focused on high‑level guidance and project specifics.
 
 - Error: `missing system prompt file '…'`
   - Ensure the referenced path exists and is readable.
-  - For `GEMINI_SYSTEM_MD=1|true`, create `./.gemini/system.md` in your project.
+  - For `GEMINI_SYSTEM_MD=1|true`, create `./.jiminy/system.md` in your project.
 - Override not taking effect
-  - Confirm the variable is loaded (use `.gemini/.env` or export in your shell).
+  - Confirm the variable is loaded (use `.jiminy/.env` or export in your shell).
   - Paths are resolved from the current working directory; try an absolute path.
 - Restore defaults
   - Unset `GEMINI_SYSTEM_MD` or set it to `0`/`false`.

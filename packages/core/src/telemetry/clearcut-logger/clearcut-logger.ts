@@ -171,7 +171,7 @@ export interface LogRequest {
 
 /**
  * Determine the surface that the user is currently using.  Surface is effectively the
- * distribution channel in which the user is using Gemini CLI.  Gemini CLI comes bundled
+ * distribution channel in which the user is using Jiminy CLI.  Jiminy CLI comes bundled
  * w/ Firebase Studio and Cloud Shell.  Users that manually download themselves will
  * likely be "SURFACE_NOT_SET".
  *
@@ -1252,7 +1252,7 @@ export class ClearcutLogger {
   }
 
   logNetworkRetryAttemptEvent(event: NetworkRetryAttemptEvent): void {
-    // This event is generic for any retry attempt (Gemini, WebFetch, etc.)
+    // This event is generic for any retry attempt (Jiminy, WebFetch, etc.)
     const data: EventValue[] = [
       {
         gemini_cli_key:

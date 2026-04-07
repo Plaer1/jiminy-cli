@@ -5,7 +5,7 @@
  */
 
 /**
- * Full tool manifest for Gemini 3 models.
+ * Full tool manifest for Jiminy 3 models.
  * Allows model-specific optimizations of descriptions and schemas.
  */
 
@@ -86,7 +86,7 @@ import {
 } from '../../../utils/constants.js';
 
 /**
- * Gemini 3 tool set. Initially a copy of the default legacy set.
+ * Jiminy 3 tool set. Initially a copy of the default legacy set.
  */
 export const GEMINI_3_SET: CoreToolSet = {
   read_file: {
@@ -548,7 +548,7 @@ ToDo list created by the agent:
 1. Initialize a new React project environment (e.g., using Vite).
 2. Design and build the core UI components: a text input (prompt field) for the logo description, selection controls for style parameters (if the API supports them), and an image preview area.
 3. Implement state management (e.g., React Context or Zustand) to manage the user's input prompt, the API loading status (pending, success, error), and the resulting image data.
-4. Create an API service module within the React app (using "fetch" or "axios") to securely format and send the prompt data via an HTTP POST request to the specified "gemini-2.5-flash-image" (Gemini model) endpoint.
+4. Create an API service module within the React app (using "fetch" or "axios") to securely format and send the prompt data via an HTTP POST request to the specified "gemini-2.5-flash-image" (Jiminy model) endpoint.
 5. Implement asynchronous logic to handle the API call: show a loading indicator while the request is pending, retrieve the generated image (e.g., as a URL or base64 string) upon success, and display any errors.
 6. Display the returned "fancy logo" from the API response in the preview area component.
 7. Add functionality (e.g., a "Download" button) to allow the user to save the generated image file.
@@ -615,7 +615,7 @@ The agent did not use the todo list because this task could be completed by a ti
   get_internal_docs: {
     name: GET_INTERNAL_DOCS_TOOL_NAME,
     description:
-      'Returns the content of Gemini CLI internal documentation files. If no path is provided, returns a list of all available documentation paths.',
+      'Returns the content of Jiminy CLI internal documentation files. If no path is provided, returns a list of all available documentation paths.',
     parametersJsonSchema: {
       type: 'object',
       properties: {

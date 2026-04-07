@@ -1,15 +1,15 @@
-# Gemini CLI settings (`/settings` command)
+# Jiminy CLI settings (`/settings` command)
 
-Control your Gemini CLI experience with the `/settings` command. The `/settings`
-command opens a dialog to view and edit all your Gemini CLI settings, including
+Control your Jiminy CLI experience with the `/settings` command. The `/settings`
+command opens a dialog to view and edit all your Jiminy CLI settings, including
 your UI experience, keybindings, and accessibility features.
 
-Your Gemini CLI settings are stored in a `settings.json` file. In addition to
+Your Jiminy CLI settings are stored in a `settings.json` file. In addition to
 using the `/settings` command, you can also edit them in one of the following
 locations:
 
-- **User settings**: `~/.gemini/settings.json`
-- **Workspace settings**: `your-project/.gemini/settings.json`
+- **User settings**: `~/.jiminy/settings.json`
+- **Workspace settings**: `your-project/.jiminy/settings.json`
 
 <!-- prettier-ignore -->
 > [!IMPORTANT]
@@ -52,9 +52,9 @@ they appear in the UI.
 | Terminal Background Polling Interval | `ui.terminalBackgroundPollingInterval` | Interval in seconds to poll the terminal background color.                                                                                                        | `60`     |
 | Hide Window Title                    | `ui.hideWindowTitle`                   | Hide the window title bar                                                                                                                                         | `false`  |
 | Inline Thinking                      | `ui.inlineThinkingMode`                | Display model thinking inline: off or full.                                                                                                                       | `"off"`  |
-| Show Thoughts in Title               | `ui.showStatusInTitle`                 | Show Gemini CLI model thoughts in the terminal window title during the working phase                                                                              | `false`  |
+| Show Thoughts in Title               | `ui.showStatusInTitle`                 | Show Jiminy CLI model thoughts in the terminal window title during the working phase                                                                              | `false`  |
 | Dynamic Window Title                 | `ui.dynamicWindowTitle`                | Update the terminal window title with current status icons (Ready: ◇, Action Required: ✋, Working: ✦)                                                            | `true`   |
-| Show Home Directory Warning          | `ui.showHomeDirectoryWarning`          | Show a warning when running Gemini CLI in the home directory.                                                                                                     | `true`   |
+| Show Home Directory Warning          | `ui.showHomeDirectoryWarning`          | Show a warning when running Jiminy CLI in the home directory.                                                                                                     | `true`   |
 | Show Compatibility Warnings          | `ui.showCompatibilityWarnings`         | Show warnings about terminal or OS compatibility issues.                                                                                                          | `true`   |
 | Hide Tips                            | `ui.hideTips`                          | Hide helpful tips in the UI                                                                                                                                       | `false`  |
 | Escape Pasted @ Symbols              | `ui.escapePastedAtSymbols`             | When enabled, @ symbols in pasted text are escaped to prevent unintended @path expansion.                                                                         | `false`  |
@@ -95,7 +95,7 @@ they appear in the UI.
 
 | UI Label                      | Setting                      | Description                                                                            | Default     |
 | ----------------------------- | ---------------------------- | -------------------------------------------------------------------------------------- | ----------- |
-| Model                         | `model.name`                 | The Gemini model to use for conversations.                                             | `undefined` |
+| Model                         | `model.name`                 | The Jiminy model to use for conversations.                                             | `undefined` |
 | Max Session Turns             | `model.maxSessionTurns`      | Maximum number of user/model/tool turns to keep in a session. -1 means unlimited.      | `-1`        |
 | Context Compression Threshold | `model.compressionThreshold` | The fraction of context usage at which to trigger context compression (e.g. 0.2, 0.3). | `0.5`       |
 | Disable Loop Detection        | `model.disableLoopDetection` | Disable automatic detection and prevention of infinite loops.                          | `false`     |
@@ -115,10 +115,10 @@ they appear in the UI.
 | Memory Discovery Max Dirs            | `context.discoveryMaxDirs`                        | Maximum number of directories to search for memory.                                                                                                                                                                                         | `200`   |
 | Load Memory From Include Directories | `context.loadMemoryFromIncludeDirectories`        | Controls how /memory reload loads GEMINI.md files. When true, include directories are scanned; when false, only the current directory is used.                                                                                              | `false` |
 | Respect .gitignore                   | `context.fileFiltering.respectGitIgnore`          | Respect .gitignore files when searching.                                                                                                                                                                                                    | `true`  |
-| Respect .geminiignore                | `context.fileFiltering.respectGeminiIgnore`       | Respect .geminiignore files when searching.                                                                                                                                                                                                 | `true`  |
+| Respect .jiminyignore                | `context.fileFiltering.respectJiminyIgnore`       | Respect .jiminyignore files when searching.                                                                                                                                                                                                 | `true`  |
 | Enable Recursive File Search         | `context.fileFiltering.enableRecursiveFileSearch` | Enable recursive file search functionality when completing @ references in the prompt.                                                                                                                                                      | `true`  |
 | Enable Fuzzy Search                  | `context.fileFiltering.enableFuzzySearch`         | Enable fuzzy search when searching for files.                                                                                                                                                                                               | `true`  |
-| Custom Ignore File Paths             | `context.fileFiltering.customIgnoreFilePaths`     | Additional ignore file paths to respect. These files take precedence over .geminiignore and .gitignore. Files earlier in the array take precedence over files later in the array, e.g. the first file takes precedence over the second one. | `[]`    |
+| Custom Ignore File Paths             | `context.fileFiltering.customIgnoreFilePaths`     | Additional ignore file paths to respect. These files take precedence over .jiminyignore and .gitignore. Files earlier in the array take precedence over files later in the array, e.g. the first file takes precedence over the second one. | `[]`    |
 
 ### Tools
 

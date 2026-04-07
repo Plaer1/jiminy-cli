@@ -13,7 +13,7 @@ export interface ToolActionReturn {
   toolName: string;
   toolArgs: Record<string, unknown>;
   /**
-   * Optional content to be submitted as a prompt to the Gemini model
+   * Optional content to be submitted as a prompt to the Jiminy model
    * after the tool call completes.
    */
   postSubmitPrompt?: PartListUnion;
@@ -41,7 +41,7 @@ export interface LoadHistoryActionReturn<HistoryType = unknown> {
 
 /**
  * The return type for a command action that should immediately submit
- * content as a prompt to the Gemini model.
+ * content as a prompt to the Jiminy model.
  */
 export interface SubmitPromptActionReturn {
   type: 'submit_prompt';

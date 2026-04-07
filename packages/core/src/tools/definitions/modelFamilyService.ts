@@ -23,7 +23,7 @@ export function getToolFamily(modelId?: string): ToolFamily {
     return 'default-legacy';
   }
 
-  // Explicit mapping for Gemini 3 family
+  // Explicit mapping for Jiminy 3 family
   if (isGemini3Model(modelId)) {
     return 'gemini-3';
   }

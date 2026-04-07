@@ -83,7 +83,7 @@ export function useSessionResume({
           workspaceContext.addDirectories(resumedData.conversation.directories);
         }
 
-        // Give the history to the Gemini client.
+        // Give the history to the Jiminy client.
         await config.getGeminiClient()?.resumeChat(clientHistory, resumedData);
       } catch (error) {
         coreEvents.emitFeedback(

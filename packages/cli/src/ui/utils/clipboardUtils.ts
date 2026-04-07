@@ -16,7 +16,7 @@ import {
 } from '@google/gemini-cli-core';
 
 /**
- * Supported image file extensions based on Gemini API.
+ * Supported image file extensions based on Jiminy API.
  * See: https://ai.google.dev/gemini-api/docs/image-understanding
  */
 export const IMAGE_EXTENSIONS = [

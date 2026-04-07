@@ -1,7 +1,7 @@
 # Trusted Folders
 
 The Trusted Folders feature is a security setting that gives you control over
-which projects can use the full capabilities of the Gemini CLI. It prevents
+which projects can use the full capabilities of the Jiminy CLI. It prevents
 potentially malicious code from running by asking you to approve a folder before
 the CLI loads any project-specific configurations from it.
 
@@ -24,7 +24,7 @@ Add the following to your user `settings.json` file:
 
 ## How it works: The trust dialog
 
-Once the feature is enabled, the first time you run the Gemini CLI from a
+Once the feature is enabled, the first time you run the Jiminy CLI from a
 folder, a dialog will automatically appear, prompting you to make a choice:
 
 - **Trust folder**: Grants full trust to the current folder (e.g.,
@@ -35,12 +35,12 @@ folder, a dialog will automatically appear, prompting you to make a choice:
 - **Don't trust**: Marks the folder as untrusted. The CLI will operate in a
   restricted "safe mode."
 
-Your choice is saved in a central file (`~/.gemini/trustedFolders.json`), so you
+Your choice is saved in a central file (`~/.jiminy/trustedFolders.json`), so you
 will only be asked once per folder.
 
 ## Understanding folder contents: The discovery phase
 
-Before you make a choice, the Gemini CLI performs a **discovery phase** to scan
+Before you make a choice, the Jiminy CLI performs a **discovery phase** to scan
 the folder for potential configurations. This information is displayed in the
 trust dialog to help you make an informed decision.
 
@@ -71,11 +71,11 @@ that you know are safe.
 
 ## Why trust matters: The impact of an untrusted workspace
 
-When a folder is **untrusted**, the Gemini CLI runs in a restricted "safe mode"
+When a folder is **untrusted**, the Jiminy CLI runs in a restricted "safe mode"
 to protect you. In this mode, the following features are disabled:
 
 1.  **Workspace settings are ignored**: The CLI will **not** load the
-    `.gemini/settings.json` file from the project. This prevents the loading of
+    `.jiminy/settings.json` file from the project. This prevents the loading of
     custom tools and other potentially dangerous configurations.
 
 2.  **Environment variables are ignored**: The CLI will **not** load any `.env`
@@ -97,7 +97,7 @@ to protect you. In this mode, the following features are disabled:
     commands from .toml files, including both project-specific and global user
     commands.
 
-Granting trust to a folder unlocks the full functionality of the Gemini CLI for
+Granting trust to a folder unlocks the full functionality of the Jiminy CLI for
 that workspace.
 
 ## Managing your trust settings
@@ -111,7 +111,7 @@ options:
 
 - **View all trust rules**: To see a complete list of all your trusted and
   untrusted folder rules, you can inspect the contents of the
-  `~/.gemini/trustedFolders.json` file in your home directory.
+  `~/.jiminy/trustedFolders.json` file in your home directory.
 
 ## The trust check process (advanced)
 
@@ -123,4 +123,4 @@ trust is determined:
     if the workspace is trusted. The IDE's response takes highest priority.
 
 2.  **Local trust file**: If the IDE is not connected, the CLI checks the
-    central `~/.gemini/trustedFolders.json` file.
+    central `~/.jiminy/trustedFolders.json` file.

@@ -25,7 +25,7 @@ function ensurePartArray(content: PartListUnion): Part[] {
 }
 
 /**
- * Converts session/conversation data into Gemini client history formats.
+ * Converts session/conversation data into Jiminy client history formats.
  */
 export function convertSessionToClientHistory(
   messages: ConversationRecord['messages'],

@@ -1,40 +1,40 @@
-# Get started with Gemini CLI
+# Get started with Jiminy CLI
 
-Welcome to Gemini CLI! This guide will help you install, configure, and start
-using the Gemini CLI to enhance your workflow right from your terminal.
+Welcome to Jiminy CLI! This guide will help you install, configure, and start
+using the Jiminy CLI to enhance your workflow right from your terminal.
 
-## Quickstart: Install, authenticate, configure, and use Gemini CLI
+## Quickstart: Install, authenticate, configure, and use Jiminy CLI
 
-Gemini CLI brings the power of advanced language models directly to your command
-line interface. As an AI-powered assistant, Gemini CLI can help you with a
+Jiminy CLI brings the power of advanced language models directly to your command
+line interface. As an AI-powered assistant, Jiminy CLI can help you with a
 variety of tasks, from understanding and generating code to reviewing and
 editing documents.
 
 ## Install
 
-The standard method to install and run Gemini CLI uses `npm`:
+The standard method to install and run Jiminy CLI uses `npm`:
 
 ```bash
-npm install -g @google/gemini-cli
+npm install -g @google/jiminy-cli
 ```
 
-Once Gemini CLI is installed, run Gemini CLI from your command line:
+Once Jiminy CLI is installed, run Jiminy CLI from your command line:
 
 ```bash
-gemini
+jiminy
 ```
 
-For more installation options, see [Gemini CLI Installation](./installation.md).
+For more installation options, see [Jiminy CLI Installation](./installation.md).
 
 ## Authenticate
 
-To begin using Gemini CLI, you must authenticate with a Google service. In most
+To begin using Jiminy CLI, you must authenticate with a Google service. In most
 cases, you can log in with your existing Google account:
 
-1. Run Gemini CLI after installation:
+1. Run Jiminy CLI after installation:
 
    ```bash
-   gemini
+   jiminy
    ```
 
 2. When asked "How would you like to authenticate for this project?" select **1.
@@ -46,23 +46,23 @@ cases, you can log in with your existing Google account:
 
 Certain account types may require you to configure a Google Cloud project. For
 more information, including other authentication methods, see
-[Gemini CLI Authentication Setup](./authentication.md).
+[Jiminy CLI Authentication Setup](./authentication.md).
 
 ## Configure
 
-Gemini CLI offers several ways to configure its behavior, including environment
+Jiminy CLI offers several ways to configure its behavior, including environment
 variables, command-line arguments, and settings files.
 
 To explore your configuration options, see
-[Gemini CLI Configuration](../reference/configuration.md).
+[Jiminy CLI Configuration](../reference/configuration.md).
 
 ## Use
 
-Once installed and authenticated, you can start using Gemini CLI by issuing
+Once installed and authenticated, you can start using Jiminy CLI by issuing
 commands and prompts in your terminal. Ask it to generate code, explain files,
 and more.
 
-To explore the power of Gemini CLI, see [Gemini CLI examples](./examples.md).
+To explore the power of Jiminy CLI, see [Jiminy CLI examples](./examples.md).
 
 ## Check usage and quota
 

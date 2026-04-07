@@ -441,7 +441,7 @@ export async function runNonInteractive({
             }
           }
 
-          // Record tool calls with full metadata before sending responses to Gemini
+          // Record tool calls with full metadata before sending responses to Jiminy
           try {
             const currentModel =
               geminiClient.getCurrentSequenceModel() ?? config.getModel();

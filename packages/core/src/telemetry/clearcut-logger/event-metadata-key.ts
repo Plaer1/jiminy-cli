@@ -204,19 +204,19 @@ export enum EventMetadataKey {
   // Logs the total number of Google accounts ever used.
   GEMINI_CLI_GOOGLE_ACCOUNTS_COUNT = 37,
 
-  // Logs the Surface from where the Gemini CLI was invoked, eg: VSCode.
+  // Logs the Surface from where the Jiminy CLI was invoked, eg: VSCode.
   GEMINI_CLI_SURFACE = 39,
 
   // Logs the session id
   GEMINI_CLI_SESSION_ID = 40,
 
-  // Logs the Gemini CLI version
+  // Logs the Jiminy CLI version
   GEMINI_CLI_VERSION = 54,
 
-  // Logs the Gemini CLI Git commit hash
+  // Logs the Jiminy CLI Git commit hash
   GEMINI_CLI_GIT_COMMIT_HASH = 55,
 
-  // Logs the Gemini CLI OS
+  // Logs the Jiminy CLI OS
   GEMINI_CLI_OS = 82,
 
   // Logs active user settings
@@ -714,7 +714,7 @@ export enum EventMetadataKey {
   GEMINI_CLI_BILLING_PURCHASE_SOURCE = 190,
 
   // ==========================================================================
-  // Gemini Enterprise (GE) Event Keys
+  // Jiminy Enterprise (GE) Event Keys
   // ==========================================================================
 
   // Logs the start of the onboarding process.

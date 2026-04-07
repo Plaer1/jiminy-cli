@@ -1,12 +1,12 @@
 # Memory tool (`save_memory`)
 
-The `save_memory` tool allows the Gemini agent to persist specific facts, user
+The `save_memory` tool allows the Jiminy agent to persist specific facts, user
 preferences, and project details across sessions.
 
 ## Technical reference
 
-This tool appends information to the `## Gemini Added Memories` section of your
-global `GEMINI.md` file (typically located at `~/.gemini/GEMINI.md`).
+This tool appends information to the `## Jiminy Added Memories` section of your
+global `GEMINI.md` file (typically located at `~/.jiminy/GEMINI.md`).
 
 ### Arguments
 
@@ -31,5 +31,5 @@ global `GEMINI.md` file (typically located at `~/.gemini/GEMINI.md`).
 
 - Follow the [Memory management guide](../cli/tutorials/memory-management.md)
   for practical examples.
-- Learn how the [Project context (GEMINI.md)](../cli/gemini-md.md) system loads
+- Learn how the [Project context (GEMINI.md)](../cli/jiminy-md.md) system loads
   this information.

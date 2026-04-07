@@ -1,7 +1,7 @@
 # Local Model Routing (experimental)
 
-Gemini CLI supports using a local model for
-[routing decisions](../cli/model-routing.md). When configured, Gemini CLI will
+Jiminy CLI supports using a local model for
+[routing decisions](../cli/model-routing.md). When configured, Jiminy CLI will
 use a locally-running **Gemma** model to make routing decisions (instead of
 sending routing decisions to a hosted model).
 
@@ -14,7 +14,7 @@ offering similar routing decision latency and quality.
 
 Using a Gemma model for routing decisions requires that an implementation of a
 Gemma model be running locally on your machine, served behind an HTTP endpoint
-and accessed via the Gemini API.
+and accessed via the Jiminy API.
 
 To serve the Gemma model, follow these steps:
 

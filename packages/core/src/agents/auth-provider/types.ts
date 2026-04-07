@@ -27,7 +27,7 @@ export interface A2AAuthProvider extends AuthenticationHandler {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface BaseAuthConfig {}
 
-/** Client config for google-credentials (not in A2A spec, Gemini-specific). */
+/** Client config for google-credentials (not in A2A spec, Jiminy-specific). */
 export interface GoogleCredentialsAuthConfig extends BaseAuthConfig {
   type: 'google-credentials';
   scopes?: string[];

@@ -168,8 +168,8 @@ ${renderUserMemory(userMemory, contextFilenames)}
 export function renderPreamble(options?: PreambleOptions): string {
   if (!options) return '';
   return options.interactive
-    ? 'You are Gemini CLI, an interactive CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and effectively.'
-    : 'You are Gemini CLI, an autonomous CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and effectively.';
+    ? 'You are Jiminy CLI, an interactive CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and effectively.'
+    : 'You are Jiminy CLI, an autonomous CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and effectively.';
 }
 
 export function renderCoreMandates(options?: CoreMandatesOptions): string {
@@ -492,7 +492,7 @@ export function renderUserMemory(
 # Contextual Instructions (${formattedHeader})
 The following content is loaded from local and global configuration files.
 **Context Precedence:**
-- **Global (~/.gemini/):** foundational user preferences. Apply these broadly.
+- **Global (~/.jiminy/):** foundational user preferences. Apply these broadly.
 - **Extensions:** supplementary knowledge and capabilities.
 - **Workspace Root:** workspace-wide mandates. Supersedes global preferences.
 - **Sub-directories:** highly specific overrides. These rules supersede all others for files within their scope.

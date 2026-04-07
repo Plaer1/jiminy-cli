@@ -1,7 +1,7 @@
 # Release confidence strategy
 
 This document outlines the strategy for gaining confidence in every release of
-the Gemini CLI. It serves as a checklist and quality gate for release manager to
+the Jiminy CLI. It serves as a checklist and quality gate for release manager to
 ensure we are shipping a high-quality product.
 
 ## The goal
@@ -48,7 +48,7 @@ All workflows in `.github/workflows/chained_e2e.yml` must pass.
 After a release is published to npm, the `smoke-test.yml` workflow runs. This
 must pass to confirm the package is installable and the binary is executable.
 
-- **Command:** `npx -y @google/gemini-cli@<tag> --version` must return the
+- **Command:** `npx -y @google/jiminy-cli@<tag> --version` must return the
   correct version without error.
 - **Platform:** Currently runs on `ubuntu-latest`.
 
@@ -65,7 +65,7 @@ The weekly release cadence promotes code from `main` -> `nightly` -> `preview`
   least **one week** before being promoted to `stable`.
 - **Action:** Maintainers should install the preview version locally:
   ```bash
-  npm install -g @google/gemini-cli@preview
+  npm install -g @google/jiminy-cli@preview
   ```
 - **Goal:** To catch regressions and UX issues in day-to-day usage before they
   reach the broad user base.
@@ -77,10 +77,10 @@ manually run through this checklist.
 
 - **Setup:**
   - [ ] Uninstall any existing global version:
-        `npm uninstall -g @google/gemini-cli`
+        `npm uninstall -g @google/jiminy-cli`
   - [ ] Clear npx cache (optional but recommended): `npm cache clean --force`
-  - [ ] Install the preview version: `npm install -g @google/gemini-cli@preview`
-  - [ ] Verify version: `gemini --version`
+  - [ ] Install the preview version: `npm install -g @google/jiminy-cli@preview`
+  - [ ] Verify version: `jiminy --version`
 
 - **Authentication:**
   - [ ] In interactive mode run `/auth` and verify all sign in flows work:
@@ -89,12 +89,12 @@ manually run through this checklist.
     - [ ] Vertex AI
 
 - **Basic prompting:**
-  - [ ] Run `gemini "Tell me a joke"` and verify a sensible response.
-  - [ ] Run in interactive mode: `gemini`. Ask a follow-up question to test
+  - [ ] Run `jiminy "Tell me a joke"` and verify a sensible response.
+  - [ ] Run in interactive mode: `jiminy`. Ask a follow-up question to test
         context.
 
 - **Piped input:**
-  - [ ] Run `echo "Summarize this" | gemini` and verify it processes stdin.
+  - [ ] Run `echo "Summarize this" | jiminy` and verify it processes stdin.
 
 - **Context management:**
   - [ ] In interactive mode, use `@file` to add a local file to context. Ask a
@@ -105,7 +105,7 @@ manually run through this checklist.
   - [ ] Validate that setting is changed
 
 - **Function calling:**
-  - [ ] In interactive mode, ask gemini to "create a file named hello.md with
+  - [ ] In interactive mode, ask jiminy to "create a file named hello.md with
         the content 'hello world'" and verify the file is created correctly.
 
 If any of these CUJs fail, the release is a no-go until a patch is applied to
@@ -142,14 +142,14 @@ A bug bash should be considered for any release that involves:
 
 ### Dashboard health
 
-- [ ] Go to `go/gemini-cli-dash`.
+- [ ] Go to `go/jiminy-cli-dash`.
 - [ ] Navigate to the "Tool Call" tab.
 - [ ] Validate that there are no spikes in errors for the release you would like
       to promote.
 
 ### Model evaluation
 
-- [ ] Navigate to `go/gemini-cli-offline-evals-dash`.
+- [ ] Navigate to `go/jiminy-cli-offline-evals-dash`.
 - [ ] Make sure that the release you want to promote's recurring run is within
       average eval runs.
 

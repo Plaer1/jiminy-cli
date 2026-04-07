@@ -58,7 +58,7 @@ function estimateMediaTokens(part: Part): number | undefined {
   const mimeType = inlineData?.mimeType || fileData?.mimeType;
 
   if (mimeType?.startsWith('image/')) {
-    // Images: 3,000 tokens (covers up to 4K resolution on Gemini 3)
+    // Images: 3,000 tokens (covers up to 4K resolution on Jiminy 3)
     // See: https://ai.google.dev/gemini-api/docs/vision#token_counting
     return IMAGE_TOKEN_ESTIMATE;
   } else if (mimeType?.startsWith('application/pdf')) {
@@ -71,7 +71,7 @@ function estimateMediaTokens(part: Part): number | undefined {
 
 /**
  * Heuristic estimation for tool responses, avoiding massive string copies
- * and accounting for nested Gemini 3 multimodal parts.
+ * and accounting for nested Jiminy 3 multimodal parts.
  */
 function estimateFunctionResponseTokens(part: Part, depth: number): number {
   const fr = part.functionResponse;
@@ -87,7 +87,7 @@ function estimateFunctionResponseTokens(part: Part, depth: number): number {
     totalTokens += JSON.stringify(response).length / 4;
   }
 
-  // Gemini 3: Handle nested multimodal parts recursively.
+  // Jiminy 3: Handle nested multimodal parts recursively.
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   const nestedParts = (fr as unknown as { parts?: Part[] }).parts;
   if (nestedParts && nestedParts.length > 0) {

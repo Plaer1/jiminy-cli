@@ -8,7 +8,7 @@ import type { Part } from '@google/genai';
 import type { ContentPart } from './types.js';
 
 /**
- * Converts Gemini API Part objects to framework-agnostic ContentPart objects.
+ * Converts Jiminy API Part objects to framework-agnostic ContentPart objects.
  * Handles text, thought, inlineData, fileData parts and serializes unknown
  * part types to text to avoid silent data loss.
  */
@@ -56,7 +56,7 @@ export function geminiPartsToContentParts(parts: Part[]): ContentPart[] {
 }
 
 /**
- * Converts framework-agnostic ContentPart objects to Gemini API Part objects.
+ * Converts framework-agnostic ContentPart objects to Jiminy API Part objects.
  */
 export function contentPartsToGeminiParts(content: ContentPart[]): Part[] {
   const result: Part[] = [];

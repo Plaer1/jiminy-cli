@@ -1,11 +1,11 @@
 # Local development guide
 
 This guide provides instructions for setting up and using local development
-features for Gemini CLI.
+features for Jiminy CLI.
 
 ## Tracing
 
-Gemini CLI uses OpenTelemetry (OTel) to record traces that help you debug agent
+Jiminy CLI uses OpenTelemetry (OTel) to record traces that help you debug agent
 behavior. Traces instrument key events like model calls, tool scheduler
 operations, and tool calls.
 
@@ -31,12 +31,12 @@ Genkit provides a web-based UI for viewing traces and other telemetry data.
     The script will output the URL for the Genkit Developer UI. For example:
     `Genkit Developer UI: http://localhost:4000`
 
-2.  **Run Gemini CLI:**
+2.  **Run Jiminy CLI:**
 
-    In a separate terminal, run your Gemini CLI command:
+    In a separate terminal, run your Jiminy CLI command:
 
     ```bash
-    gemini
+    jiminy
     ```
 
 3.  **View the traces:**
@@ -59,14 +59,14 @@ You can view traces in the Jaeger UI for local development.
 
     This command configures your workspace for local telemetry and provides a
     link to the Jaeger UI (usually `http://localhost:16686`).
-    - **Collector logs:** `~/.gemini/tmp/<projectHash>/otel/collector.log`
+    - **Collector logs:** `~/.jiminy/tmp/<projectHash>/otel/collector.log`
 
-2.  **Run Gemini CLI:**
+2.  **Run Jiminy CLI:**
 
-    In a separate terminal, run your Gemini CLI command:
+    In a separate terminal, run your Jiminy CLI command:
 
     ```bash
-    gemini
+    jiminy
     ```
 
 3.  **View the traces:**
@@ -85,7 +85,7 @@ Trace for custom processing or routing.
 > [Google Cloud telemetry prerequisites](./cli/telemetry.md#prerequisites)
 > (Project ID, authentication, IAM roles, and APIs) before using this method.
 
-1.  **Configure `.gemini/settings.json`:**
+1.  **Configure `.jiminy/settings.json`:**
 
     ```json
     {
@@ -108,14 +108,14 @@ Trace for custom processing or routing.
 
     The script outputs links to view traces, metrics, and logs in the Google
     Cloud Console.
-    - **Collector logs:** `~/.gemini/tmp/<projectHash>/otel/collector-gcp.log`
+    - **Collector logs:** `~/.jiminy/tmp/<projectHash>/otel/collector-gcp.log`
 
-3.  **Run Gemini CLI:**
+3.  **Run Jiminy CLI:**
 
-    In a separate terminal, run your Gemini CLI command:
+    In a separate terminal, run your Jiminy CLI command:
 
     ```bash
-    gemini
+    jiminy
     ```
 
 4.  **View logs, metrics, and traces:**
@@ -137,14 +137,14 @@ Adding traces helps you debug and understand the flow of execution. Use the
 Here is a basic example:
 
 ```typescript
-import { runInDevTraceSpan } from '@google/gemini-cli-core';
-import { GeminiCliOperation } from '@google/gemini-cli-core/lib/telemetry/constants.js';
+import { runInDevTraceSpan } from '@google/jiminy-cli-core';
+import { GeminiCliOperation } from '@google/jiminy-cli-core/lib/telemetry/constants.js';
 
 await runInDevTraceSpan(
   {
     operation: GeminiCliOperation.ToolCall,
     attributes: {
-      [GEN_AI_AGENT_NAME]: 'gemini-cli',
+      [GEN_AI_AGENT_NAME]: 'jiminy-cli',
     },
   },
   async ({ metadata }) => {

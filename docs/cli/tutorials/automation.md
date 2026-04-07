@@ -1,17 +1,17 @@
 # Automate tasks with headless mode
 
-Automate tasks with Gemini CLI. Learn how to use headless mode, pipe data into
-Gemini CLI, automate workflows with shell scripts, and generate structured JSON
+Automate tasks with Jiminy CLI. Learn how to use headless mode, pipe data into
+Jiminy CLI, automate workflows with shell scripts, and generate structured JSON
 output for other applications.
 
 ## Prerequisites
 
-- Gemini CLI installed and authenticated.
+- Jiminy CLI installed and authenticated.
 - Familiarity with shell scripting (Bash/Zsh).
 
 ## Why headless mode?
 
-Headless mode runs Gemini CLI once and exits. It's perfect for:
+Headless mode runs Jiminy CLI once and exits. It's perfect for:
 
 - **CI/CD:** Analyzing pull requests automatically.
 - **Batch processing:** Summarizing a large number of log files.
@@ -19,7 +19,7 @@ Headless mode runs Gemini CLI once and exits. It's perfect for:
 
 ## How to use headless mode
 
-Run Gemini CLI in headless mode by providing a prompt with the `-p` (or
+Run Jiminy CLI in headless mode by providing a prompt with the `-p` (or
 `--prompt`) flag. This bypasses the interactive chat interface and prints the
 response to standard output (stdout). Positional arguments without the flag
 default to interactive mode, unless the input or output is piped or redirected.
@@ -27,12 +27,12 @@ default to interactive mode, unless the input or output is piped or redirected.
 Run a single command:
 
 ```bash
-gemini -p "Write a poem about TypeScript"
+jiminy -p "Write a poem about TypeScript"
 ```
 
-## How to pipe input to Gemini CLI
+## How to pipe input to Jiminy CLI
 
-Feed data into Gemini using the standard Unix pipe `|`. Gemini reads the
+Feed data into Jiminy using the standard Unix pipe `|`. Jiminy reads the
 standard input (stdin) as context and answers your question using standard
 output.
 
@@ -41,24 +41,24 @@ Pipe a file:
 **macOS/Linux**
 
 ```bash
-cat error.log | gemini -p "Explain why this failed"
+cat error.log | jiminy -p "Explain why this failed"
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-Get-Content error.log | gemini -p "Explain why this failed"
+Get-Content error.log | jiminy -p "Explain why this failed"
 ```
 
 Pipe a command:
 
 ```bash
-git diff | gemini -p "Write a commit message for these changes"
+git diff | jiminy -p "Write a commit message for these changes"
 ```
 
-## Use Gemini CLI output in scripts
+## Use Jiminy CLI output in scripts
 
-Because Gemini prints to stdout, you can chain it with other tools or save the
+Because Jiminy prints to stdout, you can chain it with other tools or save the
 results to a file.
 
 ### Scenario: Bulk documentation generator
@@ -78,8 +78,8 @@ one.
     for file in *.py; do
       echo "Generating docs for $file..."
 
-      # Ask Gemini CLI to generate the documentation and print it to stdout
-      gemini -p "Generate a Markdown documentation summary for @$file. Print the
+      # Ask Jiminy CLI to generate the documentation and print it to stdout
+      jiminy -p "Generate a Markdown documentation summary for @$file. Print the
       result to standard output." > "${file%.py}.md"
     done
     ```
@@ -92,8 +92,8 @@ one.
       Write-Host "Generating docs for $($_.Name)..."
 
       $newName = $_.Name -replace '\.py$', '.md'
-      # Ask Gemini CLI to generate the documentation and print it to stdout
-      gemini -p "Generate a Markdown documentation summary for @$($_.Name). Print the result to standard output." | Out-File -FilePath $newName -Encoding utf8
+      # Ask Jiminy CLI to generate the documentation and print it to stdout
+      jiminy -p "Generate a Markdown documentation summary for @$($_.Name). Print the result to standard output." | Out-File -FilePath $newName -Encoding utf8
     }
     ```
 
@@ -138,7 +138,7 @@ like `jq`. To get pure JSON data from the model, combine the
     fi
 
     # Extract data
-    gemini --output-format json "Return a raw JSON object with keys 'version' and 'deps' from @package.json" | jq -r '.response' > data.json
+    jiminy --output-format json "Return a raw JSON object with keys 'version' and 'deps' from @package.json" | jq -r '.response' > data.json
     ```
 
     **Windows PowerShell (`generate_json.ps1`)**
@@ -151,7 +151,7 @@ like `jq`. To get pure JSON data from the model, combine the
     }
 
     # Extract data (requires jq installed, or you can use ConvertFrom-Json)
-    $output = gemini --output-format json "Return a raw JSON object with keys 'version' and 'deps' from @package.json" | ConvertFrom-Json
+    $output = jiminy --output-format json "Return a raw JSON object with keys 'version' and 'deps' from @package.json" | ConvertFrom-Json
     $output.response | Out-File -FilePath data.json -Encoding utf8
     ```
 
@@ -213,9 +213,9 @@ wrapper that writes the message for you.
         return 1
       fi
 
-      # Ask Gemini to write the message
+      # Ask Jiminy to write the message
       echo "Generating commit message..."
-      msg=$(echo "$diff" | gemini -p "Write a concise Conventional Commit message for this diff. Output ONLY the message.")
+      msg=$(echo "$diff" | jiminy -p "Write a concise Conventional Commit message for this diff. Output ONLY the message.")
 
       # Commit with the generated message
       git commit -m "$msg"
@@ -250,9 +250,9 @@ wrapper that writes the message for you.
         return
       }
 
-      # Ask Gemini to write the message
+      # Ask Jiminy to write the message
       Write-Host "Generating commit message..."
-      $msg = $diff | gemini -p "Write a concise Conventional Commit message for this diff. Output ONLY the message."
+      $msg = $diff | jiminy -p "Write a concise Conventional Commit message for this diff. Output ONLY the message."
 
       # Commit with the generated message
       git commit -m "$msg"
@@ -273,7 +273,7 @@ wrapper that writes the message for you.
     gcommit
     ```
 
-    Gemini CLI will analyze your staged changes and commit them with a generated
+    Jiminy CLI will analyze your staged changes and commit them with a generated
     message.
 
 ## Next steps

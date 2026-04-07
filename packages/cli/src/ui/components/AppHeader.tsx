@@ -102,10 +102,10 @@ export const AppHeader = ({ version, showDetails = true }: AppHeaderProps) => {
 
   const renderMetadata = (isBelow = false) => (
     <Box marginLeft={isBelow ? 0 : 2} flexDirection="column">
-      {/* Line 1: Gemini CLI vVersion [Updating] */}
+      {/* Line 1: Jiminy CLI vVersion [Updating] */}
       <Box>
         <Text bold color={theme.text.primary}>
-          Gemini CLI
+          Jiminy CLI
         </Text>
         <Text color={theme.text.secondary}> v{version}</Text>
         {updateInfo && (
@@ -119,7 +119,6 @@ export const AppHeader = ({ version, showDetails = true }: AppHeaderProps) => {
 
       {showDetails && (
         <>
-          {/* Line 2: Blank */}
           <Box height={1} />
 
           {/* Lines 3 & 4: User Identity info (Email /auth and Plan /upgrade) */}

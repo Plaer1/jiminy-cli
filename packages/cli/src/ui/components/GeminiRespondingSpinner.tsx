@@ -43,7 +43,7 @@ export const GeminiRespondingSpinner: React.FC<
   const isScreenReaderEnabled = useIsScreenReaderEnabled();
 
   // If a hook is active, we want to show the hook icon (nonRespondingDisplay)
-  // to be consistent, instead of the rainbow spinner which means "Gemini is talking".
+  // to be consistent, instead of the rainbow spinner which means "Jiminy is talking".
   if (streamingState === StreamingState.Responding && !isHookActive) {
     return (
       <GeminiSpinner

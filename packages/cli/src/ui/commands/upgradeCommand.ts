@@ -14,13 +14,13 @@ import { isUltraTier } from '../../utils/tierUtils.js';
 import { CommandKind, type SlashCommand } from './types.js';
 
 /**
- * Command to open the upgrade page for Gemini Code Assist.
+ * Command to open the upgrade page for Jiminy Code Assist.
  * Only intended to be shown/available when the user is logged in with Google.
  */
 export const upgradeCommand: SlashCommand = {
   name: 'upgrade',
   kind: CommandKind.BUILT_IN,
-  description: 'Upgrade your Gemini Code Assist tier for higher limits',
+  description: 'Upgrade your Jiminy Code Assist tier for higher limits',
   autoExecute: true,
   action: async (context) => {
     const config = context.services.agentContext?.config;

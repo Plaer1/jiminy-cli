@@ -1,20 +1,20 @@
-# Sandboxing in the Gemini CLI
+# Sandboxing in the Jiminy CLI
 
-This document provides a guide to sandboxing in the Gemini CLI, including
+This document provides a guide to sandboxing in the Jiminy CLI, including
 prerequisites, quickstart, and configuration.
 
 ## Prerequisites
 
-Before using sandboxing, you need to install and set up the Gemini CLI:
+Before using sandboxing, you need to install and set up the Jiminy CLI:
 
 ```bash
-npm install -g @google/gemini-cli
+npm install -g @google/jiminy-cli
 ```
 
 To verify the installation:
 
 ```bash
-gemini --version
+jiminy --version
 ```
 
 ## Overview of sandboxing
@@ -81,7 +81,7 @@ strong security barrier between AI operations and the host OS.
 - Docker installed and running
 - gVisor/runsc runtime configured
 
-When you set `sandbox: "runsc"`, Gemini CLI runs
+When you set `sandbox: "runsc"`, Jiminy CLI runs
 `docker run --runtime=runsc ...` to execute containers with gVisor isolation.
 runsc is not auto-detected; you must specify it explicitly (e.g.
 `GEMINI_SANDBOX=runsc` or `sandbox: "runsc"`).
@@ -103,7 +103,7 @@ such as Snapcraft and Rockcraft.
 
 - Linux only.
 - LXC/LXD must be installed (`snap install lxd` or `apt install lxd`).
-- A container must be created and running before starting Gemini CLI. Gemini
+- A container must be created and running before starting Jiminy CLI. Jiminy
   does **not** create the container automatically.
 
 **Quick setup**:
@@ -113,11 +113,11 @@ such as Snapcraft and Rockcraft.
 lxd init --auto
 
 # Create and start an Ubuntu container
-lxc launch ubuntu:24.04 gemini-sandbox
+lxc launch ubuntu:24.04 jiminy-sandbox
 
 # Enable LXC sandboxing
 export GEMINI_SANDBOX=lxc
-gemini -p "build the project"
+jiminy -p "build the project"
 ```
 
 **Custom container name**:
@@ -125,7 +125,7 @@ gemini -p "build the project"
 ```bash
 export GEMINI_SANDBOX=lxc
 export GEMINI_SANDBOX_IMAGE=my-snapcraft-container
-gemini -p "build the snap"
+jiminy -p "build the snap"
 ```
 
 **Limitations**:
@@ -140,7 +140,7 @@ gemini -p "build the snap"
 
 ```bash
 # Enable sandboxing with command flag
-gemini -s -p "analyze the code structure"
+jiminy -s -p "analyze the code structure"
 ```
 
 **Use environment variable**
@@ -149,14 +149,14 @@ gemini -s -p "analyze the code structure"
 
 ```bash
 export GEMINI_SANDBOX=true
-gemini -p "run the test suite"
+jiminy -p "run the test suite"
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
 $env:GEMINI_SANDBOX="true"
-gemini -p "run the test suite"
+jiminy -p "run the test suite"
 ```
 
 **Configure in settings.json**
@@ -268,23 +268,23 @@ $env:SANDBOX_SET_UID_GID="false"  # Disable UID/GID mapping
 ### Debug mode
 
 ```bash
-DEBUG=1 gemini -s -p "debug command"
+DEBUG=1 jiminy -s -p "debug command"
 ```
 
 <!-- prettier-ignore -->
 > [!NOTE]
 > If you have `DEBUG=true` in a project's `.env` file, it won't affect
-> gemini-cli due to automatic exclusion. Use `.gemini/.env` files for
-> gemini-cli specific debug settings.
+> jiminy-cli due to automatic exclusion. Use `.jiminy/.env` files for
+> jiminy-cli specific debug settings.
 
 ### Inspect sandbox
 
 ```bash
 # Check environment
-gemini -s -p "run shell command: env | grep SANDBOX"
+jiminy -s -p "run shell command: env | grep SANDBOX"
 
 # List mounts
-gemini -s -p "run shell command: mount | grep workspace"
+jiminy -s -p "run shell command: mount | grep workspace"
 ```
 
 ## Security notes

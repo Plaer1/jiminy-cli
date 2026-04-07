@@ -42,7 +42,7 @@ export interface GenerateSummaryOptions {
 
 /**
  * Service for generating AI summaries of chat sessions.
- * Uses Gemini Flash Lite to create concise, user-intent-focused summaries.
+ * Uses Jiminy Flash Lite to create concise, user-intent-focused summaries.
  */
 export class SessionSummaryService {
   constructor(private readonly baseLlmClient: BaseLlmClient) {}

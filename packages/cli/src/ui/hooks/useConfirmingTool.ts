@@ -19,7 +19,7 @@ export type { ConfirmingToolState } from '../utils/confirmingTool.js';
  */
 export function useConfirmingTool(): ConfirmingToolState | null {
   // We use pendingHistoryItems to ensure we capture tools from both
-  // Gemini responses and Slash commands.
+  // Jiminy responses and Slash commands.
   const { pendingHistoryItems } = useUIState();
 
   return useMemo(

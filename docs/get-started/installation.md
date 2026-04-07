@@ -1,6 +1,6 @@
-# Gemini CLI installation, execution, and releases
+# Jiminy CLI installation, execution, and releases
 
-This document provides an overview of Gemini CLI's system requirements,
+This document provides an overview of Jiminy CLI's system requirements,
 installation methods, and release types.
 
 ## Recommended system specifications
@@ -15,12 +15,12 @@ installation methods, and release types.
 - **Runtime:** Node.js 20.0.0+
 - **Shell:** Bash, Zsh, or PowerShell
 - **Location:**
-  [Gemini Code Assist supported locations](https://developers.google.com/gemini-code-assist/resources/available-locations#americas)
+  [Jiminy Code Assist supported locations](https://developers.google.com/gemini-code-assist/resources/available-locations#americas)
 - **Internet connection required**
 
-## Install Gemini CLI
+## Install Jiminy CLI
 
-We recommend most users install Gemini CLI using one of the following
+We recommend most users install Jiminy CLI using one of the following
 installation methods:
 
 - npm
@@ -28,26 +28,26 @@ installation methods:
 - MacPorts
 - Anaconda
 
-Note that Gemini CLI comes pre-installed on
+Note that Jiminy CLI comes pre-installed on
 [**Cloud Shell**](https://docs.cloud.google.com/shell/docs) and
 [**Cloud Workstations**](https://cloud.google.com/workstations).
 
 ### Install globally with npm
 
 ```bash
-npm install -g @google/gemini-cli
+npm install -g @google/jiminy-cli
 ```
 
 ### Install globally with Homebrew (macOS/Linux)
 
 ```bash
-brew install gemini-cli
+brew install jiminy-cli
 ```
 
 ### Install globally with MacPorts (macOS)
 
 ```bash
-sudo port install gemini-cli
+sudo port install jiminy-cli
 ```
 
 ### Install with Anaconda (for restricted environments)
@@ -57,24 +57,24 @@ sudo port install gemini-cli
 conda create -y -n gemini_env -c conda-forge nodejs
 conda activate gemini_env
 
-# Install Gemini CLI globally via npm (inside the environment)
-npm install -g @google/gemini-cli
+# Install Jiminy CLI globally via npm (inside the environment)
+npm install -g @google/jiminy-cli
 ```
 
-## Run Gemini CLI
+## Run Jiminy CLI
 
-For most users, we recommend running Gemini CLI with the `gemini` command:
+For most users, we recommend running Jiminy CLI with the `jiminy` command:
 
 ```bash
-gemini
+jiminy
 ```
 
 For a list of options and additional commands, see the
 [CLI cheatsheet](../cli/cli-reference.md).
 
-You can also run Gemini CLI using one of the following advanced methods:
+You can also run Jiminy CLI using one of the following advanced methods:
 
-- Run instantly with npx. You can run Gemini CLI without permanent installation.
+- Run instantly with npx. You can run Jiminy CLI without permanent installation.
 - In a sandbox. This method offers increased security and isolation.
 - From the source. This is recommended for contributors to the project.
 
@@ -82,19 +82,19 @@ You can also run Gemini CLI using one of the following advanced methods:
 
 ```bash
 # Using npx (no installation required)
-npx @google/gemini-cli
+npx @google/jiminy-cli
 ```
 
 You can also execute the CLI directly from the main branch on GitHub, which is
 helpful for testing features still in development:
 
 ```bash
-npx https://github.com/google-gemini/gemini-cli
+npx https://github.com/google-jiminy/jiminy-cli
 ```
 
 ### Run in a sandbox (Docker/Podman)
 
-For security and isolation, Gemini CLI can be run inside a container. This is
+For security and isolation, Jiminy CLI can be run inside a container. This is
 the default way that the CLI executes tools that might have side effects.
 
 - **Directly from the registry:** You can run the published sandbox image
@@ -102,16 +102,16 @@ the default way that the CLI executes tools that might have side effects.
   to run the CLI.
   ```bash
   # Run the published sandbox image
-  docker run --rm -it us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.1
+  docker run --rm -it us-docker.pkg.dev/gemini-code-dev/jiminy-cli/sandbox:0.1.1
   ```
-- **Using the `--sandbox` flag:** If you have Gemini CLI installed locally
+- **Using the `--sandbox` flag:** If you have Jiminy CLI installed locally
   (using the standard installation described above), you can instruct it to run
   inside the sandbox container.
   ```bash
-  gemini --sandbox -y -p "your prompt here"
+  jiminy --sandbox -y -p "your prompt here"
   ```
 
-### Run from source (recommended for Gemini CLI contributors)
+### Run from source (recommended for Jiminy CLI contributors)
 
 Contributors to the project will want to run the CLI directly from the source
 code.
@@ -130,13 +130,13 @@ code.
   # Link the local cli package to your global node_modules
   npm link packages/cli
 
-  # Now you can run your local version using the `gemini` command
-  gemini
+  # Now you can run your local version using the `jiminy` command
+  jiminy
   ```
 
 ## Releases
 
-Gemini CLI has three release channels: nightly, preview, and stable. For most
+Jiminy CLI has three release channels: nightly, preview, and stable. For most
 users, we recommend the stable release, which is the default installation.
 
 ### Stable
@@ -148,8 +148,8 @@ by default:
 
 ```bash
 # Both commands install the latest stable release.
-npm install -g @google/gemini-cli
-npm install -g @google/gemini-cli@latest
+npm install -g @google/jiminy-cli
+npm install -g @google/jiminy-cli@latest
 ```
 
 ### Preview
@@ -159,7 +159,7 @@ vetted and may contain regressions or other outstanding issues. Try out the
 preview release by using the `preview` tag:
 
 ```bash
-npm install -g @google/gemini-cli@preview
+npm install -g @google/jiminy-cli@preview
 ```
 
 ### Nightly
@@ -170,5 +170,5 @@ pending validations and issues. You can help test the latest changes by
 installing with the `nightly` tag:
 
 ```bash
-npm install -g @google/gemini-cli@nightly
+npm install -g @google/jiminy-cli@nightly
 ```

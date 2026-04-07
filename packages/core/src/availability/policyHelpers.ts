@@ -128,8 +128,8 @@ export function resolvePolicyChain(
         useCustomToolModel,
       });
     } else {
-      // User requested Gemini 3 but has no access. Proactively downgrade
-      // to the stable Gemini 2.5 chain.
+      // User requested Jiminy 3 but has no access. Proactively downgrade
+      // to the stable Jiminy 2.5 chain.
       chain = getModelPolicyChain({
         previewEnabled: false,
         userTier: config.getUserTier(),

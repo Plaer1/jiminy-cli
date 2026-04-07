@@ -1,17 +1,17 @@
 # Manage context and memory
 
-Control what Gemini CLI knows about you and your projects. In this guide, you'll
+Control what Jiminy CLI knows about you and your projects. In this guide, you'll
 learn how to define project-wide rules with `GEMINI.md`, teach the agent
 persistent facts, and inspect the active context.
 
 ## Prerequisites
 
-- Gemini CLI installed and authenticated.
+- Jiminy CLI installed and authenticated.
 - A project directory where you want to enforce specific rules.
 
 ## Why manage context?
 
-Gemini CLI is powerful but general. It doesn't know your preferred testing
+Jiminy CLI is powerful but general. It doesn't know your preferred testing
 framework, your indentation style, or your preference against `any` in
 TypeScript. Context management solves this by giving the agent persistent
 memory.
@@ -46,14 +46,14 @@ loaded into every conversation.
     - **Tone:** Be concise. Don't explain basic React concepts.
     ```
 
-3.  Start a new session. Gemini CLI will now know these rules automatically.
+3.  Start a new session. Jiminy CLI will now know these rules automatically.
 
 ### Scenario: Using the hierarchy
 
 Context is loaded hierarchically. This allows you to have general rules for
 everything and specific rules for sub-projects.
 
-1.  **Global:** `~/.gemini/GEMINI.md` (Rules for _every_ project you work on).
+1.  **Global:** `~/.jiminy/GEMINI.md` (Rules for _every_ project you work on).
 2.  **Project Root:** `./GEMINI.md` (Rules for the current repository).
 3.  **Subdirectory:** `./src/GEMINI.md` (Rules specific to the `src` folder).
 
@@ -123,4 +123,4 @@ immediately. Force a reload with:
   history works.
 - Explore the [Command reference](../../reference/commands.md) for more
   `/memory` options.
-- Read the technical spec for [Project context](../../cli/gemini-md.md).
+- Read the technical spec for [Project context](../../cli/jiminy-md.md).

@@ -1,13 +1,13 @@
-# Gemini CLI hooks
+# Jiminy CLI hooks
 
-Hooks are scripts or programs that Gemini CLI executes at specific points in the
+Hooks are scripts or programs that Jiminy CLI executes at specific points in the
 agentic loop, allowing you to intercept and customize behavior without modifying
 the CLI's source code.
 
 ## What are hooks?
 
 Hooks run synchronously as part of the agent loop—when a hook event fires,
-Gemini CLI waits for all matching hooks to complete before continuing.
+Jiminy CLI waits for all matching hooks to complete before continuing.
 
 With hooks, you can:
 
@@ -33,7 +33,7 @@ With hooks, you can:
 
 ### Hook events
 
-Hooks are triggered by specific events in Gemini CLI's lifecycle.
+Hooks are triggered by specific events in Jiminy CLI's lifecycle.
 
 | Event                 | When It Fires                                  | Impact                 | Common Use Cases                             |
 | --------------------- | ---------------------------------------------- | ---------------------- | -------------------------------------------- |
@@ -64,12 +64,12 @@ Hooks communicate via `stdin` (Input) and `stdout` (Output).
    fail. The CLI will default to "Allow" and treat the entire output as a
    `systemMessage`.
 3. **Debug via Stderr**: Use `stderr` for **all** logging and debugging (e.g.,
-   `echo "debug" >&2`). Gemini CLI captures `stderr` but never attempts to parse
+   `echo "debug" >&2`). Jiminy CLI captures `stderr` but never attempts to parse
    it as JSON.
 
 #### Exit codes
 
-Gemini CLI uses exit codes to determine the high-level outcome of a hook
+Jiminy CLI uses exit codes to determine the high-level outcome of a hook
 execution:
 
 | Exit Code | Label            | Behavioral Impact                                                                                                                                                            |
@@ -90,12 +90,12 @@ You can filter which specific tools or triggers fire your hook using the
 
 ## Configuration
 
-Hooks are configured in `settings.json`. Gemini CLI merges configurations from
+Hooks are configured in `settings.json`. Jiminy CLI merges configurations from
 multiple layers in the following order of precedence (highest to lowest):
 
-1.  **Project settings**: `.gemini/settings.json` in the current directory.
-2.  **User settings**: `~/.gemini/settings.json`.
-3.  **System settings**: `/etc/gemini-cli/settings.json`.
+1.  **Project settings**: `.jiminy/settings.json` in the current directory.
+2.  **User settings**: `~/.jiminy/settings.json`.
+3.  **System settings**: `/etc/jiminy-cli/settings.json`.
 4.  **Extensions**: Hooks defined by installed extensions.
 
 ### Configuration schema
@@ -110,7 +110,7 @@ multiple layers in the following order of precedence (highest to lowest):
           {
             "name": "security-check",
             "type": "command",
-            "command": "$GEMINI_PROJECT_DIR/.gemini/hooks/security.sh",
+            "command": "$GEMINI_PROJECT_DIR/.jiminy/hooks/security.sh",
             "timeout": 5000
           }
         ]
@@ -150,7 +150,7 @@ Hooks are executed with a sanitized environment.
 > machine.
 
 **Project-level hooks** are particularly risky when opening untrusted projects.
-Gemini CLI **fingerprints** project hooks. If a hook's name or command changes
+Jiminy CLI **fingerprints** project hooks. If a hook's name or command changes
 (e.g., via `git pull`), it is treated as a **new, untrusted hook** and you will
 be warned before it executes.
 
