@@ -7,7 +7,7 @@ on:
       - 'docs/**'
 jobs:
   trigger-rebuild:
-    if: "github.repository == 'Plaer1/jiminy-cli'"
+    if: "${{ github.repository == 'Plaer1/jiminy-cli' && secrets.DOCS_REBUILD_URL != '' }}"
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Trigger rebuild'
