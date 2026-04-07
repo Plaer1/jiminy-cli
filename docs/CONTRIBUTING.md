@@ -292,8 +292,7 @@ npm run test:e2e
 ```
 
 For more detailed information on the integration testing framework, please see
-the
-[Integration Tests documentation](https://jiminycli.com/docs/integration-tests).
+the [Integration Tests documentation](./integration-tests.md).
 
 ### Linting and preflight checks
 
@@ -559,7 +558,7 @@ Before submitting your documentation pull request, please:
 
 If you have questions about contributing documentation:
 
-- Check our [FAQ](https://jiminycli.com/docs/resources/faq).
+- Check our [FAQ](./resources/faq.md).
 - Review existing documentation for examples.
 - Open [an issue](https://github.com/Plaer1/jiminy-cli/issues) to discuss your
   proposed changes.
