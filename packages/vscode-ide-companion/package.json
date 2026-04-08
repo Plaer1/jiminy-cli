@@ -2,7 +2,7 @@
   "name": "jiminy-cli-vscode-ide-companion",
   "displayName": "Jiminy CLI Companion",
   "description": "Enable Jiminy CLI with direct access to your IDE workspace.",
-  "version": "0.36.3",
+  "version": "0.36.4",
   "publisher": "plaer1",
   "icon": "assets/icon.png",
   "repository": {

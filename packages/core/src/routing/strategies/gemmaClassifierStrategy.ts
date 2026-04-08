@@ -20,6 +20,7 @@ import {
   isFunctionResponse,
 } from '../../utils/messageInspectors.js';
 import { debugLogger } from '../../utils/debugLogger.js';
+import { isAbortError } from '../../utils/errors.js';
 import type { LocalLiteRtLmClient } from '../../core/localLiteRtLmClient.js';
 
 // The number of recent history turns to provide to the router for context.
@@ -223,6 +224,9 @@ ${formattedHistory}
         },
       };
     } catch (error) {
+      if (context.signal.aborted || isAbortError(error)) {
+        return null;
+      }
       // If the classifier fails for any reason (API error, parsing error, etc.),
       // we log it and return null to allow the composite strategy to proceed.
       debugLogger.warn(`[Routing] GemmaClassifierStrategy failed:`, error);

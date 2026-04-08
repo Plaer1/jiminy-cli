@@ -383,6 +383,26 @@ describe('ClassifierStrategy', () => {
     expect(decision?.model).toBe(DEFAULT_GEMINI_FLASH_MODEL);
   });
 
+  it('should stay silent when routing is aborted', async () => {
+    const warnSpy = vi.spyOn(debugLogger, 'warn').mockImplementation(() => {});
+    const controller = new AbortController();
+    controller.abort();
+    mockContext.signal = controller.signal;
+    vi.mocked(mockBaseLlmClient.generateJson).mockRejectedValue(
+      new Error('The user aborted a request.'),
+    );
+
+    const decision = await strategy.route(
+      mockContext,
+      mockConfig,
+      mockBaseLlmClient,
+      mockLocalLiteRtLmClient,
+    );
+
+    expect(decision).toBeNull();
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
   describe('Jiminy 3.1 and Custom Tools Routing', () => {
     it('should route to PREVIEW_GEMINI_3_1_MODEL when Jiminy 3.1 is launched', async () => {
       vi.mocked(mockConfig.getJiminy31Launched).mockResolvedValue(true);

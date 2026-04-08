@@ -142,6 +142,7 @@ describe('errors', () => {
       getOutputFormat: vi.fn().mockReturnValue(OutputFormat.TEXT),
       getContentGeneratorConfig: vi.fn().mockReturnValue({ authType: 'test' }),
       getSessionId: vi.fn().mockReturnValue(TEST_SESSION_ID),
+      isQuietMode: vi.fn().mockReturnValue(false),
     } as unknown as Config;
   });
 
@@ -524,6 +525,20 @@ describe('errors', () => {
           'error',
           'Operation cancelled.',
         );
+        expect(debugLoggerErrorSpy).not.toHaveBeenCalled();
+        expect(runSyncCleanupSpy).toHaveBeenCalled();
+      });
+
+      it('should suppress feedback in quiet text mode and still exit with 130', () => {
+        (mockConfig.isQuietMode as ReturnType<typeof vi.fn>).mockReturnValue(
+          true,
+        );
+
+        expect(() => {
+          handleCancellationError(mockConfig);
+        }).toThrow('process.exit called with code: 130');
+
+        expect(coreEventsEmitFeedbackSpy).not.toHaveBeenCalled();
         expect(debugLoggerErrorSpy).not.toHaveBeenCalled();
         expect(runSyncCleanupSpy).toHaveBeenCalled();
       });

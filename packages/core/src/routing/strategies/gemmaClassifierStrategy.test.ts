@@ -320,4 +320,24 @@ second message
 
     expect(lastTurn!.parts!.at(0)!.text).toEqual(expectedLastTurn);
   });
+
+  it('should stay silent when routing is aborted', async () => {
+    const warnSpy = vi.spyOn(debugLogger, 'warn').mockImplementation(() => {});
+    const controller = new AbortController();
+    controller.abort();
+    mockContext.signal = controller.signal;
+    mockGenerateJson.mockRejectedValue(
+      new Error('The user aborted a request.'),
+    );
+
+    const decision = await strategy.route(
+      mockContext,
+      mockConfig,
+      mockBaseLlmClient,
+      mockLocalLiteRtLmClient,
+    );
+
+    expect(decision).toBeNull();
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
 });

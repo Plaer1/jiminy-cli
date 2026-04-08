@@ -16,6 +16,7 @@ import { resolveClassifierModel, isJiminy3Model } from '../../config/models.js';
 import { createUserContent, Type } from '@google/genai';
 import type { Config } from '../../config/config.js';
 import { debugLogger } from '../../utils/debugLogger.js';
+import { isAbortError } from '../../utils/errors.js';
 import type { LocalLiteRtLmClient } from '../../core/localLiteRtLmClient.js';
 import { LlmRole } from '../../telemetry/types.js';
 
@@ -174,6 +175,9 @@ export class NumericalClassifierStrategy implements RoutingStrategy {
         },
       };
     } catch (error) {
+      if (context.signal.aborted || isAbortError(error)) {
+        return null;
+      }
       debugLogger.warn(`[Routing] NumericalClassifierStrategy failed:`, error);
       return null;
     }

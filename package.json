@@ -1,6 +1,6 @@
 {
   "name": "@plaer1/jiminy-cli",
-  "version": "0.36.3",
+  "version": "0.36.4",
   "engines": {
     "node": ">=20.0.0"
   },
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/Plaer1/jiminy-cli.git"
   },
   "config": {
-    "sandboxImageUri": "us-docker.pkg.dev/jiminy-code-dev/jiminy-cli/sandbox:0.36.3"
+    "sandboxImageUri": "us-docker.pkg.dev/jiminy-code-dev/jiminy-cli/sandbox:0.36.4"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/start.js",

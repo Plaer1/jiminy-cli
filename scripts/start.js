@@ -57,7 +57,7 @@ if (isInDebugMode && !sandboxCommand) {
   }
 }
 
-nodeArgs.push(join(root, 'packages', 'cli'));
+nodeArgs.push(join(root, 'packages', 'cli', 'dist', 'index.js'));
 nodeArgs.push(...process.argv.slice(2));
 
 const env = {

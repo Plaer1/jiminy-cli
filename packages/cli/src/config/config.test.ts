@@ -323,6 +323,43 @@ describe('parseArguments', () => {
     },
   );
 
+  it.each([
+    {
+      description: '--quiet-yolo',
+      argv: ['node', 'script.js', '--quiet-yolo'],
+      expectedMessage:
+        'The --quiet-yolo flag is not supported. Use --quiet-yolo-no-conseca.',
+    },
+    {
+      description: '-q',
+      argv: ['node', 'script.js', '-q'],
+      expectedMessage:
+        'The -q shortcut is not supported. Use --quiet-yolo-no-conseca.',
+    },
+  ])(
+    'should reject deprecated quiet shortcuts ($description)',
+    async ({ argv, expectedMessage }) => {
+      process.argv = argv;
+
+      const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
+        throw new Error('process.exit called');
+      });
+
+      const mockConsoleError = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      await expect(parseArguments(createTestMergedSettings())).rejects.toThrow(
+        'process.exit called',
+      );
+
+      expect(mockConsoleError).toHaveBeenCalledWith(expectedMessage);
+
+      mockExit.mockRestore();
+      mockConsoleError.mockRestore();
+    },
+  );
+
   describe('isCommand middleware', () => {
     it.each([
       { cmd: 'mcp list', expected: true },

@@ -1008,6 +1008,7 @@ describe('jiminy.tsx main function kitty protocol', () => {
     vi.mocked(loadCliConfig).mockResolvedValue(
       createMockConfig({
         isInteractive: vi.fn().mockReturnValue(true),
+        isQuietMode: vi.fn().mockReturnValue(true),
         getQuestion: vi.fn().mockReturnValue(undefined),
         getSandbox: vi.fn().mockReturnValue(undefined),
         refreshAuth: refreshAuthSpy,
@@ -1027,8 +1028,9 @@ describe('jiminy.tsx main function kitty protocol', () => {
     }
 
     expect(setRawModeSpy).not.toHaveBeenCalled();
+    expect(terminalCapabilityManager.detectCapabilities).not.toHaveBeenCalled();
     expect(runQuietInteractiveSpy).toHaveBeenCalled();
-    expect(refreshAuthSpy).toHaveBeenCalled();
+    expect(refreshAuthSpy).toHaveBeenCalledTimes(1);
     expect(runNonInteractiveSpy).not.toHaveBeenCalled();
   });
 });

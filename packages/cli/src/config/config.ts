@@ -158,6 +158,23 @@ export async function parseArguments(
 ): Promise<CliArgs> {
   const rawArgv = hideBin(process.argv);
   const startupMessages: string[] = [];
+
+  if (rawArgv.includes('--quiet-yolo')) {
+    debugLogger.error(
+      'The --quiet-yolo flag is not supported. Use --quiet-yolo-no-conseca.',
+    );
+    await runExitCleanup();
+    process.exit(1);
+  }
+
+  if (rawArgv.includes('-q')) {
+    debugLogger.error(
+      'The -q shortcut is not supported. Use --quiet-yolo-no-conseca.',
+    );
+    await runExitCleanup();
+    process.exit(1);
+  }
+
   const yargsInstance = yargs(rawArgv)
     .locale('en')
     .scriptName('jiminy')

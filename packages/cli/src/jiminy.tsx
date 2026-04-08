@@ -297,6 +297,7 @@ export async function main() {
   const consolePatcher = new ConsolePatcher({
     stderr: true,
     debugMode: isDebugMode,
+    errorsOnly: argv.quietYoloNoConseca && !isDebugMode,
     onNewMessage: (msg) => {
       coreEvents.emitConsoleLog(msg.type, msg.content);
     },
@@ -334,7 +335,11 @@ export async function main() {
   // the sandbox because the sandbox will interfere with the Oauth2 web
   // redirect.
   let initialAuthFailed = false;
-  if (!settings.merged.security.auth.useExternal && !argv.isCommand) {
+  if (
+    !settings.merged.security.auth.useExternal &&
+    !argv.isCommand &&
+    !argv.quietYoloNoConseca
+  ) {
     try {
       if (
         partialConfig.isInteractive() &&
@@ -543,21 +548,27 @@ export async function main() {
       });
     }
 
-    const terminalHandle = startupProfiler.start('setup_terminal');
-    await setupTerminalAndTheme(config, settings);
-    terminalHandle?.end();
+    let initializationResult: InitializationResult | undefined;
+    if (!argv.quietYoloNoConseca) {
+      const terminalHandle = startupProfiler.start('setup_terminal');
+      await setupTerminalAndTheme(config, settings);
+      terminalHandle?.end();
 
-    const initAppHandle = startupProfiler.start('initialize_app');
-    const initializationResult = await initializeApp(config, settings);
-    initAppHandle?.end();
+      const initAppHandle = startupProfiler.start('initialize_app');
+      initializationResult = await initializeApp(config, settings);
+      initAppHandle?.end();
 
-    if (
-      settings.merged.security.auth.selectedType ===
-        AuthType.LOGIN_WITH_GOOGLE &&
-      config.isBrowserLaunchSuppressed()
-    ) {
-      // Do oauth before app renders to make copying the link possible.
-      await getOauthClient(settings.merged.security.auth.selectedType, config);
+      if (
+        settings.merged.security.auth.selectedType ===
+          AuthType.LOGIN_WITH_GOOGLE &&
+        config.isBrowserLaunchSuppressed()
+      ) {
+        // Do oauth before app renders to make copying the link possible.
+        await getOauthClient(
+          settings.merged.security.auth.selectedType,
+          config,
+        );
+      }
     }
 
     if (config.getAcpMode()) {
@@ -650,7 +661,7 @@ export async function main() {
         startupWarnings,
         process.cwd(),
         resumedSessionData,
-        initializationResult,
+        initializationResult!,
       );
       return;
     }

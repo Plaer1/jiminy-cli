@@ -9,7 +9,7 @@ import type {
   ServerJiminyStreamEvent,
   UserFeedbackPayload,
 } from '@plaer1/jiminy-cli-core';
-import { JiminyEventType } from '@plaer1/jiminy-cli-core';
+import { JiminyEventType, promptIdContext } from '@plaer1/jiminy-cli-core';
 import type { GenerateContentResponse } from '@google/genai';
 import type { LoadedSettings } from './config/settings.js';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
@@ -246,7 +246,7 @@ describe('runQuietInteractive', () => {
     vi.restoreAllMocks();
   });
 
-  it('shows sudo setup first, suppresses buffered info messages, and preserves the generated startup marker', async () => {
+  it('shows the password setup first, suppresses buffered info messages, and preserves the generated startup marker', async () => {
     mockCoreEvents.queueFeedback({
       severity: 'info',
       message: 'startup chatter',
@@ -273,7 +273,7 @@ describe('runQuietInteractive', () => {
     await runPromise;
 
     const rendered = writeLog.map((entry) => entry.chunk).join('');
-    const sudoIndex = rendered.indexOf('Sudo password handling:');
+    const sudoIndex = rendered.indexOf('password?');
     const warningIndex = rendered.indexOf('[WARNING] heads up');
     const readyIndex = rendered.indexOf('✦ gogogo');
     const promptIndex = rendered.lastIndexOf('> ');
@@ -286,6 +286,7 @@ describe('runQuietInteractive', () => {
   });
 
   it('uses a one-shot startup call, suppresses pre-tool narration, prefixes assistant responses, and does not replay the user query', async () => {
+    const promptIdRunSpy = vi.spyOn(promptIdContext, 'run');
     const mockJiminyClient = mockConfig.getJiminyClient();
     const toolRequest = {
       callId: 'tool-1',
@@ -359,6 +360,10 @@ describe('runQuietInteractive', () => {
       }),
     );
     expect(mockJiminyClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(promptIdRunSpy).toHaveBeenCalledWith(
+      expect.stringMatching(/^quiet-\d+$/),
+      expect.any(Function),
+    );
     expect(mockJiminyClient.sendMessageStream).toHaveBeenNthCalledWith(
       1,
       [{ text: 'test' }],

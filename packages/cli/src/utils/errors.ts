@@ -196,7 +196,9 @@ export function handleCancellationError(config: Config): never {
     runSyncCleanup();
     process.exit(cancellationError.exitCode);
   } else {
-    coreEvents.emitFeedback('error', cancellationError.message);
+    if (!config.isQuietMode?.()) {
+      coreEvents.emitFeedback('error', cancellationError.message);
+    }
     runSyncCleanup();
     process.exit(cancellationError.exitCode);
   }

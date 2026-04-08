@@ -15,6 +15,7 @@ import {
   ToolErrorType,
   debugLogger,
   getQuietModeStartupPrompt,
+  promptIdContext,
   getResponseText,
   LlmRole,
   type Config,
@@ -260,10 +261,10 @@ async function setupSudoPrompt(
   const sudoService = config.sudoPasswordService;
 
   output.write(
-    'Sudo password handling:\n' +
-      '  1) Enter password now (remembered for this session)\n' +
-      '  2) Ask me when needed\n' +
-      "  3) Don't use sudo this session\n\n",
+    'password?\n' +
+      '  1) Enter password; remembered for this session\n' +
+      '  2) Ask later\n' +
+      "  3) Don't use sudo\n\n",
   );
 
   const choice = await readCanonicalLine(
@@ -274,21 +275,21 @@ async function setupSudoPrompt(
   const trimmedChoice = choice?.trim() || '';
 
   if (trimmedChoice === '1') {
-    output.write('Password: ');
+    output.write('Pass: ');
     const password = await readMaskedInput(process.stdin, output);
     output.write('\n');
     if (password) {
       sudoService.setCachedPassword(password);
     }
     sudoService.registerPasswordPrompter(async () => {
-      output.write('Sudo password required.\nPassword: ');
+      output.write('Sudo needed; Password: ');
       const pw = await readMaskedInput(process.stdin, output);
       output.write('\n');
       return pw || null;
     });
   } else if (trimmedChoice === '2') {
     sudoService.registerPasswordPrompter(async () => {
-      output.write('Sudo password required.\nPassword: ');
+      output.write('Sudo needed; Password: ');
       const pw = await readMaskedInput(process.stdin, output);
       output.write('\n');
       return pw || null;
@@ -352,6 +353,7 @@ export async function runQuietInteractive({
       return;
     }
 
+    const promptId = `quiet-${Date.now()}`;
     const abortController = new AbortController();
     let isAborting = false;
     const canUseRawMode =
@@ -384,125 +386,129 @@ export async function runQuietInteractive({
     };
 
     try {
-      const { processedQuery, error } = await handleAtCommand({
-        query: trimmed,
-        config,
-        addItem: (_item, _timestamp) => 0,
-        onDebugMessage: () => {},
-        messageId: Date.now(),
-        signal: abortController.signal,
-        escapePastedAtSymbols: false,
-      });
+      await promptIdContext.run(promptId, async () => {
+        const { processedQuery, error } = await handleAtCommand({
+          query: trimmed,
+          config,
+          addItem: (_item, _timestamp) => 0,
+          onDebugMessage: () => {},
+          messageId: Date.now(),
+          signal: abortController.signal,
+          escapePastedAtSymbols: false,
+        });
 
-      if (error || !processedQuery) {
-        workingStderr.write(`Error: ${error || 'Failed to process input'}\n`);
-        return;
-      }
-
-      let currentMessageParts: PartListUnion = processedQuery;
-
-      let turnCount = 0;
-      while (true) {
-        turnCount++;
-        if (
-          config.getMaxSessionTurns() >= 0 &&
-          turnCount > config.getMaxSessionTurns()
-        ) {
-          handleMaxTurnsExceededError(config);
+        if (error || !processedQuery) {
+          workingStderr.write(`Error: ${error || 'Failed to process input'}\n`);
+          return;
         }
 
-        const toolCallRequests: Array<
-          import('@plaer1/jiminy-cli-core').ToolCallRequestInfo
-        > = [];
+        let currentMessageParts: PartListUnion = processedQuery;
 
-        const responseStream = jiminyClient.sendMessageStream(
-          currentMessageParts,
-          abortController.signal,
-          `quiet-${Date.now()}`,
-          undefined,
-          false,
-          turnCount === 1 ? trimmed : undefined,
-        );
-
-        let responseText = '';
-        for await (const event of responseStream) {
-          if (abortController.signal.aborted) {
-            handleCancellationError(config);
+        let turnCount = 0;
+        while (true) {
+          turnCount++;
+          if (
+            config.getMaxSessionTurns() >= 0 &&
+            turnCount > config.getMaxSessionTurns()
+          ) {
+            handleMaxTurnsExceededError(config);
           }
 
-          if (event.type === JiminyEventType.Content) {
-            responseText += stripAnsi(event.value);
-          } else if (event.type === JiminyEventType.ToolCallRequest) {
-            toolCallRequests.push(event.value);
-          } else if (event.type === JiminyEventType.Error) {
-            throw event.value.error;
-          } else if (event.type === JiminyEventType.AgentExecutionStopped) {
-            const msg = event.value.systemMessage?.trim() || event.value.reason;
-            workingStderr.write(`Stopped: ${msg}\n`);
-            break;
-          } else if (event.type === JiminyEventType.AgentExecutionBlocked) {
-            const msg = event.value.systemMessage?.trim() || event.value.reason;
-            workingStderr.write(`[WARNING] Blocked: ${msg}\n`);
-          }
-        }
+          const toolCallRequests: Array<
+            import('@plaer1/jiminy-cli-core').ToolCallRequestInfo
+          > = [];
 
-        if (toolCallRequests.length > 0) {
-          const completedToolCalls = await scheduler.schedule(
-            toolCallRequests,
+          const responseStream = jiminyClient.sendMessageStream(
+            currentMessageParts,
             abortController.signal,
+            promptId,
+            undefined,
+            false,
+            turnCount === 1 ? trimmed : undefined,
           );
-          const toolResponseParts: Part[] = [];
 
-          for (const completedToolCall of completedToolCalls) {
-            const toolResponse = completedToolCall.response;
-            const requestInfo = completedToolCall.request;
+          let responseText = '';
+          for await (const event of responseStream) {
+            if (abortController.signal.aborted) {
+              handleCancellationError(config);
+            }
 
-            if (toolResponse.error) {
-              handleToolError(
-                requestInfo.name,
-                toolResponse.error,
-                config,
-                toolResponse.errorType || 'TOOL_EXECUTION_ERROR',
-                typeof toolResponse.resultDisplay === 'string'
-                  ? toolResponse.resultDisplay
-                  : undefined,
+            if (event.type === JiminyEventType.Content) {
+              responseText += stripAnsi(event.value);
+            } else if (event.type === JiminyEventType.ToolCallRequest) {
+              toolCallRequests.push(event.value);
+            } else if (event.type === JiminyEventType.Error) {
+              throw event.value.error;
+            } else if (event.type === JiminyEventType.AgentExecutionStopped) {
+              const msg =
+                event.value.systemMessage?.trim() || event.value.reason;
+              workingStderr.write(`Stopped: ${msg}\n`);
+              break;
+            } else if (event.type === JiminyEventType.AgentExecutionBlocked) {
+              const msg =
+                event.value.systemMessage?.trim() || event.value.reason;
+              workingStderr.write(`[WARNING] Blocked: ${msg}\n`);
+            }
+          }
+
+          if (toolCallRequests.length > 0) {
+            const completedToolCalls = await scheduler.schedule(
+              toolCallRequests,
+              abortController.signal,
+            );
+            const toolResponseParts: Part[] = [];
+
+            for (const completedToolCall of completedToolCalls) {
+              const toolResponse = completedToolCall.response;
+              const requestInfo = completedToolCall.request;
+
+              if (toolResponse.error) {
+                handleToolError(
+                  requestInfo.name,
+                  toolResponse.error,
+                  config,
+                  toolResponse.errorType || 'TOOL_EXECUTION_ERROR',
+                  typeof toolResponse.resultDisplay === 'string'
+                    ? toolResponse.resultDisplay
+                    : undefined,
+                );
+              }
+
+              if (toolResponse.responseParts) {
+                toolResponseParts.push(...toolResponse.responseParts);
+              }
+            }
+
+            try {
+              const currentModel =
+                jiminyClient.getCurrentSequenceModel() ?? config.getModel();
+              jiminyClient
+                .getChat()
+                .recordCompletedToolCalls(currentModel, completedToolCalls);
+              await recordToolCallInteractions(config, completedToolCalls);
+            } catch (err) {
+              debugLogger.error(
+                `Error recording completed tool call information: ${err}`,
               );
             }
 
-            if (toolResponse.responseParts) {
-              toolResponseParts.push(...toolResponse.responseParts);
+            const stopTool = completedToolCalls.find(
+              (tc) => tc.response.errorType === ToolErrorType.STOP_EXECUTION,
+            );
+            if (stopTool?.response.error) {
+              workingStderr.write(
+                `Stopped: ${stopTool.response.error.message}\n`,
+              );
+              break;
             }
-          }
 
-          try {
-            const currentModel =
-              jiminyClient.getCurrentSequenceModel() ?? config.getModel();
-            jiminyClient
-              .getChat()
-              .recordCompletedToolCalls(currentModel, completedToolCalls);
-            await recordToolCallInteractions(config, completedToolCalls);
-          } catch (err) {
-            debugLogger.error(
-              `Error recording completed tool call information: ${err}`,
-            );
-          }
-
-          const stopTool = completedToolCalls.find(
-            (tc) => tc.response.errorType === ToolErrorType.STOP_EXECUTION,
-          );
-          if (stopTool?.response.error) {
-            workingStderr.write(
-              `Stopped: ${stopTool.response.error.message}\n`,
-            );
+            currentMessageParts = toolResponseParts;
+          } else {
+            writeAssistantTurn(textOutput, responseText);
             break;
           }
-
-          currentMessageParts = toolResponseParts;
-        } else {
-          writeAssistantTurn(textOutput, responseText);
-          break;
         }
-      }
+      });
     } catch (err) {
       if (!isAborting) {
         handleError(err, config);
