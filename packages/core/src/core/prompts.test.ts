@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getCoreSystemPrompt } from './prompts.js';
+import { getCoreSystemPrompt, getQuietModeStartupPrompt } from './prompts.js';
 import { resolvePathFromEnv } from '../prompts/utils.js';
 import { isGitRepository } from '../utils/gitUtils.js';
 import fs from 'node:fs';
@@ -118,6 +118,7 @@ describe('Core System Prompt (prompts.ts)', () => {
       getApprovalMode: vi.fn().mockReturnValue(ApprovalMode.DEFAULT),
       getApprovedPlanPath: vi.fn().mockReturnValue(undefined),
       isTrackerEnabled: vi.fn().mockReturnValue(false),
+      isQuietMode: vi.fn().mockReturnValue(false),
       get config() {
         return this;
       },
@@ -129,6 +130,15 @@ describe('Core System Prompt (prompts.ts)', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+  });
+
+  it('should expose the quiet-mode startup prompt', () => {
+    const prompt = getQuietModeStartupPrompt('gamer', 'lets go');
+
+    expect(prompt).toContain('ready to go');
+    expect(prompt).toContain('"gamer"');
+    expect(prompt).toContain('"lets go"');
+    expect(prompt).toContain('Do not add punctuation.');
   });
 
   it('should include available_skills when provided in config', () => {
@@ -440,6 +450,7 @@ describe('Core System Prompt (prompts.ts)', () => {
         }),
         getApprovedPlanPath: vi.fn().mockReturnValue(undefined),
         isTrackerEnabled: vi.fn().mockReturnValue(false),
+        isQuietMode: vi.fn().mockReturnValue(false),
         get config() {
           return this;
         },
@@ -741,7 +752,10 @@ describe('Core System Prompt (prompts.ts)', () => {
 
         const prompt = getCoreSystemPrompt(mockConfig);
         expect(fs.readFileSync).toHaveBeenCalledWith(defaultPath, 'utf8');
-        expect(prompt).toBe('custom system prompt');
+        expect(prompt).toContain('custom system prompt');
+        expect(prompt).toContain(
+          '# God; The Universe; and Everything Everywhere All At Once:',
+        );
       },
     );
 
@@ -753,7 +767,10 @@ describe('Core System Prompt (prompts.ts)', () => {
 
       const prompt = getCoreSystemPrompt(mockConfig);
       expect(fs.readFileSync).toHaveBeenCalledWith(customPath, 'utf8');
-      expect(prompt).toBe('custom system prompt');
+      expect(prompt).toContain('custom system prompt');
+      expect(prompt).toContain(
+        '# God; The Universe; and Everything Everywhere All At Once:',
+      );
     });
 
     it('should expand tilde in custom path when GEMINI_SYSTEM_MD is set', () => {
@@ -770,7 +787,10 @@ describe('Core System Prompt (prompts.ts)', () => {
         path.resolve(expectedPath),
         'utf8',
       );
-      expect(prompt).toBe('custom system prompt');
+      expect(prompt).toContain('custom system prompt');
+      expect(prompt).toContain(
+        '# God; The Universe; and Everything Everywhere All At Once:',
+      );
     });
   });
 

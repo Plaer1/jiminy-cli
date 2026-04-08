@@ -95,6 +95,18 @@ export const createMockConfig = (overrides: Partial<Config> = {}): Config =>
     getJiminyClient: vi.fn().mockReturnValue({
       isInitialized: vi.fn().mockReturnValue(true),
     }),
+    getBaseLlmClient: vi.fn().mockReturnValue({
+      generateContent: vi.fn().mockResolvedValue({
+        candidates: [
+          {
+            content: {
+              role: 'model',
+              parts: [{ text: 'ready' }],
+            },
+          },
+        ],
+      }),
+    }),
     updateSystemInstructionIfInitialized: vi.fn().mockResolvedValue(undefined),
     getModelRouterService: vi.fn().mockReturnValue({}),
     getModelAvailabilityService: vi.fn().mockReturnValue({}),
@@ -174,6 +186,7 @@ export const createMockConfig = (overrides: Partial<Config> = {}): Config =>
     getHasAccessToPreviewModel: vi.fn().mockReturnValue(false),
     validatePathAccess: vi.fn().mockReturnValue(null),
     getUseAlternateBuffer: vi.fn().mockReturnValue(false),
+    isQuietMode: vi.fn().mockReturnValue(false),
     ...overrides,
   }) as unknown as Config;
 

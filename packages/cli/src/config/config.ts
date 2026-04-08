@@ -105,6 +105,7 @@ export interface CliArgs {
   rawOutput: boolean | undefined;
   acceptRawOutputRisk: boolean | undefined;
   isCommand: boolean | undefined;
+  quietYoloNoConseca: boolean | undefined;
 }
 
 /**
@@ -252,6 +253,16 @@ export async function parseArguments(
       if (argv['worktree'] && !settings.experimental?.worktrees) {
         return 'The --worktree flag is only available when experimental.worktrees is enabled in your settings.';
       }
+      if (argv['quietYoloNoConseca'] && argv['prompt']) {
+        return 'Cannot use both --quiet-yolo-no-conseca and --prompt (-p) together. --quiet-yolo-no-conseca is interactive; --prompt is headless.';
+      }
+      if (
+        argv['quietYoloNoConseca'] &&
+        outputFormat !== undefined &&
+        outputFormat !== 'text'
+      ) {
+        return 'Cannot use --quiet-yolo-no-conseca with --output-format json or stream-json. Quiet mode outputs plain text only.';
+      }
       return true;
     });
 
@@ -305,6 +316,12 @@ export async function parseArguments(
           alias: 's',
           type: 'boolean',
           description: 'Run in sandbox?',
+        })
+        .option('quiet-yolo-no-conseca', {
+          type: 'boolean',
+          description:
+            'Minimal interactive mode: no TUI, buffered output, defaults to yolo with sandbox off',
+          default: false,
         })
 
         .option('yolo', {
@@ -543,10 +560,12 @@ export async function loadCliConfig(
       ? false
       : (settings.security?.folderTrust?.enabled ?? false);
   const trustedFolder =
-    isWorkspaceTrusted(settings, cwd, undefined, {
+    argv.quietYoloNoConseca ||
+    (isWorkspaceTrusted(settings, cwd, undefined, {
       prompt: argv.prompt,
       query: argv.query,
-    })?.isTrusted ?? false;
+    })?.isTrusted ??
+      false);
 
   // Set the context filename in the server's memoryTool module BEFORE loading memory
   // TODO(b/343434939): This is a bit of a hack. The contextFileName should ideally be passed
@@ -649,6 +668,16 @@ export async function loadCliConfig(
   }
 
   const question = argv.promptInteractive || argv.prompt || '';
+
+  // Quiet mode defaults: yolo with sandbox disabled (overridable by explicit flags)
+  if (argv.quietYoloNoConseca) {
+    if (!argv.approvalMode && !argv.yolo) {
+      argv.yolo = true;
+    }
+    if (argv.sandbox === undefined) {
+      argv.sandbox = false;
+    }
+  }
 
   // Determine approval mode with backward compatibility
   let approvalMode: ApprovalMode;
@@ -1027,7 +1056,10 @@ export async function loadCliConfig(
         agents: refreshedSettings.merged.agents,
       };
     },
-    enableConseca: settings.security?.enableConseca,
+    enableConseca: argv.quietYoloNoConseca
+      ? false
+      : settings.security?.enableConseca,
+    quietMode: argv.quietYoloNoConseca,
   });
 }
 

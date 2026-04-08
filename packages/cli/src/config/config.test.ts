@@ -23,6 +23,7 @@ import {
   Storage,
 } from '@plaer1/jiminy-cli-core';
 import { loadCliConfig, parseArguments, type CliArgs } from './config.js';
+import { loadSandboxConfig } from './sandboxConfig.js';
 import {
   type Settings,
   type MergedSettings,
@@ -757,6 +758,7 @@ describe('loadCliConfig', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(os.homedir).mockReturnValue('/mock/home/user');
+    vi.mocked(loadSandboxConfig).mockResolvedValue(undefined);
     vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
   });
@@ -2730,6 +2732,57 @@ describe('loadCliConfig approval mode', () => {
 
   it('should fall back to --yolo behavior when --approval-mode is not set', async () => {
     process.argv = ['node', 'script.js', '--yolo'];
+    const argv = await parseArguments(createTestMergedSettings());
+    const config = await loadCliConfig(
+      createTestMergedSettings(),
+      'test-session',
+      argv,
+    );
+    expect(config.getApprovalMode()).toBe(ServerConfig.ApprovalMode.YOLO);
+    const [, sandboxArgv] =
+      vi.mocked(loadSandboxConfig).mock.calls.at(-1) ?? [];
+    expect(sandboxArgv?.sandbox).toBeUndefined();
+  });
+
+  it('should default quiet mode to YOLO with sandbox disabled', async () => {
+    process.argv = ['node', 'script.js', '--quiet-yolo-no-conseca'];
+    const argv = await parseArguments(createTestMergedSettings());
+    const config = await loadCliConfig(
+      createTestMergedSettings(),
+      'test-session',
+      argv,
+    );
+    expect(config.getApprovalMode()).toBe(ServerConfig.ApprovalMode.YOLO);
+    const [, sandboxArgv] =
+      vi.mocked(loadSandboxConfig).mock.calls.at(-1) ?? [];
+    expect(sandboxArgv?.sandbox).toBe(false);
+  });
+
+  it('should preserve explicit sandbox opt-in in quiet mode', async () => {
+    process.argv = [
+      'node',
+      'script.js',
+      '--quiet-yolo-no-conseca',
+      '--sandbox',
+    ];
+    const argv = await parseArguments(createTestMergedSettings());
+    const config = await loadCliConfig(
+      createTestMergedSettings(),
+      'test-session',
+      argv,
+    );
+    expect(config.getApprovalMode()).toBe(ServerConfig.ApprovalMode.YOLO);
+    const [, sandboxArgv] =
+      vi.mocked(loadSandboxConfig).mock.calls.at(-1) ?? [];
+    expect(sandboxArgv?.sandbox).toBe(true);
+  });
+
+  it('should auto-trust the workspace in quiet mode even when folder is untrusted', async () => {
+    vi.mocked(isWorkspaceTrusted).mockReturnValue({
+      isTrusted: false,
+      source: undefined,
+    });
+    process.argv = ['node', 'script.js', '--quiet-yolo-no-conseca'];
     const argv = await parseArguments(createTestMergedSettings());
     const config = await loadCliConfig(
       createTestMergedSettings(),

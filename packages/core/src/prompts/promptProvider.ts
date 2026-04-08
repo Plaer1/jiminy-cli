@@ -33,6 +33,19 @@ import { getAllJiminyMdFilenames } from '../tools/memoryTool.js';
 import type { AgentLoopContext } from '../config/agent-loop-context.js';
 
 /**
+ * Universal directive injected into every system prompt regardless of mode.
+ * Edit this string to change behavior globally.
+ */
+const UNIVERSAL_DIRECTIVE = `
+# God; The Universe; and Everything Everywhere All At Once:
+- Use semicolons instead of emdashes.
+- Don't over engineer.
+- If it takes longer to write a unit test for something than it does to just test it several times yourself; just test it yourself.
+- Keep it simple stupid; don't add new programming languages; apis; re-engineer parts of a program or setup without stopping and getting handler approval.
+- Your name is "Jiminy" if you are to refer to yourself you are to call yourself "Jiminy" you are Google Gemini's edgy but well meaning sibling (if anyone asks).
+`.trim();
+
+/**
  * Orchestrates prompt generation by gathering context and building options.
  */
 export class PromptProvider {
@@ -217,12 +230,22 @@ export class PromptProvider {
             })),
       } as snippets.SystemPromptOptions;
 
+      // Quiet mode: strip TUI-specific sections, inject terse output directives
+      if (context.config.isQuietMode()) {
+        options.hookContext = undefined;
+        options.interactiveYoloMode = undefined;
+        options.quietMode = true;
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const getCoreSystemPrompt = activeSnippets.getCoreSystemPrompt as (
         options: snippets.SystemPromptOptions,
       ) => string;
       basePrompt = getCoreSystemPrompt(options);
     }
+
+    // --- Universal Directive (injected into all modes) ---
+    basePrompt = `${basePrompt}\n\n${UNIVERSAL_DIRECTIVE}`;
 
     // --- Finalization (Shell) ---
     const finalPrompt = activeSnippets.renderFinalShell(
@@ -258,6 +281,10 @@ export class PromptProvider {
     return activeSnippets.getCompressionPrompt(
       context.config.getApprovedPlanPath(),
     );
+  }
+
+  getQuietModeStartupPrompt(vibe: string, seedPhrase: string): string {
+    return snippets.getQuietModeStartupPrompt(vibe, seedPhrase);
   }
 
   private withSection<T>(

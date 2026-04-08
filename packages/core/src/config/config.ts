@@ -678,6 +678,7 @@ export interface ConfigParameters {
   billing?: {
     overageStrategy?: OverageStrategy;
   };
+  quietMode?: boolean;
 }
 
 export class Config implements McpContext, AgentLoopContext {
@@ -810,6 +811,7 @@ export class Config implements McpContext, AgentLoopContext {
   private readonly compressionThreshold: number | undefined;
   /** Public for testing only */
   readonly interactive: boolean;
+  readonly quietMode: boolean;
   private readonly ptyInfo: string;
   private readonly trustedFolder: boolean | undefined;
   private readonly directWebFetch: boolean;
@@ -1128,6 +1130,7 @@ export class Config implements McpContext, AgentLoopContext {
     this.discoveryMaxDirs = params.discoveryMaxDirs ?? 200;
     this.compressionThreshold = params.compressionThreshold;
     this.interactive = params.interactive ?? false;
+    this.quietMode = params.quietMode ?? false;
     this.ptyInfo = params.ptyInfo ?? 'child_process';
     this.trustedFolder = params.trustedFolder;
     this.directWebFetch = params.directWebFetch ?? false;
@@ -3087,6 +3090,10 @@ export class Config implements McpContext, AgentLoopContext {
 
   isInteractive(): boolean {
     return this.interactive;
+  }
+
+  isQuietMode(): boolean {
+    return this.quietMode;
   }
 
   getUseRipgrep(): boolean {

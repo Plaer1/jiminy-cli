@@ -527,7 +527,12 @@ export async function main() {
     }
 
     const wasRaw = process.stdin.isRaw;
-    if (config.isInteractive() && !wasRaw && process.stdin.isTTY) {
+    if (
+      config.isInteractive() &&
+      !argv.quietYoloNoConseca &&
+      !wasRaw &&
+      process.stdin.isTTY
+    ) {
       // Set this as early as possible to avoid spurious characters from
       // input showing up in the output.
       process.stdin.setRawMode(true);
@@ -611,6 +616,32 @@ export async function main() {
     }
 
     cliStartupHandle?.end();
+
+    // Quiet mode: minimal interactive REPL, no TUI
+    if (argv.quietYoloNoConseca) {
+      const authType = await validateNonInteractiveAuth(
+        settings.merged.security.auth.selectedType,
+        settings.merged.security.auth.useExternal,
+        config,
+        settings,
+      );
+      if (!authType) {
+        process.stderr.write(
+          'Error: Not authenticated. Run `jiminy` (without --quiet-yolo-no-conseca) to log in first.\n',
+        );
+        process.exit(ExitCodes.FATAL_AUTHENTICATION_ERROR);
+      }
+
+      await config.initialize();
+      startupProfiler.flush(config);
+      await config.refreshAuth(authType);
+
+      const { runQuietInteractive } = await import('./quietCli.js');
+      await runQuietInteractive({ config, settings });
+      await runExitCleanup();
+      process.exit(ExitCodes.SUCCESS);
+    }
+
     // Render UI, passing necessary config values. Check that there is no command line question.
     if (config.isInteractive()) {
       await startInteractiveUI(

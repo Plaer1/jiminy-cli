@@ -38,3 +38,13 @@ export function getCoreSystemPrompt(
 export function getCompressionPrompt(config: Config): string {
   return new PromptProvider().getCompressionPrompt(config);
 }
+
+/**
+ * Returns the quiet-mode startup prompt used for the ready marker handshake.
+ */
+export function getQuietModeStartupPrompt(
+  vibe: string,
+  seedPhrase: string,
+): string {
+  return new PromptProvider().getQuietModeStartupPrompt(vibe, seedPhrase);
+}

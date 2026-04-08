@@ -389,7 +389,12 @@ export function isDangerousCommand(args: string[]): boolean {
   }
 
   if (cmd === 'sudo') {
-    return isDangerousCommand(args.slice(1));
+    // In quiet mode, only block sudo rm -rf/f, allow everything else
+    const inner = args.slice(1);
+    if (inner.length > 0 && inner[0] === 'rm') {
+      return isDangerousCommand(inner);
+    }
+    return false;
   }
 
   if (cmd === 'find') {

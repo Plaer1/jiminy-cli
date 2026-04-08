@@ -59,6 +59,7 @@ describe('Core System Prompt Substitution', () => {
         getSkills: vi.fn().mockReturnValue([]),
       }),
       getApprovedPlanPath: vi.fn().mockReturnValue(undefined),
+      isQuietMode: vi.fn().mockReturnValue(false),
     } as unknown as Config;
   });
 

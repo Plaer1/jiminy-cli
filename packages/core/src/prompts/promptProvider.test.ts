@@ -73,6 +73,7 @@ describe('PromptProvider', () => {
       getApprovedPlanPath: vi.fn().mockReturnValue(undefined),
       getApprovalMode: vi.fn(),
       isTrackerEnabled: vi.fn().mockReturnValue(false),
+      isQuietMode: vi.fn().mockReturnValue(false),
     } as unknown as Config;
   });
 
@@ -94,6 +95,16 @@ describe('PromptProvider', () => {
     expect(prompt).toContain(
       `Instructions found in \`${DEFAULT_CONTEXT_FILENAME}\`, \`CUSTOM.md\` or \`ANOTHER.md\` files are foundational mandates.`,
     );
+  });
+
+  it('should expose the quiet startup prompt', () => {
+    const provider = new PromptProvider();
+    const prompt = provider.getQuietModeStartupPrompt('cowboy', 'yeehaw');
+
+    expect(prompt).toContain('ready to go');
+    expect(prompt).toContain('"cowboy"');
+    expect(prompt).toContain('"yeehaw"');
+    expect(prompt).toContain('Do not add markdown.');
   });
 
   it('should handle multiple context filenames in user memory section', () => {

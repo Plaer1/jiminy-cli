@@ -62,6 +62,11 @@ vi.mock('./nonInteractiveCli.js', () => ({
   runNonInteractive: runNonInteractiveSpy,
 }));
 
+const runQuietInteractiveSpy = vi.hoisted(() => vi.fn());
+vi.mock('./quietCli.js', () => ({
+  runQuietInteractive: runQuietInteractiveSpy,
+}));
+
 const terminalNotificationMocks = vi.hoisted(() => ({
   notifyViaTerminal: vi.fn().mockResolvedValue(true),
   buildRunEventNotificationContent: vi.fn(() => ({
@@ -516,6 +521,7 @@ describe('jiminy.tsx main function kitty protocol', () => {
       rawOutput: undefined,
       acceptRawOutputRisk: undefined,
       isCommand: undefined,
+      quietYoloNoConseca: undefined,
     });
 
     await act(async () => {
@@ -955,6 +961,75 @@ describe('jiminy.tsx main function kitty protocol', () => {
     expect(terminalNotificationMocks.notifyViaTerminal).not.toHaveBeenCalled();
     expect(processExitSpy).toHaveBeenCalledWith(0);
     processExitSpy.mockRestore();
+  });
+
+  it('should enter quiet mode without enabling the non-quiet raw-input path', async () => {
+    vi.stubEnv('SANDBOX', 'true');
+    vi.mocked(loadSandboxConfig).mockResolvedValue(undefined);
+
+    const setRawModeSpy = vi.fn();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (process.stdin as any).setRawMode = setRawModeSpy;
+
+    const processExitSpy = vi
+      .spyOn(process, 'exit')
+      .mockImplementation((code) => {
+        throw new MockProcessExitError(code);
+      });
+
+    const refreshAuthSpy = vi.fn().mockResolvedValue(undefined);
+    vi.mocked(loadSettings).mockReturnValue(
+      createMockSettings({
+        merged: {
+          advanced: {},
+          security: {
+            auth: {
+              selectedType: AuthType.LOGIN_WITH_GOOGLE,
+              useExternal: false,
+            },
+          },
+          ui: {},
+        },
+        workspace: { settings: {} },
+      }),
+    );
+
+    vi.mocked(parseArguments).mockResolvedValue({
+      enabled: true,
+      allowedPaths: [],
+      networkAccess: false,
+      quietYoloNoConseca: true,
+      startupMessages: [],
+    } as unknown as CliArgs);
+    vi.mocked(validateNonInteractiveAuth).mockResolvedValue(
+      AuthType.LOGIN_WITH_GOOGLE,
+    );
+
+    vi.mocked(loadCliConfig).mockResolvedValue(
+      createMockConfig({
+        isInteractive: vi.fn().mockReturnValue(true),
+        getQuestion: vi.fn().mockReturnValue(undefined),
+        getSandbox: vi.fn().mockReturnValue(undefined),
+        refreshAuth: refreshAuthSpy,
+      }),
+    );
+
+    runQuietInteractiveSpy.mockResolvedValue(undefined);
+
+    try {
+      await main();
+      expect.fail('Should have thrown MockProcessExitError');
+    } catch (e) {
+      expect(e).toBeInstanceOf(MockProcessExitError);
+      expect((e as MockProcessExitError).code).toBe(0);
+    } finally {
+      processExitSpy.mockRestore();
+    }
+
+    expect(setRawModeSpy).not.toHaveBeenCalled();
+    expect(runQuietInteractiveSpy).toHaveBeenCalled();
+    expect(refreshAuthSpy).toHaveBeenCalled();
+    expect(runNonInteractiveSpy).not.toHaveBeenCalled();
   });
 });
 

@@ -13,6 +13,8 @@ interface ConsolePatcherParams {
   onNewMessage?: (message: Omit<ConsoleMessageItem, 'id'>) => void;
   debugMode: boolean;
   stderr?: boolean;
+  /** When true, only error-level messages are emitted; log/warn/info are suppressed. */
+  errorsOnly?: boolean;
 }
 
 export class ConsolePatcher {
@@ -49,18 +51,20 @@ export class ConsolePatcher {
   private patchConsoleMethod =
     (type: 'log' | 'warn' | 'error' | 'debug' | 'info') =>
     (...args: unknown[]) => {
+      if (type === 'debug' && !this.params.debugMode) {
+        return;
+      }
+      if (this.params.errorsOnly && type !== 'error') {
+        return;
+      }
       if (this.params.stderr) {
-        if (type !== 'debug' || this.params.debugMode) {
-          this.originalConsoleError(this.formatArgs(args));
-        }
+        this.originalConsoleError(this.formatArgs(args));
       } else {
-        if (type !== 'debug' || this.params.debugMode) {
-          this.params.onNewMessage?.({
-            type,
-            content: this.formatArgs(args),
-            count: 1,
-          });
-        }
+        this.params.onNewMessage?.({
+          type,
+          content: this.formatArgs(args),
+          count: 1,
+        });
       }
     };
 }

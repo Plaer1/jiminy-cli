@@ -127,6 +127,21 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         },
       },
     },
+    'quiet-startup': {
+      extends: 'base',
+      modelConfig: {
+        model: 'gemini-2.5-flash-lite',
+        generateContentConfig: {
+          temperature: 1,
+          topP: 0.95,
+          topK: 32,
+          maxOutputTokens: 12,
+          thinkingConfig: {
+            thinkingBudget: 0,
+          },
+        },
+      },
+    },
     'fast-ack-helper': {
       extends: 'base',
       modelConfig: {

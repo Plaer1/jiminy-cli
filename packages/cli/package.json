@@ -8,6 +8,9 @@
     "url": "git+https://github.com/Plaer1/jiminy-cli.git"
   },
   "type": "module",
+  "scripts": {
+    "build": "node ../../scripts/build_package.js"
+  },
   "bin": {
     "jiminy": "bundle/jiminy.js"
   },
