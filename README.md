@@ -83,6 +83,9 @@ Additionally we have set some fun configs by default
 - Auto-add to Policy by Default default: false -> true
 - Enable Context-Aware Security default: false -> true
 - Model Steering default: false -> true
+‼️New‼️:
+--quiet-yolo-no-conseca, it's a launch flag for when you really can't be bothered with all the descisions; features; and guardrails we provide normally. Launch Jiminy like this and you will recieve a simple conformation that he's ready for work; and a prompt. No animations; no menus; no descisions, you can't even log in like this*! How cool is that?
+*Don't worry you can still authorize normally without this launch flag.
 
 ### Code Understanding & Generation
 
