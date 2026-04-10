@@ -5,8 +5,8 @@
  */
 
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
 // A script to handle versioning and ensure all related changes are in a single, atomic commit.
 
@@ -34,39 +34,39 @@ if (!versionType) {
 // 2. Bump the version in the root and all workspace package.json files.
 run(`npm version ${versionType} --no-git-tag-version --allow-same-version`);
 
-// 3. Get all workspaces and filter out the one we don't want to version.
+// 3. Read local workspace package names directly from the configured workspace
+// directories so we do not accidentally pick up transitive dependencies.
 const workspacesToExclude = [];
-let lsOutput;
-try {
-  lsOutput = JSON.parse(
-    execSync('npm ls --workspaces --json --depth=0').toString(),
-  );
-} catch (e) {
-  // `npm ls` can exit with a non-zero status code if there are issues
-  // with dependencies, but it will still produce the JSON output we need.
-  // We'll try to parse the stdout from the error object.
-  if (e.stdout) {
-    console.warn(
-      'Warning: `npm ls` exited with a non-zero status code. Attempting to proceed with the output.',
-    );
-    try {
-      lsOutput = JSON.parse(e.stdout.toString());
-    } catch (parseError) {
-      console.error(
-        'Error: Failed to parse JSON from `npm ls` output even after `npm ls` failed.',
-      );
-      console.error('npm ls stderr:', e.stderr.toString());
-      console.error('Parse error:', parseError);
-      process.exit(1);
+const rootManifest = readJson(resolve(process.cwd(), 'package.json'));
+const workspaceGlobs = rootManifest.workspaces || [];
+const workspacePackageNames = [];
+
+for (const workspaceGlob of workspaceGlobs) {
+  if (!workspaceGlob.endsWith('/*')) {
+    console.warn(`Warning: Unsupported workspace pattern "${workspaceGlob}".`);
+    continue;
+  }
+
+  const workspaceRoot = resolve(process.cwd(), workspaceGlob.slice(0, -2));
+
+  for (const entry of readdirSync(workspaceRoot, { withFileTypes: true })) {
+    if (!entry.isDirectory()) {
+      continue;
     }
-  } else {
-    console.error('Error: `npm ls` failed with no output.');
-    console.error(e.stderr?.toString() || e);
-    process.exit(1);
+
+    const packageJsonPath = join(workspaceRoot, entry.name, 'package.json');
+    if (!existsSync(packageJsonPath)) {
+      continue;
+    }
+
+    const workspacePackageJson = readJson(packageJsonPath);
+    if (workspacePackageJson.name) {
+      workspacePackageNames.push(workspacePackageJson.name);
+    }
   }
 }
-const allWorkspaces = Object.keys(lsOutput.dependencies || {});
-const workspacesToVersion = allWorkspaces.filter(
+
+const workspacesToVersion = workspacePackageNames.filter(
   (wsName) => !workspacesToExclude.includes(wsName),
 );
 

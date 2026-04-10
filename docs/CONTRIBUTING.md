@@ -473,8 +473,13 @@ to manually cut a local build, then run the following commands:
 npm run clean
 npm install
 npm run auth
-npm run prerelease:dev
-npm publish --workspaces
+npm run build
+npm run bundle
+npm run prepare:package
+node scripts/prepare-npm-release.js
+npm publish --workspace @plaer1/jiminy-cli-core --access public --no-tag
+npm publish --workspace @plaer1/jiminy-cli --access public --no-tag
+npm publish --workspace @plaer1/jiminy-cli-a2a-server --access public --no-tag
 ```
 
 ## Documentation contribution process

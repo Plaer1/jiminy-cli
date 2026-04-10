@@ -405,13 +405,20 @@ This will simulate the publishing process without actually publishing the
 packages to the npm registry.
 
 ```bash
-npm_package_version=9.9.9 SANDBOX_IMAGE_REGISTRY="registry" SANDBOX_IMAGE_NAME="thename" npm run publish:npm --dry-run
+npm run build
+npm run bundle
+npm run prepare:package
+node scripts/prepare-npm-release.js
+npm publish --dry-run --workspace @plaer1/jiminy-cli-core --access public --no-tag
+npm publish --dry-run --workspace @plaer1/jiminy-cli --access public --no-tag
+npm publish --dry-run --workspace @plaer1/jiminy-cli-a2a-server --access public --no-tag
 ```
 
-This command will do the following:
+These commands will do the following:
 
 1.  Build all the packages.
-2.  Run all the prepublish scripts.
+2.  Assemble the bundled CLI artifact and prepare the publishable workspace
+    manifests.
 3.  Create the package tarballs that would be published to npm.
 4.  Print a summary of the packages that would be published.
 
