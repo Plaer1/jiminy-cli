@@ -2,15 +2,10 @@ name: 'Release: Patch (2) Trigger'
 
 run-name: >-
   Release Patch (2) Trigger |
-  ${{ github.event.pull_request.number && format('PR #{0}', github.event.pull_request.number) || 'Manual' }} |
-  ${{ github.event.pull_request.head.ref || github.event.inputs.ref }}
+  Manual |
+  ${{ github.event.inputs.ref }}
 
 on:
-  pull_request:
-    types:
-      - 'closed'
-    branches:
-      - 'release/**'
   workflow_dispatch:
     inputs:
       ref:
@@ -53,7 +48,7 @@ on:
 
 jobs:
   trigger-patch-release:
-    if: "(github.event_name == 'pull_request' && github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'hotfix/')) || github.event_name == 'workflow_dispatch'"
+    if: "github.event_name == 'workflow_dispatch'"
     runs-on: 'ubuntu-latest'
     environment: "${{ github.event.inputs.environment || 'prod' }}"
     permissions:
@@ -79,8 +74,8 @@ jobs:
       - name: 'Trigger Patch Release'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          HEAD_REF: "${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.event.inputs.ref }}"
-          PR_BODY: "${{ github.event_name == 'pull_request' && github.event.pull_request.body || '' }}"
+          HEAD_REF: '${{ github.event.inputs.ref }}'
+          PR_BODY: ''
           WORKFLOW_ID: '${{ github.event.inputs.workflow_id }}'
           GITHUB_REPOSITORY_OWNER: '${{ github.repository_owner }}'
           GITHUB_REPOSITORY_NAME: '${{ github.event.repository.name }}'

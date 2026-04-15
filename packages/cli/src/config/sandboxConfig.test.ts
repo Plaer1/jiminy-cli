@@ -142,7 +142,7 @@ describe('loadSandboxConfig', () => {
     it('should use sandbox-exec on darwin if available', async () => {
       mockedOsPlatform.mockReturnValue('darwin');
       mockedCommandExistsSync.mockImplementation(
-        (cmd) => cmd === 'sandbox-exec',
+        (cmd: string) => cmd === 'sandbox-exec',
       );
       const config = await loadSandboxConfig({}, { sandbox: true });
       expect(config).toEqual({
@@ -169,7 +169,9 @@ describe('loadSandboxConfig', () => {
 
     it('should use docker if available and sandbox is true', async () => {
       mockedOsPlatform.mockReturnValue('linux');
-      mockedCommandExistsSync.mockImplementation((cmd) => cmd === 'docker');
+      mockedCommandExistsSync.mockImplementation(
+        (cmd: string) => cmd === 'docker',
+      );
       const config = await loadSandboxConfig({ tools: { sandbox: true } }, {});
       expect(config).toEqual({
         enabled: true,
@@ -182,7 +184,9 @@ describe('loadSandboxConfig', () => {
 
     it('should use podman if available and docker is not', async () => {
       mockedOsPlatform.mockReturnValue('linux');
-      mockedCommandExistsSync.mockImplementation((cmd) => cmd === 'podman');
+      mockedCommandExistsSync.mockImplementation(
+        (cmd: string) => cmd === 'podman',
+      );
       const config = await loadSandboxConfig({}, { sandbox: true });
       expect(config).toEqual({
         enabled: true,
@@ -275,7 +279,9 @@ describe('loadSandboxConfig', () => {
   describe('truthy/falsy sandbox values', () => {
     beforeEach(() => {
       mockedOsPlatform.mockReturnValue('linux');
-      mockedCommandExistsSync.mockImplementation((cmd) => cmd === 'docker');
+      mockedCommandExistsSync.mockImplementation(
+        (cmd: string) => cmd === 'docker',
+      );
     });
 
     it.each([true, 'true', '1'])(
@@ -305,7 +311,9 @@ describe('loadSandboxConfig', () => {
   describe('with SandboxConfig object in settings', () => {
     beforeEach(() => {
       mockedOsPlatform.mockReturnValue('linux');
-      mockedCommandExistsSync.mockImplementation((cmd) => cmd === 'docker');
+      mockedCommandExistsSync.mockImplementation(
+        (cmd: string) => cmd === 'docker',
+      );
     });
 
     it('should support object structure with enabled: true', async () => {
@@ -331,7 +339,9 @@ describe('loadSandboxConfig', () => {
     });
 
     it('should support object structure with explicit command', async () => {
-      mockedCommandExistsSync.mockImplementation((cmd) => cmd === 'podman');
+      mockedCommandExistsSync.mockImplementation(
+        (cmd: string) => cmd === 'podman',
+      );
       const config = await loadSandboxConfig(
         {
           tools: {
@@ -491,7 +501,9 @@ describe('loadSandboxConfig', () => {
     });
 
     it('should throw if Docker not available (runsc requires Docker)', async () => {
-      mockedCommandExistsSync.mockImplementation((cmd) => cmd === 'runsc');
+      mockedCommandExistsSync.mockImplementation(
+        (cmd: string) => cmd === 'runsc',
+      );
 
       await expect(loadSandboxConfig({}, { sandbox: 'runsc' })).rejects.toThrow(
         "runsc (gVisor) requires Docker. Install Docker, or use sandbox: 'docker'.",
@@ -500,7 +512,7 @@ describe('loadSandboxConfig', () => {
 
     it('should NOT auto-detect runsc when both runsc and docker available', async () => {
       mockedCommandExistsSync.mockImplementation(
-        (cmd) => cmd === 'runsc' || cmd === 'docker',
+        (cmd: string) => cmd === 'runsc' || cmd === 'docker',
       );
 
       const config = await loadSandboxConfig({}, { sandbox: true });

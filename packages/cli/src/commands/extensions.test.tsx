@@ -50,8 +50,14 @@ describe('extensionsCommand', () => {
       version: vi.fn().mockReturnThis(),
     };
 
-    // @ts-expect-error - Mocking yargs
-    extensionsCommand.builder(mockYargs);
+    const builder = extensionsCommand.builder;
+
+    expect(typeof builder).toBe('function');
+    if (typeof builder !== 'function') {
+      throw new Error('Expected extensionsCommand.builder to be a function');
+    }
+
+    builder(mockYargs as never);
 
     expect(mockYargs.middleware).toHaveBeenCalled();
     expect(mockYargs.command).toHaveBeenCalledWith(
@@ -86,7 +92,6 @@ describe('extensionsCommand', () => {
   });
 
   it('should have a handler that does nothing', () => {
-    // @ts-expect-error - Handler doesn't take arguments in this case
-    expect(extensionsCommand.handler()).toBeUndefined();
+    expect(extensionsCommand.handler({} as never)).toBeUndefined();
   });
 });
