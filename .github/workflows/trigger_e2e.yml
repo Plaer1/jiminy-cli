@@ -5,13 +5,12 @@ on:
     inputs:
       repo_name:
         description: 'Repository name (e.g., owner/repo)'
-        required: false
+        required: true
         type: 'string'
       head_sha:
         description: 'SHA of the commit to test'
-        required: false
+        required: true
         type: 'string'
-  pull_request:
 
 jobs:
   save_repo_name:

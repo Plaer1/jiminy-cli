@@ -1,8 +1,6 @@
 name: 'Release: Nightly'
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -35,7 +33,7 @@ jobs:
     environment: "${{ github.event.inputs.environment || 'prod' }}"
     runs-on: 'ubuntu-latest'
     outputs:
-      dry_run: "${{ github.event_name == 'schedule' && 'false' || github.event.inputs.dry_run }}"
+      dry_run: '${{ github.event.inputs.dry_run }}'
       release_branch: '${{ steps.publish_release.outputs.release-branch }}'
       release_tag: '${{ steps.nightly_version.outputs.RELEASE_TAG }}'
       release_version: '${{ steps.nightly_version.outputs.RELEASE_VERSION }}'
@@ -62,7 +60,7 @@ jobs:
         run: 'npm ci'
 
       - name: 'Run Tests'
-        if: "${{ github.event_name == 'schedule' || github.event.inputs.force_skip_tests == 'false' }}"
+        if: "${{ github.event.inputs.force_skip_tests == 'false' }}"
         uses: './.github/actions/run-tests'
         with:
           jiminy_api_key: '${{ secrets.GEMINI_API_KEY }}'
@@ -101,7 +99,7 @@ jobs:
           release-tag: '${{ steps.nightly_version.outputs.RELEASE_TAG }}'
           release-channel: '${{ steps.nightly_version.outputs.RELEASE_CHANNEL }}'
           npm-tag: '${{ steps.nightly_version.outputs.RELEASE_CHANNEL }}'
-          dry-run: "${{ github.event_name == 'schedule' && 'false' || github.event.inputs.dry_run }}"
+          dry-run: '${{ github.event.inputs.dry_run }}'
           publish-npm: 'true'
           github-token: '${{ secrets.GEMINI_CLI_ROBOT_GITHUB_PAT || secrets.GITHUB_TOKEN }}'
           wombat-token-core: '${{ secrets.WOMBAT_TOKEN_CORE }}'
