@@ -95,8 +95,8 @@ export interface ModelResolution {
 
 /** The actual state of the current session. */
 export interface ResolutionContext {
-  useGemini3_1?: boolean;
-  useGemini3_1FlashLite?: boolean;
+  useJiminy3_1?: boolean;
+  useJiminy3_1FlashLite?: boolean;
   useCustomTools?: boolean;
   hasAccessToPreview?: boolean;
   hasAccessToProModel?: boolean;
@@ -105,8 +105,8 @@ export interface ResolutionContext {
 
 /** The requirements defined in the registry. */
 export interface ResolutionCondition {
-  useGemini3_1?: boolean;
-  useGemini3_1FlashLite?: boolean;
+  useJiminy3_1?: boolean;
+  useJiminy3_1FlashLite?: boolean;
   useCustomTools?: boolean;
   hasAccessToPreview?: boolean;
   /** Matches if the current model is in this list. */
@@ -154,8 +154,8 @@ export class ModelConfigService {
   }> {
     const definitions = this.config.modelDefinitions ?? {};
     const shouldShowPreviewModels = context.hasAccessToPreview ?? false;
-    const useGemini31 = context.useGemini3_1 ?? false;
-    const useGemini31FlashLite = context.useGemini3_1FlashLite ?? false;
+    const useGemini31 = context.useJiminy3_1 ?? false;
+    const useGemini31FlashLite = context.useJiminy3_1FlashLite ?? false;
 
     const mainOptions = Object.entries(definitions)
       .filter(([_, m]) => {
@@ -192,8 +192,8 @@ export class ModelConfigService {
       .map(([id, m]) => {
         const resolvedId = this.resolveModelId(id, context);
         const titleId = this.resolveModelId(id, {
-          useGemini3_1: useGemini31,
-          useGemini3_1FlashLite: useGemini31FlashLite,
+          useJiminy3_1: useGemini31,
+          useJiminy3_1FlashLite: useGemini31FlashLite,
         });
         return {
           modelId: resolvedId,
@@ -244,10 +244,10 @@ export class ModelConfigService {
       if (value === undefined) return true;
 
       switch (key) {
-        case 'useGemini3_1':
-          return value === context.useGemini3_1;
-        case 'useGemini3_1FlashLite':
-          return value === context.useGemini3_1FlashLite;
+        case 'useJiminy3_1':
+          return value === context.useJiminy3_1;
+        case 'useJiminy3_1FlashLite':
+          return value === context.useJiminy3_1FlashLite;
         case 'useCustomTools':
           return value === context.useCustomTools;
         case 'hasAccessToPreview':

@@ -9,18 +9,18 @@ import {
   supersedeStaleSnapshots,
   SNAPSHOT_SUPERSEDED_PLACEHOLDER,
 } from './snapshotSuperseder.js';
-import type { GeminiChat } from '../../core/geminiChat.js';
+import type { JiminyChat } from '../../core/jiminyChat.js';
 import type { Content } from '@google/genai';
 
-/** Builds a minimal mock GeminiChat around a mutable history array. */
-function createMockChat(history: Content[]): GeminiChat {
+/** Builds a minimal mock JiminyChat around a mutable history array. */
+function createMockChat(history: Content[]): JiminyChat {
   return {
     getHistory: vi.fn(() => [...history]),
     setHistory: vi.fn((newHistory: readonly Content[]) => {
       history.length = 0;
       history.push(...newHistory);
     }),
-  } as unknown as GeminiChat;
+  } as unknown as JiminyChat;
 }
 
 /** Helper: creates a take_snapshot functionResponse part. */
@@ -45,7 +45,7 @@ function otherToolResponse(name: string, output: string) {
 
 describe('supersedeStaleSnapshots', () => {
   let history: Content[];
-  let chat: GeminiChat;
+  let chat: JiminyChat;
 
   beforeEach(() => {
     history = [];

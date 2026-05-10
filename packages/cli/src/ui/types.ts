@@ -6,7 +6,7 @@
 
 import {
   type CompressionStatus,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   type MCPServerConfig,
   type ThoughtSummary,
   type SerializableConfirmationDetails,
@@ -21,7 +21,7 @@ import {
   CoreToolCallStatus,
   checkExhaustive,
   type SubagentActivityItem,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { PartListUnion } from '@google/genai';
 import { type ReactNode } from 'react';
 
@@ -54,7 +54,7 @@ export enum StreamingState {
 }
 
 // Copied from server/src/core/turn.ts for CLI usage
-export enum GeminiEventType {
+export enum JiminyEventType {
   Content = 'content',
   ToolCallRequest = 'tool_call_request',
   // Add other event types if the UI hook needs to handle them
@@ -272,7 +272,7 @@ export type HistoryItemCompression = HistoryItemBase & {
 
 export type HistoryItemExtensionsList = HistoryItemBase & {
   type: 'extensions_list';
-  extensions: GeminiCLIExtension[];
+  extensions: JiminyCLIExtension[];
 };
 
 export interface ChatDetail {

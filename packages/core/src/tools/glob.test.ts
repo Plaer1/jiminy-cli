@@ -10,7 +10,7 @@ import {
   type GlobToolParams,
   type GlobPath,
 } from './glob.js';
-import { partListUnionToString } from '../core/geminiRequest.js';
+import { partListUnionToString } from '../core/jiminyRequest.js';
 import path from 'node:path';
 import { isSubpath } from '../utils/paths.js';
 import fs from 'node:fs/promises';

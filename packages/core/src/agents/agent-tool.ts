@@ -24,7 +24,7 @@ import { formatUserHintsForModel } from '../utils/fastAckHelper.js';
 import { isRecord } from '../utils/markdownUtils.js';
 import { runInDevTraceSpan } from '../telemetry/trace.js';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_AGENT_DESCRIPTION,
   GEN_AI_AGENT_NAME,
 } from '../telemetry/constants.js';
@@ -192,7 +192,7 @@ class DelegateInvocation extends BaseToolInvocation<
 
     return runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.AgentCall,
+        operation: JiminyCliOperation.AgentCall,
         logPrompts: this.context.config.getTelemetryLogPromptsEnabled(),
         tracesEnabled: this.context.config.getTelemetryTracesEnabled(),
         sessionId: this.context.config.getSessionId(),

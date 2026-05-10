@@ -19,7 +19,7 @@ import {
   mergeSettings,
   type LoadedSettings,
 } from '../../config/settings.js';
-import { createTransport, debugLogger } from '@google/gemini-cli-core';
+import { createTransport, debugLogger } from '@plaer1/jiminy-cli-core';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { ExtensionStorage } from '../../config/extensions/storage.js';
 import { ExtensionManager } from '../../config/extension-manager.js';
@@ -39,9 +39,9 @@ vi.mock('../../config/extensions/storage.js', () => ({
   },
 }));
 vi.mock('../../config/extension-manager.js');
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...original,
     createTransport: vi.fn(),
@@ -64,7 +64,7 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
         getGlobalGeminiDir: () => '/tmp/gemini',
       },
     ),
-    GEMINI_DIR: '.gemini',
+    GEMINI_DIR: '.jiminy',
     getErrorMessage: (e: unknown) =>
       e instanceof Error ? e.message : String(e),
   };

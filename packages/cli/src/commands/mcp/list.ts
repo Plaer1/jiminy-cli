@@ -17,8 +17,8 @@ import {
   debugLogger,
   applyAdminAllowlist,
   getAdminBlockedMcpServersMessage,
-} from '@google/gemini-cli-core';
-import type { MCPServerConfig } from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import type { MCPServerConfig } from '@plaer1/jiminy-cli-core';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { ExtensionManager } from '../../config/extension-manager.js';
 import {

@@ -12,28 +12,28 @@ import { getHistoricalAverage } from './history-helper.js';
 const SCRIPTS_DIR = join(
   process.cwd(),
   'tools',
-  'gemini-cli-bot',
+  'jiminy-cli-bot',
   'metrics',
   'scripts',
 );
 const SYNC_SCRIPT = join(
   process.cwd(),
   'tools',
-  'gemini-cli-bot',
+  'jiminy-cli-bot',
   'history',
   'sync.ts',
 );
 const OUTPUT_FILE = join(
   process.cwd(),
   'tools',
-  'gemini-cli-bot',
+  'jiminy-cli-bot',
   'history',
   'metrics-before.csv',
 );
 const TIMESERIES_FILE = join(
   process.cwd(),
   'tools',
-  'gemini-cli-bot',
+  'jiminy-cli-bot',
   'history',
   'metrics-timeseries.csv',
 );

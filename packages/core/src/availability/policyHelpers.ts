@@ -68,8 +68,8 @@ export function resolvePolicyChain(
   // --- DYNAMIC PATH ---
   if (config.getExperimentalDynamicModelConfiguration?.() === true) {
     const context = {
-      useGemini3_1: useGemini31,
-      useGemini3_1FlashLite: useGemini31FlashLite,
+      useJiminy3_1: useGemini31,
+      useJiminy3_1FlashLite: useGemini31FlashLite,
       useCustomTools: useCustomToolModel,
     };
 

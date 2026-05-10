@@ -6,7 +6,7 @@
 
 import type { Content } from '@google/genai';
 import { createHash } from 'node:crypto';
-import { GeminiEventType, type ServerGeminiStreamEvent } from '../core/turn.js';
+import { JiminyEventType, type ServerJiminyStreamEvent } from '../core/turn.js';
 import {
   logLoopDetected,
   logLoopDetectionDisabled,
@@ -183,7 +183,7 @@ export class LoopDetectionService {
    * @param event - The stream event to process
    * @returns A LoopDetectionResult
    */
-  addAndCheck(event: ServerGeminiStreamEvent): LoopDetectionResult {
+  addAndCheck(event: ServerJiminyStreamEvent): LoopDetectionResult {
     if (
       this.disabledForSession ||
       this.context.config.getDisableLoopDetection()
@@ -202,7 +202,7 @@ export class LoopDetectionService {
     let detail: string | undefined;
 
     switch (event.type) {
-      case GeminiEventType.ToolCallRequest:
+      case JiminyEventType.ToolCallRequest:
         // content chanting only happens in one single stream, reset if there
         // is a tool call in between
         this.resetContentTracking();
@@ -211,7 +211,7 @@ export class LoopDetectionService {
           detail = `Repeated tool call: ${event.value.name} with arguments ${JSON.stringify(event.value.args)}`;
         }
         break;
-      case GeminiEventType.Content:
+      case JiminyEventType.Content:
         isLoop = this.checkContentLoop(event.value);
         if (isLoop) {
           detail = `Repeating content detected: "${this.streamContentHistory.substring(Math.max(0, this.lastContentIndex - 20), this.lastContentIndex + CONTENT_CHUNK_SIZE).trim()}..."`;
@@ -226,7 +226,7 @@ export class LoopDetectionService {
       this.detectedCount++;
       this.lastLoopDetail = detail;
       this.lastLoopType =
-        event.type === GeminiEventType.ToolCallRequest
+        event.type === JiminyEventType.ToolCallRequest
           ? LoopType.CONSECUTIVE_IDENTICAL_TOOL_CALLS
           : LoopType.CONTENT_CHANTING_LOOP;
 
@@ -542,7 +542,7 @@ export class LoopDetectionService {
     analysis?: string;
     confirmedByModel?: string;
   }> {
-    const recentHistory = this.context.geminiClient
+    const recentHistory = this.context.jiminyClient
       .getHistory()
       .slice(-LLM_LOOP_CHECK_HISTORY_COUNT);
 

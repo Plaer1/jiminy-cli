@@ -37,12 +37,12 @@ export * from './core/baseLlmClient.js';
 export * from './core/client.js';
 export * from './core/contentGenerator.js';
 export * from './core/loggingContentGenerator.js';
-export * from './core/geminiChat.js';
+export * from './core/jiminyChat.js';
 export * from './core/logger.js';
 export * from './core/prompts.js';
 export * from './core/tokenLimits.js';
 export * from './core/turn.js';
-export * from './core/geminiRequest.js';
+export * from './core/jiminyRequest.js';
 export * from './scheduler/scheduler.js';
 export * from './scheduler/types.js';
 export * from './scheduler/tool-executor.js';
@@ -171,6 +171,7 @@ export * from './services/sandboxManager.js';
 
 // Export Execution Lifecycle Service
 export * from './services/executionLifecycleService.js';
+export * from "./services/sudoPasswordService.js";
 
 // Export Injection Service
 export * from './config/injectionService.js';
@@ -184,6 +185,7 @@ export * from './resources/resource-registry.js';
 
 // Export prompt logic
 export * from './prompts/mcp-prompts.js';
+export { getQuietModeStartupPrompt } from './prompts/snippets.js';
 
 // Export agent definitions
 export * from './agents/types.js';

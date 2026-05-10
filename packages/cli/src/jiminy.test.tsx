@@ -21,14 +21,14 @@ import {
   startInteractiveUI,
   getNodeMemoryArgs,
   resolveSessionId,
-} from './gemini.js';
+} from './jiminy.js';
 import {
   loadCliConfig,
   parseArguments,
   type CliArgs,
 } from './config/config.js';
 import { loadSandboxConfig } from './config/sandboxConfig.js';
-import { createMockSandboxConfig } from '@google/gemini-cli-test-utils';
+import { createMockSandboxConfig } from '@plaer1/jiminy-cli-test-utils';
 import { terminalCapabilityManager } from './ui/utils/terminalCapabilityManager.js';
 import { start_sandbox } from './utils/sandbox.js';
 import { validateNonInteractiveAuth } from './validateNonInterActiveAuth.js';
@@ -49,7 +49,7 @@ import {
   coreEvents,
   AuthType,
   ExitCodes,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { act } from 'react';
 import { type InitializationResult } from './core/initializer.js';
 import { runNonInteractive } from './nonInteractiveCli.js';
@@ -80,9 +80,9 @@ vi.mock('./utils/terminalNotifications.js', () => ({
     terminalNotificationMocks.buildRunEventNotificationContent,
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     recordSlowRender: vi.fn(),
@@ -274,7 +274,7 @@ vi.mock('./validateNonInterActiveAuth.js', () => ({
   validateNonInteractiveAuth: vi.fn().mockResolvedValue('google'),
 }));
 
-describe('gemini.tsx main function', () => {
+describe('jiminy.tsxx main function', () => {
   let originalIsTTY: boolean | undefined;
   let initialUnhandledRejectionListeners: NodeJS.UnhandledRejectionListener[] =
     [];
@@ -385,8 +385,8 @@ describe('initializeOutputListenersAndFlush', () => {
   });
 
   it('should flush backlogs and setup listeners if no listeners exist', async () => {
-    const { coreEvents } = await import('@google/gemini-cli-core');
-    const { initializeOutputListenersAndFlush } = await import('./gemini.js');
+    const { coreEvents } = await import('@plaer1/jiminy-cli-core');
+    const { initializeOutputListenersAndFlush } = await import('./jiminy.js');
 
     // Mock listenerCount to return 0
     vi.spyOn(coreEvents, 'listenerCount').mockReturnValue(0);
@@ -473,7 +473,7 @@ describe('getNodeMemoryArgs', () => {
   });
 });
 
-describe('gemini.tsx main function kitty protocol', () => {
+describe('jiminy.tsxx main function kitty protocol', () => {
   let originalEnvNoRelaunch: string | undefined;
   let originalIsTTY: boolean | undefined;
   let originalIsRaw: boolean | undefined;
@@ -562,6 +562,7 @@ describe('gemini.tsx main function kitty protocol', () => {
       acceptRawOutputRisk: undefined,
       isCommand: undefined,
       skipTrust: undefined,
+      quietYoloNoConseca: undefined,
     });
 
     await act(async () => {
@@ -622,6 +623,7 @@ describe('gemini.tsx main function kitty protocol', () => {
       acceptRawOutputRisk: undefined,
       isCommand: undefined,
       skipTrust: undefined,
+      quietYoloNoConseca: undefined,
     });
 
     await act(async () => {
@@ -1115,7 +1117,7 @@ describe('resolveSessionId', () => {
   });
 });
 
-describe('gemini.tsx main function exit codes', () => {
+describe('jiminy.tsxx main function exit codes', () => {
   let originalEnvNoRelaunch: string | undefined;
   let originalIsTTY: boolean | undefined;
 
@@ -1484,7 +1486,7 @@ describe('startInteractiveUI', () => {
     accountSuspensionInfo: null,
     themeError: null,
     shouldOpenAuthDialog: false,
-    geminiMdFileCount: 0,
+    jiminyMdFileCount: 0,
   };
 
   vi.mock('./ui/utils/updateCheck.js', () => ({
@@ -1564,7 +1566,7 @@ describe('startInteractiveUI', () => {
   });
 
   it('should enable mouse events when alternate buffer is enabled', async () => {
-    const { enableMouseEvents } = await import('@google/gemini-cli-core');
+    const { enableMouseEvents } = await import('@plaer1/jiminy-cli-core');
     await startTestInteractiveUI(
       mockConfig,
       mockSettings,
@@ -1591,7 +1593,7 @@ describe('startInteractiveUI', () => {
   });
 
   it('should perform all startup tasks in correct order', async () => {
-    const { getVersion } = await import('@google/gemini-cli-core');
+    const { getVersion } = await import('@plaer1/jiminy-cli-core');
     const { checkForUpdates } = await import('./ui/utils/updateCheck.js');
     const { registerCleanup } = await import('./utils/cleanup.js');
 
@@ -1620,7 +1622,7 @@ describe('startInteractiveUI', () => {
   });
 
   it('should not recordSlowRender when less than threshold', async () => {
-    const { recordSlowRender } = await import('@google/gemini-cli-core');
+    const { recordSlowRender } = await import('@plaer1/jiminy-cli-core');
     performance.now.mockReturnValueOnce(0);
     await startTestInteractiveUI(
       mockConfig,
@@ -1635,7 +1637,7 @@ describe('startInteractiveUI', () => {
   });
 
   it('should call recordSlowRender when more than threshold', async () => {
-    const { recordSlowRender } = await import('@google/gemini-cli-core');
+    const { recordSlowRender } = await import('@plaer1/jiminy-cli-core');
     performance.now.mockReturnValueOnce(0);
     performance.now.mockReturnValueOnce(300);
 

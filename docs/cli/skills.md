@@ -1,6 +1,6 @@
 # Agent Skills
 
-Agent Skills allow you to extend Gemini CLI with specialized expertise,
+Agent Skills allow you to extend Jiminy CLI with specialized expertise,
 procedural workflows, and task-specific resources. Based on the
 [Agent Skills](https://agentskills.io) open standard, a "skill" is a
 self-contained directory that packages instructions and assets into a
@@ -33,7 +33,7 @@ the full instructions and resources required to complete the task using the
 
 ## Skill Discovery Tiers
 
-Gemini CLI discovers skills from three primary locations:
+Jiminy CLI discovers skills from three primary locations:
 
 1.  **Workspace Skills**: Located in `.gemini/skills/` or the `.agents/skills/`
     alias. Workspace skills are typically committed to version control and
@@ -70,7 +70,7 @@ Use the `/skills` slash command to view and manage available expertise:
 
 ### From the Terminal
 
-The `gemini skills` command provides management utilities:
+The `jiminy skills` command provides management utilities:
 
 ```bash
 # List all discovered skills
@@ -108,7 +108,7 @@ gemini skills disable my-expertise --scope workspace
 
 ## How it Works
 
-1.  **Discovery**: At the start of a session, Gemini CLI scans the discovery
+1.  **Discovery**: At the start of a session, Jiminy CLI scans the discovery
     tiers and injects the name and description of all enabled skills into the
     system prompt.
 2.  **Activation**: When Gemini identifies a task matching a skill's

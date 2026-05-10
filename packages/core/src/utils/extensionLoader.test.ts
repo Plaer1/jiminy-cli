@@ -15,9 +15,9 @@ import {
 } from 'vitest';
 import { SimpleExtensionLoader } from './extensionLoader.js';
 import { PolicyDecision } from '../policy/types.js';
-import type { Config, GeminiCLIExtension } from '../config/config.js';
+import type { Config, JiminyCLIExtension } from '../config/config.js';
 import { type McpClientManager } from '../tools/mcp-client-manager.js';
-import type { GeminiClient } from '../core/client.js';
+import type { JiminyClient } from '../core/client.js';
 
 const mockRefreshServerHierarchicalMemory = vi.hoisted(() => vi.fn());
 
@@ -33,8 +33,8 @@ describe('SimpleExtensionLoader', () => {
   let mockConfig: Config;
   let extensionReloadingEnabled: boolean;
   let mockMcpClientManager: McpClientManager;
-  let mockGeminiClientSetTools: MockInstance<
-    typeof GeminiClient.prototype.setTools
+  let mockJiminyClientSetTools: MockInstance<
+    typeof JiminyClient.prototype.setTools
   >;
   let mockHookSystemInit: MockInstance;
   let mockAgentRegistryReload: MockInstance;
@@ -46,7 +46,7 @@ describe('SimpleExtensionLoader', () => {
     removeCheckersBySource: MockInstance;
   };
 
-  const activeExtension: GeminiCLIExtension = {
+  const activeExtension: JiminyCLIExtension = {
     name: 'test-extension',
     isActive: true,
     version: '1.0.0',
@@ -70,7 +70,7 @@ describe('SimpleExtensionLoader', () => {
     ],
   };
 
-  const inactiveExtension: GeminiCLIExtension = {
+  const inactiveExtension: JiminyCLIExtension = {
     name: 'test-extension',
     isActive: false,
     version: '1.0.0',
@@ -85,7 +85,7 @@ describe('SimpleExtensionLoader', () => {
       stopExtension: vi.fn(),
     } as unknown as McpClientManager;
     extensionReloadingEnabled = false;
-    mockGeminiClientSetTools = vi.fn();
+    mockJiminyClientSetTools = vi.fn();
     mockHookSystemInit = vi.fn();
     mockAgentRegistryReload = vi.fn();
     mockSkillsReload = vi.fn();
@@ -98,13 +98,13 @@ describe('SimpleExtensionLoader', () => {
     mockConfig = {
       getMcpClientManager: () => mockMcpClientManager,
       getEnableExtensionReloading: () => extensionReloadingEnabled,
-      geminiClient: {
+      jiminyClient: {
         isInitialized: () => true,
-        setTools: mockGeminiClientSetTools,
+        setTools: mockJiminyClientSetTools,
       },
-      getGeminiClient: vi.fn(() => ({
+      getJiminyClient: vi.fn(() => ({
         isInitialized: () => true,
-        setTools: mockGeminiClientSetTools,
+        setTools: mockJiminyClientSetTools,
       })),
       getHookSystem: () => ({
         initialize: mockHookSystemInit,
@@ -195,20 +195,20 @@ describe('SimpleExtensionLoader', () => {
             ).toHaveBeenCalledExactlyOnceWith(activeExtension);
             expect(mockRefreshServerHierarchicalMemory).toHaveBeenCalledOnce();
             expect(mockHookSystemInit).toHaveBeenCalledOnce();
-            expect(mockGeminiClientSetTools).toHaveBeenCalledOnce();
+            expect(mockJiminyClientSetTools).toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).toHaveBeenCalledOnce();
             expect(mockSkillsReload).toHaveBeenCalledOnce();
           } else {
             expect(mockMcpClientManager.startExtension).not.toHaveBeenCalled();
             expect(mockRefreshServerHierarchicalMemory).not.toHaveBeenCalled();
             expect(mockHookSystemInit).not.toHaveBeenCalled();
-            expect(mockGeminiClientSetTools).not.toHaveBeenCalledOnce();
+            expect(mockJiminyClientSetTools).not.toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).not.toHaveBeenCalled();
             expect(mockSkillsReload).not.toHaveBeenCalled();
           }
           mockRefreshServerHierarchicalMemory.mockClear();
           mockHookSystemInit.mockClear();
-          mockGeminiClientSetTools.mockClear();
+          mockJiminyClientSetTools.mockClear();
           mockAgentRegistryReload.mockClear();
           mockSkillsReload.mockClear();
 
@@ -219,14 +219,14 @@ describe('SimpleExtensionLoader', () => {
             ).toHaveBeenCalledExactlyOnceWith(activeExtension);
             expect(mockRefreshServerHierarchicalMemory).toHaveBeenCalledOnce();
             expect(mockHookSystemInit).toHaveBeenCalledOnce();
-            expect(mockGeminiClientSetTools).toHaveBeenCalledOnce();
+            expect(mockJiminyClientSetTools).toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).toHaveBeenCalledOnce();
             expect(mockSkillsReload).toHaveBeenCalledOnce();
           } else {
             expect(mockMcpClientManager.stopExtension).not.toHaveBeenCalled();
             expect(mockRefreshServerHierarchicalMemory).not.toHaveBeenCalled();
             expect(mockHookSystemInit).not.toHaveBeenCalled();
-            expect(mockGeminiClientSetTools).not.toHaveBeenCalledOnce();
+            expect(mockJiminyClientSetTools).not.toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).not.toHaveBeenCalled();
             expect(mockSkillsReload).not.toHaveBeenCalled();
           }
@@ -273,11 +273,11 @@ describe('SimpleExtensionLoader', () => {
 
 // Adding these overrides allows us to access the protected members.
 class TestingSimpleExtensionLoader extends SimpleExtensionLoader {
-  override async startExtension(extension: GeminiCLIExtension): Promise<void> {
+  override async startExtension(extension: JiminyCLIExtension): Promise<void> {
     await super.startExtension(extension);
   }
 
-  override async stopExtension(extension: GeminiCLIExtension): Promise<void> {
+  override async stopExtension(extension: JiminyCLIExtension): Promise<void> {
     await super.stopExtension(extension);
   }
 }

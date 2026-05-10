@@ -3,8 +3,8 @@
   "compilerOptions": {
     "noEmit": true,
     "paths": {
-      "@google/gemini-cli-core": ["../packages/core/index.ts"],
-      "@google/gemini-cli": ["../packages/cli/index.ts"]
+      "@plaer1/jiminy-cli-core": ["../packages/core/index.ts"],
+      "@plaer1/jiminy-cli": ["../packages/cli/index.ts"]
     }
   },
   "include": ["**/*.ts"],

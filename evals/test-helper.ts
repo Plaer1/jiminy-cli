@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execSync } from 'node:child_process';
-import { TestRig } from '@google/gemini-cli-test-utils';
+import { TestRig } from '@plaer1/jiminy-cli-test-utils';
 import {
   createUnauthorizedToolError,
   parseAgentMarkdown,
@@ -18,9 +18,9 @@ import {
   SESSION_FILE_PREFIX,
   PREVIEW_GEMINI_FLASH_MODEL,
   getErrorMessage,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
-export * from '@google/gemini-cli-test-utils';
+export * from '@plaer1/jiminy-cli-test-utils';
 
 /**
  * The default model used for all evaluations.
@@ -124,10 +124,10 @@ export async function internalEvalTest(evalCase: EvalCase) {
           evalCase.sessionId ||
           `test-session-${crypto.randomUUID().slice(0, 8)}`;
 
-        // Temporarily set GEMINI_CLI_HOME so Storage writes to the same
+        // Temporarily set JIMINY_CLI_HOME so Storage writes to the same
         // directory the CLI subprocess will use (rig.homeDir).
-        const originalGeminiHome = process.env['GEMINI_CLI_HOME'];
-        process.env['GEMINI_CLI_HOME'] = rig.homeDir!;
+        const originalJiminyHome = process.env['JIMINY_CLI_HOME'];
+        process.env['JIMINY_CLI_HOME'] = rig.homeDir!;
         try {
           const storage = new Storage(fs.realpathSync(rig.testDir!));
           await storage.initialize();
@@ -155,11 +155,11 @@ export async function internalEvalTest(evalCase: EvalCase) {
           // Storage initialization may fail in some environments; log and continue.
           console.warn('Failed to write session history:', e);
         } finally {
-          // Restore original GEMINI_CLI_HOME.
-          if (originalGeminiHome === undefined) {
-            delete process.env['GEMINI_CLI_HOME'];
+          // Restore original JIMINY_CLI_HOME.
+          if (originalJiminyHome === undefined) {
+            delete process.env['JIMINY_CLI_HOME'];
           } else {
-            process.env['GEMINI_CLI_HOME'] = originalGeminiHome;
+            process.env['JIMINY_CLI_HOME'] = originalJiminyHome;
           }
         }
       }
@@ -311,7 +311,7 @@ export async function prepareWorkspace(
   if (Object.keys(acknowledgedAgents).length > 0) {
     const ackPath = path.join(
       homeDir,
-      '.gemini',
+      '.jiminy',
       'acknowledgments',
       'agents.json',
     );

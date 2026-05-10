@@ -22,7 +22,7 @@ import {
   getRealPath,
   type CustomTheme,
   IntegrityDataStatus,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 const mockHomedir = vi.hoisted(() => vi.fn(() => '/tmp/mock-home'));
 const mockIntegrityManager = vi.hoisted(() => ({
@@ -38,9 +38,9 @@ vi.mock('os', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: mockHomedir,
@@ -79,10 +79,10 @@ describe('ExtensionManager', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     tempHomeDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'gemini-cli-test-home-'),
+      path.join(os.tmpdir(), 'jiminy-cli-test-home-'),
     );
     tempWorkspaceDir = fs.mkdtempSync(
-      path.join(tempHomeDir, 'gemini-cli-test-workspace-'),
+      path.join(tempHomeDir, 'jiminy-cli-test-workspace-'),
     );
     mockHomedir.mockReturnValue(tempHomeDir);
     userExtensionsDir = path.join(tempHomeDir, EXTENSIONS_DIRECTORY_NAME);

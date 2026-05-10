@@ -41,7 +41,7 @@ export const DEFAULT_SELECTION_OPACITY = 0.2;
 export const DEFAULT_BORDER_OPACITY = 0.4;
 
 export const KEYBOARD_SHORTCUTS_URL =
-  'https://geminicli.com/docs/cli/keyboard-shortcuts/';
+  'https://jiminycli.com/docs/cli/keyboard-shortcuts/';
 export const LRU_BUFFER_PERF_CACHE_LIMIT = 20000;
 
 // Max lines to show for active shell output when not focused
@@ -61,7 +61,7 @@ export const DEFAULT_COMPRESSION_THRESHOLD = 0.5;
 
 /** Documentation URL for skills setup and configuration */
 export const SKILLS_DOCS_URL =
-  'https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md';
+  'https://github.com/Plaer1/jiminy-cli/blob/main/docs/cli/skills.md';
 
 /** Max lines to show for a compact tool subview (e.g. diff) */
 export const COMPACT_TOOL_SUBVIEW_MAX_LINES = 15;

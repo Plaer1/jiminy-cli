@@ -1,12 +1,12 @@
-# Gemini 3 Pro and Gemini 3 Flash on Gemini CLI
+# Gemini 3 Pro and Gemini 3 Flash on Jiminy CLI
 
-Learn about how you can use Gemini 3 Pro and Gemini 3 Flash on Gemini CLI.
+Learn about how you can use Gemini 3 Pro and Gemini 3 Flash on Jiminy CLI.
 
 <!-- prettier-ignore -->
 > [!NOTE]
 > Gemini 3.1 Pro Preview is rolling out. To determine whether you have
 > access to Gemini 3.1, use the `/model` command and select **Manual**. If you
-> have access, you will see `gemini-3.1-pro-preview`.
+> have access, you will see `jiminy-3.1-pro-preview`.
 >
 > If you have access to Gemini 3.1, it will be included in model routing when
 > you select **Auto (Gemini 3)**. You can also launch the Gemini 3.1 model
@@ -19,12 +19,12 @@ Learn about how you can use Gemini 3 Pro and Gemini 3 Flash on Gemini CLI.
 > Learn more about [models](../cli/model.md) and
 > [model routing](../cli/model-routing.md).
 
-## How to get started with Gemini 3 on Gemini CLI
+## How to get started with Gemini 3 on Jiminy CLI
 
-Get started by upgrading Gemini CLI to the latest version:
+Get started by upgrading Jiminy CLI to the latest version:
 
 ```bash
-npm install -g @google/gemini-cli@latest
+npm install -g @plaer1/jiminy-cli@latest
 ```
 
 If your version is 0.21.1 or later:
@@ -32,11 +32,11 @@ If your version is 0.21.1 or later:
 1. Run `/model`.
 2. Select **Auto (Gemini 3)**.
 
-For more information, see [Gemini CLI model selection](../cli/model.md).
+For more information, see [Jiminy CLI model selection](../cli/model.md).
 
 ### Usage limits and fallback
 
-Gemini CLI will tell you when you reach your Gemini 3 Pro daily usage limit.
+Jiminy CLI will tell you when you reach your Gemini 3 Pro daily usage limit.
 When you encounter that limit, you’ll be given the option to switch to Gemini
 2.5 Pro, upgrade for higher limits, or stop. You’ll also be told when your usage
 limit resets and Gemini 3 Pro can be used again.
@@ -45,7 +45,7 @@ limit resets and Gemini 3 Pro can be used again.
 > [!TIP]
 > Looking to upgrade for higher limits? To compare subscription
 > options and find the right quota for your needs, see our
-> [Plans page](https://geminicli.com/plans/).
+> [Plans page](https://jiminycli.com/plans/).
 
 Similarly, when you reach your daily usage limit for Gemini 2.5 Pro, you’ll see
 a message prompting fallback to Gemini 2.5 Flash.
@@ -53,7 +53,7 @@ a message prompting fallback to Gemini 2.5 Flash.
 ### Capacity errors
 
 There may be times when the Gemini 3 Pro model is overloaded. When that happens,
-Gemini CLI will ask you to decide whether you want to keep trying Gemini 3 Pro
+Jiminy CLI will ask you to decide whether you want to keep trying Gemini 3 Pro
 or fallback to Gemini 2.5 Pro.
 
 <!-- prettier-ignore -->
@@ -65,8 +65,8 @@ or fallback to Gemini 2.5 Pro.
 
 ### Model selection and routing types
 
-When using Gemini CLI, you may want to control how your requests are routed
-between models. By default, Gemini CLI uses **Auto** routing.
+When using Jiminy CLI, you may want to control how your requests are routed
+between models. By default, Jiminy CLI uses **Auto** routing.
 
 When using Gemini 3 Pro, you may want to use Auto routing or Pro routing to
 manage your usage limits:
@@ -76,16 +76,16 @@ manage your usage limits:
   Gemini 2.5 Flash. For complex prompts, if Gemini 3 Pro is enabled, it will use
   Gemini 3 Pro; otherwise, it will use Gemini 2.5 Pro.
 - **Pro routing:** If you want to ensure your task is processed by the most
-  capable model, use `/model` and select **Pro**. Gemini CLI will prioritize the
+  capable model, use `/model` and select **Pro**. Jiminy CLI will prioritize the
   most capable model available, including Gemini 3 Pro if it has been enabled.
 
 To learn more about selecting a model and routing, refer to
-[Gemini CLI Model Selection](../cli/model.md).
+[Jiminy CLI Model Selection](../cli/model.md).
 
-## How to enable Gemini 3 with Gemini CLI on Gemini Code Assist
+## How to enable Gemini 3 with Jiminy CLI on Gemini Code Assist
 
 If you're using Gemini Code Assist Standard or Gemini Code Assist Enterprise,
-enabling Gemini 3 Pro on Gemini CLI requires configuring your release channels.
+enabling Gemini 3 Pro on Jiminy CLI requires configuring your release channels.
 Using Gemini 3 Pro will require two steps: administrative enablement and user
 enablement.
 
@@ -97,7 +97,7 @@ To learn more about these settings, refer to
 An administrator with **Google Cloud Settings Admin** permissions must follow
 these directions:
 
-- Navigate to the Google Cloud Project you're using with Gemini CLI for Code
+- Navigate to the Google Cloud Project you're using with Jiminy CLI for Code
   Assist.
 - Go to **Admin for Gemini** > **Settings**.
 - Under **Release channels for Gemini Code Assist in local IDEs** select
@@ -109,17 +109,17 @@ these directions:
 Wait for two to three minutes after your administrator has enabled **Preview**,
 then:
 
-- Open Gemini CLI.
+- Open Jiminy CLI.
 - Use the `/settings` command.
 - Set **Preview Features** to `true`.
 
-Restart Gemini CLI and you should have access to Gemini 3.
+Restart Jiminy CLI and you should have access to Gemini 3.
 
 ## Next steps
 
 If you need help, we recommend searching for an existing
-[GitHub issue](https://github.com/google-gemini/gemini-cli/issues). If you
+[GitHub issue](https://github.com/Plaer1/jiminy-cli/issues). If you
 cannot find a GitHub issue that matches your concern, you can
-[create a new issue](https://github.com/google-gemini/gemini-cli/issues/new/choose).
+[create a new issue](https://github.com/Plaer1/jiminy-cli/issues/new/choose).
 For comments and feedback, consider opening a
-[GitHub discussion](https://github.com/google-gemini/gemini-cli/discussions).
+[GitHub discussion](https://github.com/Plaer1/jiminy-cli/discussions).

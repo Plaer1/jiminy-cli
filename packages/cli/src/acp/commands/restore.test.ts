@@ -12,14 +12,14 @@ import {
   getToolCallDataSchema,
   isNodeError,
   performRestore,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type { CommandContext } from './types.js';
 import type { Mock } from 'vitest';
 
 vi.mock('node:fs/promises');
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     getCheckpointInfoList: vi.fn(),

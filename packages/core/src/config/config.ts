@@ -43,8 +43,8 @@ import { WriteFileTool } from '../tools/write-file.js';
 import { WebFetchTool } from '../tools/web-fetch.js';
 import {
   MemoryTool,
-  setGeminiMdFilename,
-  getCurrentGeminiMdFilename,
+  setJiminyMdFilename,
+  getCurrentJiminyMdFilename,
 } from '../tools/memoryTool.js';
 import { WebSearchTool } from '../tools/web-search.js';
 import { AskUserTool } from '../tools/ask-user.js';
@@ -57,7 +57,7 @@ import {
   ListBackgroundProcessesTool,
   ReadBackgroundOutputTool,
 } from '../tools/shellBackgroundTools.js';
-import { GeminiClient } from '../core/client.js';
+import { JiminyClient } from '../core/client.js';
 import { BaseLlmClient } from '../core/baseLlmClient.js';
 import { LocalLiteRtLmClient } from '../core/localLiteRtLmClient.js';
 import type { HookDefinition, HookEventName } from '../hooks/types.js';
@@ -85,7 +85,7 @@ import {
   DEFAULT_GEMINI_MODEL_AUTO,
   isAutoModel,
   isPreviewModel,
-  isGemini2Model,
+  isJiminy2Model,
   PREVIEW_GEMINI_FLASH_MODEL,
   PREVIEW_GEMINI_MODEL,
   PREVIEW_GEMINI_MODEL_AUTO,
@@ -156,7 +156,7 @@ import {
 import { HookSystem } from '../hooks/index.js';
 import type {
   UserTierId,
-  GeminiUserTier,
+  JiminyUserTier,
   RetrieveUserQuotaResponse,
   AdminControlsSettings,
 } from '../code_assist/types.js';
@@ -168,6 +168,7 @@ import {
 } from '../code_assist/experiments/experiments.js';
 import { AgentRegistry } from '../agents/registry.js';
 import { AcknowledgedAgentsService } from '../agents/acknowledgedAgents.js';
+import { SudoPasswordService } from "../services/sudoPasswordService.js";
 import { setGlobalProxy, updateGlobalFetchTimeouts } from '../utils/fetch.js';
 import { ExperimentFlags } from '../code_assist/experiments/flagNames.js';
 import { debugLogger } from '../utils/debugLogger.js';
@@ -387,7 +388,7 @@ export interface BrowserAgentCustomConfig {
  * around on the config object though Core does not use this information
  * directly.
  */
-export interface GeminiCLIExtension {
+export interface JiminyCLIExtension {
   name: string;
   version: string;
   isActive: boolean;
@@ -497,7 +498,7 @@ export class MCPServerConfig {
     readonly description?: string,
     readonly includeTools?: string[],
     readonly excludeTools?: string[],
-    readonly extension?: GeminiCLIExtension,
+    readonly extension?: JiminyCLIExtension,
     // OAuth configuration
     readonly oauth?: MCPOAuthConfig,
     readonly authProviderType?: AuthProviderType,
@@ -609,8 +610,8 @@ export interface ConfigParameters {
   mcpServers?: Record<string, MCPServerConfig>;
   mcpEnablementCallbacks?: McpEnablementCallbacks;
   userMemory?: string | HierarchicalMemory;
-  geminiMdFileCount?: number;
-  geminiMdFilePaths?: string[];
+  jiminyMdFileCount?: number;
+  jiminyMdFilePaths?: string[];
   approvalMode?: ApprovalMode;
   showMemoryUsage?: boolean;
   contextFileName?: string | string[];
@@ -619,7 +620,7 @@ export interface ConfigParameters {
   usageStatisticsEnabled?: boolean;
   fileFiltering?: {
     respectGitIgnore?: boolean;
-    respectGeminiIgnore?: boolean;
+    respectJiminyIgnore?: boolean;
     enableFileWatcher?: boolean;
     enableRecursiveFileSearch?: boolean;
     enableFuzzySearch?: boolean;
@@ -737,6 +738,7 @@ export interface ConfigParameters {
     agents?: AgentSettings;
   }>;
   enableConseca?: boolean;
+  quietMode?: boolean;
   billing?: {
     overageStrategy?: OverageStrategy;
   };
@@ -775,6 +777,8 @@ export class Config implements McpContext, AgentLoopContext {
   private readonly question: string | undefined;
   private readonly worktreeSettings: WorktreeSettings | undefined;
   readonly enableConseca: boolean;
+  readonly quietMode: boolean;
+  private readonly _sudoPasswordService: import("../services/sudoPasswordService.js").SudoPasswordService;
 
   private readonly coreTools: string[] | undefined;
   private readonly mainAgentTools: string[] | undefined;
@@ -790,13 +794,13 @@ export class Config implements McpContext, AgentLoopContext {
   private mcpServers: Record<string, MCPServerConfig> | undefined;
   private readonly mcpEnablementCallbacks?: McpEnablementCallbacks;
   private userMemory: string | HierarchicalMemory;
-  private geminiMdFileCount: number;
-  private geminiMdFilePaths: string[];
+  private jiminyMdFileCount: number;
+  private jiminyMdFilePaths: string[];
   private readonly showMemoryUsage: boolean;
   private readonly accessibility: AccessibilitySettings;
   private readonly telemetrySettings: TelemetrySettings;
   private readonly usageStatisticsEnabled: boolean;
-  private _geminiClient!: GeminiClient;
+  private _jiminyClient!: JiminyClient;
   private _sandboxManager: SandboxManager;
   private readonly _sandboxPolicyManager: SandboxPolicyManager;
   private baseLlmClient!: BaseLlmClient;
@@ -805,7 +809,7 @@ export class Config implements McpContext, AgentLoopContext {
   private readonly modelAvailabilityService: ModelAvailabilityService;
   private readonly fileFiltering: {
     respectGitIgnore: boolean;
-    respectGeminiIgnore: boolean;
+    respectJiminyIgnore: boolean;
     enableFileWatcher: boolean;
     enableRecursiveFileSearch: boolean;
     enableFuzzySearch: boolean;
@@ -1066,8 +1070,8 @@ export class Config implements McpContext, AgentLoopContext {
     this.enableEnvironmentVariableRedaction =
       params.enableEnvironmentVariableRedaction ?? false;
     this.userMemory = params.userMemory ?? '';
-    this.geminiMdFileCount = params.geminiMdFileCount ?? 0;
-    this.geminiMdFilePaths = params.geminiMdFilePaths ?? [];
+    this.jiminyMdFileCount = params.jiminyMdFileCount ?? 0;
+    this.jiminyMdFilePaths = params.jiminyMdFilePaths ?? [];
     this.showMemoryUsage = params.showMemoryUsage ?? false;
     this.accessibility = params.accessibility ?? {};
     this.telemetrySettings = {
@@ -1087,9 +1091,9 @@ export class Config implements McpContext, AgentLoopContext {
       respectGitIgnore:
         params.fileFiltering?.respectGitIgnore ??
         DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
-      respectGeminiIgnore:
-        params.fileFiltering?.respectGeminiIgnore ??
-        DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+      respectJiminyIgnore:
+        params.fileFiltering?.respectJiminyIgnore ??
+        DEFAULT_FILE_FILTERING_OPTIONS.respectJiminyIgnore,
       enableFileWatcher:
         params.fileFiltering?.enableFileWatcher ??
         DEFAULT_FILE_FILTERING_OPTIONS.enableFileWatcher ??
@@ -1278,7 +1282,7 @@ export class Config implements McpContext, AgentLoopContext {
     this.truncateToolOutputThreshold =
       params.truncateToolOutputThreshold ??
       DEFAULT_TRUNCATE_TOOL_OUTPUT_THRESHOLD;
-    const isGemini2 = isGemini2Model(this.model);
+    const isGemini2 = isJiminy2Model(this.model);
     this.useWriteTodos =
       isGemini2 && !isPreviewModel(this.model, this) && !this.trackerEnabled
         ? (params.useWriteTodos ?? true)
@@ -1304,6 +1308,8 @@ export class Config implements McpContext, AgentLoopContext {
     this.fileExclusions = new FileExclusions(this);
     this.eventEmitter = params.eventEmitter;
     this.enableConseca = params.enableConseca ?? false;
+    this.quietMode = params.quietMode ?? false;
+    this._sudoPasswordService = new SudoPasswordService();
 
     // Initialize Safety Infrastructure
     const contextBuilder = new ContextBuilder(this);
@@ -1386,7 +1392,7 @@ export class Config implements McpContext, AgentLoopContext {
     this.vertexAiRouting = params.vertexAiRouting;
 
     if (params.contextFileName) {
-      setGeminiMdFilename(params.contextFileName);
+      setJiminyMdFilename(params.contextFileName);
     }
 
     if (this.telemetrySettings.enabled) {
@@ -1406,7 +1412,7 @@ export class Config implements McpContext, AgentLoopContext {
         );
       }
     }
-    this._geminiClient = new GeminiClient(this);
+    this._jiminyClient = new JiminyClient(this);
     this.a2aClientManager = new A2AClientManager(this);
     this.modelRouterService = new ModelRouterService(this);
   }
@@ -1529,7 +1535,7 @@ export class Config implements McpContext, AgentLoopContext {
       await this.memoryContextManager.refresh();
     }
 
-    await this._geminiClient.initialize();
+    await this._jiminyClient.initialize();
     this.initialized = true;
   }
 
@@ -1553,7 +1559,7 @@ export class Config implements McpContext, AgentLoopContext {
       authMethod !== AuthType.USE_GEMINI
     ) {
       // Restore the conversation history to the new client
-      this._geminiClient.stripThoughtsFromHistory();
+      this._jiminyClient.stripThoughtsFromHistory();
     }
 
     // Reset availability status when switching auth (e.g. from limited key to OAuth)
@@ -1668,7 +1674,7 @@ export class Config implements McpContext, AgentLoopContext {
     return this.contentGenerator?.userTierName;
   }
 
-  getUserPaidTier(): GeminiUserTier | undefined {
+  getUserPaidTier(): JiminyUserTier | undefined {
     return this.contentGenerator?.paidTier;
   }
 
@@ -1744,8 +1750,8 @@ export class Config implements McpContext, AgentLoopContext {
    * @deprecated Do not access directly on Config.
    * Use the injected AgentLoopContext instead.
    */
-  get geminiClient(): GeminiClient {
-    return this._geminiClient;
+  get jiminyClient(): JiminyClient {
+    return this._jiminyClient;
   }
 
   private async getSandboxForbiddenPaths(): Promise<string[]> {
@@ -1755,7 +1761,7 @@ export class Config implements McpContext, AgentLoopContext {
 
     this._sandboxForbiddenPaths = await this.getFileService().getIgnoredPaths({
       respectGitIgnore: false,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
     });
 
     return this._sandboxForbiddenPaths;
@@ -1780,6 +1786,14 @@ export class Config implements McpContext, AgentLoopContext {
 
   get sandboxPolicyManager() {
     return this._sandboxPolicyManager;
+  }
+
+  get sudoPasswordService(): SudoPasswordService {
+    return this._sudoPasswordService;
+  }
+
+  isQuietMode(): boolean {
+    return this.quietMode;
   }
 
   get sandboxManager(): SandboxManager {
@@ -2440,9 +2454,9 @@ export class Config implements McpContext, AgentLoopContext {
       );
       await refreshServerHierarchicalMemory(this);
     }
-    if (this._geminiClient?.isInitialized()) {
-      await this._geminiClient.setTools();
-      this._geminiClient.updateSystemInstruction();
+    if (this._jiminyClient?.isInitialized()) {
+      await this._jiminyClient.setTools();
+      this._jiminyClient.updateSystemInstruction();
     }
   }
 
@@ -2600,18 +2614,18 @@ export class Config implements McpContext, AgentLoopContext {
     if (this.experimentalJitContext && this.memoryContextManager) {
       return this.memoryContextManager.getLoadedPaths().size;
     }
-    return this.geminiMdFileCount;
+    return this.jiminyMdFileCount;
   }
 
   setGeminiMdFileCount(count: number): void {
-    this.geminiMdFileCount = count;
+    this.jiminyMdFileCount = count;
   }
 
   getGeminiMdFilePaths(): string[] {
     if (this.experimentalJitContext && this.memoryContextManager) {
       return Array.from(this.memoryContextManager.getLoadedPaths());
     }
-    return this.geminiMdFilePaths;
+    return this.jiminyMdFilePaths;
   }
 
   getWorkspacePoliciesDir(): string | undefined {
@@ -2619,7 +2633,7 @@ export class Config implements McpContext, AgentLoopContext {
   }
 
   setGeminiMdFilePaths(paths: string[]): void {
-    this.geminiMdFilePaths = paths;
+    this.jiminyMdFilePaths = paths;
   }
 
   getApprovalMode(): ApprovalMode {
@@ -2696,9 +2710,9 @@ export class Config implements McpContext, AgentLoopContext {
       (currentMode === ApprovalMode.YOLO || mode === ApprovalMode.YOLO);
 
     if (isPlanModeTransition || isYoloModeTransition) {
-      if (this._geminiClient?.isInitialized()) {
-        this._geminiClient.clearCurrentSequenceModel();
-        this._geminiClient.setTools().catch((err) => {
+      if (this._jiminyClient?.isInitialized()) {
+        this._jiminyClient.clearCurrentSequenceModel();
+        this._jiminyClient.setTools().catch((err) => {
           debugLogger.error('Failed to update tools', err);
         });
       }
@@ -2806,9 +2820,9 @@ export class Config implements McpContext, AgentLoopContext {
     return this.telemetrySettings.useCliAuth ?? false;
   }
 
-  /** @deprecated Use geminiClient getter */
-  getGeminiClient(): GeminiClient {
-    return this.geminiClient;
+  /** @deprecated Use jiminyClient getter */
+  getJiminyClient(): JiminyClient {
+    return this.jiminyClient;
   }
 
   /**
@@ -2816,9 +2830,9 @@ export class Config implements McpContext, AgentLoopContext {
    * Whenever the user memory (GEMINI.md files) is updated.
    */
   updateSystemInstructionIfInitialized(): void {
-    const geminiClient = this.geminiClient;
-    if (geminiClient?.isInitialized()) {
-      geminiClient.updateSystemInstruction();
+    const jiminyClient = this.jiminyClient;
+    if (jiminyClient?.isInitialized()) {
+      jiminyClient.updateSystemInstruction();
     }
   }
 
@@ -2846,8 +2860,8 @@ export class Config implements McpContext, AgentLoopContext {
     return this.fileFiltering.respectGitIgnore;
   }
 
-  getFileFilteringRespectGeminiIgnore(): boolean {
-    return this.fileFiltering.respectGeminiIgnore;
+  getFileFilteringRespectJiminyIgnore(): boolean {
+    return this.fileFiltering.respectJiminyIgnore;
   }
 
   getCustomIgnoreFilePaths(): string[] {
@@ -2857,7 +2871,7 @@ export class Config implements McpContext, AgentLoopContext {
   getFileFilteringOptions(): FileFilteringOptions {
     return {
       respectGitIgnore: this.fileFiltering.respectGitIgnore,
-      respectGeminiIgnore: this.fileFiltering.respectGeminiIgnore,
+      respectJiminyIgnore: this.fileFiltering.respectJiminyIgnore,
       enableFileWatcher: this.fileFiltering.enableFileWatcher,
       maxFileCount: this.fileFiltering.maxFileCount,
       searchTimeout: this.fileFiltering.searchTimeout,
@@ -2909,7 +2923,7 @@ export class Config implements McpContext, AgentLoopContext {
     if (!this.fileDiscoveryService) {
       this.fileDiscoveryService = new FileDiscoveryService(this.targetDir, {
         respectGitIgnore: this.fileFiltering.respectGitIgnore,
-        respectGeminiIgnore: this.fileFiltering.respectGeminiIgnore,
+        respectJiminyIgnore: this.fileFiltering.respectJiminyIgnore,
         customIgnoreFilePaths: this.fileFiltering.customIgnoreFilePaths,
       });
     }
@@ -2946,7 +2960,7 @@ export class Config implements McpContext, AgentLoopContext {
     return this.extensionManagement;
   }
 
-  getExtensions(): GeminiCLIExtension[] {
+  getExtensions(): JiminyCLIExtension[] {
     return this._extensionLoader.getExtensions();
   }
 
@@ -3084,7 +3098,7 @@ export class Config implements McpContext, AgentLoopContext {
     // allowlist the rest of `~/.gemini/`.
     const globalMemoryFilePath = path.join(
       Storage.getGlobalGeminiDir(),
-      getCurrentGeminiMdFilename(),
+      getCurrentJiminyMdFilename(),
     );
     const resolvedGlobalMemoryFilePath =
       resolveToRealPath(globalMemoryFilePath);
@@ -3261,9 +3275,9 @@ export class Config implements McpContext, AgentLoopContext {
    * Returns whether the custom tool model should be used.
    */
   async getUseCustomToolModel(): Promise<boolean> {
-    const useGemini3_1 = await this.getGemini31Launched();
+    const useJiminy3_1 = await this.getGemini31Launched();
     const authType = this.contentGeneratorConfig?.authType;
-    return useGemini3_1 && authType === AuthType.USE_GEMINI;
+    return useJiminy3_1 && authType === AuthType.USE_GEMINI;
   }
 
   /**
@@ -3272,9 +3286,9 @@ export class Config implements McpContext, AgentLoopContext {
    * Note: This method should only be called after startup, once experiments have been loaded.
    */
   getUseCustomToolModelSync(): boolean {
-    const useGemini3_1 = this.getGemini31LaunchedSync();
+    const useJiminy3_1 = this.getGemini31LaunchedSync();
     const authType = this.contentGeneratorConfig?.authType;
-    return useGemini3_1 && authType === AuthType.USE_GEMINI;
+    return useJiminy3_1 && authType === AuthType.USE_GEMINI;
   }
 
   private isGemini31LaunchedForAuthType(authType?: AuthType): boolean {
@@ -3875,13 +3889,13 @@ export class Config implements McpContext, AgentLoopContext {
 
   private onAgentsRefreshed = async () => {
     // Propagate updates to the active chat session
-    const client = this.geminiClient;
+    const client = this.jiminyClient;
     if (client?.isInitialized()) {
       await client.setTools();
       client.updateSystemInstruction();
     } else {
       debugLogger.debug(
-        '[Config] GeminiClient not initialized; skipping live prompt/tool refresh.',
+        '[Config] JiminyClient not initialized; skipping live prompt/tool refresh.',
       );
     }
   };
@@ -3893,7 +3907,7 @@ export class Config implements McpContext, AgentLoopContext {
     this.logCurrentModeDuration(this.getApprovalMode());
     coreEvents.off(CoreEvent.AgentsRefreshed, this.onAgentsRefreshed);
     this.agentRegistry?.dispose();
-    this._geminiClient?.dispose();
+    this._jiminyClient?.dispose();
     if (this.mcpClientManager) {
       await this.mcpClientManager.stop();
     }

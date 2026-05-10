@@ -13,7 +13,7 @@ import {
   getEditorCommand,
   isGuiEditor,
   isTerminalEditor,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 /**
  * Opens a file in an external editor and waits for it to close.

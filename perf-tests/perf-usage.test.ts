@@ -9,7 +9,7 @@ import {
   TestRig,
   PerfTestHarness,
   type PerfSnapshot,
-} from '@google/gemini-cli-test-utils';
+} from '@plaer1/jiminy-cli-test-utils';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -328,7 +328,7 @@ describe('CPU Performance Tests', () => {
         fakeResponsesPath: join(__dirname, 'perf.long-chat.responses'),
       });
 
-      const geminiDir = join(rig.homeDir!, '.gemini');
+      const geminiDir = join(rig.homeDir!, '.jiminy');
       const projectTempDir = join(geminiDir, 'tmp', identifier);
       const targetChatsDir = join(projectTempDir, 'chats');
 
@@ -460,7 +460,7 @@ describe('CPU Performance Tests', () => {
         'long-conversation-terminal-scrolling',
         async () => {
           // Enable terminalBuffer to intentionally test CLI scrolling logic
-          const settingsPath = join(rig.homeDir!, '.gemini', 'settings.json');
+          const settingsPath = join(rig.homeDir!, '.jiminy', 'settings.json');
           writeFileSync(
             settingsPath,
             JSON.stringify({
@@ -561,7 +561,7 @@ describe('CPU Performance Tests', () => {
         'long-conversation-alternate-scrolling',
         async () => {
           // Enable useAlternateBuffer to intentionally test CLI scrolling logic
-          const settingsPath = join(rig.homeDir!, '.gemini', 'settings.json');
+          const settingsPath = join(rig.homeDir!, '.jiminy', 'settings.json');
           writeFileSync(
             settingsPath,
             JSON.stringify({

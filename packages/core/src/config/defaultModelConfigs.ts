@@ -54,7 +54,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         },
       },
     },
-    // Because `gemini-2.5-pro` and related model configs are "user-facing"
+    // Because `jiminy-2.5-pro` and related model configs are "user-facing"
     // today, i.e. they could be passed via `--model`, we have to be careful to
     // ensure these model configs can be used interactively.
     // TODO(joshualitt): Introduce internal base configs for the various models,
@@ -378,7 +378,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       isPreview: true,
       isVisible: true,
       dialogDescription:
-        'Let Gemini CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
+        'Let Jiminy CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
       features: { thinking: true, multimodalToolUse: false },
     },
     'auto-gemini-2.5': {
@@ -387,7 +387,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       isPreview: false,
       isVisible: true,
       dialogDescription:
-        'Let Gemini CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
+        'Let Jiminy CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
       features: { thinking: false, multimodalToolUse: false },
     },
   },
@@ -429,11 +429,11 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       contexts: [
         { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
+          condition: { useJiminy3_1: true, useCustomTools: true },
           target: 'gemini-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
+          condition: { useJiminy3_1: true },
           target: 'gemini-3.1-pro-preview',
         },
       ],
@@ -443,11 +443,11 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       contexts: [
         { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
+          condition: { useJiminy3_1: true, useCustomTools: true },
           target: 'gemini-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
+          condition: { useJiminy3_1: true },
           target: 'gemini-3.1-pro-preview',
         },
       ],
@@ -457,11 +457,11 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       contexts: [
         { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
+          condition: { useJiminy3_1: true, useCustomTools: true },
           target: 'gemini-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
+          condition: { useJiminy3_1: true },
           target: 'gemini-3.1-pro-preview',
         },
       ],
@@ -471,11 +471,11 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       contexts: [
         { condition: { hasAccessToPreview: false }, target: 'gemini-2.5-pro' },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
+          condition: { useJiminy3_1: true, useCustomTools: true },
           target: 'gemini-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
+          condition: { useJiminy3_1: true },
           target: 'gemini-3.1-pro-preview',
         },
       ],
@@ -487,7 +487,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       default: 'gemini-3.1-flash-lite-preview',
       contexts: [
         {
-          condition: { useGemini3_1FlashLite: false },
+          condition: { useJiminy3_1FlashLite: false },
           target: 'gemini-2.5-flash-lite',
         },
       ],
@@ -505,7 +505,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       default: 'gemini-2.5-flash-lite',
       contexts: [
         {
-          condition: { useGemini3_1FlashLite: true },
+          condition: { useJiminy3_1FlashLite: true },
           target: 'gemini-3.1-flash-lite-preview',
         },
       ],
@@ -535,11 +535,11 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
           target: 'gemini-2.5-pro',
         },
         {
-          condition: { useGemini3_1: true, useCustomTools: true },
+          condition: { useJiminy3_1: true, useCustomTools: true },
           target: 'gemini-3.1-pro-preview-customtools',
         },
         {
-          condition: { useGemini3_1: true },
+          condition: { useJiminy3_1: true },
           target: 'gemini-3.1-pro-preview',
         },
       ],

@@ -26,13 +26,13 @@ import {
   ExtensionLoader,
   IntegrityDataStatus,
   makeFakeConfig,
-  type GeminiCLIExtension,
-} from '@google/gemini-cli-core';
+  type JiminyCLIExtension,
+} from '@plaer1/jiminy-cli-core';
 import { createMockSettings } from '../packages/cli/src/test-utils/settings.js';
 
 // A minimal mock ExtensionManager to bypass integrity checks
 class MockExtensionManager extends ExtensionLoader {
-  override getExtensions(): GeminiCLIExtension[] {
+  override getExtensions(): JiminyCLIExtension[] {
     return [];
   }
   setRequestConsent = (): void => {};
@@ -61,10 +61,10 @@ export class ComponentRig {
   ) {
     const uniqueId = randomUUID();
     this.testDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `gemini-component-rig-${uniqueId.slice(0, 8)}-`),
+      path.join(os.tmpdir(), `jiminy-component-rig-${uniqueId.slice(0, 8)}-`),
     );
     this.homeDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `gemini-component-home-${uniqueId.slice(0, 8)}-`),
+      path.join(os.tmpdir(), `jiminy-component-home-${uniqueId.slice(0, 8)}-`),
     );
     this.sessionId = `test-session-${uniqueId}`;
   }
@@ -95,15 +95,15 @@ export class ComponentRig {
     await this.config.initialize();
 
     // Refresh auth using USE_GEMINI to initialize the real BaseLlmClient.
-    // This must happen BEFORE stubbing GEMINI_CLI_HOME because OAuth credential
-    // lookup resolves through homedir() → GEMINI_CLI_HOME.
+    // This must happen BEFORE stubbing JIMINY_CLI_HOME because OAuth credential
+    // lookup resolves through homedir() → JIMINY_CLI_HOME.
     await this.config.refreshAuth(AuthType.USE_GEMINI);
 
     // Isolate storage paths (session files, skills, extraction state) by
-    // pointing GEMINI_CLI_HOME at a per-test temp directory.  Storage resolves
+    // pointing JIMINY_CLI_HOME at a per-test temp directory.  Storage resolves
     // global paths through `homedir()` which reads this env var.  This is set
     // after auth so credential lookup uses the real home directory.
-    vi.stubEnv('GEMINI_CLI_HOME', this.homeDir);
+    vi.stubEnv('JIMINY_CLI_HOME', this.homeDir);
   }
 
   async cleanup() {

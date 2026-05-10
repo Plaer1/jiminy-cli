@@ -15,9 +15,9 @@ import {
 } from 'vitest';
 import {
   MemoryTool,
-  setGeminiMdFilename,
-  getCurrentGeminiMdFilename,
-  getAllGeminiMdFilenames,
+  setJiminyMdFilename,
+  getCurrentJiminyMdFilename,
+  getAllJiminyMdFilenames,
   DEFAULT_CONTEXT_FILENAME,
   getProjectMemoryIndexFilePath,
   PROJECT_MEMORY_INDEX_FILENAME,
@@ -77,30 +77,30 @@ describe('MemoryTool', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    setGeminiMdFilename(DEFAULT_CONTEXT_FILENAME);
+    setJiminyMdFilename(DEFAULT_CONTEXT_FILENAME);
   });
 
-  describe('setGeminiMdFilename', () => {
+  describe('setJiminyMdFilename', () => {
     it('should update currentGeminiMdFilename when a valid new name is provided', () => {
       const newName = 'CUSTOM_CONTEXT.md';
-      setGeminiMdFilename(newName);
-      expect(getCurrentGeminiMdFilename()).toBe(newName);
+      setJiminyMdFilename(newName);
+      expect(getCurrentJiminyMdFilename()).toBe(newName);
     });
 
     it('should not update currentGeminiMdFilename if the new name is empty or whitespace', () => {
-      const initialName = getCurrentGeminiMdFilename();
-      setGeminiMdFilename('  ');
-      expect(getCurrentGeminiMdFilename()).toBe(initialName);
+      const initialName = getCurrentJiminyMdFilename();
+      setJiminyMdFilename('  ');
+      expect(getCurrentJiminyMdFilename()).toBe(initialName);
 
-      setGeminiMdFilename('');
-      expect(getCurrentGeminiMdFilename()).toBe(initialName);
+      setJiminyMdFilename('');
+      expect(getCurrentJiminyMdFilename()).toBe(initialName);
     });
 
     it('should handle an array of filenames', () => {
       const newNames = ['CUSTOM_CONTEXT.md', 'ANOTHER_CONTEXT.md'];
-      setGeminiMdFilename(newNames);
-      expect(getCurrentGeminiMdFilename()).toBe('CUSTOM_CONTEXT.md');
-      expect(getAllGeminiMdFilenames()).toEqual(newNames);
+      setJiminyMdFilename(newNames);
+      expect(getCurrentJiminyMdFilename()).toBe('CUSTOM_CONTEXT.md');
+      expect(getAllJiminyMdFilenames()).toEqual(newNames);
     });
   });
 
@@ -147,7 +147,7 @@ describe('MemoryTool', () => {
       const expectedFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
       const expectedContent = `${MEMORY_SECTION_HEADER}\n- the sky is blue\n`;
 
@@ -314,7 +314,7 @@ describe('MemoryTool', () => {
       const memoryFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -332,7 +332,7 @@ describe('MemoryTool', () => {
       const memoryFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -358,7 +358,7 @@ describe('MemoryTool', () => {
       const memoryFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -417,7 +417,7 @@ describe('MemoryTool', () => {
   describe('project-scope memory', () => {
     const mockProjectMemoryDir = path.join(
       '/mock',
-      '.gemini',
+      '.jiminy',
       'memory',
       'test-project',
     );
@@ -449,7 +449,7 @@ describe('MemoryTool', () => {
       const expectedFilePath = path.join(
         os.homedir(),
         GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        getCurrentJiminyMdFilename(),
       );
       expect(fs.writeFile).toHaveBeenCalledWith(
         expectedFilePath,

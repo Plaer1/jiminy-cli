@@ -9,7 +9,7 @@ import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
 import { GIT_COMMIT_INFO } from '../../generated/git-commit.js';
 import { useSettings } from '../contexts/SettingsContext.js';
-import { getDisplayString } from '@google/gemini-cli-core';
+import { getDisplayString } from '@plaer1/jiminy-cli-core';
 
 interface AboutBoxProps {
   cliVersion: string;
@@ -48,7 +48,7 @@ export const AboutBox: React.FC<AboutBoxProps> = ({
     >
       <Box marginBottom={1}>
         <Text bold color={theme.text.accent}>
-          About Gemini CLI
+          About Jiminy CLI
         </Text>
       </Box>
       <Box flexDirection="row">

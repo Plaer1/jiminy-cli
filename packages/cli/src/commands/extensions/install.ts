@@ -12,7 +12,7 @@ import {
   FolderTrustDiscoveryService,
   getRealPath,
   getErrorMessage,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   INSTALL_WARNING_MESSAGE,
   promptForConsentNonInteractive,
@@ -74,7 +74,7 @@ export async function handleInstall(args: InstallArgs) {
           '',
           `The extension source at "${absolutePath}" is not trusted.`,
           '',
-          'Trusting a folder allows Gemini CLI to load its local configurations,',
+          'Trusting a folder allows Jiminy CLI to load its local configurations,',
           'including custom commands, hooks, MCP servers, agent skills, and',
           'settings. These configurations could execute code on your behalf or',
           'change the behavior of the CLI.',

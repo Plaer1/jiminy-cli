@@ -8,7 +8,7 @@ import {
   CoreToolCallStatus,
   AuthType,
   EditTool,
-  GeminiClient,
+  JiminyClient,
   ToolConfirmationOutcome,
   ToolErrorType,
   ToolRegistry,
@@ -21,7 +21,7 @@ import {
 } from '../index.js';
 import { OutputFormat } from '../output/types.js';
 import { logs } from '@opentelemetry/api-logs';
-import type { Config, GeminiCLIExtension } from '../config/config.js';
+import type { Config, JiminyCLIExtension } from '../config/config.js';
 import { ApprovalMode } from '../policy/types.js';
 import {
   logApiError,
@@ -231,7 +231,7 @@ describe('loggers', () => {
         [
           { name: 'ext-one', id: 'id-one' },
           { name: 'ext-two', id: 'id-two' },
-        ] as GeminiCLIExtension[],
+        ] as JiminyCLIExtension[],
       getMcpClientManager: () => ({
         getMcpServers: () => ({
           'test-server': {
@@ -1283,7 +1283,7 @@ describe('loggers', () => {
     const cfg1 = {
       getSessionId: () => 'test-session-id',
       getTargetDir: () => 'target-dir',
-      getGeminiClient: () => mockGeminiClient,
+      getJiminyClient: () => mockJiminyClient,
     } as Config;
     const cfg2 = {
       getSessionId: () => 'test-session-id',
@@ -1321,11 +1321,11 @@ describe('loggers', () => {
     (cfg2 as unknown as { config: Config; promptId: string }).promptId =
       'test-prompt-id';
 
-    const mockGeminiClient = new GeminiClient(cfg2);
+    const mockJiminyClient = new JiminyClient(cfg2);
     const mockConfig = {
       getSessionId: () => 'test-session-id',
       getTargetDir: () => 'target-dir',
-      getGeminiClient: () => mockGeminiClient,
+      getJiminyClient: () => mockJiminyClient,
       getUsageStatisticsEnabled: () => true,
       getTelemetryEnabled: () => true,
       getTelemetryLogPromptsEnabled: () => true,

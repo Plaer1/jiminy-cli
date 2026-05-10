@@ -7,7 +7,7 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { Task } from './task.js';
 import {
-  GeminiEventType,
+  JiminyEventType,
   type Config,
   type ToolCallRequestInfo,
   type GitService,
@@ -15,16 +15,16 @@ import {
   type ToolCall,
   type ToolCallsUpdateMessage,
   MessageBusType,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { createMockConfig } from '../utils/testing_utils.js';
 import type { ExecutionEventBus, RequestContext } from '@a2a-js/sdk/server';
 import { CoderAgentEvent } from '../types.js';
 
 const mockProcessRestorableToolCalls = vi.hoisted(() => vi.fn());
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...original,
     processRestorableToolCalls: mockProcessRestorableToolCalls,
@@ -271,7 +271,7 @@ describe('Task', () => {
 
       const citationText = 'Source: example.com';
       const citationEvent = {
-        type: GeminiEventType.Citation,
+        type: JiminyEventType.Citation,
         value: citationText,
       };
 
@@ -314,7 +314,7 @@ describe('Task', () => {
       );
 
       const modelInfoEvent = {
-        type: GeminiEventType.ModelInfo,
+        type: JiminyEventType.ModelInfo,
         value: 'new-model-name',
       };
 
@@ -343,8 +343,8 @@ describe('Task', () => {
     });
 
     it.each([
-      { eventType: GeminiEventType.Retry, eventName: 'Retry' },
-      { eventType: GeminiEventType.InvalidStream, eventName: 'InvalidStream' },
+      { eventType: JiminyEventType.Retry, eventName: 'Retry' },
+      { eventType: JiminyEventType.InvalidStream, eventName: 'InvalidStream' },
     ])(
       'should handle $eventName event without triggering error handling',
       async ({ eventType }) => {
@@ -384,7 +384,7 @@ describe('Task', () => {
   describe('currentPromptId and promptCount', () => {
     it('should correctly initialize and update promptId and promptCount', async () => {
       const mockConfig = createMockConfig();
-      mockConfig.getGeminiClient = vi.fn().mockReturnValue({
+      mockConfig.getJiminyClient = vi.fn().mockReturnValue({
         sendMessageStream: vi.fn().mockReturnValue((async function* () {})()),
       });
       mockConfig.getSessionId = () => 'test-session-id';

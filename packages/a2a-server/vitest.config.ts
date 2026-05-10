@@ -39,7 +39,7 @@ export default defineConfig({
     },
     server: {
       deps: {
-        inline: [/@google\/gemini-cli-core/],
+        inline: [/@google\/jiminy-cli-core/],
       },
     },
   },

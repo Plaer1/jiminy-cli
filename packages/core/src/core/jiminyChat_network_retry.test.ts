@@ -7,7 +7,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ApiError, type GenerateContentResponse } from '@google/genai';
 import type { ContentGenerator } from '../core/contentGenerator.js';
-import { GeminiChat, StreamEventType, type StreamEvent } from './geminiChat.js';
+import { JiminyChat, StreamEventType, type StreamEvent } from './jiminyChat.js';
 import type { Config } from '../config/config.js';
 import { setSimulate429 } from '../utils/testUtils.js';
 import { HookSystem } from '../hooks/hookSystem.js';
@@ -63,9 +63,9 @@ vi.mock('../telemetry/loggers.js', () => ({
   logNetworkRetryAttempt: mockLogNetworkRetryAttempt,
 }));
 
-describe('GeminiChat Network Retries', () => {
+describe('JiminyChat Network Retries', () => {
   let mockContentGenerator: ContentGenerator;
-  let chat: GeminiChat;
+  let chat: JiminyChat;
   let mockConfig: Config;
 
   beforeEach(() => {
@@ -135,7 +135,7 @@ describe('GeminiChat Network Retries', () => {
       .mockReturnValue(new HookSystem(mockConfig));
 
     setSimulate429(false);
-    chat = new GeminiChat(mockConfig);
+    chat = new JiminyChat(mockConfig);
   });
 
   afterEach(() => {
@@ -333,7 +333,7 @@ describe('GeminiChat Network Retries', () => {
         })(),
       );
 
-    // Because retryWithBackoff is mocked and we just want to test GeminiChat's integration,
+    // Because retryWithBackoff is mocked and we just want to test JiminyChat's integration,
     // we need to actually execute the real retryWithBackoff logic for this test to see it work.
     // So let's restore the real retryWithBackoff for this test.
     const { retryWithBackoff } =

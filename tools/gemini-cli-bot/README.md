@@ -1,6 +1,6 @@
-# Gemini CLI Bot (Cognitive Repository)
+# Jiminy CLI Bot (Cognitive Repository)
 
-This directory contains the foundational architecture for the `gemini-cli-bot`,
+This directory contains the foundational architecture for the `jiminy-cli-bot`,
 transforming the repository into a proactive, evolutionary system.
 
 It implements a dual-layer approach to balance immediate responsiveness with
@@ -11,9 +11,9 @@ long-term strategic optimization.
 ### 1. System 1: The Pulse (Reflex Layer)
 
 - **Purpose**: High-frequency, deterministic maintenance.
-- **Frequency**: 30-minute cron (`.github/workflows/gemini-cli-bot-pulse.yml`).
+- **Frequency**: 30-minute cron (`.github/workflows/jiminy-cli-bot-pulse.yml`).
 - **Implementation**: Pure TypeScript/JavaScript scripts.
-- **Classification**: Optionally utilizes Gemini CLI for high-confidence
+- **Classification**: Optionally utilizes Jiminy CLI for high-confidence
   semantic classification (e.g., triage, labeling, sentiment) while preferring
   deterministic logic for equivalent tasks.
 - **Phases**:
@@ -25,8 +25,8 @@ long-term strategic optimization.
 
 - **Purpose**: Strategic investigation, policy refinement, and proactive
   self-optimization.
-- **Frequency**: 24-hour cron (`.github/workflows/gemini-cli-bot-brain.yml`).
-- **Implementation**: Agentic Gemini CLI phases.
+- **Frequency**: 24-hour cron (`.github/workflows/jiminy-cli-bot-brain.yml`).
+- **Implementation**: Agentic Jiminy CLI phases.
 - **Phases**:
   - **Metrics Collection**: Executes scripts in `metrics/scripts/` to track
     repository health (Open issues, PR latency, throughput, etc.).
@@ -59,11 +59,11 @@ To manually collect repository metrics locally, run the following command from
 the workspace root:
 
 ```bash
-npx tsx tools/gemini-cli-bot/metrics/index.ts
+npx tsx tools/jiminy-cli-bot/metrics/index.ts
 ```
 
 This will execute all scripts within `metrics/scripts/` and output the results
-to `tools/gemini-cli-bot/history/metrics-before.csv`.
+to `tools/jiminy-cli-bot/history/metrics-before.csv`.
 
 ### Development
 

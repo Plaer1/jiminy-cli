@@ -16,12 +16,12 @@ import {
   unlinkSync,
 } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { GEMINI_DIR } from '@google/gemini-cli-core';
+import { GEMINI_DIR } from '@plaer1/jiminy-cli-core';
 import * as pty from '@lydell/node-pty';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BUNDLE_PATH = join(__dirname, '..', 'bundle/gemini.js');
+const BUNDLE_PATH = join(__dirname, '..', 'bundle/jiminy.js');
 
 const extension = `{
   "name": "test-symlink-extension",
@@ -82,7 +82,7 @@ describe.skipIf(skipFlaky)(
           cwd: rig.testDir!,
           env: {
             ...process.env,
-            GEMINI_CLI_HOME: rig.homeDir!,
+            JIMINY_CLI_HOME: rig.homeDir!,
             GEMINI_CLI_INTEGRATION_TEST: 'true',
             GEMINI_PTY_INFO: 'node-pty',
           },

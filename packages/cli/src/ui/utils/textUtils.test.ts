@@ -8,7 +8,7 @@ import { describe, it, expect } from 'vitest';
 import type {
   SerializableConfirmationDetails,
   ToolEditConfirmationDetails,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   escapeAnsiCtrlCodes,
   stripUnsafeCharacters,

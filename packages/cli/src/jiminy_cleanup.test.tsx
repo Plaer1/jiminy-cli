@@ -5,17 +5,17 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { main } from './gemini.js';
+import { main } from './jiminy.js';
 import {
   debugLogger,
   SessionEndReason,
   type Config,
   type HookSystem,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     writeToStdout: vi.fn(),
@@ -135,7 +135,7 @@ vi.mock('./core/initializer.js', () => ({
     authError: null,
     themeError: null,
     shouldOpenAuthDialog: false,
-    geminiMdFileCount: 0,
+    jiminyMdFileCount: 0,
   }),
 }));
 
@@ -188,7 +188,7 @@ vi.mock('./utils/sessionCleanup.js', async (importOriginal) => {
   };
 });
 
-describe('gemini.tsx main function cleanup', () => {
+describe('jiminy.tsxx main function cleanup', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     process.env['GEMINI_CLI_NO_RELAUNCH'] = 'true';

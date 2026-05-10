@@ -62,10 +62,10 @@ import {
   READ_FILE_TOOL_NAME,
 } from '../tools/tool-names.js';
 import {
-  GeminiChat,
+  JiminyChat,
   StreamEventType,
   type StreamEvent,
-} from '../core/geminiChat.js';
+} from '../core/jiminyChat.js';
 import {
   type FunctionCall,
   type Part,
@@ -78,7 +78,7 @@ import {
 } from '@google/genai';
 import type { Config } from '../config/config.js';
 import type { AgentLoopContext } from '../config/agent-loop-context.js';
-import type { GeminiClient } from '../core/client.js';
+import type { JiminyClient } from '../core/client.js';
 import type { SandboxManager } from '../services/sandboxManager.js';
 import type { MessageBus } from '../confirmation-bus/message-bus.js';
 import { MockTool } from '../test-utils/mock-tool.js';
@@ -136,11 +136,11 @@ vi.mock('../context/chatCompressionService.js', () => ({
   })),
 }));
 
-vi.mock('../core/geminiChat.js', () => ({
+vi.mock('../core/jiminyChat.js', () => ({
   StreamEventType: {
     CHUNK: 'chunk',
   },
-  GeminiChat: vi.fn().mockImplementation(() => ({
+  JiminyChat: vi.fn().mockImplementation(() => ({
     initialize: vi.fn(),
     sendMessageStream: mockSendMessageStream,
     getHistory: vi.fn((_curated?: boolean) => [...mockChatHistory]),
@@ -221,7 +221,7 @@ const mockedCreateScopedWorkspaceContext = vi.mocked(
   createScopedWorkspaceContext,
 );
 
-const MockedGeminiChat = vi.mocked(GeminiChat);
+const MockedJiminyChat = vi.mocked(JiminyChat);
 const mockedGetDirectoryContextString = vi.mocked(getDirectoryContextString);
 const mockedPromptIdContext = vi.mocked(promptIdContext);
 const mockedLogAgentStart = vi.mocked(logAgentStart);
@@ -432,7 +432,7 @@ describe('LocalAgentExecutor', () => {
       info: { compressionStatus: CompressionStatus.NOOP },
     });
 
-    MockedGeminiChat.mockImplementation(
+    MockedJiminyChat.mockImplementation(
       () =>
         ({
           initialize: vi.fn(),
@@ -445,7 +445,7 @@ describe('LocalAgentExecutor', () => {
           getChatRecordingService: vi.fn().mockReturnValue({
             saveSummary: mockSaveSummary,
           }),
-        }) as unknown as GeminiChat,
+        }) as unknown as JiminyChat,
     );
 
     vi.useFakeTimers();
@@ -488,7 +488,7 @@ describe('LocalAgentExecutor', () => {
   describe('create (Initialization and Validation)', () => {
     it('should explicitly map execution context properties to prevent unintended propagation', async () => {
       const definition = createTestDefinition([LS_TOOL_NAME]);
-      const mockGeminiClient = {} as unknown as GeminiClient;
+      const mockJiminyClient = {} as unknown as JiminyClient;
       const mockSandboxManager = {} as unknown as SandboxManager;
       const extendedContext = {
         config: mockConfig,
@@ -497,7 +497,7 @@ describe('LocalAgentExecutor', () => {
         promptRegistry: mockConfig.promptRegistry,
         resourceRegistry: mockConfig.resourceRegistry,
         messageBus: mockConfig.messageBus,
-        geminiClient: mockGeminiClient,
+        jiminyClient: mockJiminyClient,
         sandboxManager: mockSandboxManager,
         unintendedProperty: 'should not be here',
       } as unknown as AgentLoopContext;
@@ -518,13 +518,13 @@ describe('LocalAgentExecutor', () => {
 
       await executor.run({ goal: 'test' }, signal);
 
-      const chatConstructorArgs = MockedGeminiChat.mock.calls[0];
+      const chatConstructorArgs = MockedJiminyChat.mock.calls[0];
       const executionContext = chatConstructorArgs[0];
 
       expect(executionContext).toBeDefined();
       expect(executionContext.config).toBe(extendedContext.config);
       expect(executionContext.promptId).toBeDefined();
-      expect(executionContext.geminiClient).toBe(extendedContext.geminiClient);
+      expect(executionContext.jiminyClient).toBe(extendedContext.jiminyClient);
       expect(executionContext.sandboxManager).toBe(
         extendedContext.sandboxManager,
       );
@@ -557,7 +557,7 @@ describe('LocalAgentExecutor', () => {
     it('should propagate parentSessionId from context when creating executionContext', async () => {
       const parentSessionId = 'top-level-session-id';
       const currentPromptId = 'subagent-a-id';
-      const mockGeminiClient = {} as unknown as GeminiClient;
+      const mockJiminyClient = {} as unknown as JiminyClient;
       const mockSandboxManager = {} as unknown as SandboxManager;
       const mockMessageBus = {
         derive: () => ({}),
@@ -575,7 +575,7 @@ describe('LocalAgentExecutor', () => {
         toolRegistry: mockToolRegistry,
         promptRegistry: {} as unknown as PromptRegistry,
         resourceRegistry: {} as unknown as ResourceRegistry,
-        geminiClient: mockGeminiClient,
+        jiminyClient: mockJiminyClient,
         sandboxManager: mockSandboxManager,
         messageBus: mockMessageBus,
       } as unknown as AgentLoopContext;
@@ -594,7 +594,7 @@ describe('LocalAgentExecutor', () => {
       await executor.run({ goal: 'test' }, signal);
 
       const chatConstructorArgs =
-        MockedGeminiChat.mock.calls[MockedGeminiChat.mock.calls.length - 1];
+        MockedJiminyChat.mock.calls[MockedJiminyChat.mock.calls.length - 1];
       const executionContext = chatConstructorArgs[0];
 
       expect(executionContext.parentSessionId).toBe(parentSessionId);
@@ -603,7 +603,7 @@ describe('LocalAgentExecutor', () => {
 
     it('should fall back to promptId if parentSessionId is missing (top-level subagent)', async () => {
       const rootSessionId = 'root-session-id';
-      const mockGeminiClient = {} as unknown as GeminiClient;
+      const mockJiminyClient = {} as unknown as JiminyClient;
       const mockSandboxManager = {} as unknown as SandboxManager;
       const mockMessageBus = {
         derive: () => ({}),
@@ -621,7 +621,7 @@ describe('LocalAgentExecutor', () => {
         toolRegistry: mockToolRegistry,
         promptRegistry: {} as unknown as PromptRegistry,
         resourceRegistry: {} as unknown as ResourceRegistry,
-        geminiClient: mockGeminiClient,
+        jiminyClient: mockJiminyClient,
         sandboxManager: mockSandboxManager,
         messageBus: mockMessageBus,
       } as unknown as AgentLoopContext;
@@ -640,7 +640,7 @@ describe('LocalAgentExecutor', () => {
       await executor.run({ goal: 'test' }, signal);
 
       const chatConstructorArgs =
-        MockedGeminiChat.mock.calls[MockedGeminiChat.mock.calls.length - 1];
+        MockedJiminyChat.mock.calls[MockedJiminyChat.mock.calls.length - 1];
       const executionContext = chatConstructorArgs[0];
 
       expect(executionContext.parentSessionId).toBe(rootSessionId);
@@ -735,7 +735,7 @@ describe('LocalAgentExecutor', () => {
       );
       await executor.run(inputs, signal);
 
-      const chatConstructorArgs = MockedGeminiChat.mock.calls[0];
+      const chatConstructorArgs = MockedJiminyChat.mock.calls[0];
       const startHistory = chatConstructorArgs[3]; // history is the 4th arg
 
       expect(startHistory).toBeDefined();
@@ -1085,7 +1085,7 @@ describe('LocalAgentExecutor', () => {
       expect(mockSendMessageStream).toHaveBeenCalledTimes(2);
       expect(mockScheduleAgentTools).toHaveBeenCalledTimes(2);
 
-      const systemInstruction = MockedGeminiChat.mock.calls[0][1];
+      const systemInstruction = MockedJiminyChat.mock.calls[0][1];
       expect(systemInstruction).toContain(
         `MUST call the \`${COMPLETE_TASK_TOOL_NAME}\` tool`,
       );
@@ -1098,7 +1098,7 @@ describe('LocalAgentExecutor', () => {
       const { modelConfigKey } = getMockMessageParams(0);
       expect(modelConfigKey.model).toBe(getModelConfigAlias(definition));
 
-      const chatConstructorArgs = MockedGeminiChat.mock.calls[0];
+      const chatConstructorArgs = MockedJiminyChat.mock.calls[0];
       // tools are the 3rd argument (index 2), passed as [{ functionDeclarations: [...] }]
       const passedToolsArg = chatConstructorArgs[2] as Tool[];
       const sentTools = passedToolsArg[0].functionDeclarations;
@@ -1255,7 +1255,7 @@ describe('LocalAgentExecutor', () => {
       const { modelConfigKey } = getMockMessageParams(0);
       expect(modelConfigKey.model).toBe(getModelConfigAlias(definition));
 
-      const chatConstructorArgs = MockedGeminiChat.mock.calls[0];
+      const chatConstructorArgs = MockedJiminyChat.mock.calls[0];
       const passedToolsArg = chatConstructorArgs[2] as Tool[];
       const sentTools = passedToolsArg[0].functionDeclarations;
       expect(sentTools).toBeDefined();
@@ -1827,10 +1827,10 @@ describe('LocalAgentExecutor', () => {
       expect(output.terminate_reason).toBe(AgentTerminateMode.GOAL);
     });
 
-    it('should throw and log if GeminiChat creation fails', async () => {
+    it('should throw and log if JiminyChat creation fails', async () => {
       const definition = createTestDefinition();
       const initError = new Error('Chat creation failed');
-      MockedGeminiChat.mockImplementationOnce(() => {
+      MockedJiminyChat.mockImplementationOnce(() => {
         throw initError;
       });
 
@@ -3569,10 +3569,10 @@ describe('LocalAgentExecutor', () => {
     };
 
     /**
-     * Helper to extract the functionDeclarations sent to GeminiChat.
+     * Helper to extract the functionDeclarations sent to JiminyChat.
      */
     const getSentFunctionDeclarations = () => {
-      const chatCtorArgs = MockedGeminiChat.mock.calls[0];
+      const chatCtorArgs = MockedJiminyChat.mock.calls[0];
       const toolsArg = chatCtorArgs[2] as Tool[];
       return toolsArg[0].functionDeclarations ?? [];
     };
@@ -3869,7 +3869,7 @@ describe('LocalAgentExecutor', () => {
 
         await executor.run({ goal: 'test' }, signal);
 
-        const chatConstructorArgs = MockedGeminiChat.mock.calls[0];
+        const chatConstructorArgs = MockedJiminyChat.mock.calls[0];
         const systemInstruction = chatConstructorArgs[1] as string;
 
         expect(systemInstruction).toContain(mockMemory);

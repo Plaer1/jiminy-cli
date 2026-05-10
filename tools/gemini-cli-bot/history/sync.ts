@@ -14,8 +14,8 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 
-const HISTORY_DIR = join(process.cwd(), 'tools', 'gemini-cli-bot', 'history');
-const WORKFLOW = 'gemini-cli-bot-brain.yml';
+const HISTORY_DIR = join(process.cwd(), 'tools', 'jiminy-cli-bot', 'history');
+const WORKFLOW = 'jiminy-cli-bot-brain.yml';
 
 function runCommand(cmd: string, args: string[]): string {
   try {
@@ -76,7 +76,7 @@ async function sync() {
     const tsFile = join(
       tempDir,
       'tools',
-      'gemini-cli-bot',
+      'jiminy-cli-bot',
       'history',
       'metrics-timeseries.csv',
     );
@@ -92,7 +92,7 @@ async function sync() {
     const mbFile = join(
       tempDir,
       'tools',
-      'gemini-cli-bot',
+      'jiminy-cli-bot',
       'history',
       'metrics-before.csv',
     );

@@ -30,7 +30,7 @@ import {
   type TelemetryTarget,
   type ConfigParameters,
   type ExtensionLoader,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 import { logger } from '../utils/logger.js';
 import type { Settings } from './settings.js';
@@ -108,7 +108,7 @@ export async function loadConfig(
     // Git-aware file filtering settings
     fileFiltering: {
       respectGitIgnore: settings.fileFiltering?.respectGitIgnore,
-      respectGeminiIgnore: settings.fileFiltering?.respectGeminiIgnore,
+      respectJiminyIgnore: settings.fileFiltering?.respectJiminyIgnore,
       enableRecursiveFileSearch:
         settings.fileFiltering?.enableRecursiveFileSearch,
       customIgnoreFilePaths: [
@@ -131,7 +131,7 @@ export async function loadConfig(
 
   const fileService = new FileDiscoveryService(workspaceDir, {
     respectGitIgnore: configParams?.fileFiltering?.respectGitIgnore,
-    respectGeminiIgnore: configParams?.fileFiltering?.respectGeminiIgnore,
+    respectJiminyIgnore: configParams?.fileFiltering?.respectJiminyIgnore,
     customIgnoreFilePaths: configParams?.fileFiltering?.customIgnoreFilePaths,
   });
   const { memoryContent, fileCount, filePaths } =
@@ -143,8 +143,8 @@ export async function loadConfig(
       folderTrust,
     );
   configParams.userMemory = memoryContent;
-  configParams.geminiMdFileCount = fileCount;
-  configParams.geminiMdFilePaths = filePaths;
+  configParams.jiminyMdFileCount = fileCount;
+  configParams.jiminyMdFilePaths = filePaths;
 
   // Set an initial config to use to get a code assist server.
   // This is needed to fetch admin controls.
@@ -233,7 +233,7 @@ export function loadEnvironment(): void {
 function findEnvFile(startDir: string): string | null {
   let currentDir = path.resolve(startDir);
   while (true) {
-    // prefer gemini-specific .env under GEMINI_DIR
+    // prefer jiminy-specific .env under GEMINI_DIR
     const geminiEnvPath = path.join(currentDir, GEMINI_DIR, '.env');
     if (fs.existsSync(geminiEnvPath)) {
       return geminiEnvPath;
@@ -244,10 +244,10 @@ function findEnvFile(startDir: string): string | null {
     }
     const parentDir = path.dirname(currentDir);
     if (parentDir === currentDir || !parentDir) {
-      // check .env under home as fallback, again preferring gemini-specific .env
-      const homeGeminiEnvPath = path.join(process.cwd(), GEMINI_DIR, '.env');
-      if (fs.existsSync(homeGeminiEnvPath)) {
-        return homeGeminiEnvPath;
+      // check .env under home as fallback, again preferring jiminy-specific .env
+      const homeJiminyEnvPath = path.join(process.cwd(), GEMINI_DIR, '.env');
+      if (fs.existsSync(homeJiminyEnvPath)) {
+        return homeJiminyEnvPath;
       }
       const homeEnvPath = path.join(homedir(), '.env');
       if (fs.existsSync(homeEnvPath)) {

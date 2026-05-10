@@ -9,8 +9,8 @@ import {
   debugLogger,
   getErrorMessage,
   type ExtensionInstallMetadata,
-  type GeminiCLIExtension,
-} from '@google/gemini-cli-core';
+  type JiminyCLIExtension,
+} from '@plaer1/jiminy-cli-core';
 import { ExtensionUpdateState } from '../../ui/state/extensions.js';
 import * as os from 'node:os';
 import * as https from 'node:https';
@@ -168,7 +168,7 @@ export async function fetchReleaseFromGithub(
 }
 
 export async function checkForExtensionUpdate(
-  extension: GeminiCLIExtension,
+  extension: JiminyCLIExtension,
   extensionManager: ExtensionManager,
 ): Promise<ExtensionUpdateState> {
   const installMetadata = extension.installMetadata;
@@ -521,7 +521,7 @@ export async function downloadFile(
   redirectCount: number = 0,
 ): Promise<void> {
   const headers: Record<string, string> = {
-    'User-agent': 'gemini-cli',
+    'User-agent': 'jiminy-cli',
     Accept: 'application/octet-stream',
     ...options?.headers,
   };

@@ -14,11 +14,11 @@ import {
   ToolCallDecision,
   getShellConfiguration,
   type WorktreeSettings,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     getShellConfiguration: vi.fn(),
@@ -150,7 +150,7 @@ describe('<SessionSummaryDisplay />', () => {
       const output = lastFrame();
 
       // Standard UUID characters should not be escaped/quoted by default for bash.
-      expect(output).toContain('gemini --resume 1234-abcd-5678-efgh');
+      expect(output).toContain('jiminy --resume 1234-abcd-5678-efgh');
       unmount();
     });
 
@@ -163,7 +163,7 @@ describe('<SessionSummaryDisplay />', () => {
       const output = lastFrame();
 
       // escapeShellArg (using shell-quote for bash) will wrap special characters in double quotes.
-      expect(output).toContain('gemini --resume "\'; rm -rf / #"');
+      expect(output).toContain('jiminy --resume "\'; rm -rf / #"');
       unmount();
     });
 

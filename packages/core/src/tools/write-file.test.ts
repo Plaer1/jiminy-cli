@@ -33,7 +33,7 @@ import path from 'node:path';
 import { isSubpath } from '../utils/paths.js';
 import fs from 'node:fs';
 import os from 'node:os';
-import { GeminiClient } from '../core/client.js';
+import { JiminyClient } from '../core/client.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
 import { ensureCorrectFileContent } from '../utils/editCorrector.js';
 import { StandardFileSystemService } from '../services/fileSystemService.js';
@@ -44,8 +44,8 @@ import {
   getMockMessageBusInstance,
 } from '../test-utils/mock-message-bus.js';
 
-const rootDir = path.resolve(os.tmpdir(), 'gemini-cli-test-root');
-const plansDir = path.resolve(os.tmpdir(), 'gemini-cli-test-plans');
+const rootDir = path.resolve(os.tmpdir(), 'jiminy-cli-test-root');
+const plansDir = path.resolve(os.tmpdir(), 'jiminy-cli-test-plans');
 
 // --- MOCKS ---
 vi.mock('../core/client.js');
@@ -55,7 +55,7 @@ vi.mock('../ide/ide-client.js', () => ({
     getInstance: vi.fn(),
   },
 }));
-let mockGeminiClientInstance: Mocked<GeminiClient>;
+let mockJiminyClientInstance: Mocked<JiminyClient>;
 let mockBaseLlmClientInstance: Mocked<BaseLlmClient>;
 let mockConfig: Config;
 const mockEnsureCorrectFileContent = vi.fn<typeof ensureCorrectFileContent>();
@@ -79,7 +79,7 @@ const mockConfigInternal = {
   getProjectRoot: () => rootDir,
   getApprovalMode: vi.fn(() => ApprovalMode.DEFAULT),
   setApprovalMode: vi.fn(),
-  getGeminiClient: vi.fn(), // Initialize as a plain mock function
+  getJiminyClient: vi.fn(), // Initialize as a plain mock function
   getBaseLlmClient: vi.fn(), // Initialize as a plain mock function
   getFileSystemService: () => fsService,
   getIdeMode: vi.fn(() => false),
@@ -174,11 +174,11 @@ describe('WriteFileTool', () => {
       },
     } as unknown as Config;
 
-    // Setup GeminiClient mock
-    mockGeminiClientInstance = new (vi.mocked(GeminiClient))(
+    // Setup JiminyClient mock
+    mockJiminyClientInstance = new (vi.mocked(JiminyClient))(
       mockConfig,
-    ) as Mocked<GeminiClient>;
-    vi.mocked(GeminiClient).mockImplementation(() => mockGeminiClientInstance);
+    ) as Mocked<JiminyClient>;
+    vi.mocked(JiminyClient).mockImplementation(() => mockJiminyClientInstance);
 
     // Setup BaseLlmClient mock
     mockBaseLlmClientInstance = {
@@ -190,8 +190,8 @@ describe('WriteFileTool', () => {
     );
 
     // Now that mock instances are initialized, set the mock implementations for config getters
-    mockConfigInternal.getGeminiClient.mockReturnValue(
-      mockGeminiClientInstance,
+    mockConfigInternal.getJiminyClient.mockReturnValue(
+      mockJiminyClientInstance,
     );
     mockConfigInternal.getBaseLlmClient.mockReturnValue(
       mockBaseLlmClientInstance,

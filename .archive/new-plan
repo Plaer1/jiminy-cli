@@ -1,0 +1,239 @@
+# `--quiet` Mode: Barebones Interactive CLI
+
+## Context
+
+The current CLI has two modes: a full Ink/React TUI (interactive) and a single-shot headless mode (non-interactive via `--prompt`). There's no middle ground — a simple interactive loop without the heavy TUI layer. The `--quiet` flag fills this gap: a readline-based REPL that sends input, buffers the full response, prints it, and waits for the next command. No spinners, no markdown rendering, no streaming output, no React.
+
+## Changes
+
+### 1. Add `--quiet` / `-q` flag to arg parsing
+
+**File:** `packages/cli/src/config/config.ts`
+
+- Add `quiet: boolean | undefined` to `CliArgs` interface (~line 76)
+- Add yargs option after the `--sandbox` option (~line 308):
+  ```typescript
+  .option('quiet', {
+    alias: 'q',
+    type: 'boolean',
+    description: 'Minimal interactive mode: no TUI, buffered output, defaults to yolo+sandbox',
+    default: false,
+  })
+  ```
+- Add validation in the `.check()` block: `--quiet` conflicts with `--prompt` (non-interactive) and `--output-format json/stream-json`
+
+### 2. Default to yolo + sandbox when `--quiet`
+
+**File:** `packages/cli/src/config/config.ts`
+
+In `loadCliConfig()`, before the approval mode resolution block (~line 653):
+
+- If `argv.quiet && !argv.approvalMode && !argv.yolo`, inject `argv.yolo = true` so the existing approval mode logic picks up YOLO
+- If `argv.quiet && argv.sandbox === undefined`, set `argv.sandbox = true` so sandbox config resolution enables it
+
+These are defaults — explicit `--approval-mode default` or `--sandbox false` overrides them.
+
+### 3. Route `--quiet` in main()
+
+**File:** `packages/cli/src/jiminy.tsx`
+
+Before the `if (config.isInteractive())` branch (~line 615), add:
+
+```typescript
+if (argv.quiet) {
+  // Auth check — quiet mode cannot run the interactive auth flow, so require
+  // the user to authenticate first via the normal `jiminy` command.
+  const authResult = await validateNonInteractiveAuth(...);
+  if (!authResult) {
+    process.stderr.write(
+      'Error: Not authenticated. Run `jiminy` (without --quiet) to log in first.\n'
+    );
+    process.exit(ExitCodes.AUTH_ERROR);
+  }
+
+  await config.initialize();
+  startupProfiler.flush(config);
+  await config.refreshAuth(authResult);
+
+  const { runQuietInteractive } = await import('./quietCli.js');
+  await runQuietInteractive({ config, settings });
+  await runExitCleanup();
+  process.exit(ExitCodes.SUCCESS);
+}
+```
+
+The `argv` variable is already in scope at this point (declared line ~259). The quiet path must go before the interactive check because `config.isInteractive()` will return true (no `--prompt` flag, TTY attached).
+
+**Auth requirement:** Quiet mode has no TUI to display OAuth flows or login prompts. If the user isn't authenticated, we fail fast with a clear error telling them to run the normal command first.
+
+### 4. New file: `packages/cli/src/quietCli.ts`
+
+~150 lines. Simplified version of `nonInteractiveCli.ts` with a readline loop.
+
+**Structure:**
+
+```
+import readline, AbortController, TextOutput, stripAnsi, Scheduler, etc.
+
+export async function runQuietInteractive({ config, settings }):
+  1. Create JiminyClient, Scheduler, TextOutput(process.stdout)
+  2. Create readline interface (input: stdin, output: stderr, prompt: "> ")
+  3. Loop:
+     a. rl.prompt() — print "> " to stderr, wait for input
+     b. On input line:
+        - Skip empty lines
+        - Handle @-commands (reuse processAtCommand if applicable)
+        - Send to model via jiminyClient.sendMessageStream()
+        - Inner agentic loop (same structure as nonInteractiveCli.ts lines 292-518):
+          - For Content events: append to responseText buffer (do NOT write to stdout)
+          - For ToolCallRequest events: collect, then scheduler.schedule()
+          - For Error/Stop/Blocked events: handle appropriately
+          - Loop continues if there are tool responses to feed back
+        - After model turn completes: write stripAnsi(responseText) to stdout via textOutput
+        - Ctrl+C during model execution: abort via AbortController, print "Cancelled\n" to stderr
+     c. Ctrl+D on empty line: exit cleanly
+```
+
+**Key differences from `nonInteractiveCli.ts`:**
+
+| Aspect | nonInteractiveCli | quietCli |
+|--------|-------------------|----------|
+| Execution | Single-shot, exits after response | Loops, waits for next input |
+| Streaming | Writes tokens to stdout as they arrive | Buffers all content, prints at end |
+| Formatters | Supports JSON, stream-JSON, text | Text only, always strips ANSI |
+| Complexity | ~530 lines with all format support | ~150 lines, minimal |
+
+**Ctrl+C handling:** During model execution, switch stdin to raw mode and listen for Ctrl+C to abort (same pattern as `nonInteractiveCli.ts` lines 112-159). After model completes or aborts, restore readline.
+
+**Session continuity:** The `jiminyClient` maintains conversation history internally across `sendMessageStream` calls — no extra work needed for multi-turn context.
+
+### 5. Sudo password prompt (plain text, no TUI)
+
+The existing `SudoPasswordService` (in `packages/core/src/services/sudoPasswordService.ts`) uses a `registerPasswordPrompter` callback that the UI layer provides. In the Ink TUI, this is the `SudoPasswordPrompt` React component. In quiet mode, we replace it with a plain readline-based flow.
+
+**On launch (`quietCli.ts` initialization):**
+
+Print a numbered menu to stderr:
+
+```
+Sudo password handling:
+  1) Enter password now (remembered for this session)
+  2) Ask me when needed
+  3) Don't use sudo this session
+
+Choice [1/2/3]:
+```
+
+- **Choice 1:** Immediately prompt for password (masked input via readline with `\x1b[8m` or bullet replacement), store via `sudoPasswordService.setCachedPassword()`. Register a no-op prompter (password already cached).
+- **Choice 2:** Register a `passwordPrompter` callback that, when called, uses the same plain readline masked input to ask for the password just-in-time (right before the tool that needs sudo runs). This is the "ask-later" equivalent of `SUDO_CHOICE_ASK_LATER`.
+- **Choice 3:** Call `sudoPasswordService.setSkipForSession()`. No prompter registered.
+
+**The prompter callback (for choice 2 or retry after failure):**
+
+```typescript
+sudoPasswordService.registerPasswordPrompter(async () => {
+  // Pause the readline interface so we can read raw input
+  rl.pause();
+  process.stderr.write('Sudo password required.\nPassword: ');
+  const password = await readMaskedInput(process.stdin, process.stderr);
+  process.stderr.write('\n');
+  rl.resume();
+  return password;
+});
+```
+
+`readMaskedInput` is a small helper (~20 lines) that reads stdin in raw mode, echoes `•` for each character to stderr, and returns the string on Enter. This reuses the same pattern the Ink component uses but without React.
+
+**Key points:**
+- The `SudoPasswordService` already handles retry logic (max 3 retries), failure detection, and cache clearing — we just provide the input mechanism
+- All sudo UI goes to stderr (stdout stays clean for model output)
+- The numbered menu format keeps it consistent with the "no fancy UX" philosophy
+
+### 6. Quiet mode system prompt modifications
+
+The existing prompt is verbose — it includes instructions for markdown formatting, sub-agent orchestration, topic narration, TUI-specific interaction details, and other things that don't apply in quiet mode. We need to strip those out and inject a terse-output directive.
+
+**Approach:** Add a `quietMode` flag to `SystemPromptOptions` and thread it through the prompt provider. This is the least invasive approach — each section renderer can check it and omit/simplify as needed.
+
+**File:** `packages/core/src/prompts/snippets.ts`
+
+Add to `SystemPromptOptions`:
+```typescript
+quietMode?: boolean;
+```
+
+**Sections to suppress entirely when `quietMode` is true:**
+- `subAgents` — no sub-agent orchestration in quiet mode (set to `undefined` in promptProvider)
+- `agentSkills` — no skill activation prompts (set to `undefined`)
+- `taskTracker` — no task tracking UI (set to `false`)
+- `hookContext` — no hook rendering (set to `undefined`)
+- `interactiveYoloMode` — replaced by the quiet mode section below
+- `planningWorkflow` — never in plan mode when quiet
+
+**Sections to simplify when `quietMode` is true:**
+- `renderPreamble` — use a new quiet preamble: `"You are Jiminy CLI in quiet mode. Be extremely concise. Output only what the user needs — no filler, no formatting, no markdown, no narration."`
+- `renderCoreMandates` — keep Security & Engineering Standards subsections, strip Context Efficiency (the model doesn't need to optimize its own context in a minimal REPL), strip the verbose tool-use examples, strip topic narration / explain-before-acting mandates
+- `renderOperationalGuidelines` — replace the Tone and Style section with a quieter version (see below), keep Security/Safety, simplify Tool Usage (no parallelism preamble needed), strip Interaction Details (no /help, /bug in quiet mode)
+
+**New quiet-mode tone directive** (replaces the Tone and Style subsection in operationalGuidelines):
+
+```
+## Output Rules
+- Give the shortest correct answer. No preamble, no postamble, no narration.
+- Do not explain what you are about to do or what you just did.
+- Do not use markdown formatting — output plain text only.
+- Do not repeat the user's question back to them.
+- If you must list items, use plain numbered lines (1. 2. 3.), not bullets or headers.
+- Only speak when you have something to say. Silence is fine after a successful action.
+```
+
+**File:** `packages/core/src/prompts/promptProvider.ts`
+
+In `getCoreSystemPrompt()`, after building the `options` object (~line 218), add:
+
+```typescript
+if (context.config.isQuietMode()) {
+  // Strip sections that don't apply in quiet mode
+  options.subAgents = undefined;
+  options.agentSkills = undefined;
+  options.taskTracker = false;
+  options.hookContext = undefined;
+  options.interactiveYoloMode = undefined;
+  // Flag for renderers to simplify their output
+  options.quietMode = true;
+}
+```
+
+**File:** `packages/core/src/config/config.ts`
+
+Add `isQuietMode(): boolean` method to the Config class (reads from a new config field set during `loadCliConfig`).
+
+### 7. Config: mark quiet mode as interactive
+
+The `Config.isInteractive()` check must return `true` for quiet mode (tools like `ask_user` need it, and session should persist). Since `--quiet` doesn't set `--prompt`, and TTY is attached, `isInteractive()` already returns `true` naturally. No change needed here — we just route before the check in `jiminy.tsx`.
+
+## Files to modify
+
+| File | Type | Description |
+|------|------|-------------|
+| `packages/cli/src/config/config.ts` | Edit | Add `quiet` to CliArgs, yargs option, validation, defaults |
+| `packages/cli/src/jiminy.tsx` | Edit | Add routing branch for quiet mode |
+| `packages/cli/src/quietCli.ts` | New | Quiet interactive REPL (~150 lines) |
+| `packages/core/src/prompts/snippets.ts` | Edit | Add `quietMode` to SystemPromptOptions, simplify renderers when quiet |
+| `packages/core/src/prompts/promptProvider.ts` | Edit | Strip/suppress sections when `config.isQuietMode()` |
+| `packages/core/src/config/config.ts` | Edit | Add `isQuietMode()` method to Config |
+
+## Verification
+
+1. `jiminy --quiet` (unauthenticated) — should error with "Run `jiminy` to log in first"
+2. `jiminy --quiet` (authenticated) — should show `> ` prompt, accept input, print buffered response, loop
+2. `jiminy --quiet` — confirm it enters sandbox (check for sandbox env var)
+3. `jiminy --quiet --approval-mode default` — should override yolo default
+4. `jiminy --quiet --prompt "hello"` — should error (conflicting flags)
+5. Ctrl+C during response — should cancel and return to prompt
+6. Ctrl+D on empty prompt — should exit cleanly
+7. Multi-turn conversation — verify model remembers prior context
+8. Tool execution — verify tools run automatically (yolo) and output appears correctly
+9. Sudo prompt on launch — selecting 1 should ask for password immediately, then auto-feed it to sudo commands
+10. Sudo prompt on launch — selecting 2 should defer, then ask for password just-in-time when a sudo tool runs
+11. Sudo prompt on launch — selecting 3 should skip sudo entirely for the session

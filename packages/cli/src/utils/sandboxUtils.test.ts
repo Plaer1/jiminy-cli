@@ -19,12 +19,12 @@ import {
 vi.mock('node:os');
 vi.mock('node:fs');
 vi.mock('node:fs/promises');
-vi.mock('@google/gemini-cli-core', () => ({
+vi.mock('@plaer1/jiminy-cli-core', () => ({
   debugLogger: {
     log: vi.fn(),
     warn: vi.fn(),
   },
-  GEMINI_DIR: '.gemini',
+  GEMINI_DIR: '.jiminy',
 }));
 
 describe('sandboxUtils', () => {

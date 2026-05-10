@@ -9,9 +9,9 @@
  * scheduler loop, adapted to the merged AgentProtocol / AgentSession surface.
  */
 
-import { GeminiEventType } from '../core/turn.js';
+import { JiminyEventType } from '../core/turn.js';
 import type { Part } from '@google/genai';
-import type { GeminiClient } from '../core/client.js';
+import type { JiminyClient } from '../core/client.js';
 import type { Config } from '../config/config.js';
 import type { ToolCallRequestInfo } from '../scheduler/types.js';
 import { Scheduler } from '../scheduler/scheduler.js';
@@ -47,7 +47,7 @@ function isAbortLikeError(err: unknown): boolean {
 
 export interface LegacyAgentSessionDeps {
   config: Config;
-  client?: GeminiClient;
+  client?: JiminyClient;
   scheduler?: Scheduler;
   promptId?: string;
   streamId?: string;
@@ -65,7 +65,7 @@ export class LegacyAgentProtocol implements AgentProtocol {
   private _abortController = new AbortController();
   private _nextStreamIdOverride?: string;
 
-  private readonly _client: GeminiClient;
+  private readonly _client: JiminyClient;
   private readonly _scheduler: Scheduler;
   private readonly _config: Config;
   private readonly _promptId: string;
@@ -74,7 +74,7 @@ export class LegacyAgentProtocol implements AgentProtocol {
     this._translationState = createTranslationState(deps.streamId);
     this._nextStreamIdOverride = deps.streamId;
     this._config = deps.config;
-    this._client = deps.client ?? deps.config.getGeminiClient();
+    this._client = deps.client ?? deps.config.getJiminyClient();
     this._promptId = deps.promptId ?? deps.config.promptId ?? '';
     if (deps.scheduler) {
       this._scheduler = deps.scheduler;
@@ -207,27 +207,27 @@ export class LegacyAgentProtocol implements AgentProtocol {
           return;
         }
 
-        if (event.type === GeminiEventType.ToolCallRequest) {
+        if (event.type === JiminyEventType.ToolCallRequest) {
           toolCallRequests.push(event.value);
         }
 
         this._emit(translateEvent(event, this._translationState));
 
         switch (event.type) {
-          case GeminiEventType.Error:
-          case GeminiEventType.InvalidStream:
-          case GeminiEventType.ContextWindowWillOverflow:
+          case JiminyEventType.Error:
+          case JiminyEventType.InvalidStream:
+          case JiminyEventType.ContextWindowWillOverflow:
             this._finishStream('failed');
             return;
-          case GeminiEventType.Finished:
+          case JiminyEventType.Finished:
             if (toolCallRequests.length === 0) {
               this._finishStream(mapFinishReason(event.value.reason));
               return;
             }
             break;
-          case GeminiEventType.AgentExecutionStopped:
-          case GeminiEventType.UserCancelled:
-          case GeminiEventType.MaxSessionTurns:
+          case JiminyEventType.AgentExecutionStopped:
+          case JiminyEventType.UserCancelled:
+          case JiminyEventType.MaxSessionTurns:
             this._clearActiveStream();
             return;
           default:

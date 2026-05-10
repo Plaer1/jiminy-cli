@@ -32,8 +32,8 @@ describe('mcp-resources-integration', () => {
     });
 
     // Workaround for ProjectRegistry save issue
-    const userGeminiDir = join(rig.homeDir!, '.gemini');
-    fs.writeFileSync(join(userGeminiDir, 'projects.json'), '{"projects":{}}');
+    const userJiminyDir = join(rig.homeDir!, '.jiminy');
+    fs.writeFileSync(join(userJiminyDir, 'projects.json'), '{"projects":{}}');
 
     // Add a dummy server to get setup done
     rig.addTestMcpServer('resource-server', {
@@ -101,8 +101,8 @@ await server.connect(transport);
     });
 
     // Workaround for ProjectRegistry save issue
-    const userGeminiDir = join(rig.homeDir!, '.gemini');
-    fs.writeFileSync(join(userGeminiDir, 'projects.json'), '{"projects":{}}');
+    const userJiminyDir = join(rig.homeDir!, '.jiminy');
+    fs.writeFileSync(join(userJiminyDir, 'projects.json'), '{"projects":{}}');
 
     // Add a dummy server to get setup done
     rig.addTestMcpServer('resource-server', {

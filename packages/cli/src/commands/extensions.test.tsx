@@ -30,8 +30,8 @@ vi.mock('./extensions/validate.js', () => ({
   validateCommand: { command: 'validate' },
 }));
 
-// Mock gemini.js
-vi.mock('../gemini.js', () => ({
+// Mock jiminy.js
+vi.mock('../jiminy.js', () => ({
   initializeOutputListenersAndFlush: vi.fn(),
 }));
 
@@ -39,7 +39,7 @@ describe('extensionsCommand', () => {
   it('should have correct command and aliases', () => {
     expect(extensionsCommand.command).toBe('extensions <command>');
     expect(extensionsCommand.aliases).toEqual(['extension']);
-    expect(extensionsCommand.describe).toBe('Manage Gemini CLI extensions.');
+    expect(extensionsCommand.describe).toBe('Manage Jiminy CLI extensions.');
   });
 
   it('should register all subcommands in builder', () => {

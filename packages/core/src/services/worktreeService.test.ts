@@ -10,7 +10,7 @@ import * as fs from 'node:fs/promises';
 import {
   getProjectRootForWorktree,
   createWorktree,
-  isGeminiWorktree,
+  isJiminyWorktree,
   hasWorktreeChanges,
   cleanupWorktree,
   getWorktreePath,
@@ -33,7 +33,7 @@ describe('worktree utilities', () => {
   const worktreeName = 'test-feature';
   const expectedPath = path.join(
     projectRoot,
-    '.gemini',
+    '.jiminy',
     'worktrees',
     worktreeName,
   );
@@ -107,20 +107,20 @@ describe('worktree utilities', () => {
     });
   });
 
-  describe('isGeminiWorktree', () => {
+  describe('isJiminyWorktree', () => {
     it('should return true for a valid gemini worktree path', () => {
-      expect(isGeminiWorktree(expectedPath, projectRoot)).toBe(true);
+      expect(isJiminyWorktree(expectedPath, projectRoot)).toBe(true);
       expect(
-        isGeminiWorktree(path.join(expectedPath, 'src'), projectRoot),
+        isJiminyWorktree(path.join(expectedPath, 'src'), projectRoot),
       ).toBe(true);
     });
 
     it('should return false for a path outside gemini worktrees', () => {
-      expect(isGeminiWorktree(path.join(projectRoot, 'src'), projectRoot)).toBe(
+      expect(isJiminyWorktree(path.join(projectRoot, 'src'), projectRoot)).toBe(
         false,
       );
       expect(
-        isGeminiWorktree(path.resolve('/some/other/path'), projectRoot),
+        isJiminyWorktree(path.resolve('/some/other/path'), projectRoot),
       ).toBe(false);
     });
   });
@@ -269,7 +269,7 @@ describe('WorktreeService', () => {
   describe('maybeCleanup', () => {
     const info = {
       name: 'feature-x',
-      path: path.join(projectRoot, '.gemini', 'worktrees', 'feature-x'),
+      path: path.join(projectRoot, '.jiminy', 'worktrees', 'feature-x'),
       baseSha: 'base-sha',
     };
 

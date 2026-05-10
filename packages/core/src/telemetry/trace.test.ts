@@ -15,7 +15,7 @@ import {
   GEN_AI_INPUT_MESSAGES,
   GEN_AI_OPERATION_NAME,
   GEN_AI_OUTPUT_MESSAGES,
-  GeminiCliOperation,
+  JiminyCliOperation,
   SERVICE_DESCRIPTION,
   SERVICE_NAME,
 } from './constants.js';
@@ -116,7 +116,7 @@ describe('runInDevTraceSpan', () => {
 
     const result = await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },
@@ -126,7 +126,7 @@ describe('runInDevTraceSpan', () => {
     expect(result).toBe('result');
     expect(trace.getTracer).toHaveBeenCalled();
     expect(mockTracer.startActiveSpan).toHaveBeenCalledWith(
-      GeminiCliOperation.LLMCall,
+      JiminyCliOperation.LLMCall,
       {
         attributes: {
           [GEN_AI_CONVERSATION_ID]: 'test-session-id',
@@ -139,13 +139,13 @@ describe('runInDevTraceSpan', () => {
   it('should set default attributes on the span metadata', async () => {
     await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },
       async ({ metadata }) => {
         expect(metadata.attributes[GEN_AI_OPERATION_NAME]).toBe(
-          GeminiCliOperation.LLMCall,
+          JiminyCliOperation.LLMCall,
         );
         expect(metadata.attributes[GEN_AI_AGENT_NAME]).toBe(SERVICE_NAME);
         expect(metadata.attributes[GEN_AI_AGENT_DESCRIPTION]).toBe(
@@ -161,7 +161,7 @@ describe('runInDevTraceSpan', () => {
   it('should set span attributes from metadata on completion', async () => {
     await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },
@@ -192,7 +192,7 @@ describe('runInDevTraceSpan', () => {
     await expect(
       runInDevTraceSpan(
         {
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
           sessionId: 'test-session-id',
           tracesEnabled: true,
         },
@@ -218,7 +218,7 @@ describe('runInDevTraceSpan', () => {
 
     const resultStream = await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },
@@ -244,7 +244,7 @@ describe('runInDevTraceSpan', () => {
 
     const resultStream = await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },
@@ -262,7 +262,7 @@ describe('runInDevTraceSpan', () => {
 
     const resultStream = await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },
@@ -292,7 +292,7 @@ describe('runInDevTraceSpan', () => {
 
     const resultStream = await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },
@@ -315,7 +315,7 @@ describe('runInDevTraceSpan', () => {
 
     await runInDevTraceSpan(
       {
-        operation: GeminiCliOperation.LLMCall,
+        operation: JiminyCliOperation.LLMCall,
         sessionId: 'test-session-id',
         tracesEnabled: true,
       },

@@ -10,7 +10,7 @@ import path from 'node:path';
 import {
   loadConversationRecord,
   SESSION_FILE_PREFIX,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   evalTest,
   assertModelHasOutput,
@@ -32,7 +32,7 @@ function findDir(base: string, name: string): string | null {
 }
 
 async function loadLatestSessionRecord(homeDir: string, sessionId: string) {
-  const chatsDir = findDir(path.join(homeDir, '.gemini'), 'chats');
+  const chatsDir = findDir(path.join(homeDir, '.jiminy'), 'chats');
   if (!chatsDir) {
     throw new Error('Could not find chats directory for eval session logs');
   }

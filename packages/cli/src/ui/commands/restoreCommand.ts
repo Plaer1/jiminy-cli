@@ -14,7 +14,7 @@ import {
   getTruncatedCheckpointNames,
   performRestore,
   type ToolCallData,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   type CommandContext,
   type SlashCommand,
@@ -117,7 +117,7 @@ async function restoreAction(
       } else if (action.type === 'load_history' && loadHistory) {
         loadHistory(action.history);
         if (action.clientHistory) {
-          agentContext!.geminiClient?.setHistory(action.clientHistory);
+          agentContext!.jiminyClient?.setHistory(action.clientHistory);
         }
       }
     }

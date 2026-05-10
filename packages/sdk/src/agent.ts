@@ -11,24 +11,24 @@ import {
   type ResumedSessionData,
   type ConversationRecord,
   loadConversationRecord,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
-import { GeminiCliSession } from './session.js';
-import type { GeminiCliAgentOptions } from './types.js';
+import { JiminyCliSession } from './session.js';
+import type { JiminyCliAgentOptions } from './types.js';
 
-export class GeminiCliAgent {
-  private options: GeminiCliAgentOptions;
+export class JiminyCliAgent {
+  private options: JiminyCliAgentOptions;
 
-  constructor(options: GeminiCliAgentOptions) {
+  constructor(options: JiminyCliAgentOptions) {
     this.options = options;
   }
 
-  session(options?: { sessionId?: string }): GeminiCliSession {
+  session(options?: { sessionId?: string }): JiminyCliSession {
     const sessionId = options?.sessionId || createSessionId();
-    return new GeminiCliSession(this.options, sessionId, this);
+    return new JiminyCliSession(this.options, sessionId, this);
   }
 
-  async resumeSession(sessionId: string): Promise<GeminiCliSession> {
+  async resumeSession(sessionId: string): Promise<JiminyCliSession> {
     const cwd = this.options.cwd || process.cwd();
     const storage = new Storage(cwd);
     await storage.initialize();
@@ -77,7 +77,7 @@ export class GeminiCliAgent {
       filePath,
     };
 
-    return new GeminiCliSession(
+    return new JiminyCliSession(
       this.options,
       conversation.sessionId,
       this,

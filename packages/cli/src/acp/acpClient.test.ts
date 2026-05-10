@@ -22,7 +22,7 @@ import {
   ToolConfirmationOutcome,
   StreamEventType,
   ReadManyFilesTool,
-  type GeminiChat,
+  type JiminyChat,
   type Config,
   type MessageBus,
   LlmRole,
@@ -30,7 +30,7 @@ import {
   type ModelRouterService,
   processSingleFileContent,
   InvalidStreamError,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   SettingScope,
   type LoadedSettings,
@@ -39,7 +39,7 @@ import {
 import { loadCliConfig, type CliArgs } from '../config/config.js';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
-import { ApprovalMode } from '@google/gemini-cli-core/src/policy/types.js';
+import { ApprovalMode } from '@plaer1/jiminy-cli-core/src/policy/types.js';
 
 const startMemoryServiceMock = vi.hoisted(() => vi.fn());
 
@@ -96,9 +96,9 @@ vi.mock('../ui/commands/initCommand.js', () => ({
   },
 }));
 vi.mock(
-  '@google/gemini-cli-core',
+  '@plaer1/jiminy-cli-core',
   async (
-    importOriginal: () => Promise<typeof import('@google/gemini-cli-core')>,
+    importOriginal: () => Promise<typeof import('@plaer1/jiminy-cli-core')>,
   ) => {
     const actual = await importOriginal();
     return {
@@ -163,7 +163,7 @@ describe('GeminiAgent', () => {
       isAutoMemoryEnabled: vi.fn().mockReturnValue(false),
       getActiveModel: vi.fn().mockReturnValue('gemini-pro'),
       getModel: vi.fn().mockReturnValue('gemini-pro'),
-      getGeminiClient: vi.fn().mockReturnValue({
+      getJiminyClient: vi.fn().mockReturnValue({
         startChat: vi.fn().mockResolvedValue({}),
       }),
       getMessageBus: vi.fn().mockReturnValue({
@@ -346,7 +346,7 @@ describe('GeminiAgent', () => {
     expect(response.sessionId).toBe('test-session-id');
     expect(loadCliConfig).toHaveBeenCalled();
     expect(mockConfig.initialize).toHaveBeenCalled();
-    expect(mockConfig.getGeminiClient).toHaveBeenCalled();
+    expect(mockConfig.getJiminyClient).toHaveBeenCalled();
 
     // Verify deferred call
     await vi.runAllTimersAsync();
@@ -502,7 +502,7 @@ describe('GeminiAgent', () => {
     });
   });
 
-  it('should fail session creation if Gemini API key is missing', async () => {
+  it('should fail session creation if Jiminy API key is missing', async () => {
     (loadSettings as unknown as Mock).mockImplementation(() => ({
       merged: {
         security: { auth: { selectedType: AuthType.USE_GEMINI } },
@@ -520,7 +520,7 @@ describe('GeminiAgent', () => {
         mcpServers: [],
       }),
     ).rejects.toMatchObject({
-      message: 'Gemini API key is missing or not configured.',
+      message: 'Jiminy API key is missing or not configured.',
     });
   });
 
@@ -678,7 +678,7 @@ describe('GeminiAgent', () => {
 });
 
 describe('Session', () => {
-  let mockChat: Mocked<GeminiChat>;
+  let mockChat: Mocked<JiminyChat>;
   let mockConfig: Mocked<Config>;
   let mockConnection: Mocked<acp.AgentSideConnection>;
   let session: Session;
@@ -692,7 +692,7 @@ describe('Session', () => {
       addHistory: vi.fn(),
       recordCompletedToolCalls: vi.fn(),
       getHistory: vi.fn().mockReturnValue([]),
-    } as unknown as Mocked<GeminiChat>;
+    } as unknown as Mocked<JiminyChat>;
     mockTool = {
       kind: 'read',
       build: vi.fn().mockReturnValue({
@@ -1524,7 +1524,7 @@ describe('Session', () => {
       .mockResolvedValueOnce(stream1)
       .mockResolvedValueOnce(stream2);
 
-    const { updatePolicy } = await import('@google/gemini-cli-core');
+    const { updatePolicy } = await import('@plaer1/jiminy-cli-core');
 
     await session.prompt({
       sessionId: 'session-1',

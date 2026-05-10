@@ -39,12 +39,12 @@ fs.writeFileSync(
 );
 console.log('Wrote .npmrc for @google-gemini scope to packages/core/');
 
-// Update @google/gemini-cli
+// Update @plaer1/jiminy-cli
 updatePackageJson('packages/cli/package.json', (pkg) => {
-  pkg.name = '@google-gemini/gemini-cli';
+  pkg.name = '@Plaer1/jiminy-cli';
   pkg.files = ['bundle/'];
   pkg.bin = {
-    gemini: 'bundle/gemini.js',
+    gemini: 'bundle/jiminy.js',
   };
 
   // Remove fields that are not relevant to the bundled package.
@@ -55,14 +55,14 @@ updatePackageJson('packages/cli/package.json', (pkg) => {
   delete pkg.config; // Deletes the sandboxImageUri
 });
 
-// Update @google/gemini-cli-a2a-server
+// Update @plaer1/jiminy-cli-a2a-server
 updatePackageJson('packages/a2a-server/package.json', (pkg) => {
-  pkg.name = '@google-gemini/gemini-cli-a2a-server';
+  pkg.name = '@Plaer1/jiminy-cli-a2a-server';
 });
 
-// Update @google/gemini-cli-core
+// Update @plaer1/jiminy-cli-core
 updatePackageJson('packages/core/package.json', (pkg) => {
-  pkg.name = '@google-gemini/gemini-cli-core';
+  pkg.name = '@Plaer1/jiminy-cli-core';
 });
 
 console.log('Successfully prepared packages for GitHub release.');

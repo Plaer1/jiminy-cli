@@ -42,7 +42,7 @@ const URL_FETCH_TIMEOUT_MS = 10000;
 const MAX_CONTENT_LENGTH = 250000;
 const MAX_EXPERIMENTAL_FETCH_SIZE = 10 * 1024 * 1024; // 10MB
 const USER_AGENT =
-  'Mozilla/5.0 (compatible; Google-Gemini-CLI/1.0; +https://github.com/google-gemini/gemini-cli)';
+  'Mozilla/5.0 (compatible; Google-Gemini-CLI/1.0; +https://github.com/Plaer1/jiminy-cli)';
 const TRUNCATION_WARNING = '\n\n... [Content truncated due to size limit] ...';
 
 // Rate limiting configuration
@@ -453,7 +453,7 @@ class WebFetchToolInvocation extends BaseToolInvocation<
       .join('\n');
 
     try {
-      const geminiClient = this.context.geminiClient;
+      const jiminyClient = this.context.jiminyClient;
       const fallbackPrompt = `Follow the user's instructions below using the provided webpage content.
 
 <user_instructions>
@@ -466,7 +466,7 @@ I was unable to access the URL(s) directly using the primary fetch tool. Instead
 ${aggregatedContent}
 </content>
 `;
-      const result = await geminiClient.generateContent(
+      const result = await jiminyClient.generateContent(
         { model: 'web-fetch-fallback' },
         [{ role: 'user', parts: [{ text: fallbackPrompt }] }],
         signal,
@@ -786,7 +786,7 @@ Response: ${rawResponseText}`;
     }
 
     try {
-      const geminiClient = this.context.geminiClient;
+      const jiminyClient = this.context.jiminyClient;
       const sanitizedPrompt = `Follow the user's instructions to process the authorized URLs.
 
 <user_instructions>
@@ -797,7 +797,7 @@ ${sanitizeXml(userPrompt)}
 ${toFetch.join('\n')}
 </authorized_urls>
 `;
-      const response = await geminiClient.generateContent(
+      const response = await jiminyClient.generateContent(
         { model: 'web-fetch' },
         [{ role: 'user', parts: [{ text: sanitizedPrompt }] }],
         signal,

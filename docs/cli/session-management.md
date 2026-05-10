@@ -29,7 +29,7 @@ interactive browser.
 
 ### From the command line
 
-When starting Gemini CLI, use the `--resume` (or `-r`) flag to load existing
+When starting Jiminy CLI, use the `--resume` (or `-r`) flag to load existing
 sessions.
 
 - **Resume latest:**
@@ -145,14 +145,14 @@ gemini --delete-session 2
 
 ## Configuration
 
-You can configure how Gemini CLI manages your session history in your
+You can configure how Jiminy CLI manages your session history in your
 `settings.json` file. These settings let you control retention policies and
 session lengths.
 
 ### Session retention
 
-By default, Gemini CLI automatically cleans up old session data to prevent your
-history from growing indefinitely. When a session is deleted, Gemini CLI also
+By default, Jiminy CLI automatically cleans up old session data to prevent your
+history from growing indefinitely. When a session is deleted, Jiminy CLI also
 removes all associated data, including implementation plans, task trackers, tool
 outputs, and activity logs.
 

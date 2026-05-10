@@ -17,7 +17,7 @@ import {
 } from '../types.js';
 import { disableSkill, enableSkill } from '../../utils/skillSettings.js';
 
-import { getAdminErrorMessage, getErrorMessage } from '@google/gemini-cli-core';
+import { getAdminErrorMessage, getErrorMessage } from '@plaer1/jiminy-cli-core';
 import {
   linkSkill,
   renderSkillActionFeedback,
@@ -364,7 +364,7 @@ import { parseSlashCommand } from '../../utils/commands.js';
 export const skillsCommand: SlashCommand = {
   name: 'skills',
   description:
-    'List, enable, disable, or reload Gemini CLI agent skills. Usage: /skills [list | disable <name> | enable <name> | reload]',
+    'List, enable, disable, or reload Jiminy CLI agent skills. Usage: /skills [list | disable <name> | enable <name> | reload]',
   kind: CommandKind.BUILT_IN,
   autoExecute: false,
   subCommands: [

@@ -21,7 +21,7 @@ import {
   CompletionMode,
 } from './useCommandCompletion.js';
 import type { CommandContext, SlashCommand } from '../commands/types.js';
-import type { Config } from '@google/gemini-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import { useTextBuffer } from '../components/shared/text-buffer.js';
 import type { Suggestion } from '../components/SuggestionsDisplay.js';
 import {
@@ -160,7 +160,7 @@ describe('useCommandCompletion', () => {
   const mockCommandContext = {} as CommandContext;
   const mockConfig = {
     getEnablePromptCompletion: () => false,
-    getGeminiClient: vi.fn(),
+    getJiminyClient: vi.fn(),
   } as unknown as Config;
   const testRootDir = '/';
 
@@ -811,7 +811,7 @@ describe('useCommandCompletion', () => {
     it('should not trigger prompt completion for line comments', async () => {
       const mockConfig = {
         getEnablePromptCompletion: () => true,
-        getGeminiClient: vi.fn(),
+        getJiminyClient: vi.fn(),
       } as unknown as Config;
 
       let hookResult: ReturnType<typeof useCommandCompletion> & {
@@ -844,7 +844,7 @@ describe('useCommandCompletion', () => {
     it('should not trigger prompt completion for block comments', async () => {
       const mockConfig = {
         getEnablePromptCompletion: () => true,
-        getGeminiClient: vi.fn(),
+        getJiminyClient: vi.fn(),
       } as unknown as Config;
 
       let hookResult: ReturnType<typeof useCommandCompletion> & {
@@ -879,7 +879,7 @@ describe('useCommandCompletion', () => {
     it('should trigger prompt completion for regular text when enabled', async () => {
       const mockConfig = {
         getEnablePromptCompletion: () => true,
-        getGeminiClient: vi.fn(),
+        getJiminyClient: vi.fn(),
       } as unknown as Config;
 
       let hookResult: ReturnType<typeof useCommandCompletion> & {

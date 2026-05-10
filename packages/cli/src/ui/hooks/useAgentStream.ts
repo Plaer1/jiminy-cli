@@ -21,7 +21,7 @@ import {
   type AgentProtocol,
   type Logger,
   type Part,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type {
   HistoryItemWithoutId,
   LoopDetectionConfirmationRequest,

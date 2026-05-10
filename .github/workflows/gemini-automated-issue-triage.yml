@@ -40,13 +40,13 @@ permissions:
 jobs:
   triage-issue:
     if: |-
-      (github.repository == 'google-gemini/gemini-cli' || github.repository == 'google-gemini/maintainers-gemini-cli') &&
+      (github.repository == 'Plaer1/jiminy-cli' || github.repository == 'google-gemini/maintainers-jiminy-cli') &&
       (
         github.event_name == 'workflow_dispatch' ||
         (
           (github.event_name == 'issues' || github.event_name == 'issue_comment') &&
           (github.event_name != 'issue_comment' || (
-            contains(github.event.comment.body, '@gemini-cli /triage') &&
+            contains(github.event.comment.body, '@jiminy-cli /triage') &&
             (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'COLLABORATOR')
           ))
         )
@@ -130,7 +130,7 @@ jobs:
             return labelNames;
 
       - name: 'Run Gemini Issue Analysis'
-        uses: 'google-github-actions/run-gemini-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-gemini-cli@v0
+        uses: 'Plaer1/jiminy-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:Plaer1/jiminy-cli@v0
         id: 'gemini_issue_analysis'
         env:
           GITHUB_TOKEN: '' # Do not pass any auth token here since this runs on untrusted inputs
@@ -345,5 +345,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: parseInt(process.env.ISSUE_NUMBER),
-              body: 'There is a problem with the Gemini CLI issue triaging. Please check the [action logs](${process.env.RUN_URL}) for details.'
+              body: 'There is a problem with the Jiminy CLI issue triaging. Please check the [action logs](${process.env.RUN_URL}) for details.'
             })

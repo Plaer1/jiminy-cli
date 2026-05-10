@@ -58,7 +58,7 @@ describe('ReadFileTool', () => {
       getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       storage: {
         getProjectTempDir: () => path.join(tempRootDir, '.temp'),
@@ -472,7 +472,7 @@ describe('ReadFileTool', () => {
           getWorkspaceContext: () => new WorkspaceContext(tempRootDir),
           getFileFilteringOptions: () => ({
             respectGitIgnore: true,
-            respectGeminiIgnore: true,
+            respectJiminyIgnore: true,
           }),
           storage: {
             getProjectTempDir: () => path.join(tempRootDir, '.temp'),
@@ -534,7 +534,7 @@ describe('ReadFileTool', () => {
         expect(typeof invocation).not.toBe('string');
       });
 
-      it('should allow reading ignored files if respectGeminiIgnore is false', async () => {
+      it('should allow reading ignored files if respectJiminyIgnore is false', async () => {
         const ignoredFilePath = path.join(tempRootDir, 'foo.bar');
         await fsp.writeFile(ignoredFilePath, 'content', 'utf-8');
 
@@ -545,7 +545,7 @@ describe('ReadFileTool', () => {
           getWorkspaceContext: () => new WorkspaceContext(tempRootDir),
           getFileFilteringOptions: () => ({
             respectGitIgnore: true,
-            respectGeminiIgnore: false,
+            respectJiminyIgnore: false,
           }),
           storage: {
             getProjectTempDir: () => path.join(tempRootDir, '.temp'),

@@ -9,7 +9,7 @@ import * as fsSync from 'node:fs';
 import * as path from 'node:path';
 import { bfsFileSearch } from './bfsFileSearch.js';
 import {
-  getAllGeminiMdFilenames,
+  getAllJiminyMdFilenames,
   PROJECT_MEMORY_INDEX_FILENAME,
 } from '../tools/memoryTool.js';
 import type { FileDiscoveryService } from '../services/fileDiscoveryService.js';
@@ -275,7 +275,7 @@ async function getGeminiMdFilePathsInternalForEachDir(
 ): Promise<{ global: string[]; project: string[] }> {
   const globalPaths = new Set<string>();
   const projectPaths = new Set<string>();
-  const geminiMdFilenames = getAllGeminiMdFilenames();
+  const geminiMdFilenames = getAllJiminyMdFilenames();
 
   for (const geminiMdFilename of geminiMdFilenames) {
     const resolvedHome = normalizePath(userHomePath);
@@ -412,7 +412,7 @@ export async function readGeminiMdFiles(
             const message =
               error instanceof Error ? error.message : String(error);
             logger.warn(
-              `Warning: Could not read ${getAllGeminiMdFilenames()} file at ${filePath}. Error: ${message}`,
+              `Warning: Could not read ${getAllJiminyMdFilenames()} file at ${filePath}. Error: ${message}`,
             );
           }
           debugLogger.debug(
@@ -467,7 +467,7 @@ export interface MemoryLoadResult {
 
 export async function getGlobalMemoryPaths(): Promise<string[]> {
   const userHome = homedir();
-  const geminiMdFilenames = getAllGeminiMdFilenames();
+  const geminiMdFilenames = getAllJiminyMdFilenames();
 
   const accessChecks = geminiMdFilenames.map(async (filename) => {
     const globalPath = normalizePath(path.join(userHome, GEMINI_DIR, filename));
@@ -507,7 +507,7 @@ export async function getUserProjectMemoryPaths(
     // been migrated to MEMORY.md yet.
   }
 
-  const geminiMdFilenames = getAllGeminiMdFilenames();
+  const geminiMdFilenames = getAllJiminyMdFilenames();
   const accessChecks = geminiMdFilenames.map(async (filename) => {
     const legacyMemoryPath = normalizePath(
       path.join(projectMemoryDir, filename),
@@ -606,7 +606,7 @@ async function findUpwardGeminiFiles(
   const upwardPaths: string[] = [];
   let currentDir = normalizePath(startDir);
   const resolvedStopDir = normalizePath(stopDir);
-  const geminiMdFilenames = getAllGeminiMdFilenames();
+  const geminiMdFilenames = getAllJiminyMdFilenames();
   const globalGeminiDir = normalizePath(path.join(homedir(), GEMINI_DIR));
 
   debugLogger.debug(
@@ -768,7 +768,7 @@ export async function loadServerHierarchicalMemory(
  * Loads the hierarchical memory and resets the state of `config` as needed such
  * that it reflects the new memory.
  *
- * Returns the result of the call to `loadHierarchicalGeminiMemory`.
+ * Returns the result of the call to `loadHierarchicalJiminyMemory`.
  */
 export async function refreshServerHierarchicalMemory(config: Config) {
   const result = await loadServerHierarchicalMemory(

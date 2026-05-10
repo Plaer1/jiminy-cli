@@ -199,10 +199,10 @@ class GlobToolInvocation extends BaseToolInvocation<
             this.params?.respect_git_ignore ??
             this.config.getFileFilteringOptions().respectGitIgnore ??
             DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
-          respectGeminiIgnore:
+          respectJiminyIgnore:
             this.params?.respect_gemini_ignore ??
-            this.config.getFileFilteringOptions().respectGeminiIgnore ??
-            DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+            this.config.getFileFilteringOptions().respectJiminyIgnore ??
+            DEFAULT_FILE_FILTERING_OPTIONS.respectJiminyIgnore,
         });
 
       const filteredAbsolutePaths = new Set(

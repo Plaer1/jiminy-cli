@@ -7,7 +7,7 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import type { PartListUnion, PartUnion } from '@google/genai';
-import type { AnyToolInvocation, Config } from '@google/gemini-cli-core';
+import type { AnyToolInvocation, Config } from '@plaer1/jiminy-cli-core';
 import {
   debugLogger,
   getErrorMessage,
@@ -19,7 +19,7 @@ import {
   REFERENCE_CONTENT_START,
   REFERENCE_CONTENT_END,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { Buffer } from 'node:buffer';
 import type {
   HistoryItemToolGroup,
@@ -242,18 +242,18 @@ async function resolveFilePaths(
       respectFileIgnore.respectGitIgnore &&
       fileDiscovery.shouldIgnoreFile(pathName, {
         respectGitIgnore: true,
-        respectGeminiIgnore: false,
+        respectJiminyIgnore: false,
       });
-    const geminiIgnored =
-      respectFileIgnore.respectGeminiIgnore &&
+    const jiminyIgnored =
+      respectFileIgnore.respectJiminyIgnore &&
       fileDiscovery.shouldIgnoreFile(pathName, {
         respectGitIgnore: false,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       });
 
-    if (gitIgnored || geminiIgnored) {
+    if (gitIgnored || jiminyIgnored) {
       const reason =
-        gitIgnored && geminiIgnored ? 'both' : gitIgnored ? 'git' : 'gemini';
+        gitIgnored && jiminyIgnored ? 'both' : gitIgnored ? 'git' : 'gemini';
       ignoredFiles.push({ path: pathName, reason });
       const reasonText =
         reason === 'both'
@@ -526,7 +526,7 @@ async function readLocalFiles(
     include: pathSpecsToRead,
     file_filtering_options: {
       respect_git_ignore: respectFileIgnore.respectGitIgnore,
-      respect_gemini_ignore: respectFileIgnore.respectGeminiIgnore,
+      respect_gemini_ignore: respectFileIgnore.respectJiminyIgnore,
     },
   };
 

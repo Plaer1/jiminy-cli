@@ -1,16 +1,16 @@
 {
-  "name": "@google/gemini-cli",
+  "name": "@plaer1/jiminy-cli",
   "version": "0.41.2",
-  "description": "Gemini CLI",
+  "description": "Jiminy CLI",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-gemini/gemini-cli.git"
+    "url": "git+https://github.com/Plaer1/jiminy-cli.git"
   },
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "gemini": "dist/index.js"
+    "jiminy": "dist/index.js"
   },
   "scripts": {
     "build": "node ../../scripts/build_package.js",
@@ -27,11 +27,11 @@
     "dist"
   ],
   "config": {
-    "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.41.2"
+    "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/jiminy-cli/sandbox:0.41.2"
   },
   "dependencies": {
     "@agentclientprotocol/sdk": "^0.16.1",
-    "@google/gemini-cli-core": "file:../core",
+    "@plaer1/jiminy-cli-core": "file:../core",
     "@google/genai": "1.30.0",
     "@iarna/toml": "^2.2.5",
     "@modelcontextprotocol/sdk": "^1.23.0",
@@ -72,7 +72,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@google/gemini-cli-test-utils": "file:../test-utils",
+    "@plaer1/jiminy-cli-test-utils": "file:../test-utils",
     "@types/command-exists": "^1.2.3",
     "@types/hast": "^3.0.4",
     "@types/node": "^20.11.24",

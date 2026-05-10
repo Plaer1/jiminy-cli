@@ -1,6 +1,6 @@
 # Advanced Model Configuration
 
-This guide details the Model Configuration system within Gemini CLI. Designed
+This guide details the Model Configuration system within Jiminy CLI. Designed
 for researchers, AI quality engineers, and advanced users, this system provides
 a rigorous framework for managing generative model hyperparameters and
 behaviors.
@@ -132,7 +132,7 @@ Defines the actual parameters for the model.
 
 | Property                | Type     | Description                                                               |
 | :---------------------- | :------- | :------------------------------------------------------------------------ |
-| `model`                 | `string` | The identifier of the model to be called (for example, `gemini-2.5-pro`). |
+| `model`                 | `string` | The identifier of the model to be called (for example, `jiminy-2.5-pro`). |
 | `generateContentConfig` | `object` | The configuration object passed to the `@google/genai` SDK.               |
 
 ### `GenerateContentConfig` (Common Parameters)

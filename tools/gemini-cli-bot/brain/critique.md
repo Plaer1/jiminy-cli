@@ -75,9 +75,9 @@ changes. You MUST use `git add` to stage these files.**
     arbitrary strings from external sources (e.g., `eval(comment)` or
     `exec(comment)`). All external data must be treated as untrusted data, never
     as executable instructions.
-16. **Policy Compliance (GCLI Classification)**: If a script utilizes Gemini CLI
+16. **Policy Compliance (GCLI Classification)**: If a script utilizes Jiminy CLI
     for classification, ensure it does NOT use the specialized
-    `tools/gemini-cli-bot/ci-policy.toml`. It must rely on default or workspace
+    `tools/jiminy-cli-bot/ci-policy.toml`. It must rely on default or workspace
     policies. Verify that the LLM is used ONLY for classification and not for
     logic or decision-making.
 
@@ -101,7 +101,7 @@ After applying any necessary fixes, you must evaluate the overall quality and
 impact of the modified scripts.
 
 - **Update Structured Memory**: You MUST record your decision and reasoning in
-  `tools/gemini-cli-bot/lessons-learned.md` using the **Structured Markdown**
+  `tools/jiminy-cli-bot/lessons-learned.md` using the **Structured Markdown**
   format (Task Ledger, Decision Log).
 - **Update Task Ledger**: Update the status of the task you are critiquing
   (e.g., from `TODO` to `SUBMITTED` if approved, or `FAILED` if rejected).

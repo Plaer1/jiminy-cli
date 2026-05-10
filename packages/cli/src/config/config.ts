@@ -15,8 +15,8 @@ import { skillsCommand } from '../commands/skills.js';
 import { hooksCommand } from '../commands/hooks.js';
 import { gemmaCommand } from '../commands/gemma.js';
 import {
-  setGeminiMdFilename as setServerGeminiMdFilename,
-  getCurrentGeminiMdFilename,
+  setJiminyMdFilename as setServerGeminiMdFilename,
+  getCurrentJiminyMdFilename,
   ApprovalMode,
   DEFAULT_GEMINI_EMBEDDING_MODEL,
   DEFAULT_FILE_FILTERING_OPTIONS,
@@ -42,13 +42,13 @@ import {
   applyRequiredServers,
   getAdminBlockedMcpServersMessage,
   getProjectRootForWorktree,
-  isGeminiWorktree,
+  isJiminyWorktree,
   type WorktreeSettings,
   type HookDefinition,
   type HookEventName,
   type OutputFormat,
   detectIdeFromEnv,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   type Settings,
   type MergedSettings,
@@ -70,7 +70,7 @@ import {
 } from './policy.js';
 import { ExtensionManager } from './extension-manager.js';
 import { McpServerEnablementManager } from './mcp/mcpServerEnablement.js';
-import type { ExtensionEvents } from '@google/gemini-cli-core/src/utils/extensionLoader.js';
+import type { ExtensionEvents } from '@plaer1/jiminy-cli-core/src/utils/extensionLoader.js';
 import { requestConsentNonInteractive } from './extensions/consent.js';
 import { promptForSetting } from './extensions/extensionSettings.js';
 import type { EventEmitter } from 'node:stream';
@@ -110,6 +110,7 @@ export interface CliArgs {
   acceptRawOutputRisk: boolean | undefined;
   skipTrust: boolean | undefined;
   isCommand: boolean | undefined;
+  quietYoloNoConseca: boolean | undefined;
 }
 
 /**
@@ -166,7 +167,7 @@ export async function parseArguments(
     .locale('en')
     .scriptName('gemini')
     .usage(
-      'Usage: gemini [options] [command]\n\nGemini CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.',
+      'Usage: gemini [options] [command]\n\nJiminy CLI - Defaults to interactive mode. Use -p/--prompt for non-interactive (headless) mode.',
     )
     .option('isCommand', {
       type: 'boolean',
@@ -262,6 +263,16 @@ export async function parseArguments(
       if (argv['worktree'] && !settings.experimental?.worktrees) {
         return 'The --worktree flag is only available when experimental.worktrees is enabled in your settings.';
       }
+      if (argv['quietYoloNoConseca'] && argv['prompt']) {
+        return 'Cannot use both --quiet-yolo-no-conseca and --prompt (-p) together. --quiet-yolo-no-conseca is interactive; --prompt is headless.';
+      }
+      if (
+        argv['quietYoloNoConseca'] &&
+        outputFormat !== undefined &&
+        outputFormat !== 'text'
+      ) {
+        return 'Cannot use --quiet-yolo-no-conseca with --output-format json or stream-json. Quiet mode outputs plain text only.';
+      }
       return true;
     });
 
@@ -272,7 +283,7 @@ export async function parseArguments(
   yargsInstance.command(gemmaCommand);
 
   yargsInstance
-    .command('$0 [query..]', 'Launch Gemini CLI', (yargsInstance) =>
+    .command('$0 [query..]', 'Launch Jiminy CLI', (yargsInstance) =>
       yargsInstance
         .positional('query', {
           description:
@@ -316,6 +327,12 @@ export async function parseArguments(
             }
             return trimmed;
           },
+        })
+        .option('quiet-yolo-no-conseca', {
+          type: 'boolean',
+          description:
+            'Minimal interactive mode: no TUI, buffered output, defaults to yolo with sandbox off',
+          default: false,
         })
         .option('sandbox', {
           alias: 's',
@@ -374,7 +391,7 @@ export async function parseArguments(
           string: true,
           nargs: 1,
           description:
-            '[DEPRECATED: Use Policy Engine instead See https://geminicli.com/docs/core/policy-engine] Tools that are allowed to run without confirmation',
+            '[DEPRECATED: Use Policy Engine instead See https://jiminycli.com/docs/core/policy-engine] Tools that are allowed to run without confirmation',
           coerce: coerceCommaSeparated,
         })
         .option('extensions', {
@@ -400,8 +417,8 @@ export async function parseArguments(
           description:
             'Resume a previous session. Use "latest" for most recent or index number (e.g. --resume 5)',
           coerce: (value: string): string => {
-            // When --resume passed with a value (`gemini --resume 123`): value = "123" (string)
-            // When --resume passed without a value (`gemini --resume`): value = "" (string)
+            // When --resume passed with a value (`jiminy --resume 123`): value = "123" (string)
+            // When --resume passed without a value (`jiminy --resume`): value = "" (string)
             // When --resume not passed at all: this `coerce` function is not called at all, and
             //   `yargsInstance.argv.resume` is undefined.
             const trimmed = value.trim();
@@ -587,20 +604,22 @@ export async function loadCliConfig(
       ? false
       : (settings.security?.folderTrust?.enabled ?? false);
   const trustedFolder =
-    isWorkspaceTrusted(settings, cwd, {
+    argv.quietYoloNoConseca ||
+    (isWorkspaceTrusted(settings, cwd, {
       prompt: argv.prompt,
       query: argv.query,
-    })?.isTrusted ?? false;
+    })?.isTrusted ??
+      false);
 
   // Set the context filename in the server's memoryTool module BEFORE loading memory
   // TODO(b/343434939): This is a bit of a hack. The contextFileName should ideally be passed
-  // directly to the Config constructor in core, and have core handle setGeminiMdFilename.
-  // However, loadHierarchicalGeminiMemory is called *before* createServerConfig.
+  // directly to the Config constructor in core, and have core handle setJiminyMdFilename.
+  // However, loadHierarchicalJiminyMemory is called *before* createServerConfig.
   if (settings.context?.fileName) {
     setServerGeminiMdFilename(settings.context.fileName);
   } else {
     // Reset to default if not provided in settings.
-    setServerGeminiMdFilename(getCurrentGeminiMdFilename());
+    setServerGeminiMdFilename(getCurrentJiminyMdFilename());
   }
 
   const fileService = new FileDiscoveryService(cwd);
@@ -674,7 +693,7 @@ export async function loadCliConfig(
   let filePaths: string[] = [];
 
   if (!experimentalJitContext) {
-    // Call the (now wrapper) loadHierarchicalGeminiMemory which calls the server's version
+    // Call the (now wrapper) loadHierarchicalJiminyMemory which calls the server's version
     const result = await loadServerHierarchicalMemory(
       cwd,
       settings.context?.loadMemoryFromIncludeDirectories || false
@@ -694,6 +713,16 @@ export async function loadCliConfig(
   }
 
   const question = argv.promptInteractive || argv.prompt || '';
+
+  // Quiet mode defaults: yolo with sandbox disabled (overridable by explicit flags)
+  if (argv.quietYoloNoConseca) {
+    if (!argv.approvalMode && !argv.yolo) {
+      argv.yolo = true;
+    }
+    if (argv.sandbox === undefined) {
+      argv.sandbox = false;
+    }
+  }
 
   // Determine approval mode with backward compatibility
   let approvalMode: ApprovalMode;
@@ -999,8 +1028,8 @@ export async function loadCliConfig(
     enableEnvironmentVariableRedaction:
       settings.security?.environmentVariableRedaction?.enabled,
     userMemory: memoryContent,
-    geminiMdFileCount: fileCount,
-    geminiMdFilePaths: filePaths,
+    jiminyMdFileCount: fileCount,
+    jiminyMdFilePaths: filePaths,
     approvalMode,
     disableYoloMode:
       settings.security?.disableYoloMode || settings.admin?.secureModeEnabled,
@@ -1110,6 +1139,7 @@ export async function loadCliConfig(
       };
     },
     enableConseca: settings.security?.enableConseca,
+    quietMode: argv.quietYoloNoConseca,
   });
 }
 
@@ -1135,7 +1165,7 @@ async function resolveWorktreeSettings(
     const toplevel = stdout.trim();
     const projectRoot = await getProjectRootForWorktree(toplevel);
 
-    if (isGeminiWorktree(toplevel, projectRoot)) {
+    if (isJiminyWorktree(toplevel, projectRoot)) {
       worktreePath = toplevel;
     }
   } catch {

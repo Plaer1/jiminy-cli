@@ -9,7 +9,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { SlashCommand, CommandContext } from './types.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import type { Content } from '@google/genai';
-import { AuthType, type GeminiClient } from '@google/gemini-cli-core';
+import { AuthType, type JiminyClient } from '@plaer1/jiminy-cli-core';
 
 import * as fsPromises from 'node:fs/promises';
 import { chatCommand, debugCommand } from './chatCommand.js';
@@ -80,9 +80,9 @@ describe('chatCommand', () => {
               getProjectTempDir: () => '/project/root/.gemini/tmp/mockhash',
             },
           },
-          geminiClient: {
+          jiminyClient: {
             getChat: mockGetChat,
-          } as unknown as GeminiClient,
+          } as unknown as JiminyClient,
         },
         logger: {
           saveCheckpoint: mockSaveCheckpoint,
@@ -449,7 +449,7 @@ describe('chatCommand', () => {
     beforeEach(() => {
       shareCommand = getSubCommand('share');
       vi.spyOn(process, 'cwd').mockReturnValue(
-        path.resolve('/usr/local/google/home/myuser/gemini-cli'),
+        path.resolve('/usr/local/google/home/myuser/jiminy-cli'),
       );
       vi.spyOn(Date, 'now').mockReturnValue(1234567890);
       mockGetHistory.mockReturnValue(mockHistory);

@@ -12,16 +12,16 @@ import { useCallback, useReducer, useRef, useEffect } from 'react';
 import type {
   AnsiOutput,
   Config,
-  GeminiClient,
+  JiminyClient,
   CompletionBehavior,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   isBinary,
   ShellExecutionService,
   ExecutionLifecycleService,
   CoreToolCallStatus,
   escapeShellArg,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type PartListUnion } from '@google/genai';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { SHELL_COMMAND_NAME } from '../constants.js';
@@ -42,7 +42,7 @@ const RESTORE_VISIBILITY_DELAY_MS = 300;
 const MAX_OUTPUT_LENGTH = 10000;
 
 function addShellCommandToGeminiHistory(
-  geminiClient: GeminiClient,
+  jiminyClient: JiminyClient,
   rawQuery: string,
   resultText: string,
 ) {
@@ -58,7 +58,7 @@ function addShellCommandToGeminiHistory(
     .replace(/\x60/g, '\\\x60');
 
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  geminiClient.addHistory({
+  jiminyClient.addHistory({
     role: 'user',
     parts: [
       {
@@ -80,7 +80,7 @@ export const useExecutionLifecycle = (
   onExec: (command: Promise<void>) => void,
   onDebugMessage: (message: string) => void,
   config: Config,
-  geminiClient: GeminiClient,
+  jiminyClient: JiminyClient,
   setShellInputFocused: (value: boolean) => void,
   terminalWidth?: number,
   terminalHeight?: number,
@@ -619,7 +619,7 @@ export const useExecutionLifecycle = (
             );
           }
 
-          addShellCommandToGeminiHistory(geminiClient, rawQuery, mainContent);
+          addShellCommandToGeminiHistory(jiminyClient, rawQuery, mainContent);
         } catch (err) {
           setPendingHistoryItem(null);
           const errorMessage = err instanceof Error ? err.message : String(err);
@@ -660,7 +660,7 @@ export const useExecutionLifecycle = (
       addItemToHistory,
       setPendingHistoryItem,
       onExec,
-      geminiClient,
+      jiminyClient,
       setShellInputFocused,
       terminalHeight,
       terminalWidth,

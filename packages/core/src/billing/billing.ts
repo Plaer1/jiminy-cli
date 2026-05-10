@@ -7,7 +7,7 @@
 import type {
   AvailableCredits,
   CreditType,
-  GeminiUserTier,
+  JiminyUserTier,
 } from '../code_assist/types.js';
 import {
   PREVIEW_GEMINI_MODEL,
@@ -113,7 +113,7 @@ export function buildG1Url(
  * @returns The credit amount as a number, 0 if eligible but empty, or null if not eligible
  */
 export function getG1CreditBalance(
-  tier: GeminiUserTier | null | undefined,
+  tier: JiminyUserTier | null | undefined,
 ): number | null {
   if (!tier?.availableCredits) {
     return null;

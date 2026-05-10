@@ -1,6 +1,6 @@
-# Gemini CLI keyboard shortcuts
+# Jiminy CLI keyboard shortcuts
 
-Gemini CLI ships with a set of default keyboard shortcuts for editing input,
+Jiminy CLI ships with a set of default keyboard shortcuts for editing input,
 navigating history, and controlling the UI. Use this reference to learn the
 available combinations.
 
@@ -251,7 +251,7 @@ a `key` combination.
 
 ## Vi mode shortcuts
 
-When vim mode is enabled with `/vim` or `general.vimMode: true`, Gemini CLI
+When vim mode is enabled with `/vim` or `general.vimMode: true`, Jiminy CLI
 supports NORMAL and INSERT modes.
 
 ### Mode switching
@@ -331,7 +331,7 @@ lines and `2cw` changes two words.
 - On [Windows Terminal](https://en.wikipedia.org/wiki/Windows_Terminal):
   - `shift+enter` is only supported in version 1.25 and higher.
   - `shift+tab`
-    [is not supported](https://github.com/google-gemini/gemini-cli/issues/20314)
+    [is not supported](https://github.com/Plaer1/jiminy-cli/issues/20314)
     on Node 20 and earlier versions of Node 22.
 - On macOS's [Terminal](<https://en.wikipedia.org/wiki/Terminal_(macOS)>):
   - `shift+enter` is not supported.

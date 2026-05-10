@@ -523,6 +523,19 @@ export class ShellToolInvocation extends BaseToolInvocation<
       // Start timeout
       resetTimeout();
 
+
+      // YOLO + no-sandbox sudo password handling
+      const sudoService = this.context.config.sudoPasswordService;
+      const isYoloNoSandbox =
+        this.context.config.getApprovalMode() === ApprovalMode.YOLO &&
+        !this.context.config.getSandboxEnabled();
+      const isSudoYolo =
+        isYoloNoSandbox && sudoService.isSudoCommand(strippedCommand);
+      if (isSudoYolo) {
+        sudoService.resetRetryCount();
+        await sudoService.ensurePassword();
+      }
+
       const { result: resultPromise, pid } =
         await ShellExecutionService.execute(
           commandToExecute,
@@ -540,6 +553,23 @@ export class ShellToolInvocation extends BaseToolInvocation<
                 if (isBinaryStream) break;
                 cumulativeOutput = event.chunk;
                 shouldUpdate = true;
+                // Detect sudo password prompts and failures in YOLO no-sandbox mode.
+                if (isYoloNoSandbox && pid) {
+                  const text =
+                    typeof event.chunk === 'string'
+                      ? event.chunk
+                      : event.chunk
+                          .flat()
+                          .map((t: any) => t.text)
+                          .join('');
+                  if (sudoService.isSudoFailure(text)) {
+                    sudoService.handleSudoFailure();
+                    void sudoService.handleSudoPasswordPrompt(pid);
+                  } else if (sudoService.isSudoPasswordPrompt(text)) {
+                    void sudoService.handleSudoPasswordPrompt(pid);
+                  }
+                }
+
                 break;
               case 'binary_detected':
                 isBinaryStream = true;
@@ -569,7 +599,7 @@ export class ShellToolInvocation extends BaseToolInvocation<
             }
           },
           combinedController.signal,
-          this.context.config.getEnableInteractiveShell(),
+          isSudoYolo || this.context.config.getEnableInteractiveShell(),
           {
             ...shellExecutionConfig,
             sessionId: this.context.config?.getSessionId?.() ?? 'default',
@@ -932,7 +962,7 @@ export class ShellToolInvocation extends BaseToolInvocation<
           this.context.config,
           { model: 'summarizer-shell' },
           llmContent,
-          this.context.geminiClient,
+          this.context.jiminyClient,
           signal,
         );
         return {

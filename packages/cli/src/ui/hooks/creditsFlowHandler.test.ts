@@ -9,7 +9,7 @@ import { handleCreditsFlow } from './creditsFlowHandler.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import {
   type Config,
-  type GeminiUserTier,
+  type JiminyUserTier,
   makeFakeConfig,
   getG1CreditBalance,
   shouldAutoUseCredits,
@@ -19,12 +19,12 @@ import {
   logBillingEvent,
   G1_CREDIT_TYPE,
   UserTierId,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { MessageType } from '../types.js';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     getG1CreditBalance: vi.fn(),
@@ -44,7 +44,7 @@ describe('handleCreditsFlow', () => {
   let mockSetOverageMenuRequest: ReturnType<typeof vi.fn>;
   let mockSetEmptyWalletRequest: ReturnType<typeof vi.fn>;
   let mockSetModelSwitchedFromQuotaError: ReturnType<typeof vi.fn>;
-  const mockPaidTier: GeminiUserTier = {
+  const mockPaidTier: JiminyUserTier = {
     id: UserTierId.STANDARD,
     availableCredits: [{ creditType: G1_CREDIT_TYPE, creditAmount: '100' }],
   };

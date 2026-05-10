@@ -14,7 +14,7 @@ import { setTimeout as sleep } from 'node:timers/promises';
 import {
   PREVIEW_GEMINI_FLASH_MODEL,
   GEMINI_DIR,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 export { GEMINI_DIR };
 import * as pty from '@lydell/node-pty';
 import stripAnsi from 'strip-ansi';
@@ -22,7 +22,7 @@ import * as os from 'node:os';
 import type { TestMcpConfig } from './test-mcp-server.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BUNDLE_PATH = join(__dirname, '..', '..', '..', 'bundle/gemini.js');
+const BUNDLE_PATH = join(__dirname, '..', '..', '..', 'bundle/jiminy.js');
 
 // Get timeout based on environment
 export function getDefaultTimeout() {
@@ -382,7 +382,7 @@ export class TestRig {
     this.testName = testName;
     const sanitizedName = sanitizeTestName(testName);
     const testFileDir =
-      env['INTEGRATION_TEST_FILE_DIR'] || join(os.tmpdir(), 'gemini-cli-tests');
+      env['INTEGRATION_TEST_FILE_DIR'] || join(os.tmpdir(), 'jiminy-cli-tests');
     this.testDir = join(testFileDir, sanitizedName);
     this.homeDir = join(testFileDir, sanitizedName + '-home');
 
@@ -444,8 +444,8 @@ export class TestRig {
     const projectGeminiDir = join(this.testDir!, GEMINI_DIR);
     mkdirSync(projectGeminiDir, { recursive: true });
 
-    const userGeminiDir = join(this.homeDir!, GEMINI_DIR);
-    mkdirSync(userGeminiDir, { recursive: true });
+    const userJiminyDir = join(this.homeDir!, GEMINI_DIR);
+    mkdirSync(userJiminyDir, { recursive: true });
 
     // In sandbox mode, use an absolute path for telemetry inside the container
     // The container mounts the test directory at the same path as the host
@@ -494,15 +494,15 @@ export class TestRig {
       JSON.stringify(settings, null, 2),
     );
     writeFileSync(
-      join(userGeminiDir, 'settings.json'),
+      join(userJiminyDir, 'settings.json'),
       JSON.stringify(settings, null, 2),
     );
   }
 
   private _createStateFile(overrideState?: Record<string, unknown>) {
     if (!this.homeDir) throw new Error('TestRig homeDir is not initialized');
-    const userGeminiDir = join(this.homeDir, GEMINI_DIR);
-    mkdirSync(userGeminiDir, { recursive: true });
+    const userJiminyDir = join(this.homeDir, GEMINI_DIR);
+    mkdirSync(userJiminyDir, { recursive: true });
 
     const state = deepMerge(
       {
@@ -512,7 +512,7 @@ export class TestRig {
     );
 
     writeFileSync(
-      join(userGeminiDir, 'state.json'),
+      join(userJiminyDir, 'state.json'),
       JSON.stringify(state, null, 2),
     );
   }
@@ -534,8 +534,8 @@ export class TestRig {
   }
 
   /**
-   * The command and args to use to invoke Gemini CLI. Allows us to switch
-   * between using the bundled gemini.js (the default) and using the installed
+   * The command and args to use to invoke Jiminy CLI. Allows us to switch
+   * between using the bundled jiminy.js (the default) and using the installed
    * 'gemini' (used to verify npm bundles).
    */
   private _getCommandAndArgs(extraInitialArgs: string[] = []): {
@@ -689,7 +689,7 @@ export class TestRig {
 
     return {
       ...cleanEnv,
-      GEMINI_CLI_HOME: this.homeDir!,
+      JIMINY_CLI_HOME: this.homeDir!,
       GEMINI_PTY_INFO: 'child_process',
       ...extraEnv,
     };

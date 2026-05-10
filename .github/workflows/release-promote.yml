@@ -357,8 +357,8 @@ jobs:
 
       - name: 'Configure Git User'
         run: |-
-          git config user.name "gemini-cli-robot"
-          git config user.email "gemini-cli-robot@google.com"
+          git config user.name "jiminy-cli-robot"
+          git config user.email "jiminy-cli-robot@google.com"
 
       - name: 'Create and switch to a new branch'
         id: 'release_branch'

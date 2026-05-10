@@ -1,17 +1,17 @@
 # Automate tasks with headless mode
 
-Automate tasks with Gemini CLI. Learn how to use headless mode, pipe data into
-Gemini CLI, automate workflows with shell scripts, and generate structured JSON
+Automate tasks with Jiminy CLI. Learn how to use headless mode, pipe data into
+Jiminy CLI, automate workflows with shell scripts, and generate structured JSON
 output for other applications.
 
 ## Prerequisites
 
-- Gemini CLI installed and authenticated.
+- Jiminy CLI installed and authenticated.
 - Familiarity with shell scripting (Bash/Zsh).
 
 ## Why headless mode?
 
-Headless mode runs Gemini CLI once and exits. It's perfect for:
+Headless mode runs Jiminy CLI once and exits. It's perfect for:
 
 - **CI/CD:** Analyzing pull requests automatically.
 - **Batch processing:** Summarizing a large number of log files.
@@ -19,7 +19,7 @@ Headless mode runs Gemini CLI once and exits. It's perfect for:
 
 ## How to use headless mode
 
-Run Gemini CLI in headless mode by providing a prompt with the `-p` (or
+Run Jiminy CLI in headless mode by providing a prompt with the `-p` (or
 `--prompt`) flag. This bypasses the interactive chat interface and prints the
 response to standard output (stdout). Positional arguments without the flag
 default to interactive mode, unless the input or output is piped or redirected.
@@ -30,7 +30,7 @@ Run a single command:
 gemini -p "Write a poem about TypeScript"
 ```
 
-## How to pipe input to Gemini CLI
+## How to pipe input to Jiminy CLI
 
 Feed data into Gemini using the standard Unix pipe `|`. Gemini reads the
 standard input (stdin) as context and answers your question using standard
@@ -56,7 +56,7 @@ Pipe a command:
 git diff | gemini -p "Write a commit message for these changes"
 ```
 
-## Use Gemini CLI output in scripts
+## Use Jiminy CLI output in scripts
 
 Because Gemini prints to stdout, you can chain it with other tools or save the
 results to a file.
@@ -78,7 +78,7 @@ one.
     for file in *.py; do
       echo "Generating docs for $file..."
 
-      # Ask Gemini CLI to generate the documentation and print it to stdout
+      # Ask Jiminy CLI to generate the documentation and print it to stdout
       gemini -p "Generate a Markdown documentation summary for @$file. Print the
       result to standard output." > "${file%.py}.md"
     done
@@ -92,7 +92,7 @@ one.
       Write-Host "Generating docs for $($_.Name)..."
 
       $newName = $_.Name -replace '\.py$', '.md'
-      # Ask Gemini CLI to generate the documentation and print it to stdout
+      # Ask Jiminy CLI to generate the documentation and print it to stdout
       gemini -p "Generate a Markdown documentation summary for @$($_.Name). Print the result to standard output." | Out-File -FilePath $newName -Encoding utf8
     }
     ```
@@ -273,7 +273,7 @@ wrapper that writes the message for you.
     gcommit
     ```
 
-    Gemini CLI will analyze your staged changes and commit them with a generated
+    Jiminy CLI will analyze your staged changes and commit them with a generated
     message.
 
 ## Next steps

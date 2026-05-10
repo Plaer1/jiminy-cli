@@ -149,7 +149,7 @@ describe('ide-connection-utils', () => {
         vi.mocked(fs.promises.readdir) as Mock<
           (path: fs.PathLike) => Promise<string[]>
         >
-      ).mockResolvedValue([`gemini-ide-server-${otherPid}-111.json`]);
+      ).mockResolvedValue([`jiminy-ide-server-${otherPid}-111.json`]);
       vi.mocked(fs.promises.readFile).mockResolvedValueOnce(
         JSON.stringify(validConfig),
       );
@@ -162,7 +162,7 @@ describe('ide-connection-utils', () => {
           '/tmp',
           'gemini',
           'ide',
-          `gemini-ide-server-${otherPid}-111.json`,
+          `jiminy-ide-server-${otherPid}-111.json`,
         ),
         'utf8',
       );
@@ -182,8 +182,8 @@ describe('ide-connection-utils', () => {
           (path: fs.PathLike) => Promise<string[]>
         >
       ).mockResolvedValue([
-        `gemini-ide-server-${otherPid}-1.json`,
-        `gemini-ide-server-${targetPid}-1.json`,
+        `jiminy-ide-server-${otherPid}-1.json`,
+        `jiminy-ide-server-${targetPid}-1.json`,
       ]);
 
       // readFile will be called for both files in the sorted order.
@@ -200,7 +200,7 @@ describe('ide-connection-utils', () => {
           '/tmp',
           'gemini',
           'ide',
-          `gemini-ide-server-${targetPid}-1.json`,
+          `jiminy-ide-server-${targetPid}-1.json`,
         ),
         'utf8',
       );
@@ -221,8 +221,8 @@ describe('ide-connection-utils', () => {
           (path: fs.PathLike) => Promise<string[]>
         >
       ).mockResolvedValue([
-        `gemini-ide-server-${deadPid}-1.json`,
-        `gemini-ide-server-${alivePid}-1.json`,
+        `jiminy-ide-server-${deadPid}-1.json`,
+        `jiminy-ide-server-${alivePid}-1.json`,
       ]);
 
       vi.spyOn(process, 'kill').mockImplementation((pid) => {
@@ -242,7 +242,7 @@ describe('ide-connection-utils', () => {
           '/tmp',
           'gemini',
           'ide',
-          `gemini-ide-server-${alivePid}-1.json`,
+          `jiminy-ide-server-${alivePid}-1.json`,
         ),
         'utf8',
       );
@@ -263,8 +263,8 @@ describe('ide-connection-utils', () => {
           (path: fs.PathLike) => Promise<string[]>
         >
       ).mockResolvedValue([
-        `gemini-ide-server-${oldPid}-1.json`,
-        `gemini-ide-server-${newPid}-1.json`,
+        `jiminy-ide-server-${oldPid}-1.json`,
+        `jiminy-ide-server-${newPid}-1.json`,
       ]);
 
       // Both are alive
@@ -282,7 +282,7 @@ describe('ide-connection-utils', () => {
           '/tmp',
           'gemini',
           'ide',
-          `gemini-ide-server-${newPid}-1.json`,
+          `jiminy-ide-server-${newPid}-1.json`,
         ),
         'utf8',
       );

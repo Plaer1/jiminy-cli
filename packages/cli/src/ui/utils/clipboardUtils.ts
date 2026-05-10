@@ -13,7 +13,7 @@ import {
   spawnAsync,
   escapePath,
   Storage,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 /**
  * Supported image file extensions based on Gemini API.

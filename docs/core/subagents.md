@@ -1,6 +1,6 @@
 # Subagents
 
-Subagents are specialized agents that operate within your main Gemini CLI
+Subagents are specialized agents that operate within your main Jiminy CLI
 session. They are designed to handle specific, complex tasks—like deep codebase
 analysis, documentation lookup, or domain-specific reasoning—without cluttering
 the main agent's context or toolset.
@@ -28,7 +28,7 @@ in your prompt.
 
 ### Automatic delegation
 
-Gemini CLI's main agent is instructed to use specialized subagents when a task
+Jiminy CLI's main agent is instructed to use specialized subagents when a task
 matches their expertise. For example, if you ask "How does the auth system
 work?", the main agent may decide to call the `codebase_investigator` subagent
 to perform the research.
@@ -51,7 +51,7 @@ primary model to use that specific subagent tool immediately.
 
 ## Built-in subagents
 
-Gemini CLI comes with the following built-in subagents:
+Jiminy CLI comes with the following built-in subagents:
 
 ### Codebase Investigator
 
@@ -79,7 +79,7 @@ Gemini CLI comes with the following built-in subagents:
 ### CLI Help Agent
 
 - **Name:** `cli_help`
-- **Purpose:** Get expert knowledge about Gemini CLI itself, its commands,
+- **Purpose:** Get expert knowledge about Jiminy CLI itself, its commands,
   configuration, and documentation.
 - **When to use:** "How do I configure a proxy?", "What does the `/rewind`
   command do?"
@@ -127,7 +127,7 @@ The browser agent requires:
 
 The underlying
 [`chrome-devtools-mcp`](https://www.npmjs.com/package/chrome-devtools-mcp)
-server is bundled with Gemini CLI and launched automatically — no separate
+server is bundled with Jiminy CLI and launched automatically — no separate
 installation is needed.
 
 #### Enabling the browser agent
@@ -176,7 +176,7 @@ The available modes are:
 
 #### First-run consent
 
-The first time the browser agent is invoked, Gemini CLI displays a consent
+The first time the browser agent is invoked, Jiminy CLI displays a consent
 dialog. You must accept before the browser session starts. This dialog only
 appears once.
 
@@ -370,7 +370,7 @@ it yourself; just report it.
 | `kind`         | string | No       | `local` (default) or `remote`.                                                                                                                                                                                |
 | `tools`        | array  | No       | List of tool names this agent can use. Supports wildcards: `*` (all tools), `mcp_*` (all MCP tools), `mcp_server_*` (all tools from a server). **If omitted, it inherits all tools from the parent session.** |
 | `mcpServers`   | object | No       | Configuration for inline Model Context Protocol (MCP) servers isolated to this specific agent.                                                                                                                |
-| `model`        | string | No       | Specific model to use (for example, `gemini-3-preview`). Defaults to `inherit` (uses the main session model).                                                                                                 |
+| `model`        | string | No       | Specific model to use (for example, `jiminy-3-preview`). Defaults to `inherit` (uses the main session model).                                                                                                 |
 | `temperature`  | number | No       | Model temperature (0.0 - 2.0). Defaults to `1`.                                                                                                                                                               |
 | `max_turns`    | number | No       | Maximum number of conversation turns allowed for this agent before it must return. Defaults to `30`.                                                                                                          |
 | `timeout_mins` | number | No       | Maximum execution time in minutes. Defaults to `10`.                                                                                                                                                          |
@@ -399,7 +399,7 @@ Each subagent runs in its own isolated context loop. This means:
 
 ## Subagent tool isolation
 
-Subagent tool isolation moves Gemini CLI away from a single global tool
+Subagent tool isolation moves Jiminy CLI away from a single global tool
 registry. By providing isolated execution environments, you can ensure that
 subagents only interact with the parts of the system they are designed for. This
 prevents unintended side effects, improves reliability by avoiding state
@@ -578,7 +578,7 @@ that your subagent was called with a specific prompt and the given description.
 
 ## Remote subagents (Agent2Agent)
 
-Gemini CLI can also delegate tasks to remote subagents using the Agent-to-Agent
+Jiminy CLI can also delegate tasks to remote subagents using the Agent-to-Agent
 (A2A) protocol.
 
 See the [Remote Subagents documentation](remote-agents) for detailed

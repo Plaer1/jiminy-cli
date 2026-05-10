@@ -1,6 +1,6 @@
-# Gemini CLI configuration
+# Jiminy CLI configuration
 
-Gemini CLI offers several ways to configure its behavior, including environment
+Jiminy CLI offers several ways to configure its behavior, including environment
 variables, command-line arguments, and settings files. This document outlines
 the different configuration methods and available settings.
 
@@ -22,7 +22,7 @@ overridden by higher numbers):
 
 ## Settings files
 
-Gemini CLI uses JSON settings files for persistent configuration. There are four
+Jiminy CLI uses JSON settings files for persistent configuration. There are four
 locations for these files:
 
 <!-- prettier-ignore -->
@@ -30,12 +30,12 @@ locations for these files:
 > JSON-aware editors can use autocomplete and validation by pointing to
 > the generated schema at `schemas/settings.schema.json` in this repository.
 > When working outside the repo, reference the hosted schema at
-> `https://raw.githubusercontent.com/google-gemini/gemini-cli/main/schemas/settings.schema.json`.
+> `https://raw.githubusercontent.com/Plaer1/jiminy-cli/main/schemas/settings.schema.json`.
 
 - **System defaults file:**
-  - **Location:** `/etc/gemini-cli/system-defaults.json` (Linux),
-    `C:\ProgramData\gemini-cli\system-defaults.json` (Windows) or
-    `/Library/Application Support/GeminiCli/system-defaults.json` (macOS). The
+  - **Location:** `/etc/jiminy-cli/system-defaults.json` (Linux),
+    `C:\ProgramData\jiminy-cli\system-defaults.json` (Windows) or
+    `/Library/Application Support/JiminyCli/system-defaults.json` (macOS). The
     path can be overridden using the `GEMINI_CLI_SYSTEM_DEFAULTS_PATH`
     environment variable.
   - **Scope:** Provides a base layer of system-wide default settings. These
@@ -43,25 +43,25 @@ locations for these files:
     user, project, or system override settings.
 - **User settings file:**
   - **Location:** `~/.gemini/settings.json` (where `~` is your home directory).
-  - **Scope:** Applies to all Gemini CLI sessions for the current user. User
+  - **Scope:** Applies to all Jiminy CLI sessions for the current user. User
     settings override system defaults.
 - **Project settings file:**
   - **Location:** `.gemini/settings.json` within your project's root directory.
-  - **Scope:** Applies only when running Gemini CLI from that specific project.
+  - **Scope:** Applies only when running Jiminy CLI from that specific project.
     Project settings override user settings and system defaults.
 - **System settings file:**
-  - **Location:** `/etc/gemini-cli/settings.json` (Linux),
-    `C:\ProgramData\gemini-cli\settings.json` (Windows) or
-    `/Library/Application Support/GeminiCli/settings.json` (macOS). The path can
+  - **Location:** `/etc/jiminy-cli/settings.json` (Linux),
+    `C:\ProgramData\jiminy-cli\settings.json` (Windows) or
+    `/Library/Application Support/JiminyCli/settings.json` (macOS). The path can
     be overridden using the `GEMINI_CLI_SYSTEM_SETTINGS_PATH` environment
     variable.
-  - **Scope:** Applies to all Gemini CLI sessions on the system, for all users.
+  - **Scope:** Applies to all Jiminy CLI sessions on the system, for all users.
     System settings act as overrides, taking precedence over all other settings
     files. May be useful for system administrators at enterprises to have
-    controls over users' Gemini CLI setups.
+    controls over users' Jiminy CLI setups.
 
 **Note on environment variables in settings:** String values within your
-`settings.json` and `gemini-extension.json` files can reference environment
+`settings.json` and `jiminy-extension.json` files can reference environment
 variables using `$VAR_NAME`, `${VAR_NAME}`, or `${VAR_NAME:-DEFAULT_VALUE}`
 syntax. These variables will be automatically resolved when the settings are
 loaded. For example, if you have an environment variable `MY_API_TOKEN`, you
@@ -70,14 +70,14 @@ want to provide a fallback value, use `${MY_API_TOKEN:-default-token}`.
 Additionally, each extension can have its own `.env` file in its directory,
 which will be loaded automatically.
 
-**Note for Enterprise Users:** For guidance on deploying and managing Gemini CLI
+**Note for Enterprise Users:** For guidance on deploying and managing Jiminy CLI
 in a corporate environment, see the
 [Enterprise Configuration](../cli/enterprise.md) documentation.
 
 ### The `.gemini` directory in your project
 
 In addition to a project settings file, a project's `.gemini` directory can
-contain other project-specific files related to Gemini CLI's operation, such as:
+contain other project-specific files related to Jiminy CLI's operation, such as:
 
 - [Custom sandbox profiles](#sandboxing) (for example,
   `.gemini/sandbox-macos-custom.sb`, `.gemini/sandbox.Dockerfile`).
@@ -247,7 +247,7 @@ their corresponding top-level category object in your `settings.json` file.
   - **Values:** `"off"`, `"full"`
 
 - **`ui.showStatusInTitle`** (boolean):
-  - **Description:** Show Gemini CLI model thoughts in the terminal window title
+  - **Description:** Show Jiminy CLI model thoughts in the terminal window title
     during the working phase
   - **Default:** `false`
 
@@ -257,7 +257,7 @@ their corresponding top-level category object in your `settings.json` file.
   - **Default:** `true`
 
 - **`ui.showHomeDirectoryWarning`** (boolean):
-  - **Description:** Show a warning when running Gemini CLI in the home
+  - **Description:** Show a warning when running Jiminy CLI in the home
     directory.
   - **Default:** `true`
   - **Requires restart:** Yes
@@ -909,7 +909,7 @@ their corresponding top-level category object in your `settings.json` file.
         "tier": "auto",
         "isPreview": true,
         "isVisible": true,
-        "dialogDescription": "Let Gemini CLI decide the best model for the task: gemini-3-pro, gemini-3-flash",
+        "dialogDescription": "Let Jiminy CLI decide the best model for the task: gemini-3-pro, gemini-3-flash",
         "features": {
           "thinking": true,
           "multimodalToolUse": false
@@ -920,7 +920,7 @@ their corresponding top-level category object in your `settings.json` file.
         "tier": "auto",
         "isPreview": false,
         "isVisible": true,
-        "dialogDescription": "Let Gemini CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash",
+        "dialogDescription": "Let Jiminy CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash",
         "features": {
           "thinking": false,
           "multimodalToolUse": false
@@ -1756,7 +1756,7 @@ their corresponding top-level category object in your `settings.json` file.
 - **`experimental.extensionRegistryURI`** (string):
   - **Description:** The URI (web URL or local file path) of the extension
     registry.
-  - **Default:** `"https://geminicli.com/extensions.json"`
+  - **Default:** `"https://jiminycli.com/extensions.json"`
   - **Requires restart:** Yes
 
 - **`experimental.extensionReloading`** (boolean):
@@ -1811,7 +1811,7 @@ their corresponding top-level category object in your `settings.json` file.
   - **Requires restart:** Yes
 
 - **`experimental.gemmaModelRouter.autoStartServer`** (boolean):
-  - **Description:** Automatically start the LiteRT-LM server when Gemini CLI
+  - **Description:** Automatically start the LiteRT-LM server when Jiminy CLI
     starts and the Gemma router is enabled.
   - **Default:** `false`
   - **Requires restart:** Yes
@@ -2053,7 +2053,7 @@ their corresponding top-level category object in your `settings.json` file.
 #### `mcpServers`
 
 Configures connections to one or more Model-Context Protocol (MCP) servers for
-discovering and using custom tools. Gemini CLI attempts to connect to each
+discovering and using custom tools. Jiminy CLI attempts to connect to each
 configured MCP server to discover available tools. Every discovered tool is
 prepended with the `mcp_` prefix and its server alias to form a fully qualified
 name (FQN) (for example, `mcp_serverAlias_actualToolName`) to avoid conflicts.
@@ -2104,7 +2104,7 @@ must be provided. If multiple are specified, the order of precedence is
 
 #### `telemetry`
 
-Configures logging and metrics collection for Gemini CLI. For more information,
+Configures logging and metrics collection for Jiminy CLI. For more information,
 see [Telemetry](../cli/telemetry.md).
 
 - **Properties:**
@@ -2224,7 +2224,7 @@ loading order is:
 
 **Environment variable exclusion:** Some environment variables (like `DEBUG` and
 `DEBUG_MODE`) are automatically excluded from being loaded from project `.env`
-files to prevent interference with gemini-cli behavior. Variables from
+files to prevent interference with jiminy-cli behavior. Variables from
 `.gemini/.env` files are never excluded. You can customize this behavior using
 the `advanced.excludedEnvVars` setting in your `settings.json` file.
 
@@ -2249,11 +2249,11 @@ the `advanced.excludedEnvVars` setting in your `settings.json` file.
     of the default `~/.gemini/`.
 - **`GEMINI_CLI_IDE_PID`**:
   - Manually specifies the PID of the IDE process to use for integration. This
-    is useful when running Gemini CLI in a standalone terminal while still
+    is useful when running Jiminy CLI in a standalone terminal while still
     wanting to associate it with a specific IDE instance.
   - Overrides the automatic IDE detection logic.
 - **`GEMINI_CLI_HOME`**:
-  - Specifies the root directory for Gemini CLI's user-level configuration and
+  - Specifies the root directory for Jiminy CLI's user-level configuration and
     storage.
   - By default, this is the user's system home directory. The CLI will create a
     `.gemini` folder inside this directory.
@@ -2298,7 +2298,7 @@ the `advanced.excludedEnvVars` setting in your `settings.json` file.
     `$env:GOOGLE_GENAI_API_VERSION="v1"`)
 - **`GOOGLE_GEMINI_BASE_URL`**:
   - Overrides the default base URL for Gemini API requests (when using
-    `gemini-api-key` authentication).
+    `jiminy-api-key` authentication).
   - Must be a valid URL. For security, it must use HTTPS unless pointing to
     `localhost` (or `127.0.0.1` / `[::1]`).
   - Example: `export GOOGLE_GEMINI_BASE_URL="https://my-proxy.com"` (Windows
@@ -2381,8 +2381,8 @@ the `advanced.excludedEnvVars` setting in your `settings.json` file.
   - Set to `true` or `1` to enable verbose debug logging, which can be helpful
     for troubleshooting.
   - **Note:** These variables are automatically excluded from project `.env`
-    files by default to prevent interference with gemini-cli behavior. Use
-    `.gemini/.env` files if you need to set these for gemini-cli specifically.
+    files by default to prevent interference with jiminy-cli behavior. Use
+    `.gemini/.env` files if you need to set these for jiminy-cli specifically.
 - **`NO_COLOR`**:
   - Set to any value to disable all color output in the CLI.
 - **`CLI_TITLE`**:
@@ -2393,7 +2393,7 @@ the `advanced.excludedEnvVars` setting in your `settings.json` file.
 
 ### Environment variable redaction
 
-To prevent accidental leakage of sensitive information, Gemini CLI automatically
+To prevent accidental leakage of sensitive information, Jiminy CLI automatically
 redacts potential secrets from environment variables when executing tools (such
 as shell commands). This "best effort" redaction applies to variables inherited
 from the system or loaded from `.env` files.
@@ -2449,7 +2449,7 @@ for that specific session.
 - **`--allowed-tools <tool1,tool2,...>`**:
   - A comma-separated list of tool names that will bypass the confirmation
     dialog.
-  - Example: `gemini --allowed-tools "ShellTool(git status)"`
+  - Example: `jiminy --allowed-tools "ShellTool(git status)"`
 - **`--approval-mode <mode>`**:
   - Sets the approval mode for tool calls. Available modes:
     - `default`: Prompt for approval on each tool call (default behavior)
@@ -2462,7 +2462,7 @@ for that specific session.
       > functional.
   - Cannot be used together with `--yolo`. Use `--approval-mode=yolo` instead of
     `--yolo` for the new unified approach.
-  - Example: `gemini --approval-mode auto_edit`
+  - Example: `jiminy --approval-mode auto_edit`
 - **`--debug`** (**`-d`**):
   - Enables debug mode for this session, providing more verbose output. Open the
     debug console with F12 to see the additional logging.
@@ -2470,13 +2470,13 @@ for that specific session.
   - Delete a specific chat session by its index number or full session UUID.
   - Use `--list-sessions` first to see available sessions, their indices, and
     UUIDs.
-  - Example: `gemini --delete-session 3` or
-    `gemini --delete-session a1b2c3d4-e5f6-7890-abcd-ef1234567890`
+  - Example: `jiminy --delete-session 3` or
+    `jiminy --delete-session a1b2c3d4-e5f6-7890-abcd-ef1234567890`
 - **`--extensions <extension_name ...>`** (**`-e <extension_name ...>`**):
   - Specifies a list of extensions to use for the session. If not provided, all
     available extensions are used.
-  - Use the special term `gemini -e none` to disable all extensions.
-  - Example: `gemini -e my-extension -e my-other-extension`
+  - Use the special term `jiminy -e none` to disable all extensions.
+  - Example: `jiminy -e my-extension -e my-other-extension`
 - **`--fake-responses`**:
   - Path to a file with fake model responses for testing.
 - **`--help`** (or **`-h`**):
@@ -2494,7 +2494,7 @@ for that specific session.
   - List all available chat sessions for the current project and exit.
   - Shows session indices, dates, message counts, and preview of first user
     message.
-  - Example: `gemini --list-sessions`
+  - Example: `jiminy --list-sessions`
 - **`--model <model_name>`** (**`-m <model_name>`**):
   - Specifies the Gemini model to use for this session.
   - Example: `npm start -- --model gemini-3-pro-preview`
@@ -2509,21 +2509,21 @@ for that specific session.
     `--output-format json` or `--output-format stream-json` flag.
 - **`--prompt <your_prompt>`** (**`-p <your_prompt>`**):
   - **Deprecated:** Use positional arguments instead.
-  - Used to pass a prompt directly to the command. This invokes Gemini CLI in a
+  - Used to pass a prompt directly to the command. This invokes Jiminy CLI in a
     non-interactive mode.
 - **`--prompt-interactive <your_prompt>`** (**`-i <your_prompt>`**):
   - Starts an interactive session with the provided prompt as the initial input.
   - The prompt is processed within the interactive session, not before it.
   - Cannot be used when piping input from stdin.
-  - Example: `gemini -i "explain this code"`
+  - Example: `jiminy -i "explain this code"`
 - **`--record-responses`**:
   - Path to a file to record model responses for testing.
 - **`--resume [session_id]`** (**`-r [session_id]`**):
   - Resume a previous chat session. Use "latest" for the most recent session,
     provide a session index number, or provide a full session UUID.
   - If no session_id is provided, defaults to "latest".
-  - Example: `gemini --resume 5` or `gemini --resume latest` or
-    `gemini --resume a1b2c3d4-e5f6-7890-abcd-ef1234567890` or `gemini --resume`
+  - Example: `jiminy --resume 5` or `jiminy --resume latest` or
+    `jiminy --resume a1b2c3d4-e5f6-7890-abcd-ef1234567890` or `jiminy --resume`
   - See [Session Management](../cli/session-management.md) for more details.
 - **`--sandbox`** (**`-s`**):
   - Enables sandbox mode for this session.
@@ -2636,11 +2636,11 @@ conventions and context.
 
 By understanding and utilizing these configuration layers and the hierarchical
 nature of context files, you can effectively manage the AI's memory and tailor
-Gemini CLI's responses to your specific needs and projects.
+Jiminy CLI's responses to your specific needs and projects.
 
 ## Sandboxing
 
-Gemini CLI can execute potentially unsafe operations (like shell commands and
+Jiminy CLI can execute potentially unsafe operations (like shell commands and
 file modifications) within a sandboxed environment to protect your system.
 
 Sandboxing is disabled by default, but you can enable it in a few ways:
@@ -2649,14 +2649,14 @@ Sandboxing is disabled by default, but you can enable it in a few ways:
 - Setting `GEMINI_SANDBOX` environment variable.
 - Sandbox is enabled when using `--yolo` or `--approval-mode=yolo` by default.
 
-By default, it uses a pre-built `gemini-cli-sandbox` Docker image.
+By default, it uses a pre-built `jiminy-cli-sandbox` Docker image.
 
 For project-specific sandboxing needs, you can create a custom Dockerfile at
 `.gemini/sandbox.Dockerfile` in your project's root directory. This Dockerfile
 can be based on the base sandbox image:
 
 ```dockerfile
-FROM gemini-cli-sandbox
+FROM jiminy-cli-sandbox
 
 # Add your custom dependencies or configurations here.
 # Note: The base image runs as the non-root 'node' user.
@@ -2669,7 +2669,7 @@ FROM gemini-cli-sandbox
 ```
 
 When `.gemini/sandbox.Dockerfile` exists, you can use `BUILD_SANDBOX`
-environment variable when running Gemini CLI to automatically build the custom
+environment variable when running Jiminy CLI to automatically build the custom
 sandbox image:
 
 ```bash
@@ -2677,12 +2677,12 @@ BUILD_SANDBOX=1 gemini -s
 ```
 
 Building a custom sandbox with `BUILD_SANDBOX` is only supported when running
-Gemini CLI from source. If you installed the CLI with npm, build the Docker
+Jiminy CLI from source. If you installed the CLI with npm, build the Docker
 image separately and reference that image in your sandbox configuration.
 
 ## Usage statistics
 
-To help us improve Gemini CLI, we collect anonymized usage statistics. This data
+To help us improve Jiminy CLI, we collect anonymized usage statistics. This data
 helps us understand how the CLI is used, identify common issues, and prioritize
 new features.
 

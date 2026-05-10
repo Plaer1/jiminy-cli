@@ -6,7 +6,7 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import {
-  GeminiEventType as ServerGeminiEventType,
+  JiminyEventType as ServerJiminyEventType,
   getErrorMessage,
   isNodeError,
   MessageSenderType,
@@ -34,7 +34,7 @@ import {
   CoreEvent,
   CoreToolCallStatus,
   buildUserSteeringHintPrompt,
-  GeminiCliOperation,
+  JiminyCliOperation,
   getPlanModeExitMessage,
   isBackgroundExecutionData,
   Kind,
@@ -43,21 +43,21 @@ import {
   buildToolVisibilityContext,
   UPDATE_TOPIC_TOOL_NAME,
   UPDATE_TOPIC_DISPLAY_NAME,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import type {
   Config,
   EditorType,
-  GeminiClient,
-  ServerGeminiChatCompressedEvent,
+  JiminyClient,
+  ServerJiminyChatCompressedEvent,
   ServerGeminiContentEvent as ContentEvent,
   ServerGeminiFinishedEvent,
-  ServerGeminiStreamEvent as GeminiEvent,
+  ServerJiminyStreamEvent as GeminiEvent,
   ThoughtSummary,
   ToolCallRequestInfo,
   ToolCallResponseInfo,
-  GeminiErrorEventValue,
+  JiminyErrorEventValue,
   RetryAttemptPayload,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type Part, type PartListUnion, FinishReason } from '@google/genai';
 import type {
   HistoryItem,
@@ -212,7 +212,7 @@ function calculateStreamingState(
  * API interaction, and tool call lifecycle.
  */
 export const useGeminiStream = (
-  geminiClient: GeminiClient,
+  jiminyClient: JiminyClient,
   history: HistoryItem[],
   addItem: UseHistoryManagerReturn['addItem'],
   config: Config,
@@ -339,10 +339,10 @@ export const useGeminiStream = (
         // Record tool calls with full metadata before sending responses.
         try {
           const currentModel =
-            config.getGeminiClient().getCurrentSequenceModel() ??
+            config.getJiminyClient().getCurrentSequenceModel() ??
             config.getModel();
           config
-            .getGeminiClient()
+            .getJiminyClient()
             .getChat()
             .recordCompletedToolCalls(
               currentModel,
@@ -400,7 +400,7 @@ export const useGeminiStream = (
     onExec,
     onDebugMessage,
     config,
-    geminiClient,
+    jiminyClient,
     setShellInputFocused,
     terminalWidth,
     terminalHeight,
@@ -1163,7 +1163,7 @@ export const useGeminiStream = (
   );
 
   const handleErrorEvent = useCallback(
-    (eventValue: GeminiErrorEventValue, userMessageTimestamp: number) => {
+    (eventValue: JiminyErrorEventValue, userMessageTimestamp: number) => {
       if (pendingHistoryItemRef.current) {
         addItem(pendingHistoryItemRef.current, userMessageTimestamp);
         setPendingHistoryItem(null);
@@ -1262,7 +1262,7 @@ export const useGeminiStream = (
 
   const handleChatCompressionEvent = useCallback(
     (
-      eventValue: ServerGeminiChatCompressedEvent['value'],
+      eventValue: ServerJiminyChatCompressedEvent['value'],
       userMessageTimestamp: number,
     ) => {
       if (pendingHistoryItemRef.current) {
@@ -1433,18 +1433,18 @@ export const useGeminiStream = (
       const toolCallRequests: ToolCallRequestInfo[] = [];
       for await (const event of stream) {
         if (
-          event.type !== ServerGeminiEventType.Thought &&
+          event.type !== ServerJiminyEventType.Thought &&
           thoughtRef.current !== null
         ) {
           setThought(null);
         }
 
         switch (event.type) {
-          case ServerGeminiEventType.Thought:
+          case ServerJiminyEventType.Thought:
             setLastGeminiActivityTime(Date.now());
             handleThoughtEvent(event.value, userMessageTimestamp);
             break;
-          case ServerGeminiEventType.Content:
+          case ServerJiminyEventType.Content:
             setLastGeminiActivityTime(Date.now());
             geminiMessageBuffer = handleContentEvent(
               event.value,
@@ -1452,16 +1452,16 @@ export const useGeminiStream = (
               userMessageTimestamp,
             );
             break;
-          case ServerGeminiEventType.ToolCallRequest:
+          case ServerJiminyEventType.ToolCallRequest:
             toolCallRequests.push(event.value);
             break;
-          case ServerGeminiEventType.UserCancelled:
+          case ServerJiminyEventType.UserCancelled:
             handleUserCancelledEvent(userMessageTimestamp);
             break;
-          case ServerGeminiEventType.Error:
+          case ServerJiminyEventType.Error:
             handleErrorEvent(event.value, userMessageTimestamp);
             break;
-          case ServerGeminiEventType.AgentExecutionStopped:
+          case ServerJiminyEventType.AgentExecutionStopped:
             handleAgentExecutionStoppedEvent(
               event.value.reason,
               userMessageTimestamp,
@@ -1469,7 +1469,7 @@ export const useGeminiStream = (
               event.value.contextCleared,
             );
             break;
-          case ServerGeminiEventType.AgentExecutionBlocked:
+          case ServerJiminyEventType.AgentExecutionBlocked:
             handleAgentExecutionBlockedEvent(
               event.value.reason,
               userMessageTimestamp,
@@ -1477,38 +1477,38 @@ export const useGeminiStream = (
               event.value.contextCleared,
             );
             break;
-          case ServerGeminiEventType.ChatCompressed:
+          case ServerJiminyEventType.ChatCompressed:
             handleChatCompressionEvent(event.value, userMessageTimestamp);
             break;
-          case ServerGeminiEventType.ToolCallConfirmation:
-          case ServerGeminiEventType.ToolCallResponse:
+          case ServerJiminyEventType.ToolCallConfirmation:
+          case ServerJiminyEventType.ToolCallResponse:
             // do nothing
             break;
-          case ServerGeminiEventType.MaxSessionTurns:
+          case ServerJiminyEventType.MaxSessionTurns:
             handleMaxSessionTurnsEvent();
             break;
-          case ServerGeminiEventType.ContextWindowWillOverflow:
+          case ServerJiminyEventType.ContextWindowWillOverflow:
             handleContextWindowWillOverflowEvent(
               event.value.estimatedRequestTokenCount,
               event.value.remainingTokenCount,
             );
             break;
-          case ServerGeminiEventType.Finished:
+          case ServerJiminyEventType.Finished:
             handleFinishedEvent(event, userMessageTimestamp);
             break;
-          case ServerGeminiEventType.Citation:
+          case ServerJiminyEventType.Citation:
             handleCitationEvent(event.value, userMessageTimestamp);
             break;
-          case ServerGeminiEventType.ModelInfo:
+          case ServerJiminyEventType.ModelInfo:
             handleChatModelEvent(event.value, userMessageTimestamp);
             break;
-          case ServerGeminiEventType.LoopDetected:
+          case ServerJiminyEventType.LoopDetected:
             // handle later because we want to move pending history to history
             // before we add loop detected message to history
             loopDetectedRef.current = true;
             break;
-          case ServerGeminiEventType.Retry:
-          case ServerGeminiEventType.InvalidStream:
+          case ServerJiminyEventType.Retry:
+          case ServerJiminyEventType.InvalidStream:
             // Will add the missing logic later
             break;
           default: {
@@ -1557,8 +1557,8 @@ export const useGeminiStream = (
       runInDevTraceSpan(
         {
           operation: options?.isContinuation
-            ? GeminiCliOperation.SystemPrompt
-            : GeminiCliOperation.UserPrompt,
+            ? JiminyCliOperation.SystemPrompt
+            : JiminyCliOperation.UserPrompt,
           sessionId: config.getSessionId(),
         },
         async ({ metadata: spanMetadata }) => {
@@ -1633,7 +1633,7 @@ export const useGeminiStream = (
             lastPromptIdRef.current = prompt_id!;
 
             try {
-              const stream = geminiClient.sendMessageStream(
+              const stream = jiminyClient.sendMessageStream(
                 queryToSend,
                 abortSignal,
                 prompt_id!,
@@ -1666,7 +1666,7 @@ export const useGeminiStream = (
 
                     if (result.userSelection === 'disable') {
                       config
-                        .getGeminiClient()
+                        .getJiminyClient()
                         .getLoopDetectionService()
                         .disableForSession();
                       addItem({
@@ -1734,7 +1734,7 @@ export const useGeminiStream = (
       addItem,
       setPendingHistoryItem,
       setInitError,
-      geminiClient,
+      jiminyClient,
       onAuthError,
       config,
       startNewPrompt,
@@ -1755,9 +1755,9 @@ export const useGeminiStream = (
         newApprovalMode !== ApprovalMode.PLAN &&
         streamingState === StreamingState.Idle
       ) {
-        if (geminiClient) {
+        if (jiminyClient) {
           try {
-            await geminiClient.addHistory({
+            await jiminyClient.addHistory({
               role: 'user',
               parts: [
                 {
@@ -1816,7 +1816,7 @@ export const useGeminiStream = (
         }
       }
     },
-    [config, toolCalls, geminiClient, streamingState, addItem, onDebugMessage],
+    [config, toolCalls, jiminyClient, streamingState, addItem, onDebugMessage],
   );
 
   const handleCompletedTools = useCallback(
@@ -1850,7 +1850,7 @@ export const useGeminiStream = (
       if (clientTools.length > 0) {
         markToolsAsSubmitted(clientTools.map((t) => t.request.callId));
 
-        if (geminiClient) {
+        if (jiminyClient) {
           for (const tool of clientTools) {
             // Only manually record skill activations in the chat history.
             // Other client-initiated tools (like save_memory) update the system
@@ -1862,7 +1862,7 @@ export const useGeminiStream = (
             // Add both the call (model turn) and the result (user turn) to history.
             // Client-initiated calls are essentially "synthetic" turns that let
             // subsequent model calls understand what just happened in the UI.
-            await geminiClient.addHistory({
+            await jiminyClient.addHistory({
               role: 'model',
               parts: [
                 {
@@ -1873,7 +1873,7 @@ export const useGeminiStream = (
                 },
               ],
             });
-            await geminiClient.addHistory({
+            await jiminyClient.addHistory({
               role: 'user',
               parts: tool.response.responseParts,
             });
@@ -1970,14 +1970,14 @@ export const useGeminiStream = (
         }
         setIsResponding(false);
 
-        if (geminiClient) {
+        if (jiminyClient) {
           // We need to manually add the function responses to the history
           // so the model knows the tools were cancelled.
           const combinedParts = geminiTools.flatMap(
             (toolCall) => toolCall.response.responseParts,
           );
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          geminiClient.addHistory({
+          jiminyClient.addHistory({
             role: 'user',
             parts: combinedParts,
           });
@@ -2031,7 +2031,7 @@ export const useGeminiStream = (
     [
       submitQuery,
       markToolsAsSubmitted,
-      geminiClient,
+      jiminyClient,
       performMemoryRefresh,
       modelSwitchedFromQuotaError,
       addItem,
@@ -2076,7 +2076,7 @@ export const useGeminiStream = (
         >(
           restorableToolCalls.map((call) => call.request),
           gitService,
-          geminiClient,
+          jiminyClient,
           history,
         );
 
@@ -2102,7 +2102,7 @@ export const useGeminiStream = (
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     saveRestorableToolCalls();
-  }, [toolCalls, config, onDebugMessage, gitService, history, geminiClient]);
+  }, [toolCalls, config, onDebugMessage, gitService, history, jiminyClient]);
 
   const lastOutputTime = Math.max(
     lastToolOutputTime,

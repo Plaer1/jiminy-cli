@@ -109,7 +109,7 @@ describe('ShellTool', () => {
       get config() {
         return this;
       },
-      geminiClient: {
+      jiminyClient: {
         stripThoughtsFromHistory: vi.fn(),
       },
 
@@ -144,7 +144,7 @@ describe('ShellTool', () => {
         const projectTempDir = this.storage.getProjectTempDir();
         return `Path not in workspace: Attempted path "${absolutePath}" resolves outside the allowed workspace directories: ${workspaceDirs.join(', ')} or the project temp directory: ${projectTempDir}`;
       },
-      getGeminiClient: vi.fn().mockReturnValue({}),
+      getJiminyClient: vi.fn().mockReturnValue({}),
       getShellToolInactivityTimeout: vi.fn().mockReturnValue(1000),
       getEnableInteractiveShell: vi.fn().mockReturnValue(false),
       getShellBackgroundCompletionBehavior: vi.fn().mockReturnValue('silent'),
@@ -555,7 +555,7 @@ EOF`;
         mockConfig,
         { model: 'summarizer-shell' },
         expect.any(String),
-        mockConfig.geminiClient,
+        mockConfig.jiminyClient,
         mockAbortSignal,
       );
       expect(result.llmContent).toBe('summarized output');

@@ -48,7 +48,7 @@ import {
 } from '../telemetry/types.js';
 import { handleFallback } from '../fallback/handler.js';
 import { isFunctionResponse } from '../utils/messageInspectors.js';
-import { partListUnionToString } from './geminiRequest.js';
+import { partListUnionToString } from './jiminyRequest.js';
 import type { ModelConfigKey } from '../services/modelConfigService.js';
 import { estimateTokenCountSync } from '../utils/tokenCalculation.js';
 import {
@@ -244,7 +244,7 @@ export class AgentExecutionBlockedError extends Error {
  * @remarks
  * The session maintains all the turns between user and model.
  */
-export class GeminiChat {
+export class JiminyChat {
   // A promise to represent the current state of the message being sent to the
   // model.
   private sendPromise: Promise<void> = Promise.resolve();
@@ -355,7 +355,7 @@ export class GeminiChat {
     const requestContents = this.getHistory(true);
 
     const streamWithRetries = async function* (
-      this: GeminiChat,
+      this: JiminyChat,
     ): AsyncGenerator<StreamEvent, void, void> {
       try {
         const maxAttempts = this.context.config.getMaxAttempts();
@@ -524,9 +524,9 @@ export class GeminiChat {
     const initialActiveModel = this.context.config.getActiveModel();
 
     const apiCall = async () => {
-      const useGemini3_1 =
+      const useJiminy3_1 =
         (await this.context.config.getGemini31Launched?.()) ?? false;
-      const useGemini3_1FlashLite =
+      const useJiminy3_1FlashLite =
         (await this.context.config.getGemini31FlashLiteLaunched?.()) ?? false;
       const hasAccessToPreview =
         this.context.config.getHasAccessToPreviewModel?.() ?? true;
@@ -534,8 +534,8 @@ export class GeminiChat {
       // Default to the last used model (which respects arguments/availability selection)
       let modelToUse = resolveModel(
         lastModelToUse,
-        useGemini3_1,
-        useGemini3_1FlashLite,
+        useJiminy3_1,
+        useJiminy3_1FlashLite,
         false,
         hasAccessToPreview,
         this.context.config,
@@ -546,8 +546,8 @@ export class GeminiChat {
       if (this.context.config.getActiveModel() !== initialActiveModel) {
         modelToUse = resolveModel(
           this.context.config.getActiveModel(),
-          useGemini3_1,
-          useGemini3_1FlashLite,
+          useJiminy3_1,
+          useJiminy3_1FlashLite,
           false,
           hasAccessToPreview,
           this.context.config,
@@ -609,8 +609,8 @@ export class GeminiChat {
         if (beforeModelResult.modifiedModel) {
           modelToUse = resolveModel(
             beforeModelResult.modifiedModel,
-            useGemini3_1,
-            useGemini3_1FlashLite,
+            useJiminy3_1,
+            useJiminy3_1FlashLite,
             false,
             hasAccessToPreview,
             this.context.config,

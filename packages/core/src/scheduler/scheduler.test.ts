@@ -91,7 +91,7 @@ import {
   type ToolCall,
 } from './types.js';
 import { ToolErrorType } from '../tools/tool-error.js';
-import { GeminiCliOperation } from '../telemetry/constants.js';
+import { JiminyCliOperation } from '../telemetry/constants.js';
 import * as ToolUtils from '../utils/tool-utils.js';
 import type { EditorType } from '../utils/editor.js';
 import {
@@ -418,7 +418,7 @@ describe('Scheduler (Orchestrator)', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.ScheduleToolCalls,
+          operation: JiminyCliOperation.ScheduleToolCalls,
         }),
         expect.any(Function),
       );

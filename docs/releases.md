@@ -1,4 +1,4 @@
-# Gemini CLI releases
+# Jiminy CLI releases
 
 <!-- prettier-ignore -->
 > [!IMPORTANT]
@@ -22,9 +22,9 @@ More information can be found about these systems in the
 
 | Package    | `prod` (Wombat Dressing Room) | `dev` (Github Private NPM Repo)           |
 | ---------- | ----------------------------- | ----------------------------------------- |
-| CLI        | @google/gemini-cli            | @google-gemini/gemini-cli                 |
-| Core       | @google/gemini-cli-core       | @google-gemini/gemini-cli-core A2A Server |
-| A2A Server | @google/gemini-cli-a2a-server | @google-gemini/gemini-cli-a2a-server      |
+| CLI        | @plaer1/jiminy-cli            | @Plaer1/jiminy-cli                 |
+| Core       | @plaer1/jiminy-cli-core       | @Plaer1/jiminy-cli-core A2A Server |
+| A2A Server | @plaer1/jiminy-cli-a2a-server | @Plaer1/jiminy-cli-a2a-server      |
 
 ## Release cadence and tags
 
@@ -48,7 +48,7 @@ These releases will not have been fully vetted and may contain regressions or
 other outstanding issues. Help us test and install with `preview` tag.
 
 ```bash
-npm install -g @google/gemini-cli@preview
+npm install -g @plaer1/jiminy-cli@preview
 ```
 
 ### Stable
@@ -57,7 +57,7 @@ This will be the full promotion of last week's release + any bug fixes and
 validations. Use `latest` tag.
 
 ```bash
-npm install -g @google/gemini-cli@latest
+npm install -g @plaer1/jiminy-cli@latest
 ```
 
 ### Nightly
@@ -67,7 +67,7 @@ npm install -g @google/gemini-cli@latest
   there are pending validations and issues. Use `nightly` tag.
 
 ```bash
-npm install -g @google/gemini-cli@nightly
+npm install -g @plaer1/jiminy-cli@nightly
 ```
 
 ## Weekly release promotion
@@ -177,8 +177,8 @@ require a full release cycle.
       release administrator.
 5.  Click **Run workflow**.
 
-The workflow will then run `npm dist-tag add` for the appropriate `gemini-cli`,
-`gemini-cli-core` and `gemini-cli-a2a-server` packages, pointing the specified
+The workflow will then run `npm dist-tag add` for the appropriate `jiminy-cli`,
+`jiminy-cli-core` and `jiminy-cli-a2a-server` packages, pointing the specified
 channel to the specified version.
 
 ## Patching
@@ -380,12 +380,12 @@ packages are working as expected. This can be done by installing the packages
 locally and running a set of tests to ensure that they are functioning
 correctly.
 
-- `npx -y @google/gemini-cli@latest --version` to validate the push worked as
+- `npx -y @plaer1/jiminy-cli@latest --version` to validate the push worked as
   expected if you were not doing a rc or dev tag
-- `npx -y @google/gemini-cli@<release tag> --version` to validate the tag pushed
+- `npx -y @plaer1/jiminy-cli@<release tag> --version` to validate the tag pushed
   appropriately
 - _This is destructive locally_
-  `npm uninstall @google/gemini-cli && npm uninstall -g @google/gemini-cli && npm cache clean --force &&  npm install @google/gemini-cli@<version>`
+  `npm uninstall @plaer1/jiminy-cli && npm uninstall -g @plaer1/jiminy-cli && npm cache clean --force &&  npm install @plaer1/jiminy-cli@<version>`
 - Smoke testing a basic run through of exercising a few llm commands and tools
   is recommended to ensure that the packages are working as expected. We'll
   codify this more in the future.
@@ -397,7 +397,7 @@ creating a public GitHub release, you can trigger the workflow manually from the
 GitHub UI.
 
 1.  Go to the
-    [Actions tab](https://github.com/google-gemini/gemini-cli/actions/workflows/release-manual.yml)
+    [Actions tab](https://github.com/Plaer1/jiminy-cli/actions/workflows/release-manual.yml)
     of the repository.
 2.  Click on the "Run workflow" dropdown.
 3.  Leave the `dry_run` option checked (`true`).
@@ -429,7 +429,7 @@ This command will do the following:
 You can then inspect the generated tarballs to ensure that they contain the
 correct files and that the `package.json` files have been updated correctly. The
 tarballs will be created in the root of each package's directory (for example,
-`packages/cli/google-gemini-cli-0.1.6.tgz`).
+`packages/cli/google-jiminy-cli-0.1.6.tgz`).
 
 By performing a dry run, you can be confident that your changes to the packaging
 process are correct and that the packages will be published successfully.
@@ -463,10 +463,10 @@ Here are the key stages:
 **Stage 3: Publishing standard packages to NPM**
 
 - **What happens:** The `npm publish` command is run for the
-  `@google/gemini-cli-core` and `@google/gemini-cli` packages.
+  `@plaer1/jiminy-cli-core` and `@plaer1/jiminy-cli` packages.
 - **Why:** This publishes them as standard Node.js packages. Users installing
-  via `npm install -g @google/gemini-cli` will download these packages, and
-  `npm` will handle installing the `@google/gemini-cli-core` dependency
+  via `npm install -g @plaer1/jiminy-cli` will download these packages, and
+  `npm` will handle installing the `@plaer1/jiminy-cli-core` dependency
   automatically. The code in these packages is not bundled into a single file.
 
 **Stage 4: Assembling and creating the GitHub release asset**
@@ -478,7 +478,7 @@ executable that enables `npx` usage directly from the GitHub repository.
     - **What happens:** The built JavaScript from both `packages/core/dist` and
       `packages/cli/dist`, along with all third-party JavaScript dependencies,
       are bundled by `esbuild` into a single, executable JavaScript file (for
-      example, `gemini.js`). The `node-pty` library is excluded from this bundle
+      example, `jiminy.js`). The `node-pty` library is excluded from this bundle
       as it contains native binaries.
     - **Why:** This creates a single, optimized file that contains all the
       necessary application code. It simplifies execution for users who want to
@@ -487,10 +487,10 @@ executable that enables `npx` usage directly from the GitHub repository.
 
 2.  **The `bundle` directory is assembled:**
     - **What happens:** A temporary `bundle` folder is created at the project
-      root. The single `gemini.js` executable is placed inside it, along with
+      root. The single `jiminy.js` executable is placed inside it, along with
       other essential files.
     - **File movement:**
-      - `gemini.js` (from esbuild) -> `bundle/gemini.js`
+      - `jiminy.js` (from esbuild) -> `bundle/gemini.js`
       - `README.md` -> `bundle/README.md`
       - `LICENSE` -> `bundle/LICENSE`
       - `packages/cli/src/utils/*.sb` (sandbox profiles) -> `bundle/`
@@ -499,18 +499,18 @@ executable that enables `npx` usage directly from the GitHub repository.
 
 3.  **The GitHub release is created:**
     - **What happens:** The contents of the `bundle` directory, including the
-      `gemini.js` executable, are attached as assets to a new GitHub Release.
+      `jiminy.js` executable, are attached as assets to a new GitHub Release.
     - **Why:** This makes the single-file version of the CLI available for
       direct download and enables the
-      `npx https://github.com/google-gemini/gemini-cli` command, which downloads
+      `npx https://github.com/Plaer1/jiminy-cli` command, which downloads
       and runs this specific bundled asset.
 
 **Summary of artifacts**
 
 - **NPM:** Publishes standard, un-bundled Node.js packages. The primary artifact
   is the code in `packages/cli/dist`, which depends on
-  `@google/gemini-cli-core`.
-- **GitHub release:** Publishes a single, bundled `gemini.js` file that contains
+  `@plaer1/jiminy-cli-core`.
+- **GitHub release:** Publishes a single, bundled `jiminy.js` file that contains
   all dependencies, for easy execution via `npx`.
 
 This dual-artifact process ensures that both traditional `npm` users and those

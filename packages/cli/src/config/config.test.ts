@@ -19,16 +19,16 @@ import {
   debugLogger,
   ApprovalMode,
   type MCPServerConfig,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
   Storage,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { loadCliConfig, parseArguments, type CliArgs } from './config.js';
 import {
   type Settings,
   type MergedSettings,
   createTestMergedSettings,
 } from './settings.js';
-import * as ServerConfig from '@google/gemini-cli-core';
+import * as ServerConfig from '@plaer1/jiminy-cli-core';
 
 import { isWorkspaceTrusted } from './trustedFolders.js';
 import { ExtensionManager } from './extension-manager.js';
@@ -98,9 +98,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@google/gemini-cli-core', async () => {
+vi.mock('@plaer1/jiminy-cli-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@google/gemini-cli-core',
+    '@plaer1/jiminy-cli-core',
   );
   return {
     ...actualServer,
@@ -135,12 +135,12 @@ vi.mock('@google/gemini-cli-core', async () => {
     ),
     DEFAULT_MEMORY_FILE_FILTERING_OPTIONS: {
       respectGitIgnore: false,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
       customIgnoreFilePaths: [],
     },
     DEFAULT_FILE_FILTERING_OPTIONS: {
       respectGitIgnore: true,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
       customIgnoreFilePaths: [],
     },
     createPolicyEngineConfig: vi.fn(
@@ -156,7 +156,7 @@ vi.mock('@google/gemini-cli-core', async () => {
     ),
     getAdminErrorMessage: vi.fn(
       (_feature) =>
-        `YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli`,
+        `YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli`,
     ),
     isHeadlessMode: vi.fn((opts) => {
       if (process.env['VITEST'] === 'true') {
@@ -1021,8 +1021,8 @@ describe('loadCliConfig', () => {
     expect(config.getFileFilteringRespectGitIgnore()).toBe(
       DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
     );
-    expect(config.getFileFilteringRespectGeminiIgnore()).toBe(
-      DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+    expect(config.getFileFilteringRespectJiminyIgnore()).toBe(
+      DEFAULT_FILE_FILTERING_OPTIONS.respectJiminyIgnore,
     );
     expect(config.getCustomIgnoreFilePaths()).toEqual(
       DEFAULT_FILE_FILTERING_OPTIONS.customIgnoreFilePaths,
@@ -1109,7 +1109,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       200, // maxDirs
       ['.git'], // boundaryMarkers
@@ -1139,7 +1139,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       200,
       ['.git'], // boundaryMarkers
@@ -1168,7 +1168,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       200,
       ['.git'], // boundaryMarkers
@@ -1576,7 +1576,7 @@ describe('Approval mode tool exclusion logic', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 
@@ -3202,13 +3202,13 @@ describe('loadCliConfig fileFiltering', () => {
       value: false,
     },
     {
-      property: 'respectGeminiIgnore',
-      getter: (c) => c.getFileFilteringRespectGeminiIgnore(),
+      property: 'respectJiminyIgnore',
+      getter: (c) => c.getFileFilteringRespectJiminyIgnore(),
       value: true,
     },
     {
-      property: 'respectGeminiIgnore',
-      getter: (c) => c.getFileFilteringRespectGeminiIgnore(),
+      property: 'respectJiminyIgnore',
+      getter: (c) => c.getFileFilteringRespectJiminyIgnore(),
       value: false,
     },
     {
@@ -3720,7 +3720,7 @@ describe('loadCliConfig disableYoloMode', () => {
       security: { disableYoloMode: true },
     });
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 });
@@ -3752,7 +3752,7 @@ describe('loadCliConfig secureModeEnabled', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 
@@ -3766,7 +3766,7 @@ describe('loadCliConfig secureModeEnabled', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-jiminy-cli',
     );
   });
 
@@ -3876,7 +3876,7 @@ describe('loadCliConfig mcpEnabled', () => {
           name: 'ext-plan',
           isActive: true,
           plan: { directory: 'ext-plans-dir' },
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
 
       const config = await loadCliConfig(settings, 'test-session', argv);
@@ -3900,7 +3900,7 @@ describe('loadCliConfig mcpEnabled', () => {
           name: 'ext-plan',
           isActive: true,
           plan: { directory: 'ext-plans-dir' },
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
 
       const config = await loadCliConfig(settings, 'test-session', argv);
@@ -3922,7 +3922,7 @@ describe('loadCliConfig mcpEnabled', () => {
           name: 'ext-plan',
           isActive: false,
           plan: { directory: 'ext-plans-dir-inactive' },
-        } as unknown as GeminiCLIExtension,
+        } as unknown as JiminyCLIExtension,
       ]);
 
       const config = await loadCliConfig(settings, 'test-session', argv);
@@ -3950,7 +3950,7 @@ describe('loadCliConfig mcpEnabled', () => {
           '/mock',
           'home',
           'user',
-          '.gemini',
+          '.jiminy',
           'tmp',
           'test-project',
           'test-session',

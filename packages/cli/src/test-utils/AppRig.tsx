@@ -35,7 +35,7 @@ import {
   debugLogger,
   CoreToolCallStatus,
   IntegrityDataStatus,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   type MockShellCommand,
   MockShellExecutionService,
@@ -88,9 +88,9 @@ vi.mock('../ui/contexts/StreamingContext.js', async (importOriginal) => {
 });
 
 // Mock core functions globally for tests using AppRig.
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   const { MockShellExecutionService: MockService } = await import(
     './MockShellExecutionService.js'
   );
@@ -177,13 +177,13 @@ export class AppRig {
   constructor(private options: AppRigOptions = {}) {
     const uniqueId = randomUUID();
     this.testDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `gemini-app-rig-${uniqueId.slice(0, 8)}-`),
+      path.join(os.tmpdir(), `jiminy-app-rig-${uniqueId.slice(0, 8)}-`),
     );
     this.sessionId = `test-session-${uniqueId}`;
     activeRigs.set(this.sessionId, this);
 
     // Pre-create the persistent state file to bypass the terminal setup prompt
-    const geminiDir = path.join(this.testDir, '.gemini');
+    const geminiDir = path.join(this.testDir, '.jiminy');
     if (!fs.existsSync(geminiDir)) {
       fs.mkdirSync(geminiDir, { recursive: true });
     }
@@ -244,7 +244,7 @@ export class AppRig {
 
   private setupEnvironment() {
     // Stub environment variables to avoid interference from developer's machine
-    vi.stubEnv('GEMINI_CLI_HOME', this.testDir);
+    vi.stubEnv('JIMINY_CLI_HOME', this.testDir);
     vi.stubEnv('TERM_PROGRAM', 'other');
     vi.stubEnv('VSCODE_GIT_IPC_HANDLE', '');
     if (this.options.fakeResponsesPath) {
@@ -265,7 +265,7 @@ export class AppRig {
   private createRigSettings(): LoadedSettings {
     return createMockSettings({
       user: {
-        path: path.join(this.testDir, '.gemini', 'user_settings.json'),
+        path: path.join(this.testDir, '.jiminy', 'user_settings.json'),
         settings: {
           security: {
             auth: {
@@ -324,7 +324,7 @@ export class AppRig {
       gcConfig.contentGeneratorConfig = newContentGeneratorConfig;
 
       // Initialize BaseLlmClient now that the ContentGenerator is available
-      const { BaseLlmClient } = await import('@google/gemini-cli-core');
+      const { BaseLlmClient } = await import('@plaer1/jiminy-cli-core');
       gcConfig.baseLlmClient = new BaseLlmClient(
         gcConfig.contentGenerator,
         this.config!,
@@ -427,7 +427,7 @@ export class AppRig {
             accountSuspensionInfo: null,
             themeError: null,
             shouldOpenAuthDialog: false,
-            geminiMdFileCount: 0,
+            jiminyMdFileCount: 0,
           }}
         />,
         {
@@ -738,7 +738,7 @@ export class AppRig {
     // Poison the chat recording service to prevent late writes to the test directory
     if (this.config) {
       const recordingService = this.config
-        .getGeminiClient()
+        .getJiminyClient()
         ?.getChatRecordingService();
       if (recordingService) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

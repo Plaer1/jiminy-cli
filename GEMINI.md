@@ -1,6 +1,6 @@
-# Gemini CLI Project Context
+# Jiminy CLI Project Context
 
-Gemini CLI is an open-source AI agent that brings the power of Gemini directly
+Jiminy CLI is an open-source AI agent that brings the power of Gemini directly
 into the terminal. It is designed to be a terminal-first, extensible, and
 powerful tool for developers.
 
@@ -23,7 +23,7 @@ powerful tool for developers.
   - `packages/core`: Backend logic, Gemini API orchestration, prompt
     construction, and tool execution.
   - `packages/a2a-server`: Experimental Agent-to-Agent server.
-  - `packages/sdk`: Programmatic SDK for embedding Gemini CLI capabilities.
+  - `packages/sdk`: Programmatic SDK for embedding Jiminy CLI capabilities.
   - `packages/devtools`: Integrated developer tools (Network/Console inspector).
   - `packages/test-utils`: Shared test utilities and test rig.
   - `packages/vscode-ide-companion`: VS Code extension pairing with the CLI.
@@ -53,7 +53,7 @@ powerful tool for developers.
     regression tests against baselines. Excluded from `preflight`, run nightly.)
   - **Workspace-Specific:** `npm test -w <pkg> -- <path>` (Note: `<path>` must
     be relative to the workspace root, e.g.,
-    `-w @google/gemini-cli-core -- src/routing/modelRouterService.test.ts`)
+    `-w @plaer1/jiminy-cli-core -- src/routing/modelRouterService.test.ts`)
 - **Full Validation:** `npm run preflight` (Heaviest check; runs clean, install,
   build, lint, type check, and tests. Recommended before submitting PRs. Due to
   its long runtime, only run this at the very end of a code implementation task.

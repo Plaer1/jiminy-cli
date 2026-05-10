@@ -21,7 +21,7 @@ import {
   checkNextSpeaker,
   type NextSpeakerResponse,
 } from './nextSpeakerChecker.js';
-import { GeminiChat } from '../core/geminiChat.js';
+import { JiminyChat } from '../core/jiminyChat.js';
 
 // Mock fs module to prevent actual file system operations during tests
 const mockFileSystem = new Map<string, string>();
@@ -53,12 +53,12 @@ vi.mock('node:fs', () => {
   };
 });
 
-// Mock GeminiClient and Config constructor
+// Mock JiminyClient and Config constructor
 vi.mock('../core/baseLlmClient.js');
 vi.mock('../config/config.js');
 
 describe('checkNextSpeaker', () => {
-  let chatInstance: GeminiChat;
+  let chatInstance: JiminyChat;
   let mockConfig: Config;
   let mockBaseLlmClient: BaseLlmClient;
   const abortSignal = new AbortController().signal;
@@ -96,8 +96,8 @@ describe('checkNextSpeaker', () => {
       mockConfig,
     );
 
-    // GeminiChat will receive the mocked instances via the mocked GoogleGenAI constructor
-    chatInstance = new GeminiChat(
+    // JiminyChat will receive the mocked instances via the mocked GoogleGenAI constructor
+    chatInstance = new JiminyChat(
       mockConfig,
       '', // empty system instruction
       [], // no tools

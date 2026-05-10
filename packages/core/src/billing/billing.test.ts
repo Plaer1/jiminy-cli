@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import type { GeminiUserTier } from '../code_assist/types.js';
+import type { JiminyUserTier } from '../code_assist/types.js';
 import {
   buildG1Url,
   getG1CreditBalance,
@@ -84,17 +84,17 @@ describe('billing', () => {
     });
 
     it('should return null for tier without availableCredits', () => {
-      const tier: GeminiUserTier = { id: 'PERSONAL' };
+      const tier: JiminyUserTier = { id: 'PERSONAL' };
       expect(getG1CreditBalance(tier)).toBeNull();
     });
 
     it('should return null for empty availableCredits array', () => {
-      const tier: GeminiUserTier = { id: 'PERSONAL', availableCredits: [] };
+      const tier: JiminyUserTier = { id: 'PERSONAL', availableCredits: [] };
       expect(getG1CreditBalance(tier)).toBeNull();
     });
 
     it('should return null when no G1 credit type found', () => {
-      const tier: GeminiUserTier = {
+      const tier: JiminyUserTier = {
         id: 'PERSONAL',
         availableCredits: [
           { creditType: 'CREDIT_TYPE_UNSPECIFIED', creditAmount: '100' },
@@ -104,7 +104,7 @@ describe('billing', () => {
     });
 
     it('should return G1 credit balance when present', () => {
-      const tier: GeminiUserTier = {
+      const tier: JiminyUserTier = {
         id: 'PERSONAL',
         availableCredits: [{ creditType: G1_CREDIT_TYPE, creditAmount: '500' }],
       };
@@ -112,7 +112,7 @@ describe('billing', () => {
     });
 
     it('should return G1 credit balance when multiple credit types present', () => {
-      const tier: GeminiUserTier = {
+      const tier: JiminyUserTier = {
         id: 'PERSONAL',
         availableCredits: [
           { creditType: 'CREDIT_TYPE_UNSPECIFIED', creditAmount: '100' },
@@ -123,7 +123,7 @@ describe('billing', () => {
     });
 
     it('should return 0 for invalid credit amount', () => {
-      const tier: GeminiUserTier = {
+      const tier: JiminyUserTier = {
         id: 'PERSONAL',
         availableCredits: [
           { creditType: G1_CREDIT_TYPE, creditAmount: 'invalid' },
@@ -133,7 +133,7 @@ describe('billing', () => {
     });
 
     it('should handle large credit amounts (int64 as string)', () => {
-      const tier: GeminiUserTier = {
+      const tier: JiminyUserTier = {
         id: 'PERSONAL',
         availableCredits: [
           { creditType: G1_CREDIT_TYPE, creditAmount: '9999999999' },
@@ -143,7 +143,7 @@ describe('billing', () => {
     });
 
     it('should sum multiple credits of the same G1 type', () => {
-      const tier: GeminiUserTier = {
+      const tier: JiminyUserTier = {
         id: 'PERSONAL',
         availableCredits: [
           { creditType: G1_CREDIT_TYPE, creditAmount: '1000' },

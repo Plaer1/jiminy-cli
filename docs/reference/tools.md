@@ -1,19 +1,19 @@
 # Tools reference
 
-Gemini CLI uses tools to interact with your local environment, access
+Jiminy CLI uses tools to interact with your local environment, access
 information, and perform actions on your behalf. These tools extend the model's
 capabilities beyond text generation, letting it read files, execute commands,
 and search the web.
 
-## How to use Gemini CLI's tools
+## How to use Jiminy CLI's tools
 
-Tools are generally invoked automatically by Gemini CLI when it needs to perform
+Tools are generally invoked automatically by Jiminy CLI when it needs to perform
 an action. However, you can also trigger specific tools manually using shorthand
 syntax.
 
 ### Automatic execution and security
 
-When the model wants to use a tool, Gemini CLI evaluates the request against its
+When the model wants to use a tool, Jiminy CLI evaluates the request against its
 security policies.
 
 - **User confirmation:** You must manually approve tools that modify files or
@@ -119,7 +119,7 @@ each tool.
 | Tool                                             | Kind    | Description                                                                          |
 | :----------------------------------------------- | :------ | :----------------------------------------------------------------------------------- |
 | [`activate_skill`](../tools/activate-skill.md)   | `Other` | Loads specialized procedural expertise from the `.gemini/skills` directory.          |
-| [`get_internal_docs`](../tools/internal-docs.md) | `Think` | Accesses Gemini CLI's own documentation for accurate answers about its capabilities. |
+| [`get_internal_docs`](../tools/internal-docs.md) | `Think` | Accesses Jiminy CLI's own documentation for accurate answers about its capabilities. |
 | [`save_memory`](../tools/memory.md)              | `Think` | Persists specific facts and project details to your `GEMINI.md` file.                |
 
 ### Planning
@@ -159,7 +159,7 @@ each tool.
 For developers, the tool system is designed to be extensible and robust. The
 `ToolRegistry` class manages all available tools.
 
-You can extend Gemini CLI with custom tools by configuring
+You can extend Jiminy CLI with custom tools by configuring
 `tools.discoveryCommand` in your settings or by connecting to MCP servers.
 
 <!-- prettier-ignore -->

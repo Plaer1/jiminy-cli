@@ -50,7 +50,7 @@ describe('LSTool', () => {
       getFileService: () => new FileDiscoveryService(tempRootDir),
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
       }),
       storage: mockStorage,
       isPathAllowed(this: Config, absolutePath: string): boolean {

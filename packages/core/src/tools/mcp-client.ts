@@ -42,7 +42,7 @@ import {
   AuthProviderType,
   type Config,
   type MCPServerConfig,
-  type GeminiCLIExtension,
+  type JiminyCLIExtension,
 } from '../config/config.js';
 import { GoogleCredentialProvider } from '../mcp/google-auth-provider.js';
 import { ServiceAccountImpersonationProvider } from '../mcp/sa-impersonation-provider.js';
@@ -1782,7 +1782,7 @@ export async function connectToMcpServer(
 ): Promise<Client> {
   const mcpClient = new Client(
     {
-      name: 'gemini-cli-mcp-client',
+      name: 'jiminy-cli-mcp-client',
       version: clientVersion,
     },
     {
@@ -2329,7 +2329,7 @@ interface NamedTool {
 }
 
 function getExtensionEnvironment(
-  extension?: GeminiCLIExtension,
+  extension?: JiminyCLIExtension,
 ): Record<string, string> {
   const env: Record<string, string> = {};
   if (extension?.resolvedSettings) {

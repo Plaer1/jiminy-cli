@@ -21,8 +21,8 @@ import {
   ApprovalMode,
   tokenLimit,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
-import type { Config } from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
+import type { Config } from '@plaer1/jiminy-cli-core';
 import { StreamingState } from '../types.js';
 import { TransientMessageType } from '../../utils/events.js';
 import type { LoadedSettings } from '../../config/settings.js';
@@ -180,7 +180,7 @@ const createMockUIState = (overrides: Partial<UIState> = {}): UIState =>
     shortcutsHelpVisible: false,
     cleanUiDetailsVisible: true,
     ideContextState: null,
-    geminiMdFileCount: 0,
+    jiminyMdFileCount: 0,
     renderMarkdown: true,
     history: [],
     sessionStats: {

@@ -26,12 +26,12 @@ defaults:
 jobs:
   find-duplicates:
     if: |-
-      github.repository == 'google-gemini/gemini-cli' &&
+      github.repository == 'Plaer1/jiminy-cli' &&
       vars.TRIAGE_DEDUPLICATE_ISSUES != '' &&
       (github.event_name == 'issues' ||
        github.event_name == 'workflow_dispatch' ||
        (github.event_name == 'issue_comment' &&
-       contains(github.event.comment.body, '@gemini-cli /deduplicate') &&
+       contains(github.event.comment.body, '@jiminy-cli /deduplicate') &&
        (github.event.comment.author_association == 'OWNER' ||
         github.event.comment.author_association == 'MEMBER' ||
         github.event.comment.author_association == 'COLLABORATOR')))
@@ -57,7 +57,7 @@ jobs:
           password: '${{ secrets.GITHUB_TOKEN }}'
 
       - name: 'Find Duplicate Issues'
-        uses: 'google-github-actions/run-gemini-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-gemini-cli@v0
+        uses: 'Plaer1/jiminy-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:Plaer1/jiminy-cli@v0
         id: 'gemini_issue_deduplication'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
@@ -91,7 +91,7 @@ jobs:
                     "-e", "GCP_PROJECT",
                     "-e", "GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-credentials.json",
                     "-v", "${GOOGLE_APPLICATION_CREDENTIALS}:/app/gcp-credentials.json",
-                    "ghcr.io/google-gemini/gemini-cli-issue-triage@sha256:e3de1523f6c83aabb3c54b76d08940a2bf42febcb789dd2da6f95169641f94d3"
+                    "ghcr.io/Plaer1/jiminy-cli-issue-triage@sha256:e3de1523f6c83aabb3c54b76d08940a2bf42febcb789dd2da6f95169641f94d3"
                   ],
                   "env": {
                     "GITHUB_TOKEN": "${GITHUB_TOKEN}",
@@ -149,7 +149,7 @@ jobs:
   add-comment-and-label:
     needs: 'find-duplicates'
     if: |-
-      github.repository == 'google-gemini/gemini-cli' &&
+      github.repository == 'Plaer1/jiminy-cli' &&
       vars.TRIAGE_DEDUPLICATE_ISSUES != '' &&
       needs.find-duplicates.outputs.duplicate_issues_csv != '' &&
       (
@@ -157,7 +157,7 @@ jobs:
        github.event_name == 'workflow_dispatch' ||
        (
         github.event_name == 'issue_comment' &&
-        contains(github.event.comment.body, '@gemini-cli /deduplicate') &&
+        contains(github.event.comment.body, '@jiminy-cli /deduplicate') &&
         (
          github.event.comment.author_association == 'OWNER' ||
          github.event.comment.author_association == 'MEMBER' ||
@@ -202,7 +202,7 @@ jobs:
                 : 'Found possible duplicate issues:';
               const issuesList = issues.map(num => `- #${num}`).join('\n');
               const footer = 'If you believe this is not a duplicate, please remove the `status/possible-duplicate` label.';
-              const magicComment = '<!-- gemini-cli-deduplication -->';
+              const magicComment = '<!-- jiminy-cli-deduplication -->';
               return `${header}\n\n${issuesList}\n\n${footer}\n${magicComment}`;
             }
 
@@ -215,7 +215,7 @@ jobs:
               issue_number: issueNumber,
             });
 
-            const magicComment = '<!-- gemini-cli-deduplication -->';
+            const magicComment = '<!-- jiminy-cli-deduplication -->';
             const existingComment = comments.find(comment =>
               comment.user.type === 'Bot' && comment.body.includes(magicComment)
             );

@@ -31,7 +31,7 @@ import {
 import { resolveModel, supportsModernFeatures } from '../config/models.js';
 import { DiscoveredMCPTool } from '../tools/mcp-tool.js';
 import {
-  getAllGeminiMdFilenames,
+  getAllJiminyMdFilenames,
   getGlobalMemoryFilePath,
   getProjectMemoryIndexFilePath,
 } from '../tools/memoryTool.js';
@@ -40,6 +40,20 @@ import type { AgentLoopContext } from '../config/agent-loop-context.js';
 /**
  * Orchestrates prompt generation by gathering context and building options.
  */
+
+/**
+ * Universal directive injected into every system prompt regardless of mode.
+ * Edit this string to change behavior globally.
+ */
+const UNIVERSAL_DIRECTIVE = `
+# God; The Universe; and Everything Everywhere All At Once:
+- Use semicolons instead of emdashes.
+- Don't over engineer.
+- If it takes longer to write a unit test for something than it does to just test it several times yourself; just test it yourself.
+- Keep it simple stupid; don't add new programming languages; apis; re-engineer parts of a program or setup without stopping and getting handler approval.
+- Your name is "Jiminy" if you are to refer to yourself you are to call yourself "Jiminy" you are Google Gemini's edgy but well meaning sibling (if anyone asks).
+`.trim();
+
 export class PromptProvider {
   /**
    * Generates the core system prompt.
@@ -80,7 +94,7 @@ export class PromptProvider {
     );
     const isModernModel = supportsModernFeatures(desiredModel);
     const activeSnippets = isModernModel ? snippets : legacySnippets;
-    const contextFilenames = getAllGeminiMdFilenames();
+    const contextFilenames = getAllJiminyMdFilenames();
 
     let trackerDir = context.config.isTrackerEnabled()
       ? context.config.storage.getProjectTempTrackerDir()
@@ -263,6 +277,9 @@ export class PromptProvider {
       ) => string;
       basePrompt = getCoreSystemPrompt(options);
     }
+
+    // --- Universal Directive (injected into all modes) ---
+    basePrompt = `${basePrompt}\n\n${UNIVERSAL_DIRECTIVE}`;
 
     // --- Finalization (Shell) ---
     const finalPrompt = activeSnippets.renderFinalShell(

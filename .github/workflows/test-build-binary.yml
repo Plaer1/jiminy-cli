@@ -114,7 +114,7 @@ jobs:
         run: 'npm run build:binary'
 
       - name: 'Build Core Package'
-        run: 'npm run build -w @google/gemini-cli-core'
+        run: 'npm run build -w @plaer1/jiminy-cli-core'
 
       - name: 'Verify Output Exists'
         run: |
@@ -156,6 +156,6 @@ jobs:
       - name: 'Upload Artifact'
         uses: 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' # ratchet:actions/upload-artifact@v4
         with:
-          name: 'gemini-cli-${{ matrix.platform_name }}'
+          name: 'jiminy-cli-${{ matrix.platform_name }}'
           path: 'dist/${{ matrix.platform_name }}/'
           retention-days: 5

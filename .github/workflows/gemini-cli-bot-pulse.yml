@@ -1,4 +1,4 @@
-name: '🔄 Gemini CLI Bot: Pulse'
+name: '🔄 Jiminy CLI Bot: Pulse'
 
 on:
   schedule:
@@ -18,7 +18,7 @@ jobs:
   pulse:
     name: 'Pulse (Reflex Layer)'
     runs-on: 'ubuntu-latest'
-    if: "github.repository == 'google-gemini/gemini-cli'"
+    if: "github.repository == 'Plaer1/jiminy-cli'"
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8' # ratchet:actions/checkout@v5
@@ -38,8 +38,8 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         run: |
-          if [ -d "tools/gemini-cli-bot/reflexes/scripts" ] && [ "$(ls -A tools/gemini-cli-bot/reflexes/scripts)" ]; then
-            for script in tools/gemini-cli-bot/reflexes/scripts/*.ts; do
+          if [ -d "tools/jiminy-cli-bot/reflexes/scripts" ] && [ "$(ls -A tools/jiminy-cli-bot/reflexes/scripts)" ]; then
+            for script in tools/jiminy-cli-bot/reflexes/scripts/*.ts; do
               echo "Running reflex script: $script"
               npx tsx "$script"
             done

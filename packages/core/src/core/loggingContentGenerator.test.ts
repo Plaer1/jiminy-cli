@@ -44,7 +44,7 @@ import { UserTierId } from '../code_assist/types.js';
 import { ApiRequestEvent, LlmRole } from '../telemetry/types.js';
 import { FatalAuthenticationError } from '../utils/errors.js';
 import {
-  GeminiCliOperation,
+  JiminyCliOperation,
   GEN_AI_PROMPT_NAME,
   GEN_AI_REQUEST_MODEL,
   GEN_AI_SYSTEM_INSTRUCTIONS,
@@ -144,7 +144,7 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
           attributes: expect.objectContaining({
             [GEN_AI_REQUEST_MODEL]: 'gemini-pro',
             [GEN_AI_PROMPT_NAME]: userPromptId,
@@ -208,7 +208,7 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
           attributes: expect.objectContaining({
             [GEN_AI_REQUEST_MODEL]: 'gemini-pro',
             [GEN_AI_PROMPT_NAME]: userPromptId,
@@ -502,7 +502,7 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
 
           attributes: expect.objectContaining({
             [GEN_AI_REQUEST_MODEL]: 'gemini-pro',
@@ -729,7 +729,7 @@ describe('LoggingContentGenerator', () => {
 
       expect(runInDevTraceSpan).toHaveBeenCalledWith(
         expect.objectContaining({
-          operation: GeminiCliOperation.LLMCall,
+          operation: JiminyCliOperation.LLMCall,
           attributes: expect.objectContaining({
             [GEN_AI_REQUEST_MODEL]: req.model,
           }),

@@ -88,10 +88,10 @@ class WebSearchToolInvocation extends BaseToolInvocation<
   async execute({
     abortSignal: signal,
   }: ExecuteOptions): Promise<WebSearchToolResult> {
-    const geminiClient = this.context.geminiClient;
+    const jiminyClient = this.context.jiminyClient;
 
     try {
-      const response = await geminiClient.generateContent(
+      const response = await jiminyClient.generateContent(
         { model: 'web-search' },
         [{ role: 'user', parts: [{ text: this.params.query }] }],
         signal,

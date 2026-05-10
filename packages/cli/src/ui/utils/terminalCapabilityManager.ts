@@ -14,7 +14,7 @@ import {
   enableBracketedPasteMode,
   disableBracketedPasteMode,
   disableMouseEvents,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { parseColor } from '../themes/color-utils.js';
 
 export type TerminalBackgroundColor = string | undefined;

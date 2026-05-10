@@ -6,7 +6,7 @@
 
 import {
   type Config,
-  type GeminiChat,
+  type JiminyChat,
   type ToolResult,
   type ToolCallConfirmationDetails,
   type FilterFilesOptions,
@@ -52,7 +52,7 @@ import {
   InvalidStreamError,
   type AgentLoopContext,
   updatePolicy,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as acp from '@agentclientprotocol/sdk';
 import { AcpFileSystemService } from './fileSystemService.js';
 import { getAcpErrorMessage } from './acpErrors.js';
@@ -179,8 +179,8 @@ export class GeminiAgent {
       protocolVersion: acp.PROTOCOL_VERSION,
       authMethods,
       agentInfo: {
-        name: 'gemini-cli',
-        title: 'Gemini CLI',
+        name: 'jiminy-cli',
+        title: 'Jiminy CLI',
         version,
       },
       agentCapabilities: {
@@ -295,7 +295,7 @@ export class GeminiAgent {
         (!contentGeneratorConfig || !contentGeneratorConfig.apiKey)
       ) {
         isAuthenticated = false;
-        authErrorMessage = 'Gemini API key is missing or not configured.';
+        authErrorMessage = 'Jiminy API key is missing or not configured.';
       }
     } catch (e) {
       isAuthenticated = false;
@@ -327,8 +327,8 @@ export class GeminiAgent {
     startupProfiler.flush(config);
     startAutoMemoryIfEnabled(config);
 
-    const geminiClient = config.getGeminiClient();
-    const chat = await geminiClient.startChat();
+    const jiminyClient = config.getJiminyClient();
+    const chat = await jiminyClient.startChat();
 
     const session = new Session(
       sessionId,
@@ -380,16 +380,16 @@ export class GeminiAgent {
 
     const clientHistory = convertSessionToClientHistory(sessionData.messages);
 
-    const geminiClient = config.getGeminiClient();
-    await geminiClient.initialize();
-    await geminiClient.resumeChat(clientHistory, {
+    const jiminyClient = config.getJiminyClient();
+    await jiminyClient.initialize();
+    await jiminyClient.resumeChat(clientHistory, {
       conversation: sessionData,
       filePath: sessionPath,
     });
 
     const session = new Session(
       sessionId,
-      geminiClient.getChat(),
+      jiminyClient.getChat(),
       config,
       this.connection,
       this.settings,
@@ -573,7 +573,7 @@ export class Session {
 
   constructor(
     private readonly id: string,
-    private readonly chat: GeminiChat,
+    private readonly chat: JiminyChat,
     private readonly context: AgentLoopContext,
     private readonly connection: acp.AgentSideConnection,
     private readonly settings: LoadedSettings,
@@ -2035,8 +2035,8 @@ function buildAvailableModels(
     config.getModelConfigService
   ) {
     const options = config.getModelConfigService().getAvailableModelOptions({
-      useGemini3_1: useGemini31,
-      useGemini3_1FlashLite: useGemini31FlashLite,
+      useJiminy3_1: useGemini31,
+      useJiminy3_1FlashLite: useGemini31FlashLite,
       useCustomTools: useCustomToolModel,
       hasAccessToPreview: shouldShowPreviewModels,
     });
@@ -2053,7 +2053,7 @@ function buildAvailableModels(
       value: DEFAULT_GEMINI_MODEL_AUTO,
       title: getDisplayString(DEFAULT_GEMINI_MODEL_AUTO),
       description:
-        'Let Gemini CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
+        'Let Jiminy CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
     },
   ];
 
@@ -2062,8 +2062,8 @@ function buildAvailableModels(
       value: PREVIEW_GEMINI_MODEL_AUTO,
       title: getDisplayString(PREVIEW_GEMINI_MODEL_AUTO),
       description: useGemini31
-        ? 'Let Gemini CLI decide the best model for the task: gemini-3.1-pro, gemini-3-flash'
-        : 'Let Gemini CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
+        ? 'Let Jiminy CLI decide the best model for the task: gemini-3.1-pro, gemini-3-flash'
+        : 'Let Jiminy CLI decide the best model for the task: gemini-3-pro, gemini-3-flash',
     });
   }
 

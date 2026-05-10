@@ -6,7 +6,7 @@
 
 import { describe, it, expect, afterEach } from 'vitest';
 import { Ignore, loadIgnoreRules } from './ignore.js';
-import { createTmpDir, cleanupTmpDir } from '@google/gemini-cli-test-utils';
+import { createTmpDir, cleanupTmpDir } from '@plaer1/jiminy-cli-test-utils';
 import { GEMINI_IGNORE_FILE_NAME } from '../../config/constants.js';
 import { FileDiscoveryService } from '../../services/fileDiscoveryService.js';
 
@@ -83,7 +83,7 @@ describe('loadIgnoreRules', () => {
     });
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: true,
-      respectGeminiIgnore: false,
+      respectJiminyIgnore: false,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -97,7 +97,7 @@ describe('loadIgnoreRules', () => {
     });
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: false,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -113,7 +113,7 @@ describe('loadIgnoreRules', () => {
     });
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: true,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -126,7 +126,7 @@ describe('loadIgnoreRules', () => {
     tmpDir = await createTmpDir({});
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: false,
-      respectGeminiIgnore: false,
+      respectJiminyIgnore: false,
     });
     const ignore = loadIgnoreRules(service, ['logs/']);
     const dirFilter = ignore.getDirectoryFilter();
@@ -138,7 +138,7 @@ describe('loadIgnoreRules', () => {
     tmpDir = await createTmpDir({});
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: true,
-      respectGeminiIgnore: true,
+      respectJiminyIgnore: true,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -149,7 +149,7 @@ describe('loadIgnoreRules', () => {
     tmpDir = await createTmpDir({});
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: false,
-      respectGeminiIgnore: false,
+      respectJiminyIgnore: false,
     });
     const ignore = loadIgnoreRules(service, []);
     const dirFilter = ignore.getDirectoryFilter();

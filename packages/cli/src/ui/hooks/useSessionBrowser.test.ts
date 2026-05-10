@@ -19,12 +19,12 @@ import {
   type MessageRecord,
   CoreToolCallStatus,
   loadConversationRecord,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   coreEvents,
   convertSessionToClientHistory,
   uiTelemetryService,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 // Mock modules
 vi.mock('fs/promises');
@@ -37,9 +37,9 @@ vi.mock('../../utils/sessionUtils.js', async (importOriginal) => {
     getSessionFiles: vi.fn(),
   };
 });
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     uiTelemetryService: {
@@ -65,7 +65,7 @@ describe('useSessionBrowser', () => {
     },
     setSessionId: vi.fn(),
     getSessionId: vi.fn(),
-    getGeminiClient: vi.fn().mockReturnValue({
+    getJiminyClient: vi.fn().mockReturnValue({
       getChatRecordingService: vi.fn().mockReturnValue({
         deleteSession: vi.fn(),
       }),

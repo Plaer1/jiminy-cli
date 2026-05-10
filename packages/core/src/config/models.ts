@@ -5,8 +5,8 @@
  */
 
 export interface ModelResolutionContext {
-  useGemini3_1?: boolean;
-  useGemini3_1FlashLite?: boolean;
+  useJiminy3_1?: boolean;
+  useJiminy3_1FlashLite?: boolean;
   useCustomTools?: boolean;
   hasAccessToPreview?: boolean;
   requestedModel?: string;
@@ -97,14 +97,14 @@ export const DEFAULT_THINKING_MODE = 8192;
  * to a concrete model name.
  *
  * @param requestedModel The model alias or concrete model name requested by the user.
- * @param useGemini3_1 Whether to use Gemini 3.1 Pro Preview for auto/pro aliases.
+ * @param useJiminy3_1 Whether to use Gemini 3.1 Pro Preview for auto/pro aliases.
  * @param hasAccessToPreview Whether the user has access to preview models.
  * @returns The resolved concrete model name.
  */
 export function resolveModel(
   requestedModel: string,
-  useGemini3_1: boolean = false,
-  useGemini3_1FlashLite: boolean = false,
+  useJiminy3_1: boolean = false,
+  useJiminy3_1FlashLite: boolean = false,
   useCustomToolModel: boolean = false,
   hasAccessToPreview: boolean = true,
   config?: ModelCapabilityContext,
@@ -118,8 +118,8 @@ export function resolveModel(
 
   if (config?.getExperimentalDynamicModelConfiguration?.() === true) {
     const resolved = config.modelConfigService.resolveModelId(normalizedModel, {
-      useGemini3_1,
-      useGemini3_1FlashLite,
+      useJiminy3_1,
+      useJiminy3_1FlashLite,
       useCustomTools: useCustomToolModel,
       hasAccessToPreview,
     });
@@ -144,7 +144,7 @@ export function resolveModel(
     case PREVIEW_GEMINI_MODEL_AUTO:
     case GEMINI_MODEL_ALIAS_AUTO:
     case GEMINI_MODEL_ALIAS_PRO: {
-      if (useGemini3_1) {
+      if (useJiminy3_1) {
         resolved = useCustomToolModel
           ? PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL
           : PREVIEW_GEMINI_3_1_MODEL;
@@ -162,7 +162,7 @@ export function resolveModel(
       break;
     }
     case GEMINI_MODEL_ALIAS_FLASH_LITE: {
-      resolved = useGemini3_1FlashLite
+      resolved = useJiminy3_1FlashLite
         ? PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL
         : DEFAULT_GEMINI_FLASH_LITE_MODEL;
       break;
@@ -204,7 +204,7 @@ export function resolveModel(
  *
  * @param requestedModel The current requested model (e.g. auto-gemini-2.5).
  * @param modelAlias The alias selected by the classifier ('flash' or 'pro').
- * @param useGemini3_1 Whether to use Gemini 3.1 Pro Preview.
+ * @param useJiminy3_1 Whether to use Gemini 3.1 Pro Preview.
  * @param useCustomToolModel Whether to use the custom tool model.
  * @param config Optional config object for dynamic model configuration.
  * @returns The resolved concrete model name.
@@ -212,8 +212,8 @@ export function resolveModel(
 export function resolveClassifierModel(
   requestedModel: string,
   modelAlias: string,
-  useGemini3_1: boolean = false,
-  useGemini3_1FlashLite: boolean = false,
+  useJiminy3_1: boolean = false,
+  useJiminy3_1FlashLite: boolean = false,
   useCustomToolModel: boolean = false,
   hasAccessToPreview: boolean = true,
   config?: ModelCapabilityContext,
@@ -223,8 +223,8 @@ export function resolveClassifierModel(
       modelAlias,
       requestedModel,
       {
-        useGemini3_1,
-        useGemini3_1FlashLite,
+        useJiminy3_1,
+        useJiminy3_1FlashLite,
         useCustomTools: useCustomToolModel,
         hasAccessToPreview,
       },
@@ -248,8 +248,8 @@ export function resolveClassifierModel(
   }
   return resolveModel(
     requestedModel,
-    useGemini3_1,
-    useGemini3_1FlashLite,
+    useJiminy3_1,
+    useJiminy3_1FlashLite,
     useCustomToolModel,
   );
 }
@@ -362,7 +362,7 @@ export function isGemini3Model(
  * @param model The model name to check.
  * @returns True if the model is a Gemini-2.x model.
  */
-export function isGemini2Model(model: string): boolean {
+export function isJiminy2Model(model: string): boolean {
   // This is legacy behavior, will remove this when gemini 2 models are no
   // longer needed.
   return /^gemini-2(\.|$)/.test(model);
@@ -447,13 +447,13 @@ export function supportsMultimodalFunctionResponse(
  * Checks if the given model is considered active based on the current configuration.
  *
  * @param model The model name to check.
- * @param useGemini3_1 Whether Gemini 3.1 Pro Preview is enabled.
+ * @param useJiminy3_1 Whether Gemini 3.1 Pro Preview is enabled.
  * @returns True if the model is active.
  */
 export function isActiveModel(
   model: string,
-  useGemini3_1: boolean = false,
-  useGemini3_1FlashLite: boolean = false,
+  useJiminy3_1: boolean = false,
+  useJiminy3_1FlashLite: boolean = false,
   useCustomToolModel: boolean = false,
   experimentalGemma: boolean = false,
 ): boolean {
@@ -464,9 +464,9 @@ export function isActiveModel(
     return experimentalGemma;
   }
   if (model === PREVIEW_GEMINI_3_1_FLASH_LITE_MODEL) {
-    return useGemini3_1FlashLite;
+    return useJiminy3_1FlashLite;
   }
-  if (useGemini3_1) {
+  if (useJiminy3_1) {
     if (model === PREVIEW_GEMINI_MODEL) {
       return false;
     }

@@ -1,8 +1,8 @@
-# Gemini CLI core
+# Jiminy CLI core
 
-Gemini CLI's core package (`packages/core`) is the backend portion of Gemini
+Jiminy CLI's core package (`packages/core`) is the backend portion of Gemini
 CLI, handling communication with the Gemini API, managing tools, and processing
-requests sent from `packages/cli`. For a general overview of Gemini CLI, see the
+requests sent from `packages/cli`. For a general overview of Jiminy CLI, see the
 [main documentation page](../index.md).
 
 ## Navigating this section
@@ -20,7 +20,7 @@ requests sent from `packages/cli`. For a general overview of Gemini CLI, see the
 
 ## Role of the core
 
-While the `packages/cli` portion of Gemini CLI provides the user interface,
+While the `packages/cli` portion of Jiminy CLI provides the user interface,
 `packages/core` is responsible for:
 
 - **Gemini API interaction:** Securely communicating with the Google Gemini API,
@@ -65,16 +65,16 @@ You can find the token limits for each model in the
 
 ## Model fallback
 
-Gemini CLI includes a model fallback mechanism to ensure that you can continue
+Jiminy CLI includes a model fallback mechanism to ensure that you can continue
 to use the CLI even if the default "pro" model is rate-limited.
 
 If you are using the default "pro" model and the CLI detects that you are being
 rate-limited, it automatically switches to the "flash" model for the current
 session. This lets you continue working without interruption.
 
-Internal utility calls that use `gemini-2.5-flash-lite` (for example, prompt
-completion and classification) silently fall back to `gemini-2.5-flash` and
-`gemini-2.5-pro` when quota is exhausted, without changing the configured model.
+Internal utility calls that use `jiminy-2.5-flash-lite` (for example, prompt
+completion and classification) silently fall back to `jiminy-2.5-flash` and
+`jiminy-2.5-pro` when quota is exhausted, without changing the configured model.
 
 ## File discovery service
 

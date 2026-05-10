@@ -22,8 +22,8 @@ export class FileKeychain implements Keychain {
   }
 
   private deriveEncryptionKey(): Buffer {
-    const salt = `${os.hostname()}-${os.userInfo().username}-gemini-cli`;
-    return crypto.scryptSync('gemini-cli-oauth', salt, 32);
+    const salt = `${os.hostname()}-${os.userInfo().username}-jiminy-cli`;
+    return crypto.scryptSync('jiminy-cli-oauth', salt, 32);
   }
 
   private encrypt(text: string): string {

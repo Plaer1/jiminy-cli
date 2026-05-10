@@ -52,7 +52,7 @@ import {
   type IdeInfo,
   type IdeContext,
   type UserTierId,
-  type GeminiUserTier,
+  type JiminyUserTier,
   type UserFeedbackPayload,
   type HookSystemMessagePayload,
   type AgentDefinition,
@@ -60,7 +60,7 @@ import {
   IdeClient,
   ideContextStore,
   getErrorMessage,
-  getAllGeminiMdFilenames,
+  getAllJiminyMdFilenames,
   AuthType,
   clearCachedCredentialFile,
   type ResumedSessionData,
@@ -92,7 +92,7 @@ import {
   ApiKeyUpdatedEvent,
   LegacyAgentProtocol,
   type InjectionSource,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { validateAuthMethod } from '../config/auth.js';
 import process from 'node:process';
 import { useHistory } from './hooks/useHistoryManager.js';
@@ -235,7 +235,7 @@ export const AppContainer = (props: AppContainerProps) => {
     useContext(InkAppContext);
   const recordingFilenameRef = useRef<string | null>(null);
   const historyManager = useHistory({
-    chatRecordingService: config.getGeminiClient()?.getChatRecordingService(),
+    chatRecordingService: config.getJiminyClient()?.getChatRecordingService(),
   });
 
   useMemoryMonitor(historyManager);
@@ -451,7 +451,7 @@ export const AppContainer = (props: AppContainerProps) => {
       ? { remaining, limit, resetTime }
       : undefined;
   });
-  const [paidTier, setPaidTier] = useState<GeminiUserTier | undefined>(
+  const [paidTier, setPaidTier] = useState<JiminyUserTier | undefined>(
     undefined,
   );
 
@@ -509,9 +509,9 @@ export const AppContainer = (props: AppContainerProps) => {
         }
 
         const additionalContext = result.getAdditionalContext();
-        const geminiClient = config.getGeminiClient();
-        if (additionalContext && geminiClient) {
-          await geminiClient.addHistory({
+        const jiminyClient = config.getJiminyClient();
+        if (additionalContext && jiminyClient) {
+          await jiminyClient.addHistory({
             role: 'user',
             parts: [
               { text: `<hook_context>${additionalContext}</hook_context>` },
@@ -790,13 +790,13 @@ export const AppContainer = (props: AppContainerProps) => {
     settings.merged.security.auth.selectedType !== AuthType.USE_GEMINI;
 
   // Session browser and resume functionality
-  const isGeminiClientInitialized = config.getGeminiClient()?.isInitialized();
+  const isJiminyClientInitialized = config.getJiminyClient()?.isInitialized();
 
   const { loadHistoryForResume, isResuming } = useSessionResume({
     config,
     historyManager,
     refreshStatic,
-    isGeminiClientInitialized,
+    isJiminyClientInitialized,
     setQuittingMessages,
     resumedSessionData,
     isAuthenticating,
@@ -860,7 +860,7 @@ export const AppContainer = (props: AppContainerProps) => {
         ) {
           writeToStdout(`
 ----------------------------------------------------------------
-Logging in with Google... Restarting Gemini CLI to continue.
+Logging in with Google... Restarting Jiminy CLI to continue.
 ----------------------------------------------------------------
           `);
           await relaunchApp();
@@ -1207,7 +1207,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       })
     : // eslint-disable-next-line react-hooks/rules-of-hooks
       useGeminiStream(
-        config.getGeminiClient(),
+        config.getJiminyClient(),
         historyManager.history,
         historyManager.addItem,
         config,
@@ -1577,12 +1577,12 @@ Logging in with Google... Restarting Gemini CLI to continue.
       ? Array.isArray(fromSettings)
         ? fromSettings
         : [fromSettings]
-      : getAllGeminiMdFilenames();
+      : getAllJiminyMdFilenames();
   }, [settings.merged.context.fileName]);
   // Initial prompt handling
   const initialPrompt = useMemo(() => config.getQuestion(), [config]);
   const initialPromptSubmitted = useRef(false);
-  const geminiClient = config.getGeminiClient();
+  const jiminyClient = config.getJiminyClient();
 
   useEffect(() => {
     if (
@@ -1594,7 +1594,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       !isThemeDialogOpen &&
       !isEditorDialogOpen &&
       !showPrivacyNotice &&
-      geminiClient?.isInitialized?.()
+      jiminyClient?.isInitialized?.()
     ) {
       void handleFinalSubmit(initialPrompt);
       initialPromptSubmitted.current = true;
@@ -1608,7 +1608,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
     isThemeDialogOpen,
     isEditorDialogOpen,
     showPrivacyNotice,
-    geminiClient,
+    jiminyClient,
   ]);
 
   const [idePromptAnswered, setIdePromptAnswered] = useState(false);
@@ -2111,7 +2111,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       lastTitleRef.current = paddedTitle;
       stdout.write(`\x1b]0;${paddedTitle}\x07`);
     }
-    // Note: We don't need to reset the window title on exit because Gemini CLI is already doing that elsewhere
+    // Note: We don't need to reset the window title on exit because Jiminy CLI is already doing that elsewhere
   }, [
     streamingState,
     thought,
@@ -2359,7 +2359,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
     [pendingHistoryItems],
   );
 
-  const [geminiMdFileCount, setGeminiMdFileCount] = useState<number>(
+  const [jiminyMdFileCount, setGeminiMdFileCount] = useState<number>(
     config.getGeminiMdFileCount(),
   );
   useEffect(() => {
@@ -2475,7 +2475,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       confirmUpdateExtensionRequests,
       loopDetectionConfirmationRequest,
       permissionConfirmationRequest,
-      geminiMdFileCount,
+      jiminyMdFileCount,
       streamingState,
       initError,
       pendingGeminiHistoryItems,
@@ -2588,7 +2588,7 @@ Logging in with Google... Restarting Gemini CLI to continue.
       confirmUpdateExtensionRequests,
       loopDetectionConfirmationRequest,
       permissionConfirmationRequest,
-      geminiMdFileCount,
+      jiminyMdFileCount,
       streamingState,
       initError,
       pendingGeminiHistoryItems,

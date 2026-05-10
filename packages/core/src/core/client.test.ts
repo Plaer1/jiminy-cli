@@ -15,21 +15,21 @@ import {
 } from 'vitest';
 
 import type { Content, GenerateContentResponse, Part } from '@google/genai';
-import { GeminiClient } from './client.js';
+import { JiminyClient } from './client.js';
 import {
   AuthType,
   type ContentGenerator,
   type ContentGeneratorConfig,
 } from './contentGenerator.js';
-import { GeminiChat } from './geminiChat.js';
+import { JiminyChat } from './jiminyChat.js';
 import type { Config } from '../config/config.js';
 import type { AgentLoopContext } from '../config/agent-loop-context.js';
 import {
   CompressionStatus,
-  GeminiEventType,
+  JiminyEventType,
   Turn,
   type ChatCompressionInfo,
-  type ServerGeminiStreamEvent,
+  type ServerJiminyStreamEvent,
 } from './turn.js';
 import { getCoreSystemPrompt } from './prompts.js';
 import { DEFAULT_GEMINI_MODEL_AUTO } from '../config/models.js';
@@ -165,7 +165,7 @@ async function fromAsync<T>(promise: AsyncGenerator<T>): Promise<readonly T[]> {
 describe('Gemini Client (client.ts)', () => {
   let mockContentGenerator: ContentGenerator;
   let mockConfig: Config;
-  let client: GeminiClient;
+  let client: JiminyClient;
   let mockGenerateContentFn: Mock;
   let mockRouterService: { route: Mock };
   beforeEach(async () => {
@@ -193,7 +193,7 @@ describe('Gemini Client (client.ts)', () => {
       countTokens: vi.fn().mockResolvedValue({ totalTokens: 100 }),
     } as unknown as ContentGenerator;
 
-    // Because the GeminiClient constructor kicks off an async process (startChat)
+    // Because the JiminyClient constructor kicks off an async process (startChat)
     // that depends on a fully-formed Config object, we need to mock the
     // entire implementation of Config for these tests.
     const mockToolRegistry = {
@@ -247,7 +247,7 @@ describe('Gemini Client (client.ts)', () => {
       getWorkspaceContext: vi.fn().mockReturnValue({
         getDirectories: vi.fn().mockReturnValue(['/test/dir']),
       }),
-      getGeminiClient: vi.fn(),
+      getJiminyClient: vi.fn(),
       getRetryFetchErrors: vi.fn().mockReturnValue(true),
       getMaxAttempts: vi.fn().mockReturnValue(3),
       getModelRouterService: vi
@@ -309,10 +309,10 @@ describe('Gemini Client (client.ts)', () => {
     (mockConfig as unknown as { config: Config; promptId: string }).promptId =
       'test-prompt-id';
 
-    client = new GeminiClient(mockConfig as unknown as AgentLoopContext);
+    client = new JiminyClient(mockConfig as unknown as AgentLoopContext);
     await client.initialize();
-    vi.mocked(mockConfig.getGeminiClient).mockReturnValue(client);
-    (mockConfig as unknown as { geminiClient: GeminiClient }).geminiClient =
+    vi.mocked(mockConfig.getJiminyClient).mockReturnValue(client);
+    (mockConfig as unknown as { jiminyClient: JiminyClient }).jiminyClient =
       client;
 
     vi.mocked(uiTelemetryService.setLastPromptTokenCount).mockClear();
@@ -328,7 +328,7 @@ describe('Gemini Client (client.ts)', () => {
       const mockChat = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
-      } as unknown as GeminiChat;
+      } as unknown as JiminyChat;
       client['chat'] = mockChat;
 
       const newContent = {
@@ -420,7 +420,7 @@ describe('Gemini Client (client.ts)', () => {
 
       // The first message should be the environment context
       expect(history[0].role).toBe('user');
-      expect(history[0].parts?.[0]?.text).toContain('This is the Gemini CLI');
+      expect(history[0].parts?.[0]?.text).toContain('This is the Jiminy CLI');
       expect(history[0].parts?.[0]?.text).toContain(
         "The project's temporary directory is:",
       );
@@ -445,7 +445,7 @@ describe('Gemini Client (client.ts)', () => {
         setHistory: vi.fn(),
         setTools: vi.fn(),
         getLastPromptTokenCount: vi.fn(),
-      } as unknown as GeminiChat;
+      } as unknown as JiminyChat;
     });
 
     function setup({
@@ -457,7 +457,7 @@ describe('Gemini Client (client.ts)', () => {
       newTokenCount = 500,
       compressionStatus = CompressionStatus.COMPRESSED,
     } = {}) {
-      const mockOriginalChat: Partial<GeminiChat> = {
+      const mockOriginalChat: Partial<JiminyChat> = {
         getHistory: vi.fn((_curated?: boolean) => chatHistory),
         setHistory: vi.fn(),
         getLastPromptTokenCount: vi.fn().mockReturnValue(originalTokenCount),
@@ -466,7 +466,7 @@ describe('Gemini Client (client.ts)', () => {
           getConversationFilePath: vi.fn().mockReturnValue(null),
         }),
       };
-      client['chat'] = mockOriginalChat as GeminiChat;
+      client['chat'] = mockOriginalChat as JiminyChat;
 
       vi.mocked(uiTelemetryService.getLastPromptTokenCount).mockReturnValue(
         originalTokenCount,
@@ -489,7 +489,7 @@ describe('Gemini Client (client.ts)', () => {
         },
       });
 
-      const mockNewChat: Partial<GeminiChat> = {
+      const mockNewChat: Partial<JiminyChat> = {
         getHistory: vi.fn().mockReturnValue(newHistory),
         setHistory: vi.fn(),
         getLastPromptTokenCount: vi.fn().mockReturnValue(newTokenCount),
@@ -497,7 +497,7 @@ describe('Gemini Client (client.ts)', () => {
 
       client['startChat'] = vi
         .fn()
-        .mockResolvedValue(mockNewChat as GeminiChat);
+        .mockResolvedValue(mockNewChat as JiminyChat);
 
       return {
         client,
@@ -782,7 +782,7 @@ describe('Gemini Client (client.ts)', () => {
 
       // Assert
       expect(events).toContainEqual({
-        type: GeminiEventType.ChatCompressed,
+        type: JiminyEventType.ChatCompressed,
         value: compressionInfo,
       });
     });
@@ -810,7 +810,7 @@ describe('Gemini Client (client.ts)', () => {
       // Assert
       expect(events).not.toContainEqual(
         expect.objectContaining({
-          type: GeminiEventType.ModelInfo,
+          type: JiminyEventType.ModelInfo,
         }),
       );
     });
@@ -829,7 +829,7 @@ describe('Gemini Client (client.ts)', () => {
       );
       const events = await fromAsync(stream);
 
-      expect(events).toEqual([{ type: GeminiEventType.UserCancelled }]);
+      expect(events).toEqual([{ type: JiminyEventType.UserCancelled }]);
     });
 
     it.each([
@@ -868,7 +868,7 @@ describe('Gemini Client (client.ts)', () => {
 
         // Assert
         expect(events).not.toContainEqual({
-          type: GeminiEventType.ChatCompressed,
+          type: JiminyEventType.ChatCompressed,
           value: expect.anything(),
         });
       },
@@ -917,7 +917,7 @@ describe('Gemini Client (client.ts)', () => {
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
-      } as unknown as GeminiChat;
+      } as unknown as JiminyChat;
       client['chat'] = mockChat;
 
       const initialRequest: Part[] = [{ text: 'Hi' }];
@@ -976,13 +976,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       const initialRequest = [{ text: 'Hi' }];
 
@@ -1035,13 +1035,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       const initialRequest = [{ text: 'Hi' }];
 
@@ -1113,13 +1113,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       const initialRequest = [{ text: 'Hi' }];
 
@@ -1231,13 +1231,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Mock loop detector to return count > 1 on the first event (loop detected)
       vi.spyOn(client['loopDetector'], 'addAndCheck').mockReturnValue({
@@ -1250,7 +1250,7 @@ ${JSON.stringify(
         'prompt-id-1',
       );
 
-      const events: ServerGeminiStreamEvent[] = [];
+      const events: ServerJiminyStreamEvent[] = [];
       let finalResult: Turn | undefined;
 
       while (true) {
@@ -1263,7 +1263,7 @@ ${JSON.stringify(
       }
 
       // Assert
-      expect(events).toContainEqual({ type: GeminiEventType.LoopDetected });
+      expect(events).toContainEqual({ type: JiminyEventType.LoopDetected });
       expect(finalResult).toBeInstanceOf(Turn);
     });
 
@@ -1274,13 +1274,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Act
       const stream = client.sendMessageStream(
@@ -1323,13 +1323,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Use a signal that never gets aborted
       const abortController = new AbortController();
@@ -1389,13 +1389,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Act & Assert
       // Run up to the limit
@@ -1423,7 +1423,7 @@ ${JSON.stringify(
         events.push(event);
       }
 
-      expect(events).toEqual([{ type: GeminiEventType.MaxSessionTurns }]);
+      expect(events).toEqual([{ type: JiminyEventType.MaxSessionTurns }]);
       expect(mockTurnRunFn).toHaveBeenCalledTimes(MAX_SESSION_TURNS);
     });
 
@@ -1447,13 +1447,13 @@ ${JSON.stringify(
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Use a signal that never gets aborted
       const abortController = new AbortController();
@@ -1508,12 +1508,12 @@ ${JSON.stringify(
 
       // Set last prompt token count
       const lastPromptTokenCount = 900;
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         getLastPromptTokenCount: vi.fn().mockReturnValue(lastPromptTokenCount),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Remaining = 100.
       // We need a request > 100 tokens.
@@ -1542,7 +1542,7 @@ ${JSON.stringify(
 
       // Assert
       expect(events).toContainEqual({
-        type: GeminiEventType.ContextWindowWillOverflow,
+        type: JiminyEventType.ContextWindowWillOverflow,
         value: {
           estimatedRequestTokenCount,
           remainingTokenCount,
@@ -1569,12 +1569,12 @@ ${JSON.stringify(
 
       // Set token count
       const lastPromptTokenCount = 900;
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         getLastPromptTokenCount: vi.fn().mockReturnValue(lastPromptTokenCount),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Remaining (sticky) = 100.
       // We need a request > 100 tokens.
@@ -1602,7 +1602,7 @@ ${JSON.stringify(
       // Assert
       // Should overflow based on the sticky model's limit
       expect(events).toContainEqual({
-        type: GeminiEventType.ContextWindowWillOverflow,
+        type: JiminyEventType.ContextWindowWillOverflow,
         value: {
           estimatedRequestTokenCount,
           remainingTokenCount,
@@ -1623,7 +1623,7 @@ ${JSON.stringify(
       const longText = 'a'.repeat(240); // 240 / 4 = 60 tokens
       const request: Part[] = [{ text: longText }];
 
-      // Use the real GeminiChat to manage state and token counts more realistically
+      // Use the real JiminyChat to manage state and token counts more realistically
       const mockChatCompressed = {
         getLastPromptTokenCount: vi.fn().mockReturnValue(400),
         getHistory: vi
@@ -1635,7 +1635,7 @@ ${JSON.stringify(
           getConversation: vi.fn(),
           getConversationFilePath: vi.fn(),
         }),
-      } as unknown as GeminiChat;
+      } as unknown as JiminyChat;
 
       const mockChatInitial = {
         getLastPromptTokenCount: vi.fn().mockReturnValue(initialTokenCount),
@@ -1648,7 +1648,7 @@ ${JSON.stringify(
           getConversation: vi.fn(),
           getConversationFilePath: vi.fn(),
         }),
-      } as unknown as GeminiChat;
+      } as unknown as JiminyChat;
 
       client['chat'] = mockChatInitial;
 
@@ -1684,14 +1684,14 @@ ${JSON.stringify(
       // 1. Should NOT contain overflow warning
       expect(events).not.toContainEqual(
         expect.objectContaining({
-          type: GeminiEventType.ContextWindowWillOverflow,
+          type: JiminyEventType.ContextWindowWillOverflow,
         }),
       );
 
       // 2. Should contain compression event
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: GeminiEventType.ChatCompressed,
+          type: JiminyEventType.ChatCompressed,
         }),
       );
 
@@ -1729,7 +1729,7 @@ ${JSON.stringify(
         },
       ];
 
-      const realChat = new GeminiChat(mockConfig, '', [], history);
+      const realChat = new JiminyChat(mockConfig, '', [], history);
       client['chat'] = realChat;
 
       // Use a realistic mock for compression that simulates the 40k truncation effect.
@@ -1764,7 +1764,7 @@ ${JSON.stringify(
       // 2. Should yield overflow warning because 10000 > 1000 limit.
       expect(events).toContainEqual(
         expect.objectContaining({
-          type: GeminiEventType.ContextWindowWillOverflow,
+          type: JiminyEventType.ContextWindowWillOverflow,
           value: expect.objectContaining({
             estimatedRequestTokenCount: expect.any(Number),
             remainingTokenCount: expect.any(Number),
@@ -1779,12 +1779,12 @@ ${JSON.stringify(
       vi.mocked(tokenLimit).mockReturnValue(MOCKED_TOKEN_LIMIT);
 
       const lastPromptTokenCount = 10000;
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         getLastPromptTokenCount: vi.fn().mockReturnValue(lastPromptTokenCount),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Simulate a PDF file with large base64 data (11MB when encoded)
       // In the old implementation, this would incorrectly estimate ~2.7M tokens
@@ -1826,7 +1826,7 @@ ${JSON.stringify(
       // Should NOT contain overflow warning
       expect(events).not.toContainEqual(
         expect.objectContaining({
-          type: GeminiEventType.ContextWindowWillOverflow,
+          type: JiminyEventType.ContextWindowWillOverflow,
         }),
       );
 
@@ -1853,13 +1853,13 @@ ${JSON.stringify(
           })(),
         );
 
-        const mockChat: Partial<GeminiChat> = {
+        const mockChat: Partial<JiminyChat> = {
           addHistory: vi.fn(),
           setTools: vi.fn(),
           getHistory: vi.fn().mockReturnValue([]),
           getLastPromptTokenCount: vi.fn(),
         };
-        client['chat'] = mockChat as GeminiChat;
+        client['chat'] = mockChat as JiminyChat;
       });
 
       it('should use the model router service to select a model on the first turn', async () => {
@@ -2070,23 +2070,23 @@ ${JSON.stringify(
       });
 
       const mockStream1 = (async function* () {
-        yield { type: GeminiEventType.InvalidStream };
+        yield { type: JiminyEventType.InvalidStream };
       })();
       const mockStream2 = (async function* () {
-        yield { type: GeminiEventType.Content, value: 'Continued content' };
+        yield { type: JiminyEventType.Content, value: 'Continued content' };
       })();
 
       mockTurnRunFn
         .mockReturnValueOnce(mockStream1)
         .mockReturnValueOnce(mockStream2);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       const initialRequest = [{ text: 'Hi' }];
       const promptId = 'prompt-id-invalid-stream';
@@ -2098,9 +2098,9 @@ ${JSON.stringify(
 
       // Assert
       expect(events).toEqual([
-        { type: GeminiEventType.ModelInfo, value: 'gemini-2.0-flash' },
-        { type: GeminiEventType.InvalidStream },
-        { type: GeminiEventType.Content, value: 'Continued content' },
+        { type: JiminyEventType.ModelInfo, value: 'gemini-2.0-flash' },
+        { type: JiminyEventType.InvalidStream },
+        { type: JiminyEventType.Content, value: 'Continued content' },
       ]);
 
       // Verify that turn.run was called twice
@@ -2131,18 +2131,18 @@ ${JSON.stringify(
       );
       // Arrange
       const mockStream1 = (async function* () {
-        yield { type: GeminiEventType.InvalidStream };
+        yield { type: JiminyEventType.InvalidStream };
       })();
 
       mockTurnRunFn.mockReturnValueOnce(mockStream1);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       const initialRequest = [{ text: 'Hi' }];
       const promptId = 'prompt-id-invalid-stream';
@@ -2154,8 +2154,8 @@ ${JSON.stringify(
 
       // Assert
       expect(events).toEqual([
-        { type: GeminiEventType.ModelInfo, value: 'default-routed-model' },
-        { type: GeminiEventType.InvalidStream },
+        { type: JiminyEventType.ModelInfo, value: 'default-routed-model' },
+        { type: JiminyEventType.InvalidStream },
       ]);
 
       // Verify that turn.run was called only once
@@ -2174,17 +2174,17 @@ ${JSON.stringify(
       // Always return a new invalid stream
       mockTurnRunFn.mockImplementation(() =>
         (async function* () {
-          yield { type: GeminiEventType.InvalidStream };
+          yield { type: JiminyEventType.InvalidStream };
         })(),
       );
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       const initialRequest = [{ text: 'Hi' }];
       const promptId = 'prompt-id-infinite-invalid-stream';
@@ -2199,7 +2199,7 @@ ${JSON.stringify(
       expect(events.length).toBe(3);
       expect(
         events
-          .filter((e) => e.type === GeminiEventType.ModelInfo)
+          .filter((e) => e.type === JiminyEventType.ModelInfo)
           .map((e) => e.value),
       ).toEqual(['gemini-2.0-flash']);
 
@@ -2222,7 +2222,7 @@ ${JSON.stringify(
         vi.spyOn(client['config'], 'getIdeMode').mockReturnValue(true);
         mockTurnRunFn.mockReturnValue(mockStream);
 
-        const mockChat: Partial<GeminiChat> = {
+        const mockChat: Partial<JiminyChat> = {
           addHistory: vi.fn(),
           setHistory: vi.fn(),
           setTools: vi.fn(),
@@ -2234,7 +2234,7 @@ ${JSON.stringify(
             ]),
           getLastPromptTokenCount: vi.fn(),
         };
-        client['chat'] = mockChat as GeminiChat;
+        client['chat'] = mockChat as JiminyChat;
       });
 
       const testCases = [
@@ -2601,7 +2601,7 @@ ${JSON.stringify(
           'getContinueOnFailedApiCall',
         ).mockReturnValue(true);
         const mockStream1 = (async function* () {
-          yield { type: GeminiEventType.InvalidStream };
+          yield { type: JiminyEventType.InvalidStream };
         })();
         const mockStream2 = (async function* () {
           yield { type: 'content', value: 'ok' };
@@ -2623,7 +2623,7 @@ ${JSON.stringify(
     });
 
     describe('IDE context with pending tool calls', () => {
-      let mockChat: Partial<GeminiChat>;
+      let mockChat: Partial<JiminyChat>;
 
       beforeEach(() => {
         vi.spyOn(client, 'tryCompressChat').mockResolvedValue({
@@ -2644,7 +2644,7 @@ ${JSON.stringify(
           setTools: vi.fn(),
           getLastPromptTokenCount: vi.fn(),
         };
-        client['chat'] = mockChat as GeminiChat;
+        client['chat'] = mockChat as JiminyChat;
 
         vi.spyOn(client['config'], 'getIdeMode').mockReturnValue(true);
         vi.mocked(ideContextStore.get).mockReturnValue({
@@ -2974,19 +2974,19 @@ ${JSON.stringify(
 
       const mockStream = (async function* () {
         yield {
-          type: GeminiEventType.Error,
+          type: JiminyEventType.Error,
           value: { error: { message: 'test error' } },
         };
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Act
       const stream = client.sendMessageStream(
@@ -3010,21 +3010,21 @@ ${JSON.stringify(
       const mockCheckNextSpeaker = vi.mocked(checkNextSpeaker);
 
       const mockStream = (async function* () {
-        yield { type: GeminiEventType.Content, value: 'some content' };
+        yield { type: JiminyEventType.Content, value: 'some content' };
         yield {
-          type: GeminiEventType.Error,
+          type: JiminyEventType.Error,
           value: { error: { message: 'test error' } },
         };
       })();
       mockTurnRunFn.mockReturnValue(mockStream);
 
-      const mockChat: Partial<GeminiChat> = {
+      const mockChat: Partial<JiminyChat> = {
         addHistory: vi.fn(),
         setTools: vi.fn(),
         getHistory: vi.fn().mockReturnValue([]),
         getLastPromptTokenCount: vi.fn(),
       };
-      client['chat'] = mockChat as GeminiChat;
+      client['chat'] = mockChat as JiminyChat;
 
       // Act
       const stream = client.sendMessageStream(
@@ -3042,13 +3042,13 @@ ${JSON.stringify(
 
     describe('Loop Recovery (Two-Strike)', () => {
       beforeEach(() => {
-        const mockChat: Partial<GeminiChat> = {
+        const mockChat: Partial<JiminyChat> = {
           addHistory: vi.fn(),
           setTools: vi.fn(),
           getHistory: vi.fn().mockReturnValue([]),
           getLastPromptTokenCount: vi.fn(),
         };
-        client['chat'] = mockChat as GeminiChat;
+        client['chat'] = mockChat as JiminyChat;
         vi.spyOn(client['loopDetector'], 'clearDetection');
         vi.spyOn(client['loopDetector'], 'reset');
       });
@@ -3066,8 +3066,8 @@ ${JSON.stringify(
 
         mockTurnRunFn.mockImplementation(() =>
           (async function* () {
-            yield { type: GeminiEventType.Content, value: 'First event' };
-            yield { type: GeminiEventType.Content, value: 'Second event' };
+            yield { type: JiminyEventType.Content, value: 'First event' };
+            yield { type: JiminyEventType.Content, value: 'Second event' };
           })(),
         );
 
@@ -3116,8 +3116,8 @@ ${JSON.stringify(
 
         mockTurnRunFn.mockImplementation(() =>
           (async function* () {
-            yield { type: GeminiEventType.Content, value: 'Event' };
-            yield { type: GeminiEventType.Content, value: 'Event' };
+            yield { type: JiminyEventType.Content, value: 'Event' };
+            yield { type: JiminyEventType.Content, value: 'Event' };
           })(),
         );
 
@@ -3134,7 +3134,7 @@ ${JSON.stringify(
         }
 
         // Assert
-        expect(events).toContainEqual({ type: GeminiEventType.LoopDetected });
+        expect(events).toContainEqual({ type: JiminyEventType.LoopDetected });
         expect(sendMessageStreamSpy).toHaveBeenCalledTimes(2); // One original, one recovery
       });
 
@@ -3152,7 +3152,7 @@ ${JSON.stringify(
 
         mockTurnRunFn.mockImplementation(() =>
           (async function* () {
-            yield { type: GeminiEventType.Content, value: 'Event' };
+            yield { type: JiminyEventType.Content, value: 'Event' };
           })(),
         );
 
@@ -3172,7 +3172,7 @@ ${JSON.stringify(
         // Assert
         // Should NOT trigger recovery because boundedTurns would reach 0
         expect(events).toContainEqual({
-          type: GeminiEventType.MaxSessionTurns,
+          type: JiminyEventType.MaxSessionTurns,
         });
         expect(sendMessageStreamSpy).toHaveBeenCalledTimes(1);
       });
@@ -3190,8 +3190,8 @@ ${JSON.stringify(
 
         mockTurnRunFn.mockImplementation(() =>
           (async function* () {
-            yield { type: GeminiEventType.Content, value: 'Event' };
-            yield { type: GeminiEventType.Content, value: 'Event 2' };
+            yield { type: JiminyEventType.Content, value: 'Event' };
+            yield { type: JiminyEventType.Content, value: 'Event 2' };
           })(),
         );
 
@@ -3210,7 +3210,7 @@ ${JSON.stringify(
         // Assert
         // Strike 1 should trigger recovery call but NOT emit LoopDetected event
         expect(events).not.toContainEqual({
-          type: GeminiEventType.LoopDetected,
+          type: JiminyEventType.LoopDetected,
         });
         expect(sendMessageStreamSpy).toHaveBeenCalledTimes(2);
       });
@@ -3239,8 +3239,8 @@ ${JSON.stringify(
 
         mockTurnRunFn.mockImplementation(() =>
           (async function* () {
-            yield { type: GeminiEventType.Content, value: 'Event' };
-            yield { type: GeminiEventType.Content, value: 'Event 2' };
+            yield { type: JiminyEventType.Content, value: 'Event' };
+            yield { type: JiminyEventType.Content, value: 'Event 2' };
           })(),
         );
 
@@ -3257,7 +3257,7 @@ ${JSON.stringify(
         }
 
         // Assert
-        expect(events).toContainEqual({ type: GeminiEventType.LoopDetected });
+        expect(events).toContainEqual({ type: JiminyEventType.LoopDetected });
         expect(sendMessageStreamSpy).toHaveBeenCalledTimes(2);
       });
 
@@ -3271,7 +3271,7 @@ ${JSON.stringify(
         });
         mockTurnRunFn.mockImplementation(() =>
           (async function* () {
-            yield { type: GeminiEventType.Content, value: 'Event' };
+            yield { type: JiminyEventType.Content, value: 'Event' };
           })(),
         );
 
@@ -3365,7 +3365,7 @@ ${JSON.stringify(
           this: MockTurnContext,
         ) {
           this.getResponseText.mockReturnValue('Hook Response');
-          yield { type: GeminiEventType.Content, value: 'Hook Response' };
+          yield { type: JiminyEventType.Content, value: 'Hook Response' };
         });
 
         const stream = client.sendMessageStream(request, signal, promptId);
@@ -3402,7 +3402,7 @@ ${JSON.stringify(
           callCount++;
           const response = `Response ${callCount}`;
           this.getResponseText.mockReturnValue(response);
-          yield { type: GeminiEventType.Content, value: response };
+          yield { type: JiminyEventType.Content, value: response };
         });
 
         const stream = client.sendMessageStream(request, signal, promptId);
@@ -3440,7 +3440,7 @@ ${JSON.stringify(
           this: MockTurnContext,
         ) {
           this.getResponseText.mockReturnValue('Ok');
-          yield { type: GeminiEventType.Content, value: 'Ok' };
+          yield { type: JiminyEventType.Content, value: 'Ok' };
         });
 
         const stream = client.sendMessageStream(request, signal, promptId);
@@ -3459,7 +3459,7 @@ ${JSON.stringify(
           this: MockTurnContext,
         ) {
           this.getResponseText.mockReturnValue('Ok');
-          yield { type: GeminiEventType.Content, value: 'Ok' };
+          yield { type: JiminyEventType.Content, value: 'Ok' };
         });
 
         client['hookStateMap'].set('old-id', {
@@ -3488,13 +3488,13 @@ ${JSON.stringify(
           systemMessage: undefined,
         });
 
-        const mockChat: Partial<GeminiChat> = {
+        const mockChat: Partial<JiminyChat> = {
           addHistory: vi.fn(),
           setTools: vi.fn(),
           getHistory: vi.fn().mockReturnValue([]),
           getLastPromptTokenCount: vi.fn(),
         };
-        client['chat'] = mockChat as GeminiChat;
+        client['chat'] = mockChat as JiminyChat;
 
         const request = [{ text: 'Hello' }];
         const stream = client.sendMessageStream(
@@ -3505,7 +3505,7 @@ ${JSON.stringify(
         const events = await fromAsync(stream);
 
         expect(events).toContainEqual({
-          type: GeminiEventType.AgentExecutionStopped,
+          type: JiminyEventType.AgentExecutionStopped,
           value: { reason: 'Stopped by hook' },
         });
         expect(mockChat.addHistory).toHaveBeenCalledWith({
@@ -3523,13 +3523,13 @@ ${JSON.stringify(
           systemMessage: undefined,
         });
 
-        const mockChat: Partial<GeminiChat> = {
+        const mockChat: Partial<JiminyChat> = {
           addHistory: vi.fn(),
           setTools: vi.fn(),
           getHistory: vi.fn().mockReturnValue([]),
           getLastPromptTokenCount: vi.fn(),
         };
-        client['chat'] = mockChat as GeminiChat;
+        client['chat'] = mockChat as JiminyChat;
 
         const request = [{ text: 'Hello' }];
         const stream = client.sendMessageStream(
@@ -3540,7 +3540,7 @@ ${JSON.stringify(
         const events = await fromAsync(stream);
 
         expect(events).toContainEqual({
-          type: GeminiEventType.AgentExecutionBlocked,
+          type: JiminyEventType.AgentExecutionBlocked,
           value: {
             reason: 'Blocked by hook',
           },
@@ -3558,7 +3558,7 @@ ${JSON.stringify(
         });
 
         mockTurnRunFn.mockImplementation(async function* () {
-          yield { type: GeminiEventType.Content, value: 'Hello' };
+          yield { type: JiminyEventType.Content, value: 'Hello' };
         });
 
         const stream = client.sendMessageStream(
@@ -3570,7 +3570,7 @@ ${JSON.stringify(
 
         expect(events).toContainEqual(
           expect.objectContaining({
-            type: GeminiEventType.AgentExecutionStopped,
+            type: JiminyEventType.AgentExecutionStopped,
             value: expect.objectContaining({ reason: 'Stopped after agent' }),
           }),
         );
@@ -3595,7 +3595,7 @@ ${JSON.stringify(
           });
 
         mockTurnRunFn.mockImplementation(async function* () {
-          yield { type: GeminiEventType.Content, value: 'Response' };
+          yield { type: JiminyEventType.Content, value: 'Response' };
         });
 
         const stream = client.sendMessageStream(
@@ -3607,7 +3607,7 @@ ${JSON.stringify(
 
         expect(events).toContainEqual(
           expect.objectContaining({
-            type: GeminiEventType.AgentExecutionBlocked,
+            type: JiminyEventType.AgentExecutionBlocked,
             value: expect.objectContaining({ reason: 'Please explain' }),
           }),
         );
@@ -3658,7 +3658,7 @@ ${JSON.stringify(
           });
 
         mockTurnRunFn.mockImplementation(async function* () {
-          yield { type: GeminiEventType.Content, value: 'Response' };
+          yield { type: JiminyEventType.Content, value: 'Response' };
         });
 
         const stream = client.sendMessageStream(
@@ -3669,7 +3669,7 @@ ${JSON.stringify(
         const events = await fromAsync(stream);
 
         expect(events).toContainEqual({
-          type: GeminiEventType.AgentExecutionBlocked,
+          type: JiminyEventType.AgentExecutionBlocked,
           value: {
             reason: 'Blocked and clearing context',
             systemMessage: undefined,

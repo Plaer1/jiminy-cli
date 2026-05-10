@@ -14,7 +14,7 @@ import {
   SESSION_FILE_PREFIX,
   getProjectHash,
   startMemoryService,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { ComponentRig, componentEvalTest } from './component-test-helper.js';
 import {
   average,

@@ -6,7 +6,7 @@
 
 import { act } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Config, InboxSkill, InboxPatch } from '@google/gemini-cli-core';
+import type { Config, InboxSkill, InboxPatch } from '@plaer1/jiminy-cli-core';
 import {
   dismissInboxSkill,
   listInboxSkills,
@@ -15,14 +15,14 @@ import {
   applyInboxPatch,
   dismissInboxPatch,
   isProjectSkillPatchTarget,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { waitFor } from '../../test-utils/async.js';
 import { renderWithProviders } from '../../test-utils/render.js';
 import { SkillInboxDialog } from './SkillInboxDialog.js';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
 
   return {
     ...original,

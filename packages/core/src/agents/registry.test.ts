@@ -14,7 +14,7 @@ import { makeFakeConfig } from '../test-utils/config.js';
 import type { AgentDefinition, LocalAgentDefinition } from './types.js';
 import type {
   Config,
-  GeminiCLIExtension,
+  JiminyCLIExtension,
   ConfigParameters,
 } from '../config/config.js';
 import { debugLogger } from '../utils/debugLogger.js';
@@ -373,7 +373,7 @@ describe('AgentRegistry', () => {
         ...MOCK_AGENT_V1,
         name: 'extension-agent',
       };
-      const extensions: GeminiCLIExtension[] = [
+      const extensions: JiminyCLIExtension[] = [
         {
           name: 'test-extension',
           isActive: true,
@@ -400,7 +400,7 @@ describe('AgentRegistry', () => {
         ...MOCK_AGENT_V1,
         name: 'extension-agent',
       };
-      const extensions: GeminiCLIExtension[] = [
+      const extensions: JiminyCLIExtension[] = [
         {
           name: 'test-extension',
           isActive: false,

@@ -14,7 +14,7 @@ import {
   type CommandContext,
 } from './types.js';
 import type { ReactElement } from 'react';
-import { coreEvents } from '@google/gemini-cli-core';
+import { coreEvents } from '@plaer1/jiminy-cli-core';
 
 // Mock dependencies
 const mockRewindTo = vi.fn();
@@ -32,9 +32,9 @@ const mockSetInput = vi.fn();
 const mockRevertFileChanges = vi.fn();
 const mockGetProjectRoot = vi.fn().mockReturnValue('/mock/root');
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: {
@@ -99,7 +99,7 @@ describe('rewindCommand', () => {
     mockContext = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: {
+          jiminyClient: {
             getChatRecordingService: mockGetChatRecordingService,
             setHistory: mockSetHistory,
             sendMessageStream: mockSendMessageStream,
@@ -297,7 +297,7 @@ describe('rewindCommand', () => {
     const context = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: undefined,
+          jiminyClient: undefined,
           get config() {
             return this;
           },
@@ -318,7 +318,7 @@ describe('rewindCommand', () => {
     const context = createMockCommandContext({
       services: {
         agentContext: {
-          geminiClient: { getChatRecordingService: () => undefined },
+          jiminyClient: { getChatRecordingService: () => undefined },
           get config() {
             return this;
           },

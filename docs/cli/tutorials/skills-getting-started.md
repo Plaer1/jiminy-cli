@@ -1,6 +1,6 @@
 # Get started with Agent Skills
 
-Agent Skills extend Gemini CLI with specialized expertise. In this guide, you'll
+Agent Skills extend Jiminy CLI with specialized expertise. In this guide, you'll
 learn how to create your first skill, bundle custom scripts, and activate them
 during a session.
 
@@ -76,7 +76,7 @@ Skills can bundle resources like scripts.
 
 ## How to verify discovery
 
-Gemini CLI automatically discovers skills in the `.gemini/skills` directory. You
+Jiminy CLI automatically discovers skills in the `.gemini/skills` directory. You
 can also use `.agents/skills` as a more generic alternative. Check that it found
 your new skill.
 
@@ -89,7 +89,7 @@ You should see `api-auditor` in the list of available skills.
 Now, try it out. Start a new session and ask a question that triggers the
 skill's description.
 
-**User:** "Can you audit http://geminicli.com"
+**User:** "Can you audit http://jiminycli.com"
 
 Gemini recognizes the request matches the `api-auditor` description and asks for
 permission to activate it.

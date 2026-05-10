@@ -22,7 +22,7 @@ import {
   type ConversationInteraction,
   type StreamingLatency,
   type RecordCodeAssistMetricsRequest,
-  type GeminiUserTier,
+  type JiminyUserTier,
   type Credits,
 } from './types.js';
 import type {
@@ -82,7 +82,7 @@ export class CodeAssistServer implements ContentGenerator {
     readonly sessionId?: string,
     readonly userTier?: UserTierId,
     readonly userTierName?: string,
-    readonly paidTier?: GeminiUserTier,
+    readonly paidTier?: JiminyUserTier,
     readonly config?: Config,
   ) {}
 

@@ -1,6 +1,6 @@
 # Policy engine
 
-Gemini CLI includes a powerful policy engine that provides fine-grained control
+Jiminy CLI includes a powerful policy engine that provides fine-grained control
 over tool execution. It allows users and administrators to define rules that
 determine whether a tool call should be allowed, denied, or require user
 confirmation.
@@ -33,7 +33,7 @@ To create your first policy:
     decision = "deny"
     priority = 100
     ```
-3.  **Run a command** that triggers the policy (for example, ask Gemini CLI to
+3.  **Run a command** that triggers the policy (for example, ask Jiminy CLI to
     `rm -rf /`). The tool will now be blocked automatically.
 
 ## Core concepts
@@ -123,7 +123,7 @@ There are three possible decisions a rule can enforce:
 > [!WARNING] The **Workspace** tier (project-level policies) is currently
 > non-functional. Defining policies in a workspace's `.gemini/policies`
 > directory will not have any effect. See
-> [issue #18186](https://github.com/google-gemini/gemini-cli/issues/18186). Use
+> [issue #18186](https://github.com/Plaer1/jiminy-cli/issues/18186). Use
 > User or Admin policies instead.
 
 The policy engine uses a sophisticated priority system to resolve conflicts when
@@ -135,7 +135,7 @@ has a designated number that forms the base of the final priority calculation.
 
 | Tier      | Base | Description                                                                                   |
 | :-------- | :--- | :-------------------------------------------------------------------------------------------- |
-| Default   | 1    | Built-in policies that ship with Gemini CLI.                                                  |
+| Default   | 1    | Built-in policies that ship with Jiminy CLI.                                                  |
 | Extension | 2    | Policies defined in extensions.                                                               |
 | Workspace | 3    | **(Currently disabled)** Policies defined in the current workspace's configuration directory. |
 | User      | 4    | Custom policies defined by the user.                                                          |
@@ -238,9 +238,9 @@ These are the default paths the CLI searches for admin policies:
 
 | OS          | Policy Directory Path                             |
 | :---------- | :------------------------------------------------ |
-| **Linux**   | `/etc/gemini-cli/policies`                        |
-| **macOS**   | `/Library/Application Support/GeminiCli/policies` |
-| **Windows** | `C:\ProgramData\gemini-cli\policies`              |
+| **Linux**   | `/etc/jiminy-cli/policies`                        |
+| **macOS**   | `/Library/Application Support/JiminyCli/policies` |
+| **Windows** | `C:\ProgramData\jiminy-cli\policies`              |
 
 ##### Supplemental Admin Policies
 
@@ -474,7 +474,7 @@ deny_message = "Deep codebase analysis is restricted for this session."
 
 ## Default policies
 
-Gemini CLI ships with a set of default policies to provide a safe out-of-the-box
+Jiminy CLI ships with a set of default policies to provide a safe out-of-the-box
 experience.
 
 - **Read-only tools** (like `read_file`, `glob`) are generally **allowed**.

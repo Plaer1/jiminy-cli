@@ -14,8 +14,8 @@ import {
   FatalSandboxError,
   homedir,
   type SandboxConfig,
-} from '@google/gemini-cli-core';
-import { createMockSandboxConfig } from '@google/gemini-cli-test-utils';
+} from '@plaer1/jiminy-cli-core';
+import { createMockSandboxConfig } from '@plaer1/jiminy-cli-test-utils';
 import { EventEmitter } from 'node:events';
 
 const { mockedHomedir, mockedGetContainerPath } = vi.hoisted(() => ({
@@ -81,9 +81,9 @@ vi.mock('node:util', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     debugLogger: {
@@ -100,7 +100,7 @@ vi.mock('@google/gemini-cli-core', async (importOriginal) => {
         this.name = 'FatalSandboxError';
       }
     },
-    GEMINI_DIR: '.gemini',
+    GEMINI_DIR: '.jiminy',
     homedir: mockedHomedir,
   };
 });
@@ -182,7 +182,7 @@ describe('sandbox', () => {
       vi.stubEnv('SEATBELT_PROFILE', 'custom-test');
       vi.mocked(fs.existsSync).mockImplementation((p) =>
         String(p).includes(
-          path.join(homedir(), '.gemini', 'sandbox-macos-custom-test.sb'),
+          path.join(homedir(), '.jiminy', 'sandbox-macos-custom-test.sb'),
         ),
       );
       const config: SandboxConfig = createMockSandboxConfig({
@@ -220,7 +220,7 @@ describe('sandbox', () => {
       const profileArg = spawnArgs?.[spawnArgs.indexOf('-f') + 1];
       expect(profileArg).toEqual(
         expect.stringContaining(
-          path.join(homedir(), '.gemini', 'sandbox-macos-custom-test.sb'),
+          path.join(homedir(), '.jiminy', 'sandbox-macos-custom-test.sb'),
         ),
       );
     });
@@ -231,8 +231,8 @@ describe('sandbox', () => {
       vi.mocked(fs.existsSync).mockImplementation((p) => {
         const s = String(p);
         return (
-          s.includes(path.join('.gemini', 'sandbox-macos-custom-test.sb')) &&
-          !s.includes(path.join(homedir(), '.gemini'))
+          s.includes(path.join('.jiminy', 'sandbox-macos-custom-test.sb')) &&
+          !s.includes(path.join(homedir(), '.jiminy'))
         );
       });
       const config: SandboxConfig = createMockSandboxConfig({
@@ -270,7 +270,7 @@ describe('sandbox', () => {
       const profileArg = spawnArgs?.[spawnArgs.indexOf('-f') + 1];
       expect(profileArg).toEqual(
         expect.stringContaining(
-          path.join('.gemini', 'sandbox-macos-custom-test.sb'),
+          path.join('.jiminy', 'sandbox-macos-custom-test.sb'),
         ),
       );
       expect(profileArg).not.toContain(homedir());
@@ -290,7 +290,7 @@ describe('sandbox', () => {
     it('should handle Docker execution', async () => {
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'docker',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
       });
 
       // Mock image check to return true (image exists)
@@ -446,7 +446,7 @@ describe('sandbox', () => {
     it('should mount volumes correctly', async () => {
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'docker',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
       });
       process.env['SANDBOX_MOUNTS'] = '/host/path:/container/path:ro';
       vi.mocked(fs.existsSync).mockReturnValue(true); // For mount path check
@@ -503,7 +503,7 @@ describe('sandbox', () => {
     it('should handle allowedPaths in Docker', async () => {
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'docker',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
         allowedPaths: ['/extra/path'],
       });
       vi.mocked(fs.existsSync).mockReturnValue(true);
@@ -545,7 +545,7 @@ describe('sandbox', () => {
     it('should handle networkAccess: false in Docker', async () => {
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'docker',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
         networkAccess: false,
       });
 
@@ -577,12 +577,12 @@ describe('sandbox', () => {
       await start_sandbox(config);
 
       expect(execSync).toHaveBeenCalledWith(
-        expect.stringContaining('network create --internal gemini-cli-sandbox'),
+        expect.stringContaining('network create --internal jiminy-cli-sandbox'),
         expect.any(Object),
       );
       expect(spawn).toHaveBeenCalledWith(
         'docker',
-        expect.arrayContaining(['--network', 'gemini-cli-sandbox']),
+        expect.arrayContaining(['--network', 'jiminy-cli-sandbox']),
         expect.any(Object),
       );
     });
@@ -622,7 +622,7 @@ describe('sandbox', () => {
     it('should pass through GOOGLE_GEMINI_BASE_URL and GOOGLE_VERTEX_BASE_URL', async () => {
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'docker',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
       });
       process.env['GOOGLE_GEMINI_BASE_URL'] = 'http://gemini.proxy';
       process.env['GOOGLE_VERTEX_BASE_URL'] = 'http://vertex.proxy';
@@ -669,7 +669,7 @@ describe('sandbox', () => {
     it('should handle user creation on Linux if needed', async () => {
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'docker',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
       });
       process.env['SANDBOX_SET_UID_GID'] = 'true';
       vi.mocked(os.platform).mockReturnValue('linux');
@@ -723,7 +723,7 @@ describe('sandbox', () => {
       vi.stubEnv('GEMINI_SANDBOX_PROXY_COMMAND', 'some-proxy-cmd');
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'docker',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
       });
 
       const onSpy = vi.spyOn(process, 'on');
@@ -751,7 +751,7 @@ describe('sandbox', () => {
           >;
           mockSpawnProcess.on = vi.fn().mockImplementation((event, cb) => {
             if (event === 'close') {
-              if (a.includes('gemini-cli-sandbox-proxy')) {
+              if (a.includes('jiminy-cli-sandbox-proxy')) {
                 // Proxy container shouldn't exit during the test
               } else {
                 setTimeout(() => cb(0), 10);
@@ -863,7 +863,7 @@ describe('sandbox', () => {
       vi.mocked(os.platform).mockReturnValue('linux');
       const config: SandboxConfig = createMockSandboxConfig({
         command: 'runsc',
-        image: 'gemini-cli-sandbox',
+        image: 'jiminy-cli-sandbox',
       });
 
       // Mock image check
@@ -898,7 +898,7 @@ describe('sandbox', () => {
       expect(spawn).toHaveBeenNthCalledWith(
         1,
         'docker',
-        expect.arrayContaining(['images', '-q', 'gemini-cli-sandbox']),
+        expect.arrayContaining(['images', '-q', 'jiminy-cli-sandbox']),
       );
 
       // Verify docker run includes --runtime=runsc

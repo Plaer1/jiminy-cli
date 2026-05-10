@@ -40,9 +40,9 @@ async function getMemoryNodeArgs(): Promise<string[]> {
   try {
     const { readFileSync } = await import('node:fs');
     const { join } = await import('node:path');
-    // Respect GEMINI_CLI_HOME environment variable, falling back to os.homedir()
+    // Respect JIMINY_CLI_HOME environment variable, falling back to os.homedir()
     const baseDir =
-      process.env['GEMINI_CLI_HOME'] || join(os.homedir(), '.gemini');
+      process.env['JIMINY_CLI_HOME'] || join(os.homedir(), '.jiminy');
     const settingsPath = join(baseDir, 'settings.json');
     const rawSettings = readFileSync(settingsPath, 'utf8');
     const settings = JSON.parse(rawSettings);
@@ -143,9 +143,9 @@ async function run() {
   } else {
     // --- Heavy Child Process ---
     // Now we can safely import everything.
-    const { main } = await import('./src/gemini.js');
+    const { main } = await import('./src/jiminy.js');
     const { FatalError, writeToStderr } = await import(
-      '@google/gemini-cli-core'
+      '@plaer1/jiminy-cli-core'
     );
     const { runExitCleanup } = await import('./src/utils/cleanup.js');
 

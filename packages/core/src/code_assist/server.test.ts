@@ -12,7 +12,7 @@ import {
   ActionStatus,
   InitiationMethod,
   type LoadCodeAssistResponse,
-  type GeminiUserTier,
+  type JiminyUserTier,
   type SetCodeAssistGlobalUserSettingRequest,
   type CodeAssistGlobalUserSettingResponse,
 } from './types.js';
@@ -778,7 +778,7 @@ describe('CodeAssistServer', () => {
     );
 
     // Initial state: server has a paidTier without availableCredits
-    (server as unknown as { paidTier: GeminiUserTier }).paidTier = {
+    (server as unknown as { paidTier: JiminyUserTier }).paidTier = {
       id: 'test-tier',
       name: 'tier',
     };

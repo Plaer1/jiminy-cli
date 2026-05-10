@@ -12,7 +12,7 @@ import {
   type Config,
 } from '../index.js';
 import type { PartListUnion } from '@google/genai';
-import { type GeminiClient } from '../core/client.js';
+import { type JiminyClient } from '../core/client.js';
 import { saveTruncatedToolOutput } from '../utils/fileUtils.js';
 import {
   READ_FILE_TOOL_NAME,
@@ -39,7 +39,7 @@ export interface DistilledToolOutput {
 export class ToolOutputDistillationService {
   constructor(
     private readonly config: Config,
-    private readonly geminiClient: GeminiClient,
+    private readonly jiminyClient: JiminyClient,
     private readonly promptId: string,
   ) {}
 
@@ -271,7 +271,7 @@ Do not philosophize about the strategic intent. Keep the extraction under 10 lin
 Output to summarize:
 ${stringifiedContent.slice(0, maxPreviewLen)}...`;
 
-      const summaryResponse = await this.geminiClient.generateContent(
+      const summaryResponse = await this.jiminyClient.generateContent(
         { model: 'agent-history-provider-summarizer' },
         [{ role: 'user', parts: [{ text: promptText }] }],
         controller.signal,

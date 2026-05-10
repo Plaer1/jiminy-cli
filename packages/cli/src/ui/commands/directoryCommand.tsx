@@ -18,7 +18,7 @@ import { MessageType, type HistoryItem } from '../types.js';
 import {
   refreshServerHierarchicalMemory,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import {
   expandHomeDir,
   getDirectorySuggestions,
@@ -60,7 +60,7 @@ async function finishAddingDirectories(
   }
 
   if (added.length > 0) {
-    const gemini = config.geminiClient;
+    const gemini = config.jiminyClient;
     if (gemini) {
       await gemini.addDirectoryContext();
 

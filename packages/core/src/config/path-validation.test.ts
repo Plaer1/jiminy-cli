@@ -33,7 +33,7 @@ vi.mock('../utils/paths.js', async (importOriginal) => {
 describe('Config Path Validation', () => {
   let config: Config;
   const targetDir = '/mock/workspace';
-  const globalGeminiDir = path.join(os.homedir(), '.gemini');
+  const globalGeminiDir = path.join(os.homedir(), '.jiminy');
 
   beforeEach(() => {
     config = new Config({

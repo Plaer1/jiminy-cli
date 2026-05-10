@@ -24,7 +24,7 @@ import {
   UnauthorizedError,
   toFriendlyError,
 } from '../utils/errors.js';
-import { InvalidStreamError, type GeminiChat } from './geminiChat.js';
+import { InvalidStreamError, type JiminyChat } from './jiminyChat.js';
 import { parseThought, type ThoughtSummary } from '../utils/thoughtUtils.js';
 import type { ModelConfigKey } from '../services/modelConfigService.js';
 import { getCitations } from '../utils/generateContentResponseUtilities.js';
@@ -49,7 +49,7 @@ export interface ServerTool {
   ): Promise<ToolCallConfirmationDetails | false>;
 }
 
-export enum GeminiEventType {
+export enum JiminyEventType {
   Content = 'content',
   ToolCallRequest = 'tool_call_request',
   ToolCallResponse = 'tool_call_response',
@@ -71,11 +71,11 @@ export enum GeminiEventType {
 }
 
 export type ServerGeminiRetryEvent = {
-  type: GeminiEventType.Retry;
+  type: JiminyEventType.Retry;
 };
 
 export type ServerGeminiAgentExecutionStoppedEvent = {
-  type: GeminiEventType.AgentExecutionStopped;
+  type: JiminyEventType.AgentExecutionStopped;
   value: {
     reason: string;
     systemMessage?: string;
@@ -84,7 +84,7 @@ export type ServerGeminiAgentExecutionStoppedEvent = {
 };
 
 export type ServerGeminiAgentExecutionBlockedEvent = {
-  type: GeminiEventType.AgentExecutionBlocked;
+  type: JiminyEventType.AgentExecutionBlocked;
   value: {
     reason: string;
     systemMessage?: string;
@@ -93,7 +93,7 @@ export type ServerGeminiAgentExecutionBlockedEvent = {
 };
 
 export type ServerGeminiContextWindowWillOverflowEvent = {
-  type: GeminiEventType.ContextWindowWillOverflow;
+  type: JiminyEventType.ContextWindowWillOverflow;
   value: {
     estimatedRequestTokenCount: number;
     remainingTokenCount: number;
@@ -101,11 +101,11 @@ export type ServerGeminiContextWindowWillOverflowEvent = {
 };
 
 export type ServerGeminiInvalidStreamEvent = {
-  type: GeminiEventType.InvalidStream;
+  type: JiminyEventType.InvalidStream;
 };
 
 export type ServerGeminiModelInfoEvent = {
-  type: GeminiEventType.ModelInfo;
+  type: JiminyEventType.ModelInfo;
   value: string;
 };
 
@@ -114,7 +114,7 @@ export interface StructuredError {
   status?: number;
 }
 
-export interface GeminiErrorEventValue {
+export interface JiminyErrorEventValue {
   error: unknown;
 }
 
@@ -129,39 +129,39 @@ export interface ServerToolCallConfirmationDetails {
 }
 
 export type ServerGeminiContentEvent = {
-  type: GeminiEventType.Content;
+  type: JiminyEventType.Content;
   value: string;
   traceId?: string;
 };
 
 export type ServerGeminiThoughtEvent = {
-  type: GeminiEventType.Thought;
+  type: JiminyEventType.Thought;
   value: ThoughtSummary;
   traceId?: string;
 };
 
 export type ServerGeminiToolCallRequestEvent = {
-  type: GeminiEventType.ToolCallRequest;
+  type: JiminyEventType.ToolCallRequest;
   value: ToolCallRequestInfo;
 };
 
 export type ServerGeminiToolCallResponseEvent = {
-  type: GeminiEventType.ToolCallResponse;
+  type: JiminyEventType.ToolCallResponse;
   value: ToolCallResponseInfo;
 };
 
 export type ServerGeminiToolCallConfirmationEvent = {
-  type: GeminiEventType.ToolCallConfirmation;
+  type: JiminyEventType.ToolCallConfirmation;
   value: ServerToolCallConfirmationDetails;
 };
 
 export type ServerGeminiUserCancelledEvent = {
-  type: GeminiEventType.UserCancelled;
+  type: JiminyEventType.UserCancelled;
 };
 
-export type ServerGeminiErrorEvent = {
-  type: GeminiEventType.Error;
-  value: GeminiErrorEventValue;
+export type ServerJiminyErrorEvent = {
+  type: JiminyEventType.Error;
+  value: JiminyErrorEventValue;
 };
 
 export enum CompressionStatus {
@@ -190,35 +190,35 @@ export interface ChatCompressionInfo {
   compressionStatus: CompressionStatus;
 }
 
-export type ServerGeminiChatCompressedEvent = {
-  type: GeminiEventType.ChatCompressed;
+export type ServerJiminyChatCompressedEvent = {
+  type: JiminyEventType.ChatCompressed;
   value: ChatCompressionInfo | null;
 };
 
 export type ServerGeminiMaxSessionTurnsEvent = {
-  type: GeminiEventType.MaxSessionTurns;
+  type: JiminyEventType.MaxSessionTurns;
 };
 
 export type ServerGeminiFinishedEvent = {
-  type: GeminiEventType.Finished;
+  type: JiminyEventType.Finished;
   value: GeminiFinishedEventValue;
 };
 
 export type ServerGeminiLoopDetectedEvent = {
-  type: GeminiEventType.LoopDetected;
+  type: JiminyEventType.LoopDetected;
 };
 
 export type ServerGeminiCitationEvent = {
-  type: GeminiEventType.Citation;
+  type: JiminyEventType.Citation;
   value: string;
 };
 
 // The original union type, now composed of the individual types
-export type ServerGeminiStreamEvent =
-  | ServerGeminiChatCompressedEvent
+export type ServerJiminyStreamEvent =
+  | ServerJiminyChatCompressedEvent
   | ServerGeminiCitationEvent
   | ServerGeminiContentEvent
-  | ServerGeminiErrorEvent
+  | ServerJiminyErrorEvent
   | ServerGeminiFinishedEvent
   | ServerGeminiLoopDetectedEvent
   | ServerGeminiMaxSessionTurnsEvent
@@ -245,7 +245,7 @@ export class Turn {
   finishReason: FinishReason | undefined = undefined;
 
   constructor(
-    private readonly chat: GeminiChat,
+    private readonly chat: JiminyChat,
     private readonly prompt_id: string,
   ) {}
 
@@ -256,7 +256,7 @@ export class Turn {
     signal: AbortSignal,
     displayContent?: PartListUnion,
     role: LlmRole = LlmRole.MAIN,
-  ): AsyncGenerator<ServerGeminiStreamEvent> {
+  ): AsyncGenerator<ServerJiminyStreamEvent> {
     try {
       // Note: This assumes `sendMessageStream` yields events like
       // { type: StreamEventType.RETRY } or { type: StreamEventType.CHUNK, value: GenerateContentResponse }
@@ -271,19 +271,19 @@ export class Turn {
 
       for await (const streamEvent of responseStream) {
         if (signal?.aborted) {
-          yield { type: GeminiEventType.UserCancelled };
+          yield { type: JiminyEventType.UserCancelled };
           return;
         }
 
         // Handle the new RETRY event
         if (streamEvent.type === 'retry') {
-          yield { type: GeminiEventType.Retry };
+          yield { type: JiminyEventType.Retry };
           continue; // Skip to the next event in the stream
         }
 
         if (streamEvent.type === 'agent_execution_stopped') {
           yield {
-            type: GeminiEventType.AgentExecutionStopped,
+            type: JiminyEventType.AgentExecutionStopped,
             value: { reason: streamEvent.reason },
           };
           return;
@@ -291,7 +291,7 @@ export class Turn {
 
         if (streamEvent.type === 'agent_execution_blocked') {
           yield {
-            type: GeminiEventType.AgentExecutionBlocked,
+            type: JiminyEventType.AgentExecutionBlocked,
             value: { reason: streamEvent.reason },
           };
           continue;
@@ -310,7 +310,7 @@ export class Turn {
           if (part.thought) {
             const thought = parseThought(part.text ?? '');
             yield {
-              type: GeminiEventType.Thought,
+              type: JiminyEventType.Thought,
               value: thought,
               traceId,
             };
@@ -319,7 +319,7 @@ export class Turn {
 
         const text = getResponseText(resp);
         if (text) {
-          yield { type: GeminiEventType.Content, value: text, traceId };
+          yield { type: JiminyEventType.Content, value: text, traceId };
         }
 
         // Handle function calls (requesting tool execution)
@@ -342,7 +342,7 @@ export class Turn {
         if (finishReason) {
           if (this.pendingCitations.size > 0) {
             yield {
-              type: GeminiEventType.Citation,
+              type: JiminyEventType.Citation,
               value: `Citations:\n${[...this.pendingCitations].sort().join('\n')}`,
             };
             this.pendingCitations.clear();
@@ -350,7 +350,7 @@ export class Turn {
 
           this.finishReason = finishReason;
           yield {
-            type: GeminiEventType.Finished,
+            type: JiminyEventType.Finished,
             value: {
               reason: finishReason,
               usageMetadata: resp.usageMetadata,
@@ -360,13 +360,13 @@ export class Turn {
       }
     } catch (e) {
       if (signal.aborted) {
-        yield { type: GeminiEventType.UserCancelled };
+        yield { type: JiminyEventType.UserCancelled };
         // Regular cancellation error, fail gracefully.
         return;
       }
 
       if (e instanceof InvalidStreamError) {
-        yield { type: GeminiEventType.InvalidStream };
+        yield { type: JiminyEventType.InvalidStream };
         return;
       }
 
@@ -398,7 +398,7 @@ export class Turn {
         status,
       };
       await this.chat.maybeIncludeSchemaDepthContext(structuredError);
-      yield { type: GeminiEventType.Error, value: { error: structuredError } };
+      yield { type: JiminyEventType.Error, value: { error: structuredError } };
       return;
     }
   }
@@ -406,7 +406,7 @@ export class Turn {
   private handlePendingFunctionCall(
     fnCall: FunctionCall,
     traceId?: string,
-  ): ServerGeminiStreamEvent | null {
+  ): ServerJiminyStreamEvent | null {
     const name = fnCall.name || 'undefined_tool_name';
     const args = fnCall.args || {};
     const callId = fnCall.id ?? `${name}_${Date.now()}_${this.callCounter++}`;
@@ -423,7 +423,7 @@ export class Turn {
     this.pendingToolCalls.push(toolCallRequest);
 
     // Yield a request for the tool call, not the pending/confirming status
-    return { type: GeminiEventType.ToolCallRequest, value: toolCallRequest };
+    return { type: JiminyEventType.ToolCallRequest, value: toolCallRequest };
   }
 
   getDebugResponses(): GenerateContentResponse[] {

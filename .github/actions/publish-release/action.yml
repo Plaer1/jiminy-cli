@@ -1,5 +1,5 @@
 name: 'Publish Release'
-description: 'Builds, prepares, and publishes the gemini-cli packages to npm and creates a GitHub release.'
+description: 'Builds, prepares, and publishes the jiminy-cli packages to npm and creates a GitHub release.'
 
 inputs:
   release-version:
@@ -85,8 +85,8 @@ runs:
       working-directory: '${{ inputs.working-directory }}'
       shell: 'bash'
       run: |
-        git config user.name "gemini-cli-robot"
-        git config user.email "gemini-cli-robot@google.com"
+        git config user.name "jiminy-cli-robot"
+        git config user.email "jiminy-cli-robot@google.com"
 
     - name: '🌿 Create and switch to a release branch'
       working-directory: '${{ inputs.working-directory }}'
@@ -291,16 +291,16 @@ runs:
         INPUTS_PREVIOUS_TAG: '${{ inputs.previous-tag }}'
       shell: 'bash'
       run: |
-        rm -f gemini-cli-bundle.zip
-        (cd bundle && chmod +x gemini.js && zip -r ../gemini-cli-bundle.zip .)
+        rm -f jiminy-cli-bundle.zip
+        (cd bundle && chmod +x jiminy.js && zip -r ../jiminy-cli-bundle.zip .)
 
         echo "Testing the generated bundle archive..."
         rm -rf test-bundle
         mkdir -p test-bundle
-        unzip -q gemini-cli-bundle.zip -d test-bundle
+        unzip -q jiminy-cli-bundle.zip -d test-bundle
 
         # Verify it runs and outputs a version
-        BUNDLE_VERSION=$(node test-bundle/gemini.js --version | xargs)
+        BUNDLE_VERSION=$(node test-bundle/jiminy.js --version | xargs)
         echo "Bundle version output: ${BUNDLE_VERSION}"
         if [[ -z "${BUNDLE_VERSION}" ]]; then
           echo "Error: Bundle failed to execute or return version."
@@ -309,7 +309,7 @@ runs:
         rm -rf test-bundle
 
         gh release create "${INPUTS_RELEASE_TAG}" \
-          gemini-cli-bundle.zip \
+          jiminy-cli-bundle.zip \
           --target "${STEPS_RELEASE_BRANCH_OUTPUTS_BRANCH_NAME}" \
           --title "Release ${INPUTS_RELEASE_TAG}" \
           --notes-start-tag "${INPUTS_PREVIOUS_TAG}" \

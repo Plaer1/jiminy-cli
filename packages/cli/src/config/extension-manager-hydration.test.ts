@@ -13,7 +13,7 @@ import {
   debugLogger,
   coreEvents,
   type CommandHookConfig,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { createTestMergedSettings } from './settings.js';
 import { createExtension } from '../test-utils/createExtension.js';
 import { EXTENSIONS_DIRECTORY_NAME } from './extensions/variables.js';
@@ -28,10 +28,10 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-// Mock @google/gemini-cli-core
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+// Mock @plaer1/jiminy-cli-core
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     homedir: mockHomedir,
@@ -55,7 +55,7 @@ describe('ExtensionManager hydration', () => {
     mockHomedir.mockReturnValue(tempDir);
 
     // Create the extensions directory that ExtensionManager expects
-    extensionsDir = path.join(tempDir, '.gemini', EXTENSIONS_DIRECTORY_NAME);
+    extensionsDir = path.join(tempDir, '.jiminy', EXTENSIONS_DIRECTORY_NAME);
     fs.mkdirSync(extensionsDir, { recursive: true });
 
     extensionManager = new ExtensionManager({

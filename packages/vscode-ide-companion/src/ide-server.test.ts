@@ -38,9 +38,9 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     tmpdir: vi.fn(() => '/tmp'),
@@ -148,7 +148,7 @@ describe('IDEServer', () => {
       '/tmp',
       'gemini',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
@@ -181,7 +181,7 @@ describe('IDEServer', () => {
       '/tmp',
       'gemini',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
@@ -211,7 +211,7 @@ describe('IDEServer', () => {
       '/tmp',
       'gemini',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
@@ -259,7 +259,7 @@ describe('IDEServer', () => {
       '/tmp',
       'gemini',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     const expectedContent = JSON.stringify({
       port: parseInt(port, 10),
@@ -300,7 +300,7 @@ describe('IDEServer', () => {
       '/tmp',
       'gemini',
       'ide',
-      `gemini-ide-server-${process.ppid}-${port}.json`,
+      `jiminy-ide-server-${process.ppid}-${port}.json`,
     );
     expect(fs.writeFile).toHaveBeenCalledWith(portFile, expect.any(String));
 
@@ -332,7 +332,7 @@ describe('IDEServer', () => {
         '/tmp',
         'gemini',
         'ide',
-        `gemini-ide-server-${process.ppid}-${port}.json`,
+        `jiminy-ide-server-${process.ppid}-${port}.json`,
       );
       const expectedContent = JSON.stringify({
         port: parseInt(port, 10),

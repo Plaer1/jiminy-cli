@@ -63,7 +63,7 @@ export function validateWorkspacePath(
   if (!isWithinWorkspace) {
     return {
       isValid: false,
-      error: `Directory mismatch. Gemini CLI is running in a different location than the open workspace in the IDE. Please run the CLI from one of the following directories: ${ideWorkspacePaths.join(
+      error: `Directory mismatch. Jiminy CLI is running in a different location than the open workspace in the IDE. Please run the CLI from one of the following directories: ${ideWorkspacePaths.join(
         ', ',
       )}`,
     };
@@ -120,7 +120,7 @@ export async function getConnectionConfigFromFile(
       os.tmpdir(),
       'gemini',
       'ide',
-      `gemini-ide-server-${pid}.json`,
+      `jiminy-ide-server-${pid}.json`,
     );
     const portFileContents = await fs.promises.readFile(portFile, 'utf8');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return

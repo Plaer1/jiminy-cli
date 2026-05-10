@@ -34,10 +34,10 @@ export const MEMORY_SECTION_HEADER = '## Gemini Added Memories';
 export const PROJECT_MEMORY_INDEX_FILENAME = 'MEMORY.md';
 
 // This variable will hold the currently configured filename for GEMINI.md context files.
-// It defaults to DEFAULT_CONTEXT_FILENAME but can be overridden by setGeminiMdFilename.
+// It defaults to DEFAULT_CONTEXT_FILENAME but can be overridden by setJiminyMdFilename.
 let currentGeminiMdFilename: string | string[] = DEFAULT_CONTEXT_FILENAME;
 
-export function setGeminiMdFilename(newFilename: string | string[]): void {
+export function setJiminyMdFilename(newFilename: string | string[]): void {
   if (Array.isArray(newFilename)) {
     if (newFilename.length > 0) {
       currentGeminiMdFilename = newFilename.map((name) => name.trim());
@@ -47,14 +47,14 @@ export function setGeminiMdFilename(newFilename: string | string[]): void {
   }
 }
 
-export function getCurrentGeminiMdFilename(): string {
+export function getCurrentJiminyMdFilename(): string {
   if (Array.isArray(currentGeminiMdFilename)) {
     return currentGeminiMdFilename[0];
   }
   return currentGeminiMdFilename;
 }
 
-export function getAllGeminiMdFilenames(): string[] {
+export function getAllJiminyMdFilenames(): string[] {
   if (Array.isArray(currentGeminiMdFilename)) {
     return currentGeminiMdFilename;
   }
@@ -69,7 +69,7 @@ interface SaveMemoryParams {
 }
 
 export function getGlobalMemoryFilePath(): string {
-  return path.join(Storage.getGlobalGeminiDir(), getCurrentGeminiMdFilename());
+  return path.join(Storage.getGlobalGeminiDir(), getCurrentJiminyMdFilename());
 }
 
 export function getProjectMemoryIndexFilePath(storage: Storage): string {

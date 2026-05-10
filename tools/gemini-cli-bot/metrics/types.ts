@@ -11,4 +11,4 @@ export interface MetricOutput {
 }
 
 export const GITHUB_OWNER = 'google-gemini';
-export const GITHUB_REPO = 'gemini-cli';
+export const GITHUB_REPO = 'jiminy-cli';

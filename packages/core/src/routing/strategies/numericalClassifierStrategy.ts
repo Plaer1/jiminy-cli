@@ -147,7 +147,7 @@ export class NumericalClassifierStrategy implements RoutingStrategy {
 
       const { threshold, groupLabel, modelAlias } =
         await this.getRoutingDecision(score, config);
-      const [useGemini3_1, useGemini3_1FlashLite, useCustomToolModel] =
+      const [useJiminy3_1, useJiminy3_1FlashLite, useCustomToolModel] =
         await Promise.all([
           config.getGemini31Launched(),
           config.getGemini31FlashLiteLaunched(),
@@ -156,8 +156,8 @@ export class NumericalClassifierStrategy implements RoutingStrategy {
       const selectedModel = resolveClassifierModel(
         model,
         modelAlias,
-        useGemini3_1,
-        useGemini3_1FlashLite,
+        useJiminy3_1,
+        useJiminy3_1FlashLite,
         useCustomToolModel,
         config.getHasAccessToPreviewModel?.() ?? true,
         config,

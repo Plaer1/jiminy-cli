@@ -16,7 +16,7 @@ import type { AddressInfo } from 'node:net';
 import { createApp, updateCoderAgentCardUrl } from './app.js';
 import type { TaskMetadata } from '../types.js';
 import { createMockConfig } from '../utils/testing_utils.js';
-import { debugLogger, type Config } from '@google/gemini-cli-core';
+import { debugLogger, type Config } from '@plaer1/jiminy-cli-core';
 
 // Mock the logger to avoid polluting test output
 // Comment out to help debug
@@ -35,7 +35,7 @@ vi.mock('../agent/task.js', () => {
         .fn()
         .mockReturnValue({ model: 'gemini-pro' }),
     };
-    geminiClient = {
+    jiminyClient = {
       initialize: vi.fn().mockResolvedValue(undefined),
     };
     constructor(id: string, contextId: string) {
@@ -156,7 +156,7 @@ describe('Agent Server Endpoints', () => {
     const response = await request(app).get('/.well-known/agent-card.json');
     const port = (server.address() as AddressInfo).port;
     expect(response.status).toBe(200);
-    expect(response.body.name).toBe('Gemini SDLC Agent');
+    expect(response.body.name).toBe('Jiminy SDLC Agent');
     expect(response.body.url).toBe(`http://localhost:${port}/`);
   });
 });

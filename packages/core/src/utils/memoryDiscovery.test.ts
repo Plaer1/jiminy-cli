@@ -17,7 +17,7 @@ import {
   refreshServerHierarchicalMemory,
 } from './memoryDiscovery.js';
 import {
-  setGeminiMdFilename,
+  setJiminyMdFilename,
   DEFAULT_CONTEXT_FILENAME,
 } from '../tools/memoryTool.js';
 import { flattenMemory, type HierarchicalMemory } from '../config/memory.js';
@@ -35,7 +35,7 @@ function flattenResult(result: {
     filePaths: result.filePaths.map((p) => normalizePath(p)),
   };
 }
-import { Config, type GeminiCLIExtension } from '../config/config.js';
+import { Config, type JiminyCLIExtension } from '../config/config.js';
 import { Storage } from '../config/storage.js';
 import { SimpleExtensionLoader } from './extensionLoader.js';
 import { CoreEvent, coreEvents } from './events.js';
@@ -103,7 +103,7 @@ describe('memoryDiscovery', () => {
   afterEach(async () => {
     vi.unstubAllEnvs();
     // Some tests set this to a different value.
-    setGeminiMdFilename(DEFAULT_CONTEXT_FILENAME);
+    setJiminyMdFilename(DEFAULT_CONTEXT_FILENAME);
     // Clean up the temporary directory to prevent resource leaks.
     // Use maxRetries option for robust cleanup without race conditions
     await fsPromises.rm(testRootDir, {
@@ -225,7 +225,7 @@ default context content
 
   it('should load only the global custom context file if present and filename is changed', async () => {
     const customFilename = 'CUSTOM_AGENTS.md';
-    setGeminiMdFilename(customFilename);
+    setJiminyMdFilename(customFilename);
 
     const customContextFile = await createTestFile(
       path.join(homedir, GEMINI_DIR, customFilename),
@@ -254,7 +254,7 @@ custom context content
 
   it('should load context files by upward traversal with custom filename', async () => {
     const customFilename = 'PROJECT_CONTEXT.md';
-    setGeminiMdFilename(customFilename);
+    setJiminyMdFilename(customFilename);
 
     const projectContextFile = await createTestFile(
       path.join(projectRoot, customFilename),
@@ -291,7 +291,7 @@ cwd context content
 
   it('should load context files by downward traversal with custom filename', async () => {
     const customFilename = 'LOCAL_CONTEXT.md';
-    setGeminiMdFilename(customFilename);
+    setJiminyMdFilename(customFilename);
 
     const subdirCustomFile = await createTestFile(
       path.join(cwd, 'subdir', customFilename),
@@ -482,7 +482,7 @@ Subdir memory
         'tree',
         {
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           customIgnoreFilePaths: [],
         },
         200, // maxDirs parameter
@@ -516,7 +516,7 @@ My code memory
       'tree', // importFormat
       {
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
         customIgnoreFilePaths: [],
       },
       1, // maxDirs
@@ -557,7 +557,7 @@ My code memory
           {
             contextFiles: [extensionFilePath],
             isActive: true,
-          } as GeminiCLIExtension,
+          } as JiminyCLIExtension,
         ]),
         DEFAULT_FOLDER_TRUST,
       ),
@@ -712,7 +712,7 @@ included directory memory
         {
           isActive: true,
           contextFiles: [extFile],
-        } as GeminiCLIExtension,
+        } as JiminyCLIExtension,
       ]);
 
       const result = getExtensionMemoryPaths(loader);
@@ -730,7 +730,7 @@ included directory memory
         {
           isActive: false,
           contextFiles: [extFile],
-        } as GeminiCLIExtension,
+        } as JiminyCLIExtension,
       ]);
 
       const result = getExtensionMemoryPaths(loader);
@@ -840,7 +840,7 @@ included directory memory
 
     it('should keep multiple memory files from the same directory adjacent and in order', async () => {
       // Configure multiple memory filenames
-      setGeminiMdFilename(['PRIMARY.md', 'SECONDARY.md']);
+      setJiminyMdFilename(['PRIMARY.md', 'SECONDARY.md']);
 
       const dir = await createEmptyDir(
         path.join(testRootDir, 'multi_file_dir'),
@@ -896,7 +896,7 @@ included directory memory
       expect(stats1.ino).toBe(stats2.ino);
       expect(stats1.dev).toBe(stats2.dev);
 
-      setGeminiMdFilename(['GEMINI.md', 'gemini.md']);
+      setJiminyMdFilename(['GEMINI.md', 'gemini.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -935,7 +935,7 @@ included directory memory
       const stats2 = await fsPromises.lstat(geminiFileUpper);
 
       if (stats1.ino !== stats2.ino || stats1.dev !== stats2.dev) {
-        setGeminiMdFilename(['GEMINI.md', 'gemini.md']);
+        setJiminyMdFilename(['GEMINI.md', 'gemini.md']);
 
         const result = flattenResult(
           await loadServerHierarchicalMemory(
@@ -960,7 +960,7 @@ included directory memory
         'Valid file content',
       );
 
-      setGeminiMdFilename(['gemini.md', 'missing.md']);
+      setJiminyMdFilename(['gemini.md', 'missing.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -1007,7 +1007,7 @@ included directory memory
       expect(stats1.ino).toBe(stats2.ino);
       expect(stats1.ino).toBe(stats3.ino);
 
-      setGeminiMdFilename(['gemini.md', 'GEMINI.md', 'Gemini.md']);
+      setJiminyMdFilename(['gemini.md', 'GEMINI.md', 'Gemini.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -1140,7 +1140,7 @@ included directory memory
       const stats2 = await fsPromises.lstat(geminiFileLink);
       expect(stats1.ino).toBe(stats2.ino);
 
-      setGeminiMdFilename(['gemini.md', 'GEMINI.md']);
+      setJiminyMdFilename(['gemini.md', 'GEMINI.md']);
 
       const result = await loadJitSubdirectoryMemory(
         targetFile,

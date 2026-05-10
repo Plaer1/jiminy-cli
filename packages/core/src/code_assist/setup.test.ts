@@ -13,7 +13,7 @@ import {
 import { ValidationRequiredError } from '../utils/googleQuotaErrors.js';
 import { CodeAssistServer } from '../code_assist/server.js';
 import type { OAuth2Client } from 'google-auth-library';
-import { UserTierId, type GeminiUserTier } from './types.js';
+import { UserTierId, type JiminyUserTier } from './types.js';
 import type { Config } from '../config/config.js';
 import {
   logOnboardingSuccess,
@@ -30,14 +30,14 @@ vi.mock('../telemetry/index.js', async (importOriginal) => {
   };
 });
 
-const mockPaidTier: GeminiUserTier = {
+const mockPaidTier: JiminyUserTier = {
   id: UserTierId.STANDARD,
   name: 'paid',
   description: 'Paid tier',
   isDefault: true,
 };
 
-const mockFreeTier: GeminiUserTier = {
+const mockFreeTier: JiminyUserTier = {
   id: UserTierId.FREE,
   name: 'free',
   description: 'Free tier',

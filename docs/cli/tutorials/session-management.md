@@ -1,12 +1,12 @@
 # Manage sessions and history
 
-Resume, browse, and rewind your conversations with Gemini CLI. In this guide,
+Resume, browse, and rewind your conversations with Jiminy CLI. In this guide,
 you'll learn how to switch between tasks, manage your session history, and undo
 mistakes using the rewind feature.
 
 ## Prerequisites
 
-- Gemini CLI installed and authenticated.
+- Jiminy CLI installed and authenticated.
 - At least one active or past session.
 
 ## How to resume where you left off
@@ -63,7 +63,7 @@ gemini --delete-session 1
 
 ## How to rewind time (Undo mistakes)
 
-Gemini CLI's **Rewind** feature is like `Ctrl+Z` for your workflow.
+Jiminy CLI's **Rewind** feature is like `Ctrl+Z` for your workflow.
 
 ### Scenario: Triggering rewind
 

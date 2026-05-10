@@ -11,11 +11,11 @@ maintainability.
 ## Context
 
 - Time-series repository metrics are stored in
-  `tools/gemini-cli-bot/history/metrics-timeseries.csv`.
+  `tools/jiminy-cli-bot/history/metrics-timeseries.csv`.
 - Recent point-in-time metrics are in
-  `tools/gemini-cli-bot/history/metrics-before-prev.csv` and the current run's
+  `tools/jiminy-cli-bot/history/metrics-before-prev.csv` and the current run's
   metrics.
-- Findings and state are recorded in `tools/gemini-cli-bot/lessons-learned.md`.
+- Findings and state are recorded in `tools/jiminy-cli-bot/lessons-learned.md`.
 - **Preservation Status**: Check the `ENABLE_PRS` environment variable. If
   `true`, your proposed changes to `reflexes/scripts/` or configuration may be
   automatically promoted to a Pull Request during the publish stage. If `false`,
@@ -55,18 +55,18 @@ When analyzing data and proposing solutions, prioritize the following in order:
 
 ### LLM-Powered Classification
 
-You are explicitly authorized to use the Gemini CLI (`bundle/gemini.js`) within
+You are explicitly authorized to use the Jiminy CLI (`bundle/gemini.js`) within
 your proposed `metrics/` and `reflexes/` scripts to perform classification tasks
 (e.g., sentiment analysis, advanced triage, or semantic labeling).
 
 - **Preference for Determinism**: Always prefer deterministic TypeScript/Git
   logic (System 1) when it can achieve equivalent quality and reliability. Use
   the LLM only when heuristic or semantic understanding is required.
-- **Strict Role Separation**: Use Gemini CLI ONLY for **classification** (data
+- **Strict Role Separation**: Use Jiminy CLI ONLY for **classification** (data
   labeling). Do not use it for execution or decision-making within the Pulse
   reflexes.
 - **Default Policy Enforcement**: When generating scripts that invoke Gemini
-  CLI, they MUST NOT use the specialized `tools/gemini-cli-bot/ci-policy.toml`.
+  CLI, they MUST NOT use the specialized `tools/jiminy-cli-bot/ci-policy.toml`.
   They should rely on the default repository policies to ensure safe and
   standard execution.
 
@@ -77,11 +77,11 @@ your proposed `metrics/` and `reflexes/` scripts to perform classification tasks
 Before beginning your analysis, you MUST perform the following research to
 synchronize with previous sessions:
 
-1.  **Read Memory**: Read `tools/gemini-cli-bot/lessons-learned.md` to
+1.  **Read Memory**: Read `tools/jiminy-cli-bot/lessons-learned.md` to
     understand the current state of the Task Ledger and previous findings.
 2.  **Verify PR Status**: If the Task Ledger indicates an active PR (status
     `IN_PROGRESS` or `SUBMITTED`), use the GitHub CLI (`gh pr view <number>` or
-    `gh pr list --author gemini-cli-robot`) to check its status and CI results.
+    `gh pr list --author jiminy-cli-robot`) to check its status and CI results.
 3.  **Update Ledger Status**:
     - If an active PR has been merged, mark it `DONE`.
     - If it was rejected or closed, mark it `FAILED` and investigate the reason
@@ -93,7 +93,7 @@ synchronize with previous sessions:
 
 ### 1. Read & Identify Trends (Time-Series Analysis)
 
-- Load and analyze `tools/gemini-cli-bot/history/metrics-timeseries.csv`.
+- Load and analyze `tools/jiminy-cli-bot/history/metrics-timeseries.csv`.
 - Identify significant anomalies or deteriorating trends over time (e.g.,
   `latency_pr_overall_hours` steadily increasing, `open_issues` growing faster
   than closure rates, spikes in `review_distribution_variance`).
@@ -141,7 +141,7 @@ Before proposing an intervention, accurately identify the blocker:
 ### 5. Policy Critique & Evaluation
 
 - **Review Existing Policies**: Examine the existing automation in
-  `.github/workflows/` and scripts in `tools/gemini-cli-bot/reflexes/scripts/`.
+  `.github/workflows/` and scripts in `tools/jiminy-cli-bot/reflexes/scripts/`.
 - **Analyze Effectiveness**: Based on your metrics analysis, determine if
   current policies are achieving their goals (e.g., Is triage reducing latency?
   Are stale issues closed as expected?).
@@ -151,7 +151,7 @@ Before proposing an intervention, accurately identify the blocker:
 ### 6. Record Findings & Propose Actions
 
 - **Memory Preservation**: You MUST update
-  `tools/gemini-cli-bot/lessons-learned.md` using the **Structured Markdown**
+  `tools/jiminy-cli-bot/lessons-learned.md` using the **Structured Markdown**
   format below. You are strictly forbidden from summarizing active tasks or
   design details.
 - **Memory Pruning**: To prevent context bloat, you MUST maintain a rolling
@@ -229,7 +229,7 @@ Before proposing an intervention, accurately identify the blocker:
     sufficient quality and straightforward enough that the user is confident in
     taking it.
   - **Metrics Output Format**: When modifying scripts in
-    `tools/gemini-cli-bot/metrics/scripts/`, you MUST NEVER change the output
+    `tools/jiminy-cli-bot/metrics/scripts/`, you MUST NEVER change the output
     format. The scripts must continue to output comma-separated values to stdout
     (e.g., `console.log('metric_name,123')`). Do NOT change the output to JSON
     or any other format.
@@ -246,7 +246,7 @@ Before proposing an intervention, accurately identify the blocker:
   default rule against staging changes. You MUST use `git add` to stage these
   files. DO NOT stage internal bot files like `pr-description.md`,
   `lessons-learned.md`, `branch-name.txt`, `pr-comment.md`, `pr-number.txt`, or
-  anything in `tools/gemini-cli-bot/history/`.**
+  anything in `tools/jiminy-cli-bot/history/`.**
 
 ### 7. Execution Constraints
 

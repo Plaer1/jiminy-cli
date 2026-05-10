@@ -5,7 +5,7 @@
  */
 
 import type { Config } from '../config/config.js';
-import type { GeminiChat } from '../core/geminiChat.js';
+import type { JiminyChat } from '../core/jiminyChat.js';
 import { ContextProcessorRegistry } from './config/registry.js';
 import { loadContextManagementConfig } from './config/configLoader.js';
 import { ContextTracer } from './tracer.js';
@@ -25,7 +25,7 @@ import { RollingSummaryProcessorOptionsSchema } from './processors/rollingSummar
 
 export async function initializeContextManager(
   config: Config,
-  chat: GeminiChat,
+  chat: JiminyChat,
   lastPromptId: string,
 ): Promise<ContextManager | undefined> {
   const isV1Enabled = config.getContextManagementConfig().enabled;

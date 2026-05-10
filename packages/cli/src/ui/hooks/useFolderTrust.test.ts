@@ -25,16 +25,16 @@ import {
   type LoadedTrustedFolders,
 } from '../../config/trustedFolders.js';
 import * as trustedFolders from '../../config/trustedFolders.js';
-import { coreEvents, ExitCodes, isHeadlessMode } from '@google/gemini-cli-core';
+import { coreEvents, ExitCodes, isHeadlessMode } from '@plaer1/jiminy-cli-core';
 import { MessageType } from '../types.js';
 
 const mockedCwd = vi.hoisted(() => vi.fn().mockReturnValue('/mock/cwd'));
 const mockedExit = vi.hoisted(() => vi.fn());
 
-vi.mock('@google/gemini-cli-core', async () => {
+vi.mock('@plaer1/jiminy-cli-core', async () => {
   const actual = await vi.importActual<
-    typeof import('@google/gemini-cli-core')
-  >('@google/gemini-cli-core');
+    typeof import('@plaer1/jiminy-cli-core')
+  >('@plaer1/jiminy-cli-core');
   return {
     ...actual,
     isHeadlessMode: vi.fn().mockReturnValue(false),
@@ -360,7 +360,7 @@ describe('useFolderTrust', () => {
 
     expect(emitFeedbackSpy).toHaveBeenCalledWith(
       'error',
-      'Failed to save trust settings. Exiting Gemini CLI.',
+      'Failed to save trust settings. Exiting Jiminy CLI.',
     );
     expect(mockedExit).toHaveBeenCalledWith(ExitCodes.FATAL_CONFIG_ERROR);
   });

@@ -12,8 +12,8 @@ import { simpleGit, CheckRepoActions, type SimpleGit } from 'simple-git';
 import type { Storage } from '../config/storage.js';
 import { debugLogger } from '../utils/debugLogger.js';
 
-export const SHADOW_REPO_AUTHOR_NAME = 'Gemini CLI';
-export const SHADOW_REPO_AUTHOR_EMAIL = 'gemini-cli@google.com';
+export const SHADOW_REPO_AUTHOR_NAME = 'Jiminy CLI';
+export const SHADOW_REPO_AUTHOR_EMAIL = 'jiminy-cli@google.com';
 
 export class GitService {
   private projectRoot: string;

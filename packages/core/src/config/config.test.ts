@@ -19,7 +19,7 @@ import {
   type ConfigParameters,
   type SandboxConfig,
 } from './config.js';
-import { createMockSandboxConfig } from '@google/gemini-cli-test-utils';
+import { createMockSandboxConfig } from '@plaer1/jiminy-cli-test-utils';
 import { DEFAULT_MAX_ATTEMPTS } from '../utils/retry.js';
 import { ExperimentFlags } from '../code_assist/experiments/flagNames.js';
 import { debugLogger } from '../utils/debugLogger.js';
@@ -32,7 +32,7 @@ import {
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
-import { setGeminiMdFilename as mockSetGeminiMdFilename } from '../tools/memoryTool.js';
+import { setJiminyMdFilename as mockSetGeminiMdFilename } from '../tools/memoryTool.js';
 import {
   DEFAULT_TELEMETRY_TARGET,
   DEFAULT_OTLP_ENDPOINT,
@@ -45,7 +45,7 @@ import {
   type ContentGeneratorConfig,
   type ContentGenerator,
 } from '../core/contentGenerator.js';
-import { GeminiClient } from '../core/client.js';
+import { JiminyClient } from '../core/client.js';
 import { GitService } from '../services/gitService.js';
 import { ShellTool } from '../tools/shell.js';
 import { AgentTool } from '../agents/agent-tool.js';
@@ -126,16 +126,16 @@ vi.mock('../tools/web-fetch');
 vi.mock('../tools/read-many-files');
 vi.mock('../tools/memoryTool', () => ({
   MemoryTool: vi.fn(),
-  setGeminiMdFilename: vi.fn(),
-  getCurrentGeminiMdFilename: vi.fn(() => 'GEMINI.md'), // Mock the original filename
+  setJiminyMdFilename: vi.fn(),
+  getCurrentJiminyMdFilename: vi.fn(() => 'GEMINI.md'), // Mock the original filename
   DEFAULT_CONTEXT_FILENAME: 'GEMINI.md',
-  GEMINI_DIR: '.gemini',
+  GEMINI_DIR: '.jiminy',
 }));
 
 vi.mock('../core/contentGenerator.js');
 
 vi.mock('../core/client.js', () => ({
-  GeminiClient: vi.fn().mockImplementation(() => ({
+  JiminyClient: vi.fn().mockImplementation(() => ({
     initialize: vi.fn().mockResolvedValue(undefined),
     stripThoughtsFromHistory: vi.fn(),
     isInitialized: vi.fn().mockReturnValue(false),
@@ -258,7 +258,7 @@ describe('Server Config (config.ts)', () => {
   const MODEL = DEFAULT_GEMINI_MODEL;
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
@@ -840,7 +840,7 @@ describe('Server Config (config.ts)', () => {
       );
       // Verify that contentGeneratorConfig is updated
       expect(config.getContentGeneratorConfig()).toEqual(mockContentConfig);
-      expect(GeminiClient).toHaveBeenCalledWith(config);
+      expect(JiminyClient).toHaveBeenCalledWith(config);
     });
 
     it('should pass Vertex AI routing settings when refreshing auth', async () => {
@@ -900,7 +900,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.jiminyClient.stripThoughtsFromHistory,
       ).toHaveBeenCalledWith();
     });
 
@@ -920,7 +920,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.jiminyClient.stripThoughtsFromHistory,
       ).toHaveBeenCalledWith();
     });
 
@@ -940,7 +940,7 @@ describe('Server Config (config.ts)', () => {
 
       const loopContext: AgentLoopContext = config;
       expect(
-        loopContext.geminiClient.stripThoughtsFromHistory,
+        loopContext.jiminyClient.stripThoughtsFromHistory,
       ).not.toHaveBeenCalledWith();
     });
 
@@ -1004,7 +1004,7 @@ describe('Server Config (config.ts)', () => {
     expect(config.getUserMemory()).toBe('');
   });
 
-  it('Config constructor should call setGeminiMdFilename with contextFileName if provided', () => {
+  it('Config constructor should call setJiminyMdFilename with contextFileName if provided', () => {
     const contextFileName = 'CUSTOM_AGENTS.md';
     const paramsWithContextFile: ConfigParameters = {
       ...baseParams,
@@ -1014,7 +1014,7 @@ describe('Server Config (config.ts)', () => {
     expect(mockSetGeminiMdFilename).toHaveBeenCalledWith(contextFileName);
   });
 
-  it('Config constructor should not call setGeminiMdFilename if contextFileName is not provided', () => {
+  it('Config constructor should not call setJiminyMdFilename if contextFileName is not provided', () => {
     new Config(baseParams); // baseParams does not have contextFileName
     expect(mockSetGeminiMdFilename).not.toHaveBeenCalled();
   });
@@ -1142,7 +1142,7 @@ describe('Server Config (config.ts)', () => {
       ...baseParams,
       fileFiltering: {
         respectGitIgnore: false,
-        respectGeminiIgnore: false,
+        respectJiminyIgnore: false,
         customIgnoreFilePaths: ['.myignore'],
       },
     };
@@ -1154,7 +1154,7 @@ describe('Server Config (config.ts)', () => {
       path.resolve(TARGET_DIR),
       {
         respectGitIgnore: false,
-        respectGeminiIgnore: false,
+        respectJiminyIgnore: false,
         customIgnoreFilePaths: ['.myignore'],
       },
     );
@@ -1971,7 +1971,7 @@ describe('GemmaModelRouterSettings', () => {
   const MODEL = DEFAULT_GEMINI_MODEL;
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
@@ -2365,7 +2365,7 @@ describe('BaseLlmClient Lifecycle', () => {
   const MODEL = 'gemini-pro';
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
@@ -2430,7 +2430,7 @@ describe('Generation Config Merging (HACK)', () => {
   const MODEL = 'gemini-pro';
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
@@ -2736,7 +2736,7 @@ describe('LocalLiteRtLmClient Lifecycle', () => {
   const MODEL = 'gemini-pro';
   const SANDBOX: SandboxConfig = createMockSandboxConfig({
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'jiminy-cli-sandbox',
   });
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
@@ -3056,7 +3056,7 @@ describe('Config Quota & Preview Model Access', () => {
       allowedPaths: [],
       networkAccess: false,
       command: 'docker',
-      image: 'gemini-cli-sandbox',
+      image: 'jiminy-cli-sandbox',
     },
   };
 

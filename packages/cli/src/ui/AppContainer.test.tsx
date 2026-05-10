@@ -31,7 +31,7 @@ import {
   AuthType,
   type AgentDefinition,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 // Mock coreEvents
 const mockCoreEvents = vi.hoisted(() => ({
@@ -61,9 +61,9 @@ const terminalNotificationsMocks = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     coreEvents: mockCoreEvents,
@@ -246,7 +246,7 @@ import {
   writeToStdout,
   enableMouseEvents,
   disableMouseEvents,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { type ExtensionManager } from '../config/extension-manager.js';
 import {
   WARNING_PROMPT_DURATION_MS,
@@ -516,7 +516,7 @@ describe('AppContainer State Management', () => {
       themeError: null,
       authError: null,
       shouldOpenAuthDialog: false,
-      geminiMdFileCount: 0,
+      jiminyMdFileCount: 0,
     } as InitializationResult;
   });
 
@@ -719,7 +719,7 @@ describe('AppContainer State Management', () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'session_complete',
-          detail: 'Gemini CLI finished responding.',
+          detail: 'Jiminy CLI finished responding.',
         }),
       );
       expect(terminalNotificationsMocks.notifyViaTerminal).toHaveBeenCalled();
@@ -750,7 +750,7 @@ describe('AppContainer State Management', () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'session_complete',
-          detail: 'Gemini CLI finished responding.',
+          detail: 'Jiminy CLI finished responding.',
         }),
       );
 
@@ -1056,7 +1056,7 @@ describe('AppContainer State Management', () => {
         recordToolCalls: vi.fn(),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: vi.fn(),
         getUserTier: vi.fn(),
@@ -1064,8 +1064,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1090,7 +1090,7 @@ describe('AppContainer State Management', () => {
         getCurrentConversation: vi.fn(),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: vi.fn(),
         getUserTier: vi.fn(),
@@ -1099,8 +1099,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
       vi.spyOn(configWithRecording, 'getSessionId').mockReturnValue(
         'test-session-123',
@@ -1116,8 +1116,8 @@ describe('AppContainer State Management', () => {
       );
 
       // Verify the recording service structure is correct
-      expect(configWithRecording.getGeminiClient).toBeDefined();
-      expect(mockGeminiClient.getChatRecordingService).toBeDefined();
+      expect(configWithRecording.getJiminyClient).toBeDefined();
+      expect(mockJiminyClient.getChatRecordingService).toBeDefined();
       expect(mockChatRecordingService.initialize).toBeDefined();
       expect(mockChatRecordingService.recordMessage).toBeDefined();
       unmount();
@@ -1135,15 +1135,15 @@ describe('AppContainer State Management', () => {
         getSessionId: vi.fn(() => 'test-session-123'),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         getChatRecordingService: vi.fn(() => mockChatRecordingService),
         getUserTier: vi.fn(),
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1166,7 +1166,7 @@ describe('AppContainer State Management', () => {
   describe('Session Resume Flow', () => {
     it('accepts resumed session data', async () => {
       const mockResumeChat = vi.fn();
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         resumeChat: mockResumeChat,
         getUserTier: vi.fn(),
@@ -1179,8 +1179,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithClient = makeFakeConfig();
-      vi.spyOn(configWithClient, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithClient, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const resumedData = {
@@ -1221,14 +1221,14 @@ describe('AppContainer State Management', () => {
       );
 
       // Verify the resume functionality structure is in place
-      expect(mockGeminiClient.resumeChat).toBeDefined();
+      expect(mockJiminyClient.resumeChat).toBeDefined();
       expect(resumedData.conversation.messages).toHaveLength(2);
       unmount();
     });
 
     it('does not attempt resume when client is not initialized', async () => {
       const mockResumeChat = vi.fn();
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => false), // Not initialized
         resumeChat: mockResumeChat,
         getUserTier: vi.fn(),
@@ -1236,8 +1236,8 @@ describe('AppContainer State Management', () => {
       };
 
       const configWithClient = makeFakeConfig();
-      vi.spyOn(configWithClient, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithClient, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const resumedData = {
@@ -1285,15 +1285,15 @@ describe('AppContainer State Management', () => {
         })),
       };
 
-      const mockGeminiClient = {
+      const mockJiminyClient = {
         isInitialized: vi.fn(() => true),
         getChatRecordingService: vi.fn(() => mockChatRecordingService),
         getUserTier: vi.fn(),
       };
 
       const configWithRecording = makeFakeConfig();
-      vi.spyOn(configWithRecording, 'getGeminiClient').mockReturnValue(
-        mockGeminiClient as unknown as ReturnType<Config['getGeminiClient']>,
+      vi.spyOn(configWithRecording, 'getJiminyClient').mockReturnValue(
+        mockJiminyClient as unknown as ReturnType<Config['getJiminyClient']>,
       );
 
       const { unmount } = await act(async () =>
@@ -1441,7 +1441,7 @@ describe('AppContainer State Management', () => {
 
       expect(titleWrites).toHaveLength(1);
       expect(titleWrites[0][0]).toBe(
-        `\x1b]0;${'Gemini CLI (workspace)'.padEnd(80, ' ')}\x07`,
+        `\x1b]0;${'Jiminy CLI (workspace)'.padEnd(80, ' ')}\x07`,
       );
       unmount();
     });

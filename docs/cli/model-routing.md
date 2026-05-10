@@ -1,6 +1,6 @@
 # Model routing
 
-Gemini CLI includes a model routing feature that automatically switches to a
+Jiminy CLI includes a model routing feature that automatically switches to a
 fallback model in case of a model failure. This feature is enabled by default
 and provides resilience when the primary model is unavailable.
 
@@ -18,8 +18,8 @@ policies.
     you).
 
     Some internal utility calls (such as prompt completion and classification)
-    use a silent fallback chain for `gemini-2.5-flash-lite` and will fall back
-    to `gemini-2.5-flash` and `gemini-2.5-pro` without prompting or changing the
+    use a silent fallback chain for `jiminy-2.5-flash-lite` and will fall back
+    to `jiminy-2.5-flash` and `jiminy-2.5-pro` without prompting or changing the
     configured model.
 
 3.  **Model switch:** If approved, or if the policy allows for silent fallback,
@@ -28,8 +28,8 @@ policies.
 
 ### Local Model Routing (Experimental)
 
-Gemini CLI supports using a local model for routing decisions. When configured,
-Gemini CLI will use a locally-running **Gemma** model to make routing decisions
+Jiminy CLI supports using a local model for routing decisions. When configured,
+Jiminy CLI will use a locally-running **Gemma** model to make routing decisions
 (instead of sending routing decisions to a hosted model). This feature can help
 reduce costs associated with hosted model usage while offering similar routing
 decision latency and quality.
@@ -42,7 +42,7 @@ For more details on how to configure local model routing, see
 
 ### Model selection precedence
 
-The model used by Gemini CLI is determined by the following order of precedence:
+The model used by Jiminy CLI is determined by the following order of precedence:
 
 1.  **`--model` command-line flag:** A model specified with the `--model` flag
     when launching the CLI will always be used.

@@ -9,7 +9,7 @@ import open from 'open';
 import path from 'node:path';
 import { bugCommand } from './bugCommand.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
-import { getVersion, type Config } from '@google/gemini-cli-core';
+import { getVersion, type Config } from '@plaer1/jiminy-cli-core';
 import { GIT_COMMIT_INFO } from '../../generated/git-commit.js';
 import { formatBytes } from '../utils/formatters.js';
 
@@ -26,9 +26,9 @@ vi.mock('../utils/historyExportUtils.js', async (importOriginal) => {
 });
 import { exportHistoryToFile } from '../utils/historyExportUtils.js';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     IdeClient: {
@@ -91,7 +91,7 @@ describe('bugCommand', () => {
             getContentGeneratorConfig: () => ({ authType: 'oauth-personal' }),
             getSessionId: vi.fn().mockReturnValue('test-session-id'),
           } as unknown as Config,
-          geminiClient: {
+          jiminyClient: {
             getChat: () => ({
               getHistory: () => [],
             }),
@@ -117,7 +117,7 @@ describe('bugCommand', () => {
 * **Kitty Keyboard Protocol:** Supported
 * **IDE Client:** VSCode
 `;
-    const expectedUrl = `https://github.com/google-gemini/gemini-cli/issues/new?template=bug_report.yml&title=A%20test%20bug&info=${encodeURIComponent(expectedInfo)}&problem=A%20test%20bug`;
+    const expectedUrl = `https://github.com/Plaer1/jiminy-cli/issues/new?template=bug_report.yml&title=A%20test%20bug&info=${encodeURIComponent(expectedInfo)}&problem=A%20test%20bug`;
 
     expect(open).toHaveBeenCalledWith(expectedUrl);
   });
@@ -140,7 +140,7 @@ describe('bugCommand', () => {
             },
             getSessionId: vi.fn().mockReturnValue('test-session-id'),
           } as unknown as Config,
-          geminiClient: {
+          jiminyClient: {
             getChat: () => ({
               getHistory: () => history,
             }),
@@ -186,7 +186,7 @@ describe('bugCommand', () => {
             getContentGeneratorConfig: () => ({ authType: 'vertex-ai' }),
             getSessionId: vi.fn().mockReturnValue('test-session-id'),
           } as unknown as Config,
-          geminiClient: {
+          jiminyClient: {
             getChat: () => ({
               getHistory: () => [],
             }),

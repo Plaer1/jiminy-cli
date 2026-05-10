@@ -6,7 +6,7 @@
 
 import type { MessageRecord } from './chatRecordingService.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
-import { partListUnionToString } from '../core/geminiRequest.js';
+import { partListUnionToString } from '../core/jiminyRequest.js';
 import { debugLogger } from '../utils/debugLogger.js';
 import type { Content } from '@google/genai';
 import { getResponseText } from '../utils/partUtils.js';

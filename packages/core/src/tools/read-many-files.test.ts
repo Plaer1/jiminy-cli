@@ -97,7 +97,7 @@ describe('ReadManyFilesTool', () => {
 
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
         customIgnoreFilePaths: [],
       }),
       getTargetDir: () => tempRootDir,
@@ -569,7 +569,7 @@ describe('ReadManyFilesTool', () => {
         getFileSystemService: () => new StandardFileSystemService(),
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           customIgnoreFilePaths: [],
         }),
         getWorkspaceContext: () => new WorkspaceContext(tempDir1, [tempDir2]),

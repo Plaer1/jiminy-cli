@@ -15,7 +15,7 @@ import {
   GEMINI_DIR,
   type Config,
   type GitService,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 describe('restoreCommand', () => {
   let mockContext: CommandContext;
@@ -47,7 +47,7 @@ describe('restoreCommand', () => {
         getProjectTempCheckpointsDir: vi.fn().mockReturnValue(checkpointsDir),
         getProjectTempDir: vi.fn().mockReturnValue(geminiTempDir),
       },
-      geminiClient: {
+      jiminyClient: {
         setHistory: mockSetHistory,
       },
       get config() {

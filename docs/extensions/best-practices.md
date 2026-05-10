@@ -1,11 +1,11 @@
-# Gemini CLI extension best practices
+# Jiminy CLI extension best practices
 
 This guide covers best practices for developing, securing, and maintaining
-Gemini CLI extensions.
+Jiminy CLI extensions.
 
 ## Development
 
-Developing extensions for Gemini CLI is a lightweight, iterative process. Use
+Developing extensions for Jiminy CLI is a lightweight, iterative process. Use
 these strategies to build robust and efficient extensions.
 
 ### Structure your extension
@@ -33,7 +33,7 @@ my-extension/
 
 ### Iterate with `link`
 
-Use the `gemini extensions link` command to develop locally without reinstalling
+Use the `jiminy extensions link` command to develop locally without reinstalling
 your extension after every change.
 
 ```bash
@@ -67,7 +67,7 @@ model broad access (such as full shell access) if restricted tools are
 sufficient.
 
 If your extension uses powerful tools like `run_shell_command`, restrict them in
-your `gemini-extension.json` file:
+your `jiminy-extension.json` file:
 
 ```json
 {
@@ -138,14 +138,14 @@ gemini extensions install github.com/user/repo --ref dev
 ### Clean artifacts
 
 When using GitHub Releases, ensure your archives only contain necessary files
-(such as `dist/`, `gemini-extension.json`, and `package.json`). Exclude
+(such as `dist/`, `jiminy-extension.json`, and `package.json`). Exclude
 `node_modules/` and `src/` to minimize download size.
 
 ## Test and verify
 
 Test your extension thoroughly before releasing it to users.
 
-- **Manual verification:** Use `gemini extensions link` to test your extension
+- **Manual verification:** Use `jiminy extensions link` to test your extension
   in a live CLI session. Verify that tools appear in the debug console (F12) and
   that custom commands resolve correctly.
 - **Automated testing:** If your extension includes an MCP server, write unit
@@ -160,12 +160,12 @@ Use these tips to diagnose and fix common extension issues.
 
 If your extension doesn't appear in `/extensions list`:
 
-- **Check the manifest:** Ensure `gemini-extension.json` is in the root
+- **Check the manifest:** Ensure `jiminy-extension.json` is in the root
   directory and contains valid JSON.
 - **Verify the name:** The `name` field in the manifest must match the extension
   directory name exactly.
 - **Restart the CLI:** Extensions are loaded at the start of a session. Restart
-  Gemini CLI after making changes to the manifest or linking a new extension.
+  Jiminy CLI after making changes to the manifest or linking a new extension.
 
 ### MCP server failures
 
@@ -174,7 +174,7 @@ If your tools aren't working as expected:
 - **Check the logs:** View the CLI logs to see if the MCP server failed to
   start.
 - **Test the command:** Run the server's `command` and `args` directly in your
-  terminal to ensure it starts correctly outside of Gemini CLI.
+  terminal to ensure it starts correctly outside of Jiminy CLI.
 - **Debug console:** In interactive mode, press **F12** to open the debug
   console and inspect tool calls and responses.
 

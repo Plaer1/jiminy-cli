@@ -6,7 +6,7 @@
 
 import { renderWithProviders, cleanup } from '../../test-utils/render.js';
 import { createMockSettings } from '../../test-utils/settings.js';
-import { makeFakeConfig } from '@google/gemini-cli-core';
+import { makeFakeConfig } from '@plaer1/jiminy-cli-core';
 import { waitFor } from '../../test-utils/async.js';
 import { act, useState, useMemo } from 'react';
 import type { EventEmitter } from 'node:events';
@@ -26,7 +26,7 @@ const { fakeTranscriptionProvider } = vi.hoisted(() => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const actual = (await importOriginal()) as any;
   return {
@@ -54,7 +54,7 @@ import {
   debugLogger,
   coreEvents,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import * as path from 'node:path';
 import {
   CommandKind,
@@ -887,7 +887,7 @@ describe('InputPrompt', () => {
     it('should handle Ctrl+V when clipboard has an image', async () => {
       vi.mocked(clipboardUtils.clipboardHasImage).mockResolvedValue(true);
       vi.mocked(clipboardUtils.saveClipboardImage).mockResolvedValue(
-        '/test/.gemini-clipboard/clipboard-123.png',
+        '/test/.jiminy-clipboard/clipboard-123.png',
       );
 
       const { stdin, unmount } = await renderWithProviders(
@@ -950,7 +950,7 @@ describe('InputPrompt', () => {
     it('should insert image path at cursor position with proper spacing', async () => {
       const imagePath = path.join(
         'test',
-        '.gemini-clipboard',
+        '.jiminy-clipboard',
         'clipboard-456.png',
       );
       vi.mocked(clipboardUtils.clipboardHasImage).mockResolvedValue(true);

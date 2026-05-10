@@ -424,12 +424,12 @@ describe('Storage - System Paths', () => {
 
     if (platform === 'darwin') {
       expect(result).toBe(
-        '/Library/Application Support/GeminiCli/settings.json',
+        '/Library/Application Support/JiminyCli/settings.json',
       );
     } else if (platform === 'win32') {
-      expect(result).toBe('C:\\ProgramData\\gemini-cli\\settings.json');
+      expect(result).toBe('C:\\ProgramData\\jiminy-cli\\settings.json');
     } else {
-      expect(result).toBe('/etc/gemini-cli/settings.json');
+      expect(result).toBe('/etc/jiminy-cli/settings.json');
     }
   });
 
@@ -448,11 +448,11 @@ describe('Storage - System Paths', () => {
     expect(result).not.toContain('/custom/path');
 
     if (platform === 'darwin') {
-      expect(result).toBe('/Library/Application Support/GeminiCli/policies');
+      expect(result).toBe('/Library/Application Support/JiminyCli/policies');
     } else if (platform === 'win32') {
-      expect(result).toBe('C:\\ProgramData\\gemini-cli\\policies');
+      expect(result).toBe('C:\\ProgramData\\jiminy-cli\\policies');
     } else {
-      expect(result).toBe('/etc/gemini-cli/policies');
+      expect(result).toBe('/etc/jiminy-cli/policies');
     }
   });
 });

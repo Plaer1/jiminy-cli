@@ -8,14 +8,14 @@ import { act } from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '../../test-utils/render.js';
 import { useLogger } from './useLogger.js';
-import { Logger, type Storage, type Config } from '@google/gemini-cli-core';
+import { Logger, type Storage, type Config } from '@plaer1/jiminy-cli-core';
 
 let deferredInit: { resolve: (val?: unknown) => void };
 
 // Mock Logger
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@plaer1/jiminy-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@plaer1/jiminy-cli-core')>();
   return {
     ...actual,
     Logger: vi.fn().mockImplementation((id: string) => ({

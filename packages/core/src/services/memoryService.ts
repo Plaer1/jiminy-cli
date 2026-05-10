@@ -809,7 +809,7 @@ function buildAgentLoopContext(config: Config): AgentLoopContext {
     promptRegistry: new PromptRegistry(),
     resourceRegistry: new ResourceRegistry(),
     messageBus: autoApproveBus,
-    geminiClient: config.getGeminiClient(),
+    jiminyClient: config.getJiminyClient(),
     sandboxManager: config.sandboxManager,
   };
 }

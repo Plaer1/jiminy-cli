@@ -136,11 +136,11 @@ export class Storage {
 
   private static getSystemConfigDir(): string {
     if (os.platform() === 'darwin') {
-      return '/Library/Application Support/GeminiCli';
+      return '/Library/Application Support/JiminyCli';
     } else if (os.platform() === 'win32') {
-      return 'C:\\ProgramData\\gemini-cli';
+      return 'C:\\ProgramData\\jiminy-cli';
     } else {
-      return '/etc/gemini-cli';
+      return '/etc/jiminy-cli';
     }
   }
 

@@ -6,7 +6,7 @@
 
 import { useState, useRef, useCallback, useMemo } from 'react';
 import type { HistoryItem } from '../types.js';
-import type { ChatRecordingService } from '@google/gemini-cli-core/src/services/chatRecordingService.js';
+import type { ChatRecordingService } from '@plaer1/jiminy-cli-core/src/services/chatRecordingService.js';
 
 // Type for the updater function passed to updateHistoryItem
 type HistoryItemUpdater = (
@@ -115,7 +115,7 @@ export function useHistory({
           case 'user':
           case 'gemini':
           case 'gemini_content':
-            // Core conversation recording handled by GeminiChat.
+            // Core conversation recording handled by JiminyChat.
             break;
           default:
             // Ignore the rest.

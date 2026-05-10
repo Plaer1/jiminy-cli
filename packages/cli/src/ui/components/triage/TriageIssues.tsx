@@ -12,7 +12,7 @@ import {
   spawnAsync,
   LlmRole,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 import { useKeypress } from '../../hooks/useKeypress.js';
 import { Command } from '../../key/keyMatchers.js';
 import { TextInput } from '../shared/TextInput.js';
@@ -178,7 +178,7 @@ export const TriageIssues = ({
     async (issue: Issue): Promise<AnalysisResult> => {
       const client = config.getBaseLlmClient();
       const prompt = `
-I am triaging GitHub issues for the Gemini CLI project. I need to identify issues that should be closed because they are:
+I am triaging GitHub issues for the Jiminy CLI project. I need to identify issues that should be closed because they are:
 - Bogus (not a real issue/request)
 - Not reproducible (insufficient info, "it doesn't work" without logs/details)
 - Abusive or offensive

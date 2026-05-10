@@ -1,21 +1,21 @@
-# @google/gemini-cli-sdk
+# @plaer1/jiminy-cli-sdk
 
-The Gemini CLI SDK provides a programmatic interface to interact with Gemini
+The Jiminy CLI SDK provides a programmatic interface to interact with Gemini
 models and tools.
 
 ## Installation
 
 ```bash
-npm install @google/gemini-cli-sdk
+npm install @plaer1/jiminy-cli-sdk
 ```
 
 ## Usage
 
 ```typescript
-import { GeminiCliAgent } from '@google/gemini-cli-sdk';
+import { JiminyCliAgent } from '@plaer1/jiminy-cli-sdk';
 
 async function main() {
-  const agent = new GeminiCliAgent({
+  const agent = new JiminyCliAgent({
     instructions: 'You are a helpful assistant.',
   });
 

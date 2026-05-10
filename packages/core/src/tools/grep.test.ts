@@ -55,7 +55,7 @@ describe('GrepTool', () => {
       }),
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectJiminyIgnore: true,
         maxFileCount: 1000,
         searchTimeout: 30000,
         customIgnoreFilePaths: [],
@@ -356,7 +356,7 @@ describe('GrepTool', () => {
         }),
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           maxFileCount: 1000,
           searchTimeout: 30000,
           customIgnoreFilePaths: [],
@@ -440,7 +440,7 @@ describe('GrepTool', () => {
         }),
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           maxFileCount: 1000,
           searchTimeout: 30000,
           customIgnoreFilePaths: [],
@@ -655,7 +655,7 @@ describe('GrepTool', () => {
         }),
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectJiminyIgnore: true,
           maxFileCount: 1000,
           searchTimeout: 30000,
           customIgnoreFilePaths: [],

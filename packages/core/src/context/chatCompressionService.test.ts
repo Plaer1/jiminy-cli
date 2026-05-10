@@ -13,7 +13,7 @@ import {
 import type { Content, GenerateContentResponse, Part } from '@google/genai';
 import { CompressionStatus } from '../core/turn.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
-import type { GeminiChat } from '../core/geminiChat.js';
+import type { JiminyChat } from '../core/jiminyChat.js';
 import type { Config } from '../config/config.js';
 import * as fileUtils from '../utils/fileUtils.js';
 import { getInitialChatHistory } from '../utils/environmentContext.js';
@@ -134,7 +134,7 @@ describe('modelStringToModelConfigAlias', () => {
 
 describe('ChatCompressionService', () => {
   let service: ChatCompressionService;
-  let mockChat: GeminiChat;
+  let mockChat: JiminyChat;
   let mockConfig: Config;
   let testTempDir: string;
   const mockModel = 'gemini-2.5-pro';
@@ -148,7 +148,7 @@ describe('ChatCompressionService', () => {
     mockChat = {
       getHistory: vi.fn(),
       getLastPromptTokenCount: vi.fn().mockReturnValue(500),
-    } as unknown as GeminiChat;
+    } as unknown as JiminyChat;
 
     const mockGenerateContent = vi
       .fn()

@@ -19,7 +19,7 @@ import { isCloudShell } from '../ide/detect-ide.js';
 import type { Config } from '../config/config.js';
 import { loadApiKey } from './apiKeyCredentialStorage.js';
 
-import type { UserTierId, GeminiUserTier } from '../code_assist/types.js';
+import type { UserTierId, JiminyUserTier } from '../code_assist/types.js';
 import { LoggingContentGenerator } from './loggingContentGenerator.js';
 import { InstallationManager } from '../utils/installationManager.js';
 import { FakeContentGenerator } from './fakeContentGenerator.js';
@@ -53,7 +53,7 @@ export interface ContentGenerator {
 
   userTierName?: string;
 
-  paidTier?: GeminiUserTier;
+  paidTier?: JiminyUserTier;
 }
 
 export enum AuthType {

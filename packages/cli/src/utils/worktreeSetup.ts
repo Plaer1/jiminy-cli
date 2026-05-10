@@ -9,7 +9,7 @@ import {
   createWorktreeService,
   writeToStderr,
   type WorktreeInfo,
-} from '@google/gemini-cli-core';
+} from '@plaer1/jiminy-cli-core';
 
 /**
  * Sets up a git worktree for parallel sessions.
